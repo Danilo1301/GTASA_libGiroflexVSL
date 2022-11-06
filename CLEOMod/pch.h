@@ -46,6 +46,15 @@ public:
         this->y = y;
         this->y = z;
     }
+
+    CVector operator+(const CVector right)
+    {
+        CVector result(this->x, this->y, this->z);
+        result.x += right.x;
+        result.y += right.y;
+        result.z += right.z;
+        return result;
+    }
 };
 
 class CRGBA {
@@ -108,5 +117,11 @@ enum eDrawInfoType {
     A,
     GXT_ID,
     NUM_1,
-    NUM_2
+    NUM_2,
+
+    AMOUNT_OF_CORONAS,
+    CORONA_CAR,
+    CORONA_OFFSET_X,
+    CORONA_OFFSET_Y,
+    CORONA_OFFSET_Z
 };

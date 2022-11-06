@@ -67,15 +67,39 @@ __decl_op(SEND_CAR_POSITION, 0x0EF0); // 0EF0=5,send_car_position %1d% model_id 
 __decl_op(SEND_CURRENT_VEHICLE, 0x0EF1); //0EF1=1,send_current_vehicle %1d%
 __decl_op(PROCESS_GIROFLEX_LIB, 0x0EF2); // 0EF2=1,process_giroflex_lib deltaMs %1d%
 __decl_op(SEND_TOUCH_STATE, 0x0EF3); //0EF3=2,send_touch_state %1d% state %2d%
+__decl_op(TOGGLE_GIROFLEX, 0x0EF4); // 0EF4=1,toggle_giroflex car %1d%
+__decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF5); // 0EF5=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
 __decl_op(RUN_TEST, 0x0EF6); // 0EF6=1,run_test %1d%
 __decl_op(GET_DRAW_ITEM_INFO, 0x0EF8); // 0EF8=3,%3g% = get_draw_item_info %1d% id %2d%
 __decl_op(TOGGLE_GIROFLEX_MENU, 0x0EF9); // 0EF9=1,toggle_giroflex_menu car %1d%
-__decl_op(TOGGLE_GIROFLEX, 0x0EF4); // 0EF4=1,toggle_giroflex car %1d%
+
+
+void REGISTER_GIROFLEX_CORONA(__handler_params)
+{
+    int id = __readParam(handle)->i;
+    float x = __readParam(handle)->f;
+    float y = __readParam(handle)->f;
+    float z = __readParam(handle)->f;
+
+    char szTemp[256];
+    sprintf(szTemp, "REGISTER_GIROFLEX_CORONA id=%d at_pos %.2f %.2f %.2f", id, x, y, z);
+    Log::opcodes << szTemp << std::endl;
+
+    if (id > Vehicles::m_CoronasToRender.size() - 1)
+    {
+        Log::opcodes << "id exceeds" << std::endl;
+        return;
+    }
+
+    auto renderCorona = &Vehicles::m_CoronasToRender[id];
+
+
+    Mod::RegisterCorona(renderCorona->id, 0, 255, 255, 0, 255, { x, y, z }, renderCorona->radius, 300.0f, 0, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
+
+}
 
 void SEND_CURRENT_VEHICLE(__handler_params)
 {
-
-
     int car = __readParam(handle)->i;
 
     char szTemp[256];
@@ -131,14 +155,36 @@ void GET_DRAW_ITEM_INFO(__handler_params)
         return;
     }
 
-    /*
-    if (type == eDrawInfoType::UPDATE_TOUCH_STATE)
+    //
+
+    bool coronaIdExceeds = (id > Vehicles::m_CoronasToRender.size() - 1);
+    if (type == eDrawInfoType::AMOUNT_OF_CORONAS)
     {
-        Input::ChangePressedState(id == 1);
-        result->i = id;
+        result->i = Vehicles::m_CoronasToRender.size();
         return;
     }
-    */
+    if (type == eDrawInfoType::CORONA_CAR)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].car;
+    }
+    if (type == eDrawInfoType::CORONA_OFFSET_X)
+    {
+        if (coronaIdExceeds) return;
+        result->f = Vehicles::m_CoronasToRender[id].offset.x;
+    }
+    if (type == eDrawInfoType::CORONA_OFFSET_Y)
+    {
+        if (coronaIdExceeds) return;
+        result->f = Vehicles::m_CoronasToRender[id].offset.y;
+    }
+    if (type == eDrawInfoType::CORONA_OFFSET_Z)
+    {
+        if (coronaIdExceeds) return;
+        result->f = Vehicles::m_CoronasToRender[id].offset.z;
+    }
+
+    //
 
     if (type == eDrawInfoType::TOUCH_X)
     {
@@ -150,6 +196,8 @@ void GET_DRAW_ITEM_INFO(__handler_params)
         result->i = Input::GetTouchPos().y;
         return;
     }
+
+    
 
     if (id > Draw::m_DrawItems.size() - 1)
     {
@@ -181,11 +229,13 @@ void SEND_CAR_POSITION(__handler_params)
     float y = __readParam(handle)->f;
     float z = __readParam(handle)->f;
 
-
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_POSITION car=%d, modelId=%d, x=%.2f, y=%.2f, z=%.2f", car, modelId, x, y, z);
-    Log::opcodes << szTemp << std::endl;
+    //Log::opcodes << szTemp << std::endl;
 
+    Vehicles::TryCreateVehicle(car, modelId);
+
+    /*
     Vehicles::TryCreateVehicle(car, modelId);
 
     if (!Vehicles::HasVehicleHandle(car)) return;
@@ -193,71 +243,30 @@ void SEND_CAR_POSITION(__handler_params)
     auto vehicle = Vehicles::m_Vehicles[car];
     vehicle->position = CVector(x, y, z);
 
-    //
-
-    if (!ModelInfos::HasModelInfo(vehicle->modelId)) return;
-
-    auto modelInfo = ModelInfos::GetModelInfo(vehicle->modelId);
-
     auto lightId = uniqueLightId + vehicle->hVehicle + 30000;
 
-    for (auto lightGroup : modelInfo->lightGroups)
-    {
-        if (!LightGroupDatas::HasLightGroupData(lightGroup)) return;
+    posStruct pos = {
+        vehicle->position.x,
+        vehicle->position.y,
+        vehicle->position.z
+    };
 
-        LightGroupData* lightGroupData = LightGroupDatas::m_LightGroupDatas[lightGroup];
+    CRGBA color = CRGBA(255, 120, 0);
 
-        for (int i = 0; i < (int)lightGroup->points.size(); i++)
-        {
-            auto point = lightGroup->points[i];
+    Mod::RegisterCorona(lightId++, 0, color.r, color.g, color.b, color.a, { pos.x, pos.y, pos.z }, 2.0f, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
 
-            posStruct pos = {
-                x + point->offset.x,
-                y + point->offset.y,
-                z + point->offset.z
-            };
+    pos.x += 1.0f;
 
-            int index = i;
-            //if (lightGroup->usePointPositionInsteadOfIndex) index = (int)point->pointPosition;
+    Mod::RegisterCorona(lightId++, 0, color.r, color.g, color.b, color.a, { pos.x, pos.y, pos.z }, 1.0f, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
 
-            bool enabled = lightGroupData->GetPointIsEnabled(point, index);
-
-            float radius = enabled ? 2.0f : 0.0f;
-           
-            
-
-            Mod::RegisterCorona(lightId++, 0, point->color.r, point->color.g, point->color.b, point->color.a, { pos.x, pos.y, pos.z }, radius, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
-
-        }
-    }
-
-
-
-    /*
-    
-    this works
-
-    auto lightId = uniqueLightId + vehicle->hVehicle + 30000;
-
-    posStruct pos = { x, y, z };
-
-    pos.z += 1.0f;
-
-
-    for (int i = 0; i < WindowMain::numCoronas; i++)
-    {
-        Mod::RegisterCorona(lightId + i, 0, 0, 0, 255, 255, { pos.x + (i*1.0f), pos.y, pos.z }, 2.0f, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 5.0f, false, false);
-    }
     */
-
-    
 }
 
 void PROCESS_GIROFLEX_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
 
-    Log::opcodes << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
+    //Log::opcodes << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
 
     while (Draw::m_DrawItems.size() > 0) {
         auto dw = Draw::m_DrawItems[0];
@@ -266,18 +275,11 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
     }
     //Draw::m_DrawItems.clear();
 
-    Log::opcodes << "CheckStreamedOutVehicles" << std::endl;
-    //Vehicles::CheckStreamedOutVehicles();
-
-    Log::opcodes << "Menu Update" << std::endl;
-
-    Vehicles::UpdateVehiclesPattern(dt);
+    Vehicles::Update(dt);
 
     Menu::Update(dt);
-
     Menu::Draw();
 
-   
     if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5) && Input::GetTouchIdPressTime(6) > 500)
     {
         WindowMain::Create();
@@ -291,35 +293,6 @@ void RUN_TEST(__handler_params)
     int testType = __readParam(handle)->i;
 
     Log::opcodes << "RUN_TEST testType=" << testType << std::endl;
-
-    if (testType == 0)
-    {
-        /*
-        void (*func)(float, float, char*) = (void (*)(float, float, char*)) FindPointer("_ZN5CFont11PrintStringEffPt");
-
-        char szTemp[256];
-        sprintf(szTemp, "helooooooooooooooo");
-        func(200.0f, 200.0f, szTemp);
-        */
-    }
-
-    if (testType == 1)
-    {
-        for (auto pair : Vehicles::m_Vehicles)
-        {
-            auto vehicle = pair.second;
-            //auto lightId = uniqueLightId + vehicle->hVehicle + 30000;
-
-
-            posStruct pos = { vehicle->position.x, vehicle->position.y, vehicle->position.z };
-            pos.z += 1.0f;
-
-
-            //RegisterCorona(612352, NULL, 0, 255, 0, 255, pos, 2.0f, 300.0f, 6, 1, false, false, 0, 0.0f, false, 0.1f, 0, 2.0f, false, false);
-            //Mod::RegisterCorona(lightId + 2, NULL, 0, 255, 0, 255, pos, 2.0f, 300.0f, 6, 1, false, false, 0, 0.0f, false, 0.1f, 0, 2.0f, false, false);
-            //Mod::RegisterCorona(lightId + 3, NULL, 0, 255, 0, 255, pos, 2.0f, 300.0f, 0, 1, false, false, 0, 0.0f, false, 0.1f, 0, 2.0f, false, false);
-        }
-    }
 
     if (testType == 2)
     {
@@ -359,11 +332,23 @@ void Mod::OnModPreLoad()
         mkdir(logPath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
 
-    snprintf(logPath, sizeof(logPath), "%s/giroflex/giroflex.log", aml->GetConfigPath());
-    Log::file.open(logPath, std::fstream::out | std::fstream::trunc);
+    bool insideCleo = true;
 
-    snprintf(logPath, sizeof(logPath), "/storage/emulated/0/cleo/giroflex_opcodes.log");
-    Log::opcodes.open(logPath, std::fstream::out | std::fstream::trunc);
+    if (insideCleo)
+    {
+        snprintf(logPath, sizeof(logPath), "/storage/emulated/0/cleo/giroflex.log");
+        Log::file.open(logPath, std::fstream::out | std::fstream::trunc);
+
+        snprintf(logPath, sizeof(logPath), "/storage/emulated/0/cleo/giroflex_opcodes.log");
+        Log::opcodes.open(logPath, std::fstream::out | std::fstream::trunc);
+
+    } else {
+        snprintf(logPath, sizeof(logPath), "%s/giroflex/giroflex.log", aml->GetConfigPath());
+        Log::file.open(logPath, std::fstream::out | std::fstream::trunc);
+
+        snprintf(logPath, sizeof(logPath), "%s/giroflex/giroflex_opcodes.log", aml->GetConfigPath());
+        Log::opcodes.open(logPath, std::fstream::out | std::fstream::trunc);
+    }
 
     Log::file << "OnModPreLoad..." << std::endl;
     Log::opcodes << "OnModPreLoad..." << std::endl;
@@ -471,6 +456,7 @@ void Mod::OnModLoad()
         __reg_op_func2012(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
         __reg_op_func2012(SEND_CURRENT_VEHICLE, SEND_CURRENT_VEHICLE);
         __reg_op_func2012(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
+        __reg_op_func2012(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
     }
     else {
         __reg_op_func2013(SEND_CAR_POSITION, SEND_CAR_POSITION);
@@ -481,6 +467,7 @@ void Mod::OnModLoad()
         __reg_op_func2013(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
         __reg_op_func2013(SEND_CURRENT_VEHICLE, SEND_CURRENT_VEHICLE);
         __reg_op_func2013(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
+        __reg_op_func2013(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
     }
    
 
@@ -603,5 +590,4 @@ void Mod::RegisterCorona(unsigned int id, void* attachTo, unsigned char red, uns
 0EF1=4,send_car_speed %1d% x %2f% y %3f% z %4f%
 0EF3=2,%2d% = is_giroflex_enabled for_car %1d%
 0EF4=2,set_giroflex_enabled for_car %1d% enabled %2d%
-0EF5=9,register_giroflex_corona id %1d% r %2d% g %3d% b %4d% a %5d% x %6f% y %7f% z %8f% flare %9d%
 */

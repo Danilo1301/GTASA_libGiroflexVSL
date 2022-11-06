@@ -8,7 +8,6 @@ ModelInfo* ModelInfos::CreateModelInfo(int modelId)
 	ModelInfo* modelInfo = new ModelInfo(modelId);
 	m_ModelInfos[modelId] = modelInfo;
 
-	std::cout << "Create model info (id: " << modelId << ")" << std::endl;
 	Log::file << "Create model info (id: " << modelId << ")" << std::endl;
 
 	return modelInfo;

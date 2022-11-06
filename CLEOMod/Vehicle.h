@@ -16,6 +16,7 @@ public:
 	Vehicle(int hVehicle, int modelId);
 
 	void Destroy();
+	void Update(int dt);
 
 	//std::vector<LightGroupData*> GetLightGroupsData();
 

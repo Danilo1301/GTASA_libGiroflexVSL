@@ -12,6 +12,14 @@ public:
 
 	PatternLoop* patternLoop = new PatternLoop();
 	PatternLoop* stepLoop = new PatternLoop();
+	LightGroup* lightGroup;
+	int hVehicle;
+
+	LightGroupData(LightGroup* lightGroup, int hVehicle)
+	{
+		this->lightGroup = lightGroup;
+		this->hVehicle = hVehicle;
+	}
 
 	Pattern* GetCurrentPattern()
 	{
