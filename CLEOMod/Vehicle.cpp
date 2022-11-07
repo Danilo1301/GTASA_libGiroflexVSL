@@ -127,7 +127,7 @@ void Vehicle::Update(int dt)
             RenderCorona corona;
             corona.car = hVehicle;
             corona.id = lightId++;
-            corona.color = point->color;
+            corona.color = lightGroup->GetPointColor(point, index);
             corona.offset = lightGroup->offset + point->offset;
             corona.radius = enabled ? 1.0f : 0.0f;
 

@@ -14,4 +14,8 @@ public:
 	static bool HasLightGroupData(LightGroup* lightGroup, int hVehicle);
 	static void AddLightGroupData(LightGroupData* lightGroupData);
 	static LightGroupData* GetLightGroupData(LightGroup* lightGroup, int hVehicle);
+
+	static void ResetPatterns(int hVehicle);
+	static void RemoveLightGroupData(LightGroupData* lightGroupData);
+	static void DeleteLightGroupRerefences(LightGroup* lightGroup);
 };

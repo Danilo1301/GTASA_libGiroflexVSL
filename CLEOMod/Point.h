@@ -14,5 +14,5 @@ class Point {
 public:
 	ePointPosition pointPosition = ePointPosition::BY_INDEX;
 	CVector offset = { 0, 0, 0 };
-	CRGBA color = { 255, 0, 0 };
+	//CRGBA color = { 255, 0, 0 };
 };

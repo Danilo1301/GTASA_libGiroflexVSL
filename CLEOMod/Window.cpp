@@ -32,6 +32,8 @@ Window::Window()
 Item* Window::AddButton(int gxtId, CRGBA color)
 {
 	Item* item = new Item(eItemType::ITEM_BUTTON);
+	item->drawLabel = false;
+	item->useFullWidth = true;
 
 	item->text->gxtId = gxtId;
 
@@ -49,7 +51,9 @@ Item* Window::AddButton(int gxtId, CRGBA color)
 Item* Window::AddOptions(int gxtId)
 {
 	Item* item = new Item(eItemType::ITEM_OPTIONS);
-	item->text->gxtId = gxtId;
+	item->label->gxtId = gxtId;
+
+	item->intValueRange.value = &item->optionsValue;
 
 	item->box->color = CRGBA(120, 120, 120);
 	item->box->size = { 200, 35 };
@@ -61,9 +65,52 @@ Item* Window::AddOptions(int gxtId)
 	return item;
 }
 
+Item* Window::AddFloatRange(int gxtId, float* value, float min, float max, float addBy)
+{
+	Item* item = new Item(eItemType::ITEM_FLOAT_RANGE);
+	item->label->gxtId = gxtId;
+	item->floatValueRange.value = value;
+	item->floatValueRange.min = min;
+	item->floatValueRange.max = max;
+	item->floatValueRange.addBy = addBy;
+	item->holdToChange = true;
+
+	item->box->color = CRGBA(120, 120, 120);
+	item->box->size = { 180, 35 };
+
+	items.push_back(item);
+
+	Log::file << "Window: AddFloatRange" << std::endl;
+
+	return item;
+}
+
+
+Item* Window::AddIntRange(int gxtId, int* value, int min, int max, int addBy)
+{
+	Item* item = new Item(eItemType::ITEM_INT_RANGE);
+	item->label->gxtId = gxtId;
+	item->intValueRange.value = value;
+	item->intValueRange.min = min;
+	item->intValueRange.max = max;
+	item->intValueRange.addBy = addBy;
+	item->holdToChange = true;
+
+	item->box->color = CRGBA(120, 120, 120);
+	item->box->size = { 180, 35 };
+
+	items.push_back(item);
+
+	Log::file << "Window: AddIntRange" << std::endl;
+
+	return item;
+}
+
 Item* Window::AddText(int gxtId, CRGBA color)
 {
 	Item* item = new Item(eItemType::ITEM_TEXT);
+
+	item->drawLabel = false;
 
 	item->text->gxtId = gxtId;
 	item->text->color = color;
@@ -103,7 +150,7 @@ void Window::Draw()
 
 	CVector2D pos = position;
 
-	Draw::DrawBoxWithText(999, 0, 0, pos, CVector2D(width, titleHeight), CRGBA(52, 52, 109), CRGBA(255, 255, 255));
+	Draw::DrawBoxWithText(999, 0, 0, pos, CVector2D(width, titleHeight), CRGBA(52, 52, 109), CRGBA(255, 255, 255), eTextAlign::ALIGN_LEFT);
 
 	//
 
@@ -145,13 +192,23 @@ void Window::Draw()
 
 		if (item->useFullWidth) item->box->size.x = width;
 
-		Draw::DrawBox(pos, CVector2D(width, item->box->size.y + padding*2), CRGBA(0, 119, 204));
+		Draw::DrawBox(pos, CVector2D(width, item->box->size.y + padding * 2), CRGBA(0, 119, 204));
 
 		pos.y += padding;
 
+		if (item->drawLabel)
+		{
+			Draw::DrawText(item->label->gxtId, item->label->num1, item->label->num2, CVector2D(pos.x + padding, pos.y + item->box->size.y / 2), item->label->color, eTextAlign::ALIGN_LEFT);
+		}
+
+
 		float totalPadding = width - item->box->size.x;
 
-		item->position = CVector2D(pos.x + totalPadding/2, pos.y);
+		//draw at center
+		//item->position = CVector2D(pos.x + totalPadding/2, pos.y); 
+
+		//draw at right
+		item->position = CVector2D(pos.x + totalPadding, pos.y);
 
 		item->Draw();
 

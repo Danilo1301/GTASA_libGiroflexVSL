@@ -5,6 +5,7 @@
 #include "Patterns.h"
 #include "LightGroupDatas.h"
 
+int Vehicles::hPlayerVehicle = -1;
 std::map<int, Vehicle*> Vehicles::m_Vehicles;
 std::vector<RenderCorona> Vehicles::m_CoronasToRender;
 
@@ -88,4 +89,16 @@ void Vehicles::Update(int dt)
         auto vehicle = pair.second;
         vehicle->Update(dt);
     }
+}
+
+bool Vehicles::IsPlayerInAnyVehicle()
+{
+    if (hPlayerVehicle == -1) return false;
+    if (!HasVehicleHandle(hPlayerVehicle)) return false;
+    return true;
+}
+
+Vehicle* Vehicles::GetPlayerVehicle()
+{
+    return m_Vehicles.at(hPlayerVehicle);
 }

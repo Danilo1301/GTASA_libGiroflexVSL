@@ -44,7 +44,7 @@ public:
     {
         this->x = x;
         this->y = y;
-        this->y = z;
+        this->z = z;
     }
 
     CVector operator+(const CVector right)
@@ -123,5 +123,7 @@ enum eDrawInfoType {
     CORONA_CAR,
     CORONA_OFFSET_X,
     CORONA_OFFSET_Y,
-    CORONA_OFFSET_Z
+    CORONA_OFFSET_Z,
+
+    ALIGN
 };

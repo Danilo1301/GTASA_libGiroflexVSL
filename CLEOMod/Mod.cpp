@@ -94,7 +94,7 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
     auto renderCorona = &Vehicles::m_CoronasToRender[id];
 
 
-    Mod::RegisterCorona(renderCorona->id, 0, 255, 255, 0, 255, { x, y, z }, renderCorona->radius, 300.0f, 0, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
+    Mod::RegisterCorona(renderCorona->id, 0, renderCorona->color.r, renderCorona->color.g, renderCorona->color.b, renderCorona->color.a, { x, y, z }, renderCorona->radius, 300.0f, 0, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
 
 }
 
@@ -104,7 +104,9 @@ void SEND_CURRENT_VEHICLE(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CURRENT_VEHICLE car=%d", car);
-    Log::opcodes << szTemp << std::endl;
+    //Log::opcodes << szTemp << std::endl;
+
+    Vehicles::hPlayerVehicle = car;
 }
 
 void SEND_TOUCH_STATE(__handler_params)
@@ -219,6 +221,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
     if (type == eDrawInfoType::GXT_ID) result->i = item->gxtId;
     if (type == eDrawInfoType::NUM_1) result->i = item->num1;
     if (type == eDrawInfoType::NUM_2) result->i = item->num2;
+    if (type == eDrawInfoType::ALIGN) result->i = (int)item->textAlign;
 }
 
 void SEND_CAR_POSITION(__handler_params)
@@ -282,7 +285,16 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
 
     if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5) && Input::GetTouchIdPressTime(6) > 500)
     {
-        WindowMain::Create();
+        if (!WindowMain::m_Window)
+        {
+            if (Vehicles::IsPlayerInAnyVehicle())
+            {
+                WindowMain::Create(Vehicles::GetPlayerVehicle()->modelId);
+            }
+            else {
+                Menu::ShowPopup(16, 0, 0, 1000);
+            }
+        }
     }
     
     Input::Update(dt);
@@ -526,7 +538,7 @@ void Mod::OnModLoad()
     lightGroup3->MakeLightGroup();
     modelInfo523->AddLightGroup(lightGroup3);
 
-    WindowMain::Create();
+    WindowMain::Create(523);
 
     /*
     logger->Info("Loading...");

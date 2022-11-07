@@ -10,6 +10,7 @@ uintptr_t Input::pScreenResX= 0;
 uintptr_t Input::pScreenResY= 0;
 bool Input::isTouchPressed = false;
 bool Input::hasTouchBeenPressedThisFrame = false;
+bool Input::hasTouchBeenReleasedThisFrame = false;
 
 char* strValue;
 
@@ -28,6 +29,7 @@ int OS_ScreenGetWidth()
 void Input::Update(float dt)
 {
     hasTouchBeenPressedThisFrame = false;
+    hasTouchBeenReleasedThisFrame = false;
 
     int numPresses = 0;
 
@@ -49,6 +51,7 @@ void Input::Update(float dt)
         {
             isTouchPressed = false;
             Log::file << "Input: Touch released" << std::endl;
+            hasTouchBeenReleasedThisFrame = true;
         }
     }
 }

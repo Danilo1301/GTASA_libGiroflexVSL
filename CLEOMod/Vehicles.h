@@ -13,6 +13,7 @@ struct RenderCorona {
 
 class Vehicles {
 public:
+	static int hPlayerVehicle;
 	static std::map<int, Vehicle*> m_Vehicles;
 	static std::vector<RenderCorona> m_CoronasToRender;
 
@@ -23,4 +24,7 @@ public:
 	static void CheckStreamedOutVehicles();
 
 	static void Update(int dt);
+
+	static bool IsPlayerInAnyVehicle();
+	static Vehicle* GetPlayerVehicle();
 };

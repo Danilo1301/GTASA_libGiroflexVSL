@@ -24,6 +24,8 @@ public:
 
 	static Window* AddWindow(int gxtId);
 	static Window* AddWindow(int gxtId, Window* parent);
+	static Window* AddPositionWindow(Window* parent, CVector* vec);
+	static Window* AddColorMenu(Window* parent, CRGBA* color);
 
 	static void ShowPopup(int gfxId, int val1, int val2, int time);
 

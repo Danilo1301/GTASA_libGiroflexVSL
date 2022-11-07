@@ -18,6 +18,7 @@ public:
 	static uintptr_t pScreenResY;
 	static bool isTouchPressed;
 	static bool hasTouchBeenPressedThisFrame;
+	static bool hasTouchBeenReleasedThisFrame;
 
 	static void Update(float dt);
 	static CVector2D GetScreenSize();
