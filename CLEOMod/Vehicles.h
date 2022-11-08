@@ -9,6 +9,14 @@ struct RenderCorona {
 	CVector offset = CVector(0, 0, 0);
 	CRGBA color = CRGBA(255, 0, 0);
 	float radius = 1.0f;
+
+	bool renderShadow = true;
+	float shadowIntensity = 1.0f;
+	float shadowSize = 5.0f;
+
+	bool renderPointLight = true;
+	float pointLightIntensity = 1.0f;
+	float pointLightDistance = 60.0f;
 };
 
 class Vehicles {

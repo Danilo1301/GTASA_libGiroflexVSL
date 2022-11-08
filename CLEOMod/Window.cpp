@@ -29,6 +29,8 @@ Window::Window()
 	};
 }
 
+
+
 Item* Window::AddButton(int gxtId, CRGBA color)
 {
 	Item* item = new Item(eItemType::ITEM_BUTTON);
@@ -47,6 +49,30 @@ Item* Window::AddButton(int gxtId, CRGBA color)
 	return item;
 }
 
+
+Item* Window::AddButton(int gxtId)
+{
+	return AddButton(gxtId, CRGBA(0, 0, 50));	
+}
+
+Item* Window::AddCheckbox(int gxtId, bool* value)
+{
+	Item* item = new Item(eItemType::CHECKBOX);
+	item->drawBox = false;
+	item->useFullWidth = true;
+
+	item->pCheckBoxBool = value;
+
+	item->label->gxtId = gxtId;
+
+	item->box->size = { 200, 35 };
+
+	items.push_back(item);
+
+	Log::file << "Window: AddCheckbox" << std::endl;
+
+	return item;
+}
 
 Item* Window::AddOptions(int gxtId)
 {
@@ -150,33 +176,33 @@ void Window::Draw()
 
 	CVector2D pos = position;
 
-	Draw::DrawBoxWithText(999, 0, 0, pos, CVector2D(width, titleHeight), CRGBA(52, 52, 109), CRGBA(255, 255, 255), eTextAlign::ALIGN_LEFT);
+	Draw::DrawBoxWithText(titleGtxId, 0, 0, pos, CVector2D(width, titleHeight), titleBoxColor, CRGBA(255, 255, 255), eTextAlign::ALIGN_LEFT);
 
 	//
 
 	if (showPageControls)
 	{
-		auto btnSize = CVector2D(50.0f, 50.0f);
-		auto btnColor = CRGBA(255, 255, 255);
+		auto btnSize = CVector2D(40.0f, 40.0f);
+		auto btnColor = backgroundColor;
 
 		btnLeft->box->size = btnSize;
 		btnLeft->text->gxtId = 4;
 		btnLeft->box->color = btnColor;
-		btnLeft->position = CVector2D(position.x - 30.0f - btnSize.x, position.y + 50.0f);
+		btnLeft->position = CVector2D(position.x - 20.0f - btnSize.x, position.y + 20.0f);
 		btnLeft->Draw();
 
 		btnRight->box->size = btnSize;
 		btnRight->text->gxtId = 5;
 		btnRight->box->color = btnColor;
-		btnRight->position = CVector2D(position.x + width + 30.0f, position.y + 50.0f);
+		btnRight->position = CVector2D(position.x + width + 20.0f, position.y + 20.0f);
 		btnRight->Draw();
 
-		btnSize = CVector2D(100.0f, 50.0f);
+		btnSize = CVector2D(80.0f, 40.0f);
 
 		btnBack->box->size = btnSize;
 		btnBack->text->gxtId = 7;
 		btnBack->box->color = btnColor;
-		btnBack->position = CVector2D(position.x + width + 30.0f, position.y + 150.0f);
+		btnBack->position = CVector2D(position.x + width + 20.0f, position.y + 80.0f);
 		btnBack->Draw();
 	}
 	//
@@ -190,15 +216,15 @@ void Window::Draw()
     {
 		float padding = 2.0f;
 
-		if (item->useFullWidth) item->box->size.x = width;
+		if (item->useFullWidth) item->box->size.x = width - padding*2;
 
-		Draw::DrawBox(pos, CVector2D(width, item->box->size.y + padding * 2), CRGBA(0, 119, 204));
+		Draw::DrawBox(pos, CVector2D(width, item->box->size.y + padding * 2), backgroundColor);
 
 		pos.y += padding;
 
 		if (item->drawLabel)
 		{
-			Draw::DrawText(item->label->gxtId, item->label->num1, item->label->num2, CVector2D(pos.x + padding, pos.y + item->box->size.y / 2), item->label->color, eTextAlign::ALIGN_LEFT);
+			Draw::DrawText(item->label->gxtId, item->label->num1, item->label->num2, CVector2D(pos.x, pos.y + item->box->size.y / 2), item->label->color, eTextAlign::ALIGN_LEFT);
 		}
 
 
@@ -208,7 +234,7 @@ void Window::Draw()
 		//item->position = CVector2D(pos.x + totalPadding/2, pos.y); 
 
 		//draw at right
-		item->position = CVector2D(pos.x + totalPadding, pos.y);
+		item->position = CVector2D(pos.x + totalPadding - padding, pos.y);
 
 		item->Draw();
 

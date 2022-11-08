@@ -17,6 +17,21 @@ Item::Item(eItemType type)
 
 		btnRight = new Item(eItemType::ITEM_BUTTON);
 	}
+
+	if (type == eItemType::CHECKBOX)
+	{
+		auto self = this;
+
+		onClick = [self]() {
+			*self->pCheckBoxBool = !*self->pCheckBoxBool;
+		};
+	}
+}
+
+void Item::AddColorIndicator(CRGBA* color)
+{
+	ColorIndicator colorIndicator = { color };
+	colorIndicators.push_back(colorIndicator);
 }
 
 void Item::AddOptionBy(int addBy)
@@ -37,8 +52,13 @@ void Item::Update()
 	if (isPointerOver)
 	{
 		//if (Input::hasTouchBeenPressedThisFrame && onClick && type == eItemType::ITEM_BUTTON) onClick();
-		if (Input::hasTouchBeenReleasedThisFrame && onClick && type == eItemType::ITEM_BUTTON) onClick();
-
+		if (Input::hasTouchBeenReleasedThisFrame)
+		{
+			if (type == eItemType::ITEM_BUTTON || type == eItemType::CHECKBOX)
+			{
+				if(onClick) onClick();
+			}
+		}
 
 		if (!isPressed)
 		{
@@ -221,5 +241,37 @@ void Item::Draw()
 			btnRight->position = CVector2D(position.x + box->size.x - btnSize.x, position.y);
 			btnRight->Draw();
 		}
+	}
+
+	//
+
+	float padding = 2.0f;
+	float h = box->size.y - padding * 2;
+	float w = h;
+
+	CVector2D pos = position;
+	pos.x += box->size.x - w - padding;
+	pos.y += padding;
+
+	for (auto colorIndicator : colorIndicators)
+	{
+		Draw::DrawBox(pos, CVector2D(w, h), *colorIndicator.color);
+
+		pos.x -= w + padding;
+	}
+	//
+
+	if (type == eItemType::CHECKBOX)
+	{
+		Draw::DrawBox(pos, CVector2D(w, h), CRGBA(0, 0, 0));
+
+		float b = 2.0f;
+
+		pos.x += b;
+		pos.y += b;
+		w -= b * 2;
+		h -= b * 2;
+
+		Draw::DrawBox(pos, CVector2D(w, h), (*pCheckBoxBool) ? CRGBA(255, 255, 255) : CRGBA(51, 51, 51));
 	}
 }

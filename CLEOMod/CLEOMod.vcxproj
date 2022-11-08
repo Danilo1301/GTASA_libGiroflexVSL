@@ -51,6 +51,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="INIConfig.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -71,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cleo.h" />
+    <ClInclude Include="INIConfig.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="eLightGroupType.h" />
     <ClInclude Include="icleo.h" />

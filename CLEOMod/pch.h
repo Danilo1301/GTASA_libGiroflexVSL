@@ -23,9 +23,25 @@
 #include <cmath>
 #include <math.h>
 
+#include <dirent.h>
+
+#include <sys/stat.h> // stat
+#include <errno.h>    // errno, ENOENT, EEXIST
+
 //#define __print_to_log(__str)	cleo->PrintToCleoLog(__str); logger->Info(__str)
 //#define __reg_opcode	cleo->RegisterOpcode
 //#define __reg_func		cleo->RegisterOpcodeFunction
+
+/*
+static std::string to_upper(std::string data) {
+    std::for_each(data.begin(), data.end(), [](char& c) {
+        c = ::toupper(c);
+        });
+    return data;
+}
+*/
+
+
 
 struct posStruct
 {
@@ -125,5 +141,21 @@ enum eDrawInfoType {
     CORONA_OFFSET_Y,
     CORONA_OFFSET_Z,
 
-    ALIGN
+    ALIGN,
+
+    CORONA_USE_SHADOW,
+    CORONA_USE_POINT_LIGHT,
+    CORONA_R,
+    CORONA_G,
+    CORONA_B,
+    CORONA_A,
+    CORONA_SHADOW_INTENSITY,
+    CORONA_SHADOW_SIZE,
+    CORONA_POINTLIGHT_DISTANCE,
+    SHADOW_R,
+    SHADOW_G,
+    SHADOW_B,
+    POINT_LIGHT_R,
+    POINT_LIGHT_G,
+    POINT_LIGHT_B
 };

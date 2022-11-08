@@ -34,6 +34,7 @@
     <ClCompile Include="WindowLightGroups.cpp">
       <Filter>windows</Filter>
     </ClCompile>
+    <ClCompile Include="INIConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="mod">
@@ -120,6 +121,7 @@
     <ClInclude Include="WindowLightGroups.h">
       <Filter>windows</Filter>
     </ClInclude>
+    <ClInclude Include="INIConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mod\thirdparty\INIPP_LICENSE">

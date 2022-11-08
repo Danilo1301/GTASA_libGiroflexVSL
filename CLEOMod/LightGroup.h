@@ -15,6 +15,16 @@ public:
 	CRGBA color2 = CRGBA(0, 0, 255);
 	CRGBA color3 = CRGBA(255, 255, 255);
 
+	bool renderShadow = true;
+	float shadowIntensity = 1.0f;
+	float shadowSize = 5.0f;
+
+	bool renderPointLight = true;
+	float pointLightIntensity = 1.0f;
+	float pointLightDistance = 60.0f;
+
+	int patternOffset = 0;
+
 	float distance = 0.2f;
 
 	eLightGroupType type = eLightGroupType::SINGLE_LIGHT;
@@ -29,7 +39,7 @@ public:
 
 	CRGBA GetPointColor(Point* point, int index)
 	{
-		CRGBA color = color1;
+		//CRGBA color = color1;
 		
 		if (type == eLightGroupType::SINGLE_LIGHT)
 		{

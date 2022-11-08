@@ -9,7 +9,7 @@ void WindowLightGroups::Create(Window* parent)
 {
     auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(15, parent);
+    auto window = Menu::AddWindow(14, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -51,9 +51,14 @@ void WindowLightGroups::Create(Window* parent)
         int i = 0;
         for (auto lightGroup : ModelInfos::GetModelInfo(modelId)->lightGroups)
         {
-            auto button_add = window->AddButton(12, { 0, 255, 0, 255 });
-            button_add->text->num1 = i;
-            button_add->onClick = [window, lightGroup]() {
+            auto button_edit = window->AddButton(12, CRGBA(96, 125, 219));
+            button_edit->text->num1 = i;
+
+            button_edit->AddColorIndicator(&lightGroup->color3);
+            button_edit->AddColorIndicator(&lightGroup->color2);
+            button_edit->AddColorIndicator(&lightGroup->color1);
+
+            button_edit->onClick = [window, lightGroup]() {
                 CreateEditLightGroup(window, lightGroup);
             };
 
@@ -69,7 +74,7 @@ void WindowLightGroups::Create(Window* parent)
 
 void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGroup)
 {
-    auto modelId = WindowMain::m_ModelId;
+    //auto modelId = WindowMain::m_ModelId;
 
     auto window = Menu::AddWindow(15, parent);
     window->showPageControls = true;
@@ -94,22 +99,41 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         lightGroup->MakeLightGroup();
     };
 
+    //sha
+    window->AddCheckbox(17, &lightGroup->renderShadow);
+
+    auto shadow_intensity = window->AddFloatRange(0, &lightGroup->shadowIntensity, 0, 1, 0.01f);
+    shadow_intensity->holdToChange = true;
+
+    window->AddFloatRange(27, &lightGroup->shadowSize, 0.0f, 10.0f, 0.01f);
+
+    //point l
+    window->AddCheckbox(18, &lightGroup->renderPointLight);
+
+    window->AddFloatRange(27, &lightGroup->pointLightDistance, 0.0f, 100.0f, 0.2f);
+
+    window->AddFloatRange(27, &lightGroup->pointLightIntensity, 0.0f, 1.0f, 0.01f);
+
+
     auto button_position = window->AddButton(26, { 0, 20, 120, 255 });
     button_position->onClick = [lightGroup, window]() {
         Menu::AddPositionWindow(window, &lightGroup->offset);
     };
 
     auto button_color1 = window->AddButton(9, { 0, 20, 120, 255 });
+    button_color1->AddColorIndicator(&lightGroup->color1);
     button_color1->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color1);
     };
 
     auto button_color2 = window->AddButton(10, { 0, 20, 120, 255 });
+    button_color2->AddColorIndicator(&lightGroup->color2);
     button_color2->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color2);
     };
 
     auto button_color3 = window->AddButton(11, { 0, 20, 120, 255 });
+    button_color3->AddColorIndicator(&lightGroup->color3);
     button_color3->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color3);
     };

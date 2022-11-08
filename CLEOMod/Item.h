@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Draw.h"
-#include "Item.h"
 
 enum eItemType {
 	ITEM_TEXT,
@@ -9,6 +8,7 @@ enum eItemType {
 	ITEM_OPTIONS,
 	ITEM_INT_RANGE,
 	ITEM_FLOAT_RANGE,
+	CHECKBOX
 };
 
 
@@ -17,6 +17,11 @@ struct Option
 	int gxtId = 1;
 	int num1 = 3;
 	int num2 = 4;
+};
+
+struct ColorIndicator
+{
+	CRGBA* color;
 };
 
 template<class T>
@@ -47,6 +52,8 @@ public:
 
 	std::vector<Option> options;
 
+	std::vector<ColorIndicator> colorIndicators;
+
 	/*
 	int optionCurrent = 0;
 	int optionMin = 0;
@@ -58,6 +65,8 @@ public:
 
 	ValueRange<int> intValueRange;
 	ValueRange<float> floatValueRange;
+
+	bool* pCheckBoxBool = NULL;
 
 	//float* pResultFloat = NULL;
 	//int* pResultInt = NULL;
@@ -81,6 +90,8 @@ public:
 	bool drawLabel = true;
 
 	Item(eItemType type);
+
+	void AddColorIndicator(CRGBA* color);
 
 	void AddOptionBy(int by);
 

@@ -18,4 +18,5 @@ public:
 		lightGroups.push_back(lightGroup);
 		return lightGroup;
 	}
+
 };

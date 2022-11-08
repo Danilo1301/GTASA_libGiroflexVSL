@@ -36,9 +36,9 @@ Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
     window->position = { 10, 200 };
     window->showPageControls = true;
 
-    auto option_pos_x = window->AddFloatRange(23, &vec->x, -10.0f, 10.0f, 0.01f);
-    auto option_pos_y = window->AddFloatRange(24, &vec->y, -10.0f, 10.0f, 0.01f);
-    auto option_pos_z = window->AddFloatRange(25, &vec->z, -10.0f, 10.0f, 0.01f);
+    window->AddFloatRange(23, &vec->x, -10.0f, 10.0f, 0.01f);
+    window->AddFloatRange(24, &vec->y, -10.0f, 10.0f, 0.01f);
+    window->AddFloatRange(25, &vec->z, -10.0f, 10.0f, 0.01f);
 
     window->btnBack->onClick = [window]()
     {

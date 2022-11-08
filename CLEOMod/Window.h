@@ -4,7 +4,6 @@
 
 #include "Item.h"
 
-
 class Window {
 public:
 	std::vector<Item*> items;
@@ -14,7 +13,8 @@ public:
 
 	int titleGtxId = 0;
 	CVector2D position = { 0, 0 };
-	CRGBA backgroundColor = { 0, 0, 120, 255 };
+	CRGBA titleBoxColor = CRGBA(23, 30, 53);
+	CRGBA backgroundColor = CRGBA(54, 70, 124);
 
 	Window* parentWindow = NULL;
 
@@ -31,6 +31,8 @@ public:
 	Window();
 
 	Item* AddButton(int gxtId, CRGBA color);
+	Item* AddButton(int gxtId);
+	Item* AddCheckbox(int gxtId, bool* value);
 	Item* AddText(int gxtId, CRGBA color);
 	Item* AddOptions(int gxtId);
 	Item* AddFloatRange(int gxtId, float* value, float min, float max, float addBy);

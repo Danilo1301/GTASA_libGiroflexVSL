@@ -10,11 +10,8 @@
 #include "LightGroupDatas.h"
 
 #include "WindowMain.h"
+#include "INIConfig.h"
 
-#include <iostream>
-#include <string>
-#include <sys/stat.h> // stat
-#include <errno.h>    // errno, ENOENT, EEXIST
 
 // CLEO 2.0.1.2
 #include "icleo.h"
@@ -59,7 +56,11 @@ uintptr_t pRegisterCorona = 0;
 
 unsigned int uniqueLightId = 65487;
 
-char Mod::Version[256] = "1.0.0";
+char Mod::Version[256] = "0.0.2";
+
+unsigned char ucharIntensity(unsigned char uc, float intensity) {
+    return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
+}
 
 //---------------------------------------------------------------------------------------------------
 
@@ -184,6 +185,99 @@ void GET_DRAW_ITEM_INFO(__handler_params)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].offset.z;
+    }
+    if (type == eDrawInfoType::CORONA_USE_POINT_LIGHT)
+    {
+        if (coronaIdExceeds) return;
+        result->i = (int)Vehicles::m_CoronasToRender[id].renderPointLight;
+    }
+    if (type == eDrawInfoType::CORONA_USE_SHADOW)
+    {
+        if (coronaIdExceeds) return;
+        result->i = (int)Vehicles::m_CoronasToRender[id].renderShadow;
+    }
+    if (type == eDrawInfoType::CORONA_R)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].color.r;
+    }
+    if (type == eDrawInfoType::CORONA_G)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].color.g;
+    }
+    if (type == eDrawInfoType::CORONA_B)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].color.b;
+    }
+    if (type == eDrawInfoType::CORONA_A)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].color.a;
+    }
+    if (type == eDrawInfoType::CORONA_SHADOW_INTENSITY)
+    {
+        if (coronaIdExceeds) return;
+        result->i = Vehicles::m_CoronasToRender[id].shadowIntensity;
+    }
+    if (type == eDrawInfoType::CORONA_SHADOW_SIZE)
+    {
+        if (coronaIdExceeds) return;
+        result->f = Vehicles::m_CoronasToRender[id].shadowSize;
+    }
+    if (type == eDrawInfoType::CORONA_POINTLIGHT_DISTANCE)
+    {
+        if (coronaIdExceeds) return;
+        result->f = Vehicles::m_CoronasToRender[id].pointLightDistance;
+    }
+    if (type == eDrawInfoType::SHADOW_R)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.r,
+            Vehicles::m_CoronasToRender[id].shadowIntensity
+        );
+    }
+    if (type == eDrawInfoType::SHADOW_G)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.g,
+            Vehicles::m_CoronasToRender[id].shadowIntensity
+        );
+    }
+    if (type == eDrawInfoType::SHADOW_B)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.b,
+            Vehicles::m_CoronasToRender[id].shadowIntensity
+        );
+    }
+    if (type == eDrawInfoType::POINT_LIGHT_R)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.r,
+            Vehicles::m_CoronasToRender[id].pointLightIntensity
+        );
+    }
+    if (type == eDrawInfoType::POINT_LIGHT_G)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.g,
+            Vehicles::m_CoronasToRender[id].pointLightIntensity
+        );
+    }
+    if (type == eDrawInfoType::POINT_LIGHT_B)
+    {
+        if (coronaIdExceeds) return;
+        result->i = ucharIntensity(
+            Vehicles::m_CoronasToRender[id].color.b,
+            Vehicles::m_CoronasToRender[id].pointLightIntensity
+        );
     }
 
     //
@@ -324,46 +418,25 @@ void OnLocationChanged(int oldVal, int newVal)
 }
 //---------------------------------------------------------------------------------------------------
 
-bool isDirExist(const std::string& path)
-{
-    struct stat info;
-    if (stat(path.c_str(), &info) != 0)
-    {
-        return false;
-    }
-    return (info.st_mode & S_IFDIR) != 0;
-}
-
 void Mod::OnModPreLoad()
 {
-    char logPath[0xFF];
-    snprintf(logPath, sizeof(logPath), "%s/giroflex", aml->GetConfigPath());
-    
-    if (!isDirExist(logPath))
-    {
-        mkdir(logPath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    }
+    std::string configPath = aml->GetConfigPath();
+
 
     bool insideCleo = true;
+    if (configPath.find("rockstargames") != std::string::npos) insideCleo = false;
 
     if (insideCleo)
     {
-        snprintf(logPath, sizeof(logPath), "/storage/emulated/0/cleo/giroflex.log");
-        Log::file.open(logPath, std::fstream::out | std::fstream::trunc);
-
-        snprintf(logPath, sizeof(logPath), "/storage/emulated/0/cleo/giroflex_opcodes.log");
-        Log::opcodes.open(logPath, std::fstream::out | std::fstream::trunc);
-
+        Log::file.open("/storage/emulated/0/cleo/giroflex.log", std::fstream::out | std::fstream::trunc);
+        Log::opcodes.open("/storage/emulated/0/cleo/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
     } else {
-        snprintf(logPath, sizeof(logPath), "%s/giroflex/giroflex.log", aml->GetConfigPath());
-        Log::file.open(logPath, std::fstream::out | std::fstream::trunc);
-
-        snprintf(logPath, sizeof(logPath), "%s/giroflex/giroflex_opcodes.log", aml->GetConfigPath());
-        Log::opcodes.open(logPath, std::fstream::out | std::fstream::trunc);
+        Log::file.open(configPath + "/giroflex/giroflex.log", std::fstream::out | std::fstream::trunc);
+        Log::opcodes.open(configPath + "/giroflex/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
     }
 
-    Log::file << "OnModPreLoad..." << std::endl;
-    Log::opcodes << "OnModPreLoad..." << std::endl;
+    Log::file << "Preload..." << std::endl;
+    Log::opcodes << "Preload..." << std::endl;
 
     logger->SetTag("Giroflex");
 }
@@ -389,7 +462,7 @@ std::string CheckModVersion(std::vector<std::string> GUIDs, std::vector<std::str
 
 void Mod::OnModLoad()
 {
-    Log::file << "OnModLoad..." << std::endl;
+    Log::file << "Load..." << std::endl;
 
     std::string cleoVersion = CheckModVersion(
         {"net.rusjj.cleolib", "net.rusjj.cleomod"},
@@ -406,18 +479,22 @@ void Mod::OnModLoad()
         { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6" }
     );
 
-  
-    void* cleoInterface = GetInterface("CLEO");
 
-    if (!cleoInterface)
-    {
-        Log::file << "CLEO interface not found!" << std::endl;
-        return;
-    }
+    /*
+      tested aml
+      1.0.0.0
+      1.0.0.6
 
-    
-    cfg->Bind("pos.x", 45, "523");
-    cfg->Save();
+      tested cleo
+      2.0.1.3
+      2.0.1 2
+      2.0.1.1 ?
+      2.0.1  ?
+    */
+
+    //cfg->Bind("pos.x", 45, "523");
+    //cfg->Save();
+
 
 
     Log::file << "------------------------" << std::endl;
@@ -425,6 +502,15 @@ void Mod::OnModLoad()
     Log::file << "SAUtils version: " << sautilsVersion << "  (expected 1.3.1)" << std::endl;
     Log::file << "AML version: " << amlVersion << "  (expected 1.0.0.6)" << std::endl;
     Log::file << "CLEO version: " << cleoVersion << "  (expected 2.0.1.3)" << std::endl;
+    Log::file << "Config: " << aml->GetConfigPath() << std::endl;
+
+    //CLEO
+    void* cleoInterface = GetInterface("CLEO");
+    if (!cleoInterface)
+    {
+        Log::file << "CLEO interface not found!" << std::endl;
+        return;
+    }
 
     if (aml->HasModOfVersion("net.rusjj.cleomod", "2.0.1.3")) //2.0.1.3 or above
     {
@@ -438,22 +524,8 @@ void Mod::OnModLoad()
 
     Log::file << "------------------------" << std::endl;
 
-
-    /*
-      tested aml
-      1.0.0.0
-      1.0.0.6
-    
-      tested cleo
-      2.0.1.3
-      2.0.1 2  
-      2.0.1.1 ?
-      2.0.1  ?
-    */
     
 
-    //CLEO
-    
 
     //opcodes
     Log::file << "Registering opcodes..." << std::endl;
@@ -507,36 +579,62 @@ void Mod::OnModLoad()
 
     Log::file << "Loaded" << std::endl;
 
-    auto pattern1 = Patterns::CreatePattern();
-    pattern1->AddStep({ 1 }, 100);
-    pattern1->AddStep({ 0 }, 100);
-    pattern1->AddStep({ 1 }, 100);
-    pattern1->AddStep({ 0 }, 400);
+    INIConfig::Load();
 
-    auto pattern2 = Patterns::CreatePattern();
-    pattern2->AddStep({ 1, 1, }, 100);
-    pattern2->AddStep({ 0, 0 }, 100);
-    pattern2->AddStep({ 1, 1 }, 100);
-    pattern2->AddStep({ 0, 0 }, 400);
+    if (Patterns::m_Patterns.size() == 0)
+    {
+        auto pattern1 = Patterns::CreatePattern();
+        pattern1->AddStep({ 1 }, 100);
+        pattern1->AddStep({ 0 }, 100);
+        pattern1->AddStep({ 1 }, 100);
+        pattern1->AddStep({ 0 }, 400);
 
-    auto pattern3 = Patterns::CreatePattern();
-    pattern3->AddStep({ 1, 0, 0, 0, 0 }, 200);
-    pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
-    pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
-    pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
-    pattern3->AddStep({ 0, 0, 0, 0, 1 }, 200);
-    pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
-    pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
-    pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
+        auto pattern2 = Patterns::CreatePattern();
+        pattern2->AddStep({ 1, 1, }, 100);
+        pattern2->AddStep({ 0, 0 }, 100);
+        pattern2->AddStep({ 1, 1 }, 100);
+        pattern2->AddStep({ 0, 0 }, 400);
 
-    auto modelInfo523 = ModelInfos::CreateModelInfo(523);
+        auto pattern3 = Patterns::CreatePattern();
+        pattern3->AddStep({ 1, 0, 0, 0, 0 }, 200);
+        pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
+        pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
+        pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
+        pattern3->AddStep({ 0, 0, 0, 0, 1 }, 200);
+        pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
+        pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
+        pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
 
-    auto lightGroup3 = new LightGroup();
-    lightGroup3->type = eLightGroupType::FIVE_LIGHTS;
-    //lightGroup3->usePointPositionInsteadOfIndex = true;
-    lightGroup3->offset.z = 0.9f;
-    lightGroup3->MakeLightGroup();
-    modelInfo523->AddLightGroup(lightGroup3);
+        auto pattern4 = Patterns::CreatePattern();
+        pattern4->AddStep({ 1, 0, 1, 0, 1 }, 80);
+        pattern4->AddStep({ 0, 0, 0, 0, 0 }, 50);
+        pattern4->AddStep({ 0, 1, 0, 1, 0 }, 80);
+        pattern4->AddStep({ 0, 0, 0, 0, 0 }, 50);
+
+        auto pattern5 = Patterns::CreatePattern();
+        pattern5->AddStep({ 1, 1, 0, 0, 0 }, 100);
+        pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        pattern5->AddStep({ 0, 0, 0, 1, 1 }, 100);
+        pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
+
+
+        auto modelInfo523 = ModelInfos::CreateModelInfo(523);
+
+        auto lightGroup3 = new LightGroup();
+        lightGroup3->type = eLightGroupType::FIVE_LIGHTS;
+        //lightGroup3->usePointPositionInsteadOfIndex = true;
+        lightGroup3->offset.z = 0.9f;
+        lightGroup3->MakeLightGroup();
+        modelInfo523->AddLightGroup(lightGroup3);
+
+        auto lightGroup2 = new LightGroup();
+        lightGroup2->type = eLightGroupType::FIVE_LIGHTS;
+        lightGroup2->patternOffset = 5;
+        //lightGroup3->usePointPositionInsteadOfIndex = true;
+        lightGroup2->offset.y = 1.0f;
+        lightGroup2->MakeLightGroup();
+        modelInfo523->AddLightGroup(lightGroup2);
+    }
 
     WindowMain::Create(523);
 

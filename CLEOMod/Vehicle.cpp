@@ -50,7 +50,7 @@ void Vehicle::Update(int dt)
 
                 lightGroupData->patterns.push_back(pattern);
             }
-
+           
             LightGroupDatas::AddLightGroupData(lightGroupData);
 
             Log::file << vehicleIdString << "Created LightGroupData with " << lightGroupData->patterns.size() << " patterns [global: " << LightGroupDatas::m_LightGroupDatas.size() << "]" << std::endl;
@@ -73,6 +73,15 @@ void Vehicle::Update(int dt)
 
                 lightGroupData->patternLoop->AddStep(&LightGroupDatas::m_ChangePatternTime);
             }
+
+            int patternOffset = lightGroup->patternOffset;
+            while (patternOffset > 0)
+            {
+                lightGroupData->patternLoop->StepIndex++;
+                if (lightGroupData->patternLoop->StepIndex >= lightGroupData->patternLoop->Steps.size()) lightGroupData->patternLoop->StepIndex = 0;
+                patternOffset--;
+            }
+
         }
 
         lightGroupData->patternLoop->Update(dt);
@@ -130,6 +139,12 @@ void Vehicle::Update(int dt)
             corona.color = lightGroup->GetPointColor(point, index);
             corona.offset = lightGroup->offset + point->offset;
             corona.radius = enabled ? 1.0f : 0.0f;
+            corona.renderShadow = enabled ? lightGroup->renderShadow : false;
+            corona.renderPointLight = enabled ? lightGroup->renderPointLight : false;
+            corona.shadowIntensity = lightGroup->shadowIntensity;
+            corona.shadowSize = lightGroup->shadowSize;
+            corona.pointLightDistance = lightGroup->pointLightDistance;
+            corona.pointLightIntensity = lightGroup->pointLightIntensity;
 
             Vehicles::m_CoronasToRender.push_back(corona);
 
