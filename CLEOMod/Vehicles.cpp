@@ -93,7 +93,7 @@ void Vehicles::Update(int dt)
 
 bool Vehicles::IsPlayerInAnyVehicle()
 {
-    if (hPlayerVehicle == -1) return false;
+    if (hPlayerVehicle <= 0) return false;
     if (!HasVehicleHandle(hPlayerVehicle)) return false;
     return true;
 }

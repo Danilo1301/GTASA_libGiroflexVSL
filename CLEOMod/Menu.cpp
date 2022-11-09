@@ -32,7 +32,8 @@ Window* Menu::AddWindow(int gxtId, Window* parent)
 
 Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
 {
-    Window* window = AddWindow(25, parent);
+    Window* window = AddWindow(26, parent);
+    window->width = 200.0f;
     window->position = { 10, 200 };
     window->showPageControls = true;
 
@@ -56,7 +57,8 @@ static int colormenu_a = 0;
 
 Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
 {
-    Window* window = AddWindow(25, parent);
+    Window* window = AddWindow(46, parent);
+    window->width = 200.0f;
     window->position = { 10, 200 };
     window->showPageControls = true;
 
@@ -78,6 +80,33 @@ Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
     window->btnBack->onClick = [window]()
     {
         window->GoToPrevWindow();
+    };
+
+    return window;
+}
+
+Window* Menu::AddConfirmWindow(Window* parent, int textGxtId, std::function<void()> ohYes, std::function<void()> ohNo)
+{
+    auto screenSize = Input::GetGTAScreenSize();
+
+    Window* window = AddWindow(32, parent);
+    window->width = 200.0f;
+    window->position = { screenSize.x/2 - window->width/2, 200 };
+
+    window->AddText(textGxtId, CRGBA(255, 255, 255));
+
+    auto button_yes = window->AddButton(48);
+    button_yes->onClick = [window, ohYes]()
+    {
+        window->GoToPrevWindow();
+        ohYes();
+    };
+
+    auto button_no = window->AddButton(49, CRGBA(170, 70, 70));
+    button_no->onClick = [window, ohNo]()
+    {
+        window->GoToPrevWindow();
+        ohNo();
     };
 
     return window;
@@ -107,6 +136,7 @@ void Menu::Update(int dt)
 
 void Menu::Draw()
 {
+    m_MainWindow->showTitle = false;
     m_MainWindow->Draw();
 
     for (auto window : m_Windows)
@@ -126,20 +156,25 @@ void Menu::Draw()
 
         CRGBA white = { 255, 255, 255, 255 };
 
-        Draw::DrawBoxWithText(0, 100, 200, { x, y }, { w, titleH }, { 0, 77, 132, 255 }, white);
+        Draw::DrawBoxWithText(32, 100, 200, { x, y }, { w, titleH }, { 0, 77, 132, 255 }, white);
         y += 20;
         Draw::DrawBoxWithText(m_PopUp->gfxId, m_PopUp->val1, m_PopUp->val2, { x, y }, { w, hoxH }, { 0, 119, 204, 255 }, white);
     }
-
+    
+    //cursor
+    /*
     CVector2D pos = Input::GetTouchPos();
     CRGBA colorOn = { 0, 255, 0, 255 };
     CRGBA colorOff = { 255, 0, 0, 255 };
 
     Draw::DrawBox({ pos.x - 3, pos.y - 3 }, { 6, 6 }, (Input::isTouchPressed ? colorOn : colorOff));
+    */
 }
 
 void Menu::RemoveWindow(Window* window)
 {
+    if (window == m_MainWindow) return;
+
     Log::file << "Menu: RemoveWindow" << std::endl;
 
     auto it = std::find(m_Windows.begin(), m_Windows.end(), window);
@@ -150,4 +185,11 @@ void Menu::RemoveWindow(Window* window)
     window->Destroy();
     m_Windows.erase(it);
     delete window;
+}
+
+void Menu::RemoveAllWindows()
+{
+    while (m_Windows.size() > 0) {
+        RemoveWindow(m_Windows[0]);
+    }
 }

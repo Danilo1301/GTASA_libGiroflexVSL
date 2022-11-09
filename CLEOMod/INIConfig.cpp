@@ -64,10 +64,22 @@ void INIConfig::Save()
             file.AddCRGBA("color1", lightGroup->color1);
             file.AddCRGBA("color2", lightGroup->color2);
             file.AddCRGBA("color3", lightGroup->color3);
+            file.AddFloat("radius", lightGroup->radius);
+
+            file.AddBool("renderShadow", lightGroup->renderShadow);
+            file.AddFloat("shadowIntensity", lightGroup->shadowIntensity);
+            file.AddFloat("shadowSize", lightGroup->shadowSize);
+
+            file.AddBool("renderPointLight", lightGroup->renderPointLight);
+            file.AddFloat("pointLightIntensity", lightGroup->pointLightIntensity);
+            file.AddFloat("pointLightDistance", lightGroup->pointLightDistance);
+
+            file.AddFloat("nearClip", lightGroup->nearClip);
             file.AddInt("patternOffset", lightGroup->patternOffset);
             file.AddFloat("distance", lightGroup->distance);
+
             file.AddInt("type", (int)lightGroup->type);
-            file.AddBool("usePointPositionInsteadOfIndex", (int)lightGroup->usePointPositionInsteadOfIndex);
+            file.AddBool("usePointPositionInsteadOfIndex", lightGroup->usePointPositionInsteadOfIndex);
 
             file.AddLine("");
         }
@@ -115,14 +127,29 @@ void INIConfig::Load()
             for (auto section : sections)
             {
                 LightGroup* lightGroup = new LightGroup();
+
                 lightGroup->offset = section.GetCVector("offset");
                 lightGroup->color1 = section.GetCRGBA("color1");
                 lightGroup->color2 = section.GetCRGBA("color2");
                 lightGroup->color3 = section.GetCRGBA("color3");
-                lightGroup->patternOffset = section.GetInt("patternOffset", 0);
-                lightGroup->distance = section.GetFloat("distance", 0);
-                lightGroup->type = (eLightGroupType)section.GetInt("type", 0);
-                lightGroup->usePointPositionInsteadOfIndex = section.GetBool("usePointPositionInsteadOfIndex", false);
+
+                lightGroup->radius = section.GetFloat("radius", lightGroup->radius);
+
+                lightGroup->renderShadow = section.GetBool("renderShadow", lightGroup->renderShadow);
+                lightGroup->shadowIntensity = section.GetFloat("shadowIntensity", lightGroup->shadowIntensity);
+                lightGroup->shadowSize = section.GetFloat("shadowSize", lightGroup->shadowSize);
+
+                lightGroup->renderPointLight = section.GetBool("renderPointLight", lightGroup->renderPointLight);
+                lightGroup->pointLightIntensity = section.GetFloat("pointLightIntensity", lightGroup->pointLightIntensity);
+                lightGroup->pointLightDistance = section.GetFloat("pointLightDistance", lightGroup->pointLightDistance);
+
+                lightGroup->nearClip = section.GetFloat("nearClip", lightGroup->nearClip);
+
+                lightGroup->patternOffset = section.GetInt("patternOffset", lightGroup->patternOffset);
+                lightGroup->distance = section.GetFloat("distance", lightGroup->distance);
+                lightGroup->type = (eLightGroupType)section.GetInt("type", (int)lightGroup->type);
+                lightGroup->usePointPositionInsteadOfIndex = section.GetBool("usePointPositionInsteadOfIndex", lightGroup->usePointPositionInsteadOfIndex);
+
                 lightGroup->MakeLightGroup();
 
                 modelInfo->lightGroups.push_back(lightGroup);

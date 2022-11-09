@@ -8,15 +8,8 @@ public:
 	int modelId;
 	std::vector<LightGroup*> lightGroups;
 
-	ModelInfo(int modelId)
-	{
-		this->modelId = modelId;
-	}
+	ModelInfo(int modelId);
 
-	LightGroup* AddLightGroup(LightGroup* lightGroup)
-	{
-		lightGroups.push_back(lightGroup);
-		return lightGroup;
-	}
-
+	LightGroup* AddLightGroup(LightGroup* lightGroup);
+	void RemoveLightGroup(LightGroup* lightGroup);
 };

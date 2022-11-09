@@ -221,7 +221,7 @@ void Item::Draw()
 
 		Draw::DrawBoxWithText(text->gxtId, text->num1, text->num2, position, box->size, box->color, text->color);
 	
-		auto btnSize = CVector2D(box->size.y + 20.0f, box->size.y);
+		auto btnSize = CVector2D(box->size.y + 0.0f, box->size.y);
 		auto btnColor = CRGBA(255, 255, 255);
 
 		if (btnLeft)

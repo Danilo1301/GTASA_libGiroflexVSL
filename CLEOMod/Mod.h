@@ -5,6 +5,8 @@
 class Mod {
 public:
     static char Version[256];
+    static int m_DeltaTime;
+    static int m_FixLightsScale;
 
     static void OnModPreLoad();
     static void OnModLoad();

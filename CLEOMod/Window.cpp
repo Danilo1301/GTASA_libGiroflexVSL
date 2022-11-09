@@ -82,7 +82,7 @@ Item* Window::AddOptions(int gxtId)
 	item->intValueRange.value = &item->optionsValue;
 
 	item->box->color = CRGBA(120, 120, 120);
-	item->box->size = { 200, 35 };
+	item->box->size = { 178, 35 };
 
 	items.push_back(item);
 
@@ -102,7 +102,7 @@ Item* Window::AddFloatRange(int gxtId, float* value, float min, float max, float
 	item->holdToChange = true;
 
 	item->box->color = CRGBA(120, 120, 120);
-	item->box->size = { 180, 35 };
+	item->box->size = { 150, 35 };
 
 	items.push_back(item);
 
@@ -123,7 +123,7 @@ Item* Window::AddIntRange(int gxtId, int* value, int min, int max, int addBy)
 	item->holdToChange = true;
 
 	item->box->color = CRGBA(120, 120, 120);
-	item->box->size = { 180, 35 };
+	item->box->size = { 150, 35 };
 
 	items.push_back(item);
 
@@ -176,7 +176,8 @@ void Window::Draw()
 
 	CVector2D pos = position;
 
-	Draw::DrawBoxWithText(titleGtxId, 0, 0, pos, CVector2D(width, titleHeight), titleBoxColor, CRGBA(255, 255, 255), eTextAlign::ALIGN_LEFT);
+	if(showTitle)
+		Draw::DrawBoxWithText(titleGtxId, 0, 0, pos, CVector2D(width, titleHeight), titleBoxColor, CRGBA(255, 255, 255), eTextAlign::ALIGN_LEFT);
 
 	//
 

@@ -27,6 +27,7 @@ public:
 	int maxItemsPerPage = 5;
 	int page = 0;
 	bool showPageControls = false;
+	bool showTitle = true;
 
 	Window();
 

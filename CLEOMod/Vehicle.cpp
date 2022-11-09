@@ -17,14 +17,18 @@ void Vehicle::Destroy()
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
     Log::file << vehicleIdString << "Destroy" << std::endl;
-    Log::file << vehicleIdString << "Still need to remove lightgroupdata" << std::endl;
+
+    LightGroupDatas::RemoveLightGroupDataFromVehicle(hVehicle);
 }
 
 void Vehicle::Update(int dt)
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
+    Log::file << vehicleIdString << "Update" << std::endl;
+
     if (!ModelInfos::HasModelInfo(modelId)) return;
+
 
     auto modelInfo = ModelInfos::GetModelInfo(modelId);
 
@@ -56,6 +60,8 @@ void Vehicle::Update(int dt)
             Log::file << vehicleIdString << "Created LightGroupData with " << lightGroupData->patterns.size() << " patterns [global: " << LightGroupDatas::m_LightGroupDatas.size() << "]" << std::endl;
         }
 
+        if (!lightsOn) continue;
+
         LightGroupData* lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, hVehicle);
 
         if (!lightGroupData)
@@ -84,43 +90,49 @@ void Vehicle::Update(int dt)
 
         }
 
-        lightGroupData->patternLoop->Update(dt);
-
-        if (lightGroupData->patternLoop->HasStepChanged())
-        {
-            //std::cout << "patternLoop step changed" << std::endl;
-            lightGroupData->stepLoop->Clear();
-        }
-
+       
         //
-
-        Pattern* pattern = lightGroupData->GetCurrentPattern();
-
-        if (pattern == NULL)
+        if (!lightsPaused)
         {
-            //std::cout << "Pattern not found" << std::endl;
-            continue;
-        }
+            lightGroupData->patternLoop->Update(dt);
 
-        if (pattern->steps.size() == 0)
-        {
-            //std::cout << "Pattern has no steps" << std::endl;
-            continue;
-        }
+            if (lightGroupData->patternLoop->HasStepChanged())
+            {
+                //std::cout << "patternLoop step changed" << std::endl;
+                lightGroupData->stepLoop->Clear();
+            }
 
-        if (lightGroupData->stepLoop->HasNoSteps())
-        {
+            //
+
             Pattern* pattern = lightGroupData->GetCurrentPattern();
 
-            //std::cout << "add " << pattern->steps.size() << " steps to stepLoop" << std::endl;
-
-            for (auto step : pattern->steps)
+            if (pattern == NULL)
             {
-                lightGroupData->stepLoop->AddStep(&step->duration);
+                //std::cout << "Pattern not found" << std::endl;
+                continue;
             }
-        }
 
-        lightGroupData->stepLoop->Update(dt);
+            if (pattern->steps.size() == 0)
+            {
+                //std::cout << "Pattern has no steps" << std::endl;
+                continue;
+            }
+
+            if (lightGroupData->stepLoop->HasNoSteps())
+            {
+                Pattern* pattern = lightGroupData->GetCurrentPattern();
+
+                //std::cout << "add " << pattern->steps.size() << " steps to stepLoop" << std::endl;
+
+                for (auto step : pattern->steps)
+                {
+                    lightGroupData->stepLoop->AddStep(&step->duration);
+                }
+            }
+
+            lightGroupData->stepLoop->Update(dt);
+        }
+        //
 
         std::string debugPoints = "";
 
@@ -138,13 +150,16 @@ void Vehicle::Update(int dt)
             corona.id = lightId++;
             corona.color = lightGroup->GetPointColor(point, index);
             corona.offset = lightGroup->offset + point->offset;
-            corona.radius = enabled ? 1.0f : 0.0f;
+            corona.radius = enabled ? lightGroup->radius : 0.0f;
             corona.renderShadow = enabled ? lightGroup->renderShadow : false;
             corona.renderPointLight = enabled ? lightGroup->renderPointLight : false;
             corona.shadowIntensity = lightGroup->shadowIntensity;
             corona.shadowSize = lightGroup->shadowSize;
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
+            corona.nearClip = lightGroup->nearClip;
+
+            Log::file << vehicleIdString << "Push corona id " << corona.id << std::endl;
 
             Vehicles::m_CoronasToRender.push_back(corona);
 
@@ -187,6 +202,8 @@ std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
 
 void Vehicle::SetGiroflexEnabled(bool enabled)
 {
+    Log::file << "Vehicle: SetGiroflexEnabled " << enabled << std::endl;
+
 	lightsPaused = !enabled;
 	lightsOn = enabled;
 

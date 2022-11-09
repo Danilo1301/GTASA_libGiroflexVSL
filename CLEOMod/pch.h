@@ -157,5 +157,7 @@ enum eDrawInfoType {
     SHADOW_B,
     POINT_LIGHT_R,
     POINT_LIGHT_G,
-    POINT_LIGHT_B
+    POINT_LIGHT_B,
+
+    CORONA_SHADOW_OFFSET_X
 };

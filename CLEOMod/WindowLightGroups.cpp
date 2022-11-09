@@ -16,7 +16,6 @@ void WindowLightGroups::Create(Window* parent)
         window->GoToPrevWindow();
     };
     
-
     int numLightgroups = 0;
     if(ModelInfos::HasModelInfo(modelId))
     {
@@ -74,9 +73,9 @@ void WindowLightGroups::Create(Window* parent)
 
 void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGroup)
 {
-    //auto modelId = WindowMain::m_ModelId;
+    auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(15, parent);
+    auto window = Menu::AddWindow(14, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -85,9 +84,9 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
 
     auto option_giroflex = window->AddOptions(8);
     option_giroflex->optionsValue = (int)lightGroup->type;
-    option_giroflex->AddOption(1, 0, 0);
-    option_giroflex->AddOption(1, 1, 0);
-    option_giroflex->AddOption(1, 2, 0);
+    option_giroflex->AddOption(33, 0, 0);
+    option_giroflex->AddOption(34, 0, 0);
+    option_giroflex->AddOption(35, 0, 0);
     option_giroflex->onValueChange = [option_giroflex, lightGroup]() {
         lightGroup->type = (eLightGroupType)option_giroflex->optionsValue;
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
@@ -100,54 +99,63 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     };
 
     //sha
-    window->AddCheckbox(17, &lightGroup->renderShadow);
+    window->AddCheckbox(36, &lightGroup->renderShadow);
 
-    auto shadow_intensity = window->AddFloatRange(0, &lightGroup->shadowIntensity, 0, 1, 0.01f);
+    auto shadow_intensity = window->AddFloatRange(37, &lightGroup->shadowIntensity, 0, 1, 0.01f);
     shadow_intensity->holdToChange = true;
 
-    window->AddFloatRange(27, &lightGroup->shadowSize, 0.0f, 10.0f, 0.01f);
+    window->AddFloatRange(38, &lightGroup->shadowSize, 0.0f, 10.0f, 0.01f);
 
     //point l
-    window->AddCheckbox(18, &lightGroup->renderPointLight);
+    window->AddCheckbox(39, &lightGroup->renderPointLight);
 
-    window->AddFloatRange(27, &lightGroup->pointLightDistance, 0.0f, 100.0f, 0.2f);
+    window->AddFloatRange(40, &lightGroup->pointLightDistance, 0.0f, 100.0f, 0.2f);
 
-    window->AddFloatRange(27, &lightGroup->pointLightIntensity, 0.0f, 1.0f, 0.01f);
+    window->AddFloatRange(41, &lightGroup->pointLightIntensity, 0.0f, 1.0f, 0.01f);
+
+    window->AddFloatRange(43, &lightGroup->nearClip, 0.0f, 5.0f, 0.01f);
+
+    window->AddFloatRange(44, &lightGroup->radius, 0.0f, 5.0f, 0.01f);
 
 
-    auto button_position = window->AddButton(26, { 0, 20, 120, 255 });
+    auto button_position = window->AddButton(26);
     button_position->onClick = [lightGroup, window]() {
         Menu::AddPositionWindow(window, &lightGroup->offset);
     };
 
-    auto button_color1 = window->AddButton(9, { 0, 20, 120, 255 });
+    auto button_color1 = window->AddButton(9);
     button_color1->AddColorIndicator(&lightGroup->color1);
     button_color1->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color1);
     };
 
-    auto button_color2 = window->AddButton(10, { 0, 20, 120, 255 });
+    auto button_color2 = window->AddButton(10);
     button_color2->AddColorIndicator(&lightGroup->color2);
     button_color2->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color2);
     };
 
-    auto button_color3 = window->AddButton(11, { 0, 20, 120, 255 });
+    auto button_color3 = window->AddButton(11);
     button_color3->AddColorIndicator(&lightGroup->color3);
     button_color3->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color3);
     };
 
-    /*
-    option_pos_z->optionMin = -1000;
-    option_pos_z->optionCurrent = (int)round(lightGroup->offset.z * 100);
-    option_pos_z->optionMax = 1000;
-    option_pos_z->holdToChange = true;
-    option_pos_z->onValueChange = [option_pos_z, lightGroup]()
+    auto button_delete = window->AddButton(42, CRGBA(170, 70, 70));
+    button_delete->onClick = [window, lightGroup, modelId]()
     {
-        lightGroup->offset.z = ((float)option_pos_z->optionCurrent) / 100.0f;
+        Menu::AddConfirmWindow(window, 47, [lightGroup, modelId]() {
+            ModelInfos::GetModelInfo(WindowMain::m_ModelId)->RemoveLightGroup(lightGroup);
 
-        Menu::ShowPopup(1, option_pos_z->optionCurrent, 0, 500);
+            Menu::RemoveAllWindows();
+
+            WindowMain::Remove();
+            WindowMain::Create(modelId);
+        }, []() {
+
+        });
+
+        
+
     };
-    */
 }

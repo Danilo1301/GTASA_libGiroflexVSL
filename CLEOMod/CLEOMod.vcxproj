@@ -60,6 +60,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mod.cpp" />
+    <ClCompile Include="ModelInfo.cpp" />
     <ClCompile Include="ModelInfos.cpp" />
     <ClCompile Include="mod\config.cpp" />
     <ClCompile Include="mod\logger.cpp" />

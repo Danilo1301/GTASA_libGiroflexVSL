@@ -3,6 +3,8 @@
 #include "WindowLightGroups.h"
 #include "ModelInfos.h"
 #include "INIConfig.h"
+#include "Mod.h"
+#include "Log.h"
 
 Window* WindowMain::m_Window = NULL;
 int WindowMain::numCoronas = 1;
@@ -17,6 +19,8 @@ void WindowMain::Create(int modelId)
 {
 	if (m_Window) return;
 
+    Log::file << "WindowMain: Create..." << std::endl;
+
     m_ModelId = modelId;
 
     auto window = m_Window = Menu::AddWindow(29);
@@ -29,8 +33,10 @@ void WindowMain::Create(int modelId)
     };
     */
 
-    auto text_id = window->AddText(1, CRGBA(255, 255, 255));
+    auto text_id = window->AddText(30, CRGBA(255, 255, 255));
     text_id->text->num1 = m_ModelId;
+
+    //window->AddIntRange(45, &Mod::m_FixLightsScale, 0, 100, 1);
 
     auto button_add = window->AddButton(14);
     button_add->onClick = [window]()
@@ -38,7 +44,7 @@ void WindowMain::Create(int modelId)
         WindowLightGroups::Create(window);
     };
 
-    auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
+    auto button_close = window->AddButton(31, CRGBA(170, 70, 70));
     button_close->onClick = []()
     {
         WindowMain::Remove();

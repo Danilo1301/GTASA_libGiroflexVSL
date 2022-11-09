@@ -26,9 +26,9 @@ LightGroupData* LightGroupDatas::GetLightGroupData(LightGroup* lightGroup, int h
 	return NULL;
 }
 
-void LightGroupDatas::ResetPatterns(int hVehicle)
+void LightGroupDatas::RemoveLightGroupDataFromVehicle(int hVehicle)
 {
-	Log::file << "LightGroupDatas: ResetPatterns" << std::endl;
+	Log::file << "LightGroupDatas: RemoveLightGroupDataFromVehicle " << hVehicle << std::endl;
 
 	std::vector<LightGroupData*> toRemove;
 	for (auto lightGroupData : m_LightGroupDatas)
@@ -68,6 +68,6 @@ void LightGroupDatas::DeleteLightGroupRerefences(LightGroup* lightGroup)
 
 	for (auto hVehicle : vehicles)
 	{
-		ResetPatterns(hVehicle);
+		RemoveLightGroupDataFromVehicle(hVehicle);
 	}
 }

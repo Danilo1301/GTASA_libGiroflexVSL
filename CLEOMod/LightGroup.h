@@ -5,7 +5,6 @@
 #include "Point.h"
 #include "eLightGroupType.h"
 
-
 class LightGroup {
 public:
 	CVector offset = CVector(0, 0, 0);
@@ -15,13 +14,17 @@ public:
 	CRGBA color2 = CRGBA(0, 0, 255);
 	CRGBA color3 = CRGBA(255, 255, 255);
 
-	bool renderShadow = true;
-	float shadowIntensity = 1.0f;
+	float radius = 1.0f;
+
+	bool renderShadow = false;
+	float shadowIntensity = 0.80f;
 	float shadowSize = 5.0f;
 
 	bool renderPointLight = true;
-	float pointLightIntensity = 1.0f;
+	float pointLightIntensity = 1.00f;
 	float pointLightDistance = 60.0f;
+
+	float nearClip = 0.2f;
 
 	int patternOffset = 0;
 
@@ -133,5 +136,10 @@ public:
 	{
 		while (points.size() > 0)
 			RemovePoint(points[0]);
+	}
+
+	void Destroy()
+	{
+		RemoveAllPoints();
 	}
 };

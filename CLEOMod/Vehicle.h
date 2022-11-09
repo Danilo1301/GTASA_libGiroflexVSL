@@ -9,8 +9,9 @@ public:
 	int hVehicle;
 	int modelId;
 	CVector position = CVector(0, 0, 0);
+	CVector velocity = CVector(0, 0, 0);
 
-	bool lightsOn = true;
+	bool lightsOn = false;
 	bool lightsPaused = false;
 
 	Vehicle(int hVehicle, int modelId);

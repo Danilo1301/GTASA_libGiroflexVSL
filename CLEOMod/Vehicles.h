@@ -17,6 +17,8 @@ struct RenderCorona {
 	bool renderPointLight = true;
 	float pointLightIntensity = 1.0f;
 	float pointLightDistance = 60.0f;
+
+	float nearClip = 0.2f;
 };
 
 class Vehicles {

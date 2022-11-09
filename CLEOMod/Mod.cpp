@@ -56,7 +56,11 @@ uintptr_t pRegisterCorona = 0;
 
 unsigned int uniqueLightId = 65487;
 
-char Mod::Version[256] = "0.0.2";
+char Mod::Version[256] = "2.0.0";
+int Mod::m_DeltaTime = 0;
+int Mod::m_FixLightsScale = 40;
+
+bool canTurnSirenOn = true;
 
 unsigned char ucharIntensity(unsigned char uc, float intensity) {
     return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
@@ -68,11 +72,12 @@ __decl_op(SEND_CAR_POSITION, 0x0EF0); // 0EF0=5,send_car_position %1d% model_id 
 __decl_op(SEND_CURRENT_VEHICLE, 0x0EF1); //0EF1=1,send_current_vehicle %1d%
 __decl_op(PROCESS_GIROFLEX_LIB, 0x0EF2); // 0EF2=1,process_giroflex_lib deltaMs %1d%
 __decl_op(SEND_TOUCH_STATE, 0x0EF3); //0EF3=2,send_touch_state %1d% state %2d%
-__decl_op(TOGGLE_GIROFLEX, 0x0EF4); // 0EF4=1,toggle_giroflex car %1d%
+//__decl_op(TOGGLE_GIROFLEX, 0x0EF4); // 0EF4=1,toggle_giroflex car %1d%
 __decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF5); // 0EF5=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
 __decl_op(RUN_TEST, 0x0EF6); // 0EF6=1,run_test %1d%
+__decl_op(SEND_CAR_VELOCITY, 0x0EF7); // 0EF7=4,send_car_velocity %1d% vel %2f% %3f% %4f%
 __decl_op(GET_DRAW_ITEM_INFO, 0x0EF8); // 0EF8=3,%3g% = get_draw_item_info %1d% id %2d%
-__decl_op(TOGGLE_GIROFLEX_MENU, 0x0EF9); // 0EF9=1,toggle_giroflex_menu car %1d%
+//__decl_op(TOGGLE_GIROFLEX_MENU, 0x0EF9); // 0EF9=1,toggle_giroflex_menu car %1d%
 
 
 void REGISTER_GIROFLEX_CORONA(__handler_params)
@@ -84,18 +89,42 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "REGISTER_GIROFLEX_CORONA id=%d at_pos %.2f %.2f %.2f", id, x, y, z);
-    Log::opcodes << szTemp << std::endl;
+    Log::file << szTemp << std::endl;
 
     if (id > Vehicles::m_CoronasToRender.size() - 1)
     {
-        Log::opcodes << "id exceeds" << std::endl;
+        /*
+        
+        issue here too
+
+        */
+
+        Log::file << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
         return;
     }
 
     auto renderCorona = &Vehicles::m_CoronasToRender[id];
 
+    CVector position = CVector(x, y, z);
 
-    Mod::RegisterCorona(renderCorona->id, 0, renderCorona->color.r, renderCorona->color.g, renderCorona->color.b, renderCorona->color.a, { x, y, z }, renderCorona->radius, 300.0f, 0, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
+    if (renderCorona->car > 0 && Vehicles::HasVehicleHandle(renderCorona->car))
+    {
+        auto vel = Vehicles::GetVehicleByHandle(renderCorona->car)->velocity;
+
+        auto probFps = 1000 / Mod::m_DeltaTime;
+        float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
+        
+
+        //float fixScale = 1.05 * (Mod::m_DeltaTime) + 15;
+
+        //Log::opcodes << "fix scale " << fixScale << ", dt " << Mod::m_DeltaTime << " : " << vel.x << ", " << vel.y << ", " << vel.z << std::endl;
+
+        position.x += vel.x / fixScale;
+        position.y += vel.y / fixScale;
+        position.z += vel.z / fixScale;
+    }
+
+    Mod::RegisterCorona(renderCorona->id, 0, renderCorona->color.r, renderCorona->color.g, renderCorona->color.b, renderCorona->color.a, { position.x, position.y, position.z }, renderCorona->radius, 1000.0f, 0, 0, true, false, 0, 0.0f, false, renderCorona->nearClip, 0, 200.0f, false, false);
 
 }
 
@@ -117,10 +146,12 @@ void SEND_TOUCH_STATE(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_TOUCH_STATE touchId=%d state=%d", touchId, state);
-    Log::opcodes << szTemp << std::endl;
+    Log::file << szTemp << std::endl;
 
     Input::SetTouchState(touchId, state == 1);
 }
+
+/*
 
 void TOGGLE_GIROFLEX_MENU(__handler_params)
 {
@@ -128,10 +159,13 @@ void TOGGLE_GIROFLEX_MENU(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "TOGGLE_GIROFLEX_MENU car=%d", car);
-    Log::opcodes << szTemp << std::endl;
+    //Log::opcodes << szTemp << std::endl;
 
     //WindowMain::Create();
 }
+*/
+
+/*
 
 void TOGGLE_GIROFLEX(__handler_params)
 {
@@ -139,8 +173,9 @@ void TOGGLE_GIROFLEX(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "TOGGLE_GIROFLEX car=%d", car);
-    Log::opcodes << szTemp << std::endl;
+    //Log::opcodes << szTemp << std::endl;
 }
+*/
 
 void GET_DRAW_ITEM_INFO(__handler_params)
 {
@@ -150,86 +185,110 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "GET_DRAW_ITEM_INFO type=%d, id=%d", type, id);
-    Log::opcodes << szTemp << std::endl;
+    Log::file << szTemp << std::endl;
 
     if (type == eDrawInfoType::AMOUNT_OF_DRAWITEMS)
     {
+
+        Log::file << "AMOUNT_OF_DRAWITEMS = " << Draw::m_DrawItems.size() << std::endl;
         result->i = Draw::m_DrawItems.size();
+        return;
+    }
+    if (type == eDrawInfoType::AMOUNT_OF_CORONAS)
+    {
+        Log::file << "AMOUNT_OF_CORONAS = " << Vehicles::m_CoronasToRender.size() << std::endl;
+        result->i = Vehicles::m_CoronasToRender.size();
         return;
     }
 
     //
 
     bool coronaIdExceeds = (id > Vehicles::m_CoronasToRender.size() - 1);
-    if (type == eDrawInfoType::AMOUNT_OF_CORONAS)
+
+    if (coronaIdExceeds)
     {
-        result->i = Vehicles::m_CoronasToRender.size();
-        return;
+        Log::file << "coronaIdExceeds exceeds" << std::endl;
     }
     if (type == eDrawInfoType::CORONA_CAR)
     {
         if (coronaIdExceeds) return;
+
+        Log::file << "returns " << Vehicles::m_CoronasToRender[id].car << std::endl;
+
         result->i = Vehicles::m_CoronasToRender[id].car;
+        return;
     }
     if (type == eDrawInfoType::CORONA_OFFSET_X)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].offset.x;
+        return;
     }
     if (type == eDrawInfoType::CORONA_OFFSET_Y)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].offset.y;
+        return;
     }
     if (type == eDrawInfoType::CORONA_OFFSET_Z)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].offset.z;
+        return;
     }
     if (type == eDrawInfoType::CORONA_USE_POINT_LIGHT)
     {
         if (coronaIdExceeds) return;
-        result->i = (int)Vehicles::m_CoronasToRender[id].renderPointLight;
+        result->i = Vehicles::m_CoronasToRender[id].renderPointLight ? 1 : 0;
+        return;
     }
     if (type == eDrawInfoType::CORONA_USE_SHADOW)
     {
         if (coronaIdExceeds) return;
-        result->i = (int)Vehicles::m_CoronasToRender[id].renderShadow;
+        result->i = Vehicles::m_CoronasToRender[id].renderShadow ? 1: 0;
+        return;
     }
     if (type == eDrawInfoType::CORONA_R)
     {
         if (coronaIdExceeds) return;
         result->i = Vehicles::m_CoronasToRender[id].color.r;
+        return;
     }
     if (type == eDrawInfoType::CORONA_G)
     {
         if (coronaIdExceeds) return;
         result->i = Vehicles::m_CoronasToRender[id].color.g;
+        return;
     }
     if (type == eDrawInfoType::CORONA_B)
     {
         if (coronaIdExceeds) return;
         result->i = Vehicles::m_CoronasToRender[id].color.b;
+        return;
     }
     if (type == eDrawInfoType::CORONA_A)
     {
         if (coronaIdExceeds) return;
         result->i = Vehicles::m_CoronasToRender[id].color.a;
+        return;
     }
     if (type == eDrawInfoType::CORONA_SHADOW_INTENSITY)
     {
         if (coronaIdExceeds) return;
-        result->i = Vehicles::m_CoronasToRender[id].shadowIntensity;
+        result->f = Vehicles::m_CoronasToRender[id].shadowIntensity;
+        return;
     }
     if (type == eDrawInfoType::CORONA_SHADOW_SIZE)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].shadowSize;
+        return;
     }
     if (type == eDrawInfoType::CORONA_POINTLIGHT_DISTANCE)
     {
         if (coronaIdExceeds) return;
         result->f = Vehicles::m_CoronasToRender[id].pointLightDistance;
+        return;
     }
     if (type == eDrawInfoType::SHADOW_R)
     {
@@ -238,6 +297,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.r,
             Vehicles::m_CoronasToRender[id].shadowIntensity
         );
+        return;
     }
     if (type == eDrawInfoType::SHADOW_G)
     {
@@ -246,6 +306,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.g,
             Vehicles::m_CoronasToRender[id].shadowIntensity
         );
+        return;
     }
     if (type == eDrawInfoType::SHADOW_B)
     {
@@ -254,6 +315,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.b,
             Vehicles::m_CoronasToRender[id].shadowIntensity
         );
+        return;
     }
     if (type == eDrawInfoType::POINT_LIGHT_R)
     {
@@ -262,6 +324,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.r,
             Vehicles::m_CoronasToRender[id].pointLightIntensity
         );
+        return;
     }
     if (type == eDrawInfoType::POINT_LIGHT_G)
     {
@@ -270,6 +333,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.g,
             Vehicles::m_CoronasToRender[id].pointLightIntensity
         );
+        return;
     }
     if (type == eDrawInfoType::POINT_LIGHT_B)
     {
@@ -278,6 +342,28 @@ void GET_DRAW_ITEM_INFO(__handler_params)
             Vehicles::m_CoronasToRender[id].color.b,
             Vehicles::m_CoronasToRender[id].pointLightIntensity
         );
+        return;
+    }
+    if (type == eDrawInfoType::CORONA_SHADOW_OFFSET_X)
+    {
+        if (coronaIdExceeds) return;
+
+        auto offset = Vehicles::m_CoronasToRender[id].offset;
+
+        float margin = 0.15f;
+        float distance = abs(offset.x);
+
+        if (distance < margin)
+        {
+            result->f = offset.x;
+        }
+        else {
+            auto dir = (offset.x > 0) ? 1 : -1;
+            result->f = offset.x + dir * Vehicles::m_CoronasToRender[id].shadowSize/2;
+        }
+
+        
+        return;
     }
 
     //
@@ -297,7 +383,13 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     if (id > Draw::m_DrawItems.size() - 1)
     {
-        Log::opcodes << "id " << id << " out of range" << std::endl;
+        /*
+        
+        theres an issue here
+
+        */
+
+        Log::file << "draw item id " << id << " out of range" << std::endl;
         return;
     }
 
@@ -328,9 +420,16 @@ void SEND_CAR_POSITION(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_POSITION car=%d, modelId=%d, x=%.2f, y=%.2f, z=%.2f", car, modelId, x, y, z);
-    //Log::opcodes << szTemp << std::endl;
+    Log::file << szTemp << std::endl;
 
     Vehicles::TryCreateVehicle(car, modelId);
+
+    if (!Vehicles::HasVehicleHandle(car)) return;
+
+    auto vehicle = Vehicles::m_Vehicles[car];
+    vehicle->position = CVector(x, y, z);
+
+
 
     /*
     Vehicles::TryCreateVehicle(car, modelId);
@@ -359,11 +458,86 @@ void SEND_CAR_POSITION(__handler_params)
     */
 }
 
+
+void SEND_CAR_VELOCITY(__handler_params)
+{
+    int car = __readParam(handle)->i;
+    float x = __readParam(handle)->f;
+    float y = __readParam(handle)->f;
+    float z = __readParam(handle)->f;
+
+    char szTemp[256];
+    sprintf(szTemp, "SEND_CAR_VELOCITY car=%d, x=%.2f, y=%.2f, z=%.2f", car, x, y, z);
+    Log::file << szTemp << std::endl;
+
+    if (!Vehicles::HasVehicleHandle(car)) return;
+
+    auto vehicle = Vehicles::GetVehicleByHandle(car);
+
+    vehicle->velocity = CVector(x, y, z);
+
+    //Log::opcodes << "velocity set" << std::endl;
+}
+
+void ProcessTouch()
+{
+    Log::file << "ProcessTouch" << std::endl;
+
+    if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5))
+    {
+        if (Input::GetTouchIdPressTime(6) > 500)
+        {
+            if (!Vehicles::IsPlayerInAnyVehicle())
+            {
+                Menu::ShowPopup(16, 0, 0, 1000);
+                return;
+            }
+
+            auto vehicle = Vehicles::GetPlayerVehicle();
+
+            if (canTurnSirenOn)
+            {
+                canTurnSirenOn = false;
+
+                Log::file << "Toggling siren by 0.5s touch" << std::endl;
+
+                vehicle->SetGiroflexEnabled(!vehicle->lightsOn);
+            }
+
+            if (Input::GetTouchIdPressTime(6) > 1000)
+            {
+                Log::file << "more than 1.0s" << std::endl;
+
+                if (!WindowMain::m_Window)
+                {
+                    Log::file << "window not found, enabling giroflex" << std::endl;
+
+                    vehicle->SetGiroflexEnabled(true);
+
+                    Log::file << "creating set" << std::endl;
+
+                    WindowMain::Create(vehicle->modelId);
+
+                }
+            }
+        }
+    }
+    else {
+        canTurnSirenOn = true;
+    }
+
+    Log::file << "ProcessTouch end" << std::endl;
+}
+
 void PROCESS_GIROFLEX_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
 
+    Mod::m_DeltaTime = dt;
+
     //Log::opcodes << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
+    Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
+
 
     while (Draw::m_DrawItems.size() > 0) {
         auto dw = Draw::m_DrawItems[0];
@@ -372,33 +546,32 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
     }
     //Draw::m_DrawItems.clear();
 
+    Log::file << "Vehicles::Update" << std::endl;
+
     Vehicles::Update(dt);
 
+    Log::file << "Menu::Update" << std::endl;
+
     Menu::Update(dt);
+
+    Log::file << "Menu::Draw" << std::endl;
+
     Menu::Draw();
 
-    if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5) && Input::GetTouchIdPressTime(6) > 500)
-    {
-        if (!WindowMain::m_Window)
-        {
-            if (Vehicles::IsPlayerInAnyVehicle())
-            {
-                WindowMain::Create(Vehicles::GetPlayerVehicle()->modelId);
-            }
-            else {
-                Menu::ShowPopup(16, 0, 0, 1000);
-            }
-        }
-    }
+    ProcessTouch();
     
+    Log::file << "Input::Update" << std::endl;
+
     Input::Update(dt);
+
+    Log::file << "Input::Update end" << std::endl;
 }
 
 void RUN_TEST(__handler_params)
 {
     int testType = __readParam(handle)->i;
 
-    Log::opcodes << "RUN_TEST testType=" << testType << std::endl;
+    //Log::opcodes << "RUN_TEST testType=" << testType << std::endl;
 
     if (testType == 2)
     {
@@ -536,22 +709,25 @@ void Mod::OnModLoad()
         __reg_op_func2012(GET_DRAW_ITEM_INFO, GET_DRAW_ITEM_INFO);
         __reg_op_func2012(PROCESS_GIROFLEX_LIB, PROCESS_GIROFLEX_LIB);
         __reg_op_func2012(RUN_TEST, RUN_TEST);
-        __reg_op_func2012(TOGGLE_GIROFLEX_MENU, TOGGLE_GIROFLEX_MENU);
-        __reg_op_func2012(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
+        //__reg_op_func2012(TOGGLE_GIROFLEX_MENU, TOGGLE_GIROFLEX_MENU);
+        //__reg_op_func2012(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
         __reg_op_func2012(SEND_CURRENT_VEHICLE, SEND_CURRENT_VEHICLE);
         __reg_op_func2012(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
         __reg_op_func2012(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
+        __reg_op_func2012(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
     }
     else {
         __reg_op_func2013(SEND_CAR_POSITION, SEND_CAR_POSITION);
         __reg_op_func2013(GET_DRAW_ITEM_INFO, GET_DRAW_ITEM_INFO);
         __reg_op_func2013(PROCESS_GIROFLEX_LIB, PROCESS_GIROFLEX_LIB);
         __reg_op_func2013(RUN_TEST, RUN_TEST);
-        __reg_op_func2013(TOGGLE_GIROFLEX_MENU, TOGGLE_GIROFLEX_MENU);
-        __reg_op_func2013(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
+        //__reg_op_func2013(TOGGLE_GIROFLEX_MENU, TOGGLE_GIROFLEX_MENU);
+        //__reg_op_func2013(TOGGLE_GIROFLEX, TOGGLE_GIROFLEX);
         __reg_op_func2013(SEND_CURRENT_VEHICLE, SEND_CURRENT_VEHICLE);
         __reg_op_func2013(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
         __reg_op_func2013(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
+        __reg_op_func2013(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
+
     }
    
 
@@ -584,109 +760,143 @@ void Mod::OnModLoad()
     if (Patterns::m_Patterns.size() == 0)
     {
         auto pattern1 = Patterns::CreatePattern();
-        pattern1->AddStep({ 1 }, 100);
-        pattern1->AddStep({ 0 }, 100);
-        pattern1->AddStep({ 1 }, 100);
-        pattern1->AddStep({ 0 }, 400);
+        pattern1->AddStep({ 0 }, 300);
+        pattern1->AddStep({ 1 }, 300);
+        /*
+        pattern.push({values: [0], time: 300});
+        pattern.push({values: [1], time: 300});
+        */
 
         auto pattern2 = Patterns::CreatePattern();
-        pattern2->AddStep({ 1, 1, }, 100);
-        pattern2->AddStep({ 0, 0 }, 100);
-        pattern2->AddStep({ 1, 1 }, 100);
-        pattern2->AddStep({ 0, 0 }, 400);
+        pattern2->AddStep({ 1 }, 80);
+        pattern2->AddStep({ 0 }, 80);
+        pattern2->AddStep({ 1 }, 80);
+        pattern2->AddStep({ 0 }, 600);
+        /*
+        pattern.push({values: [1], time: 80});
+        pattern.push({values: [0], time: 80});
+        pattern.push({values: [1], time: 80});
+        pattern.push({values: [0], time: 600});;
+        */
 
         auto pattern3 = Patterns::CreatePattern();
-        pattern3->AddStep({ 1, 0, 0, 0, 0 }, 200);
-        pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
-        pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
-        pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
-        pattern3->AddStep({ 0, 0, 0, 0, 1 }, 200);
-        pattern3->AddStep({ 0, 0, 0, 1, 0 }, 80);
-        pattern3->AddStep({ 0, 0, 1, 0, 0 }, 80);
-        pattern3->AddStep({ 0, 1, 0, 0, 0 }, 80);
+        pattern3->AddStep({ 1, 0 }, 200);
+        pattern3->AddStep({ 0, 0 }, 200);
+        pattern3->AddStep({ 0, 1 }, 200);
+        pattern3->AddStep({ 0, 0 }, 200);
+        /*
+        pattern.push({values: [1, 0], time: 200});
+        pattern.push({values: [0, 0], time: 200});
+        pattern.push({values: [0, 1], time: 200});
+        pattern.push({values: [0, 0], time: 200});
+        */
 
         auto pattern4 = Patterns::CreatePattern();
-        pattern4->AddStep({ 1, 0, 1, 0, 1 }, 80);
-        pattern4->AddStep({ 0, 0, 0, 0, 0 }, 50);
-        pattern4->AddStep({ 0, 1, 0, 1, 0 }, 80);
-        pattern4->AddStep({ 0, 0, 0, 0, 0 }, 50);
+        pattern4->AddStep({ 1, 0 }, 100);
+        pattern4->AddStep({ 0, 0 }, 80);
+        pattern4->AddStep({ 1, 0 }, 100);
+        pattern4->AddStep({ 0, 0 }, 80);
+        pattern4->AddStep({ 1, 0 }, 100);
+        pattern4->AddStep({ 0, 0 }, 150);
+        pattern4->AddStep({ 0, 1 }, 100);
+        pattern4->AddStep({ 0, 0 }, 80);
+        pattern4->AddStep({ 0, 1 }, 100);
+        pattern4->AddStep({ 0, 0 }, 80);
+        pattern4->AddStep({ 0, 1 }, 100);
+        pattern4->AddStep({ 0, 0 }, 150);
+        /*
+        pattern.push({values: [1, 0], time: 100});
+        pattern.push({values: [0, 0], time: 80});
+        pattern.push({values: [1, 0], time: 100});
+        pattern.push({values: [0, 0], time: 80});
+        pattern.push({values: [1, 0], time: 100});
+
+        pattern.push({values: [0, 0], time: 150});
+
+        pattern.push({values: [0, 1], time: 100});
+        pattern.push({values: [0, 0], time: 80});
+        pattern.push({values: [0, 1], time: 100});
+        pattern.push({values: [0, 0], time: 80});
+        pattern.push({values: [0, 1], time: 100});
+
+        pattern.push({values: [0, 0], time: 150});
+        */
 
         auto pattern5 = Patterns::CreatePattern();
-        pattern5->AddStep({ 1, 1, 0, 0, 0 }, 100);
+        pattern5->AddStep({ 1, 0, 0, 0, 1 }, 100);
         pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        pattern5->AddStep({ 0, 0, 0, 1, 1 }, 100);
+        pattern5->AddStep({ 0, 1, 0, 1, 0 }, 100);
         pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        pattern5->AddStep({ 0, 0, 1, 0, 0 }, 100);
+        /*
+        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
+        */
+
+        auto pattern6 = Patterns::CreatePattern();
+        pattern6->AddStep({ 1, 0, 0, 0, 1 }, 220);
+        pattern6->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        pattern6->AddStep({ 0, 0, 1, 0, 0 }, 100);
+        pattern6->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        /*
+        pattern.push({values: [1, 0, 0, 0, 1], time: 220});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        */
+
+        auto pattern7 = Patterns::CreatePattern();
+        pattern7->AddStep({ 1, 1, 0, 0, 0 }, 150);
+        pattern7->AddStep({ 0, 0, 0, 1, 1 }, 150);
+        pattern7->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        pattern7->AddStep({ 1, 1, 0, 0, 0 }, 150);
+        pattern7->AddStep({ 0, 0, 0, 1, 1 }, 150);
+        pattern7->AddStep({ 0, 0, 0, 0, 0 }, 100);
+        /*
+        pattern.push({values: [1, 1, 0, 0, 0], time: 150});
+        pattern.push({values: [0, 0, 0, 1, 1], time: 150});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        pattern.push({values: [1, 1, 0, 0, 0], time: 150});
+        pattern.push({values: [0, 0, 0, 1, 1], time: 150});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
+        */
 
 
-        auto modelInfo523 = ModelInfos::CreateModelInfo(523);
+        auto pattern8 = Patterns::CreatePattern();
+        pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
+        pattern8->AddStep({ 0, 1, 0, 1, 0 }, 100);
+        pattern8->AddStep({ 0, 0, 1, 0, 0 }, 100);
+        pattern8->AddStep({ 0, 1, 0, 1, 0 }, 100);
+        pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
+        pattern8->AddStep({ 0, 0, 0, 0, 0 }, 200);
+        /*
+        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
+        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
+        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
+        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
+        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
+        pattern.push({values: [0, 0, 0, 0, 0], time: 200});
+        */
 
-        auto lightGroup3 = new LightGroup();
-        lightGroup3->type = eLightGroupType::FIVE_LIGHTS;
-        //lightGroup3->usePointPositionInsteadOfIndex = true;
-        lightGroup3->offset.z = 0.9f;
-        lightGroup3->MakeLightGroup();
-        modelInfo523->AddLightGroup(lightGroup3);
 
-        auto lightGroup2 = new LightGroup();
-        lightGroup2->type = eLightGroupType::FIVE_LIGHTS;
-        lightGroup2->patternOffset = 5;
-        //lightGroup3->usePointPositionInsteadOfIndex = true;
-        lightGroup2->offset.y = 1.0f;
-        lightGroup2->MakeLightGroup();
-        modelInfo523->AddLightGroup(lightGroup2);
+
+
+
     }
 
-    WindowMain::Create(523);
-
-    /*
-    logger->Info("Loading...");
-
-    //CLEO
-    if (!(cleo = (ICLEO*)GetInterface("CLEO")))
-    {
-        logger->Error("CLEO interface not found!");
-        return;
-    }
-
-    Log::OpenAtFolder("/storage/emulated/0/cleo");
-    //Log::OpenAtFolder(cleo->GetCleoStorageDir() + std::string("/giroflex"));
-    Log::file << "Loading..." << std::endl;
-    Log::opcodes << "Loading..." << std::endl;
-
-    
-
-    
-
-    //pointerse
-    pRegisterCorona = aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb");
-    Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
-    Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
-    Input::pScreenGetWidth = aml->GetSym(hGTASA, "_Z17OS_ScreenGetWidthv");
-    Input::pScreenGetHeight = aml->GetSym(hGTASA, "_Z18OS_ScreenGetHeightv");
-    Input::pScreenResX = aml->GetSym(hGTASA, "ScreenResolutionX");
-    Input::pScreenResY = aml->GetSym(hGTASA, "ScreenResolutionY");
-
-    Log::file << "pRegisterCorona = " << pRegisterCorona << std::endl;
-    Log::file << "pPrintString = " << Draw::pPrintString << std::endl;
-    Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
-    Log::file << "pScreenGetWidth = " << Input::pScreenGetWidth << std::endl;
-    Log::file << "pScreenGetHeight = " << Input::pScreenGetHeight << std::endl;
-    Log::file << "pScreenResX = " << Input::pScreenResX << std::endl;
-    Log::file << "pScreenResY = " << Input::pScreenResY << std::endl;
+    //WindowMain::Create(523);
 
     //SAUtils
     Log::file << "Loading SAUtils..." << std::endl;
     sautils = (ISAUtils*)GetInterface("SAUtils");
     if (sautils)
     {
-        sautils->AddClickableItem(SetType_Game, "TestMod Item", 0, 0, sizeofA(pLocations) - 1, pLocations, OnLocationChanged);
-        logger->Info("SAUtils loaded");
+        sautils->AddClickableItem(SetType_Game, "Vehicle Siren Lights", 0, 0, sizeofA(pLocations) - 1, pLocations, OnLocationChanged);
+        Log::file << "SAUtils Loaded" << std::endl;
     }
-
-    Log::file << "Loaded" << std::endl;
-
-    auto mainWindow = Menu::m_MainWindow;
-    */
 }
 
 void Mod::RegisterCorona(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, posStruct const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay)
