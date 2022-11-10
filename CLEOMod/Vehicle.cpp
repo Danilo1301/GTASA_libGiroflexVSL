@@ -25,7 +25,7 @@ void Vehicle::Update(int dt)
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
-    Log::file << vehicleIdString << "Update" << std::endl;
+    //Log::file << vehicleIdString << "Update" << std::endl;
 
     if (!ModelInfos::HasModelInfo(modelId)) return;
 
@@ -159,8 +159,6 @@ void Vehicle::Update(int dt)
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
             corona.nearClip = lightGroup->nearClip;
 
-            Log::file << vehicleIdString << "Push corona id " << corona.id << std::endl;
-
             Vehicles::m_CoronasToRender.push_back(corona);
 
             
@@ -202,8 +200,6 @@ std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
 
 void Vehicle::SetGiroflexEnabled(bool enabled)
 {
-    Log::file << "Vehicle: SetGiroflexEnabled " << enabled << std::endl;
-
 	lightsPaused = !enabled;
 	lightsOn = enabled;
 

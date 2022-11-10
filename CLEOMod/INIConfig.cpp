@@ -100,7 +100,7 @@ void INIConfig::Load()
     struct dirent* dp;
 
     if ((dirp = opendir(path.c_str())) == NULL) {
-        perror("couldn't open '.'");
+        //perror("couldn't open '.'");
         return;
     }
 
@@ -108,12 +108,12 @@ void INIConfig::Load()
     {
         std::string name = dp->d_name;
 
-        Log::file << name << std::endl;
+        //Log::file << name << std::endl;
 
         int modelId;
         if (sscanf(name.c_str(), "%d.ini", &modelId) == 1)
         {
-            Log::file << "Load model id " << modelId << std::endl;
+            Log::file << "INIConfig: Load model id " << modelId << std::endl;
 
             INIFile file(path + name);
             file.Read();

@@ -17,8 +17,7 @@ void Vehicles::TryCreateVehicle(int hVehicle, int modelId)
 
 	if (HasVehicleHandle(hVehicle)) return;
 
-	Log::file << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total)" << std::endl;
-    Log::file << "Has ModelInfo? " << (ModelInfos::HasModelInfo(modelId) ? "Yes" : "No") << std::endl;
+	Log::file << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total). Modelinfo? " << (ModelInfos::HasModelInfo(modelId) ? "yes" : "no") << std::endl;
 
 	m_Vehicles[hVehicle] = new Vehicle(hVehicle, modelId);
 }

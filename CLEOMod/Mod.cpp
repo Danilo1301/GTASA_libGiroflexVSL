@@ -89,7 +89,7 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "REGISTER_GIROFLEX_CORONA id=%d at_pos %.2f %.2f %.2f", id, x, y, z);
-    Log::file << szTemp << std::endl;
+    //Log::file << szTemp << std::endl;
 
     if (id > Vehicles::m_CoronasToRender.size() - 1)
     {
@@ -99,7 +99,7 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
 
         */
 
-        Log::file << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
+        //Log::file << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
         return;
     }
 
@@ -146,7 +146,7 @@ void SEND_TOUCH_STATE(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_TOUCH_STATE touchId=%d state=%d", touchId, state);
-    Log::file << szTemp << std::endl;
+    //Log::file << szTemp << std::endl;
 
     Input::SetTouchState(touchId, state == 1);
 }
@@ -185,18 +185,15 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "GET_DRAW_ITEM_INFO type=%d, id=%d", type, id);
-    Log::file << szTemp << std::endl;
+    //Log::file << szTemp << std::endl;
 
     if (type == eDrawInfoType::AMOUNT_OF_DRAWITEMS)
     {
-
-        Log::file << "AMOUNT_OF_DRAWITEMS = " << Draw::m_DrawItems.size() << std::endl;
         result->i = Draw::m_DrawItems.size();
         return;
     }
     if (type == eDrawInfoType::AMOUNT_OF_CORONAS)
     {
-        Log::file << "AMOUNT_OF_CORONAS = " << Vehicles::m_CoronasToRender.size() << std::endl;
         result->i = Vehicles::m_CoronasToRender.size();
         return;
     }
@@ -207,13 +204,11 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     if (coronaIdExceeds)
     {
-        Log::file << "coronaIdExceeds exceeds" << std::endl;
+        Log::file << "corona id " << id << " out of range" << std::endl;
     }
     if (type == eDrawInfoType::CORONA_CAR)
     {
         if (coronaIdExceeds) return;
-
-        Log::file << "returns " << Vehicles::m_CoronasToRender[id].car << std::endl;
 
         result->i = Vehicles::m_CoronasToRender[id].car;
         return;
@@ -420,7 +415,7 @@ void SEND_CAR_POSITION(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_POSITION car=%d, modelId=%d, x=%.2f, y=%.2f, z=%.2f", car, modelId, x, y, z);
-    Log::file << szTemp << std::endl;
+    //Log::file << szTemp << std::endl;
 
     Vehicles::TryCreateVehicle(car, modelId);
 
@@ -468,21 +463,17 @@ void SEND_CAR_VELOCITY(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_VELOCITY car=%d, x=%.2f, y=%.2f, z=%.2f", car, x, y, z);
-    Log::file << szTemp << std::endl;
+    //Log::file << szTemp << std::endl;
 
     if (!Vehicles::HasVehicleHandle(car)) return;
 
     auto vehicle = Vehicles::GetVehicleByHandle(car);
 
     vehicle->velocity = CVector(x, y, z);
-
-    //Log::opcodes << "velocity set" << std::endl;
 }
 
 void ProcessTouch()
 {
-    Log::file << "ProcessTouch" << std::endl;
-
     if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5))
     {
         if (Input::GetTouchIdPressTime(6) > 500)
@@ -499,22 +490,14 @@ void ProcessTouch()
             {
                 canTurnSirenOn = false;
 
-                Log::file << "Toggling siren by 0.5s touch" << std::endl;
-
                 vehicle->SetGiroflexEnabled(!vehicle->lightsOn);
             }
 
             if (Input::GetTouchIdPressTime(6) > 1000)
             {
-                Log::file << "more than 1.0s" << std::endl;
-
                 if (!WindowMain::m_Window)
                 {
-                    Log::file << "window not found, enabling giroflex" << std::endl;
-
                     vehicle->SetGiroflexEnabled(true);
-
-                    Log::file << "creating set" << std::endl;
 
                     WindowMain::Create(vehicle->modelId);
 
@@ -525,8 +508,6 @@ void ProcessTouch()
     else {
         canTurnSirenOn = true;
     }
-
-    Log::file << "ProcessTouch end" << std::endl;
 }
 
 void PROCESS_GIROFLEX_LIB(__handler_params)
@@ -536,7 +517,7 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
     Mod::m_DeltaTime = dt;
 
     //Log::opcodes << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
-    Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
+    //Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
 
 
     while (Draw::m_DrawItems.size() > 0) {
@@ -546,25 +527,15 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
     }
     //Draw::m_DrawItems.clear();
 
-    Log::file << "Vehicles::Update" << std::endl;
-
     Vehicles::Update(dt);
 
-    Log::file << "Menu::Update" << std::endl;
-
     Menu::Update(dt);
-
-    Log::file << "Menu::Draw" << std::endl;
 
     Menu::Draw();
 
     ProcessTouch();
     
-    Log::file << "Input::Update" << std::endl;
-
     Input::Update(dt);
-
-    Log::file << "Input::Update end" << std::endl;
 }
 
 void RUN_TEST(__handler_params)
@@ -602,14 +573,14 @@ void Mod::OnModPreLoad()
     if (insideCleo)
     {
         Log::file.open("/storage/emulated/0/cleo/giroflex.log", std::fstream::out | std::fstream::trunc);
-        Log::opcodes.open("/storage/emulated/0/cleo/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
+        //Log::opcodes.open("/storage/emulated/0/cleo/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
     } else {
         Log::file.open(configPath + "/giroflex/giroflex.log", std::fstream::out | std::fstream::trunc);
-        Log::opcodes.open(configPath + "/giroflex/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
+        //Log::opcodes.open(configPath + "/giroflex/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
     }
 
     Log::file << "Preload..." << std::endl;
-    Log::opcodes << "Preload..." << std::endl;
+    //Log::opcodes << "Preload..." << std::endl;
 
     logger->SetTag("Giroflex");
 }
