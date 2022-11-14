@@ -1,135 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mod\config.cpp">
-      <Filter>mod</Filter>
-    </ClCompile>
-    <ClCompile Include="mod\logger.cpp">
-      <Filter>mod</Filter>
-    </ClCompile>
-    <ClCompile Include="Mod.cpp" />
-    <ClCompile Include="ModelInfos.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="Vehicles.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Menu.cpp">
+    <ClCompile Include="mod\config.cpp" />
+    <ClCompile Include="mod\logger.cpp" />
+    <ClCompile Include="menu\Draw.cpp">
       <Filter>menu</Filter>
     </ClCompile>
-    <ClCompile Include="Draw.cpp">
+    <ClCompile Include="menu\Item.cpp">
       <Filter>menu</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="menu\Menu.cpp">
       <Filter>menu</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>menu</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowMain.cpp">
+    <ClCompile Include="windows\WindowLightGroups.cpp">
       <Filter>windows</Filter>
     </ClCompile>
-    <ClCompile Include="Patterns.cpp" />
-    <ClCompile Include="LightGroupDatas.cpp" />
-    <ClCompile Include="WindowLightGroups.cpp">
+    <ClCompile Include="windows\WindowMain.cpp">
       <Filter>windows</Filter>
     </ClCompile>
     <ClCompile Include="INIConfig.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LightGroupDatas.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="ModelInfo.cpp" />
+    <ClCompile Include="ModelInfos.cpp" />
+    <ClCompile Include="Patterns.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Vehicles.cpp" />
+    <ClCompile Include="Mod.cpp" />
+    <ClCompile Include="menu\Window.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="mod">
-      <UniqueIdentifier>{b11dbb89-835b-4535-bd72-858c285dcc4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mod\thirdparty">
-      <UniqueIdentifier>{8b6def0c-1fc5-4d74-8a0d-c7a0eee98104}</UniqueIdentifier>
-    </Filter>
     <Filter Include="menu">
-      <UniqueIdentifier>{737fb4ca-ed11-4b48-b7dc-9902716dad89}</UniqueIdentifier>
+      <UniqueIdentifier>{3683e8e4-61c4-4c84-b687-75f01a12ddfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="windows">
-      <UniqueIdentifier>{2093d64a-27da-4303-9308-36aa511abfd0}</UniqueIdentifier>
+      <UniqueIdentifier>{6ff912e9-a4cb-41a4-bbe8-5afcf95a08d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mod\amlmod.h">
-      <Filter>mod</Filter>
+    <ClInclude Include="menu\Draw.h">
+      <Filter>menu</Filter>
     </ClInclude>
-    <ClInclude Include="mod\config.h">
-      <Filter>mod</Filter>
+    <ClInclude Include="menu\Item.h">
+      <Filter>menu</Filter>
     </ClInclude>
-    <ClInclude Include="mod\iaml.h">
-      <Filter>mod</Filter>
+    <ClInclude Include="menu\Menu.h">
+      <Filter>menu</Filter>
     </ClInclude>
-    <ClInclude Include="mod\icfg.h">
-      <Filter>mod</Filter>
+    <ClInclude Include="windows\WindowLightGroups.h">
+      <Filter>windows</Filter>
     </ClInclude>
-    <ClInclude Include="mod\il2cpp.h">
-      <Filter>mod</Filter>
+    <ClInclude Include="windows\WindowMain.h">
+      <Filter>windows</Filter>
     </ClInclude>
-    <ClInclude Include="mod\interface.h">
-      <Filter>mod</Filter>
-    </ClInclude>
-    <ClInclude Include="mod\logger.h">
-      <Filter>mod</Filter>
-    </ClInclude>
-    <ClInclude Include="mod\thirdparty\inipp.h">
-      <Filter>mod\thirdparty</Filter>
-    </ClInclude>
-    <ClInclude Include="mod\thirdparty\stb_sprintf.h">
-      <Filter>mod\thirdparty</Filter>
-    </ClInclude>
-    <ClInclude Include="Mod.h" />
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="eLightGroupType.h" />
+    <ClInclude Include="INIConfig.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="LightGroup.h" />
+    <ClInclude Include="LightGroupData.h" />
+    <ClInclude Include="LightGroupDatas.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="ModelInfo.h" />
     <ClInclude Include="ModelInfos.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="Vehicles.h" />
-    <ClInclude Include="Vehicle.h" />
-    <ClInclude Include="LightGroup.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Menu.h">
-      <Filter>menu</Filter>
-    </ClInclude>
-    <ClInclude Include="Draw.h">
-      <Filter>menu</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>menu</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>menu</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowMain.h">
-      <Filter>windows</Filter>
-    </ClInclude>
-    <ClInclude Include="cleo.h">
-      <Filter>mod</Filter>
-    </ClInclude>
-    <ClInclude Include="icleo.h">
-      <Filter>mod</Filter>
-    </ClInclude>
-    <ClInclude Include="isautils.h">
-      <Filter>mod</Filter>
-    </ClInclude>
-    <ClInclude Include="Patterns.h" />
     <ClInclude Include="Pattern.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="eLightGroupType.h" />
-    <ClInclude Include="LightGroupDatas.h" />
-    <ClInclude Include="LightGroupData.h" />
     <ClInclude Include="PatternLoop.h" />
-    <ClInclude Include="WindowLightGroups.h">
-      <Filter>windows</Filter>
+    <ClInclude Include="Patterns.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="Vehicles.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Mod.h" />
+    <ClInclude Include="eDrawInfoType.h" />
+    <ClInclude Include="icleo.h" />
+    <ClInclude Include="menu\Window.h">
+      <Filter>menu</Filter>
     </ClInclude>
-    <ClInclude Include="INIConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mod\thirdparty\INIPP_LICENSE">
-      <Filter>mod\thirdparty</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="sothisworks.txt" />
+    <Text Include="somecode.txt" />
   </ItemGroup>
 </Project>

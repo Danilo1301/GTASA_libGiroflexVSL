@@ -50,7 +50,7 @@ void Input::Update(float dt)
         if (numPresses == 0)
         {
             isTouchPressed = false;
-            Log::file << "Input: Touch released" << std::endl;
+            //Log::file << "Input: Touch released" << std::endl;
             hasTouchBeenReleasedThisFrame = true;
         }
     }
@@ -92,10 +92,10 @@ void Input::SetTouchState(int touchId, bool pressed)
     {
         if (pressed)
         {
-            Log::file << "Input: Touch " << touchId << " pressed" << std::endl;
+            //Log::file << "Input: Touch " << touchId << " pressed" << std::endl;
         }
         else {
-            Log::file << "Input: Touch " << touchId << " released after " << touchStates[touchId].timePressed << " ms" << std::endl;
+            //Log::file << "Input: Touch " << touchId << " released after " << touchStates[touchId].timePressed << " ms" << std::endl;
         }
 
         touchStates[touchId].isPressed = pressed;
@@ -109,7 +109,7 @@ void Input::SetTouchState(int touchId, bool pressed)
             isTouchPressed = true;
             hasTouchBeenPressedThisFrame = true;
 
-            Log::file << "Input: Touch pressed" << std::endl;
+            //Log::file << "Input: Touch pressed" << std::endl;
         }
     }
 }

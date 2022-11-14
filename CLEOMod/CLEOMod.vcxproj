@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Console|ARM">
-      <Configuration>Console</Configuration>
-      <Platform>ARM</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Console|ARM64">
-      <Configuration>Console</Configuration>
-      <Platform>ARM64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Console|x64">
-      <Configuration>Console</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Console|x86">
-      <Configuration>Console</Configuration>
-      <Platform>x86</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
@@ -51,15 +35,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="menu\Window.cpp" />
+    <ClCompile Include="Mod.cpp" />
     <ClCompile Include="INIConfig.cpp" />
-    <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="LightGroupDatas.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Mod.cpp" />
+    <ClCompile Include="menu\Draw.cpp" />
+    <ClCompile Include="menu\Item.cpp" />
+    <ClCompile Include="menu\Menu.cpp" />
     <ClCompile Include="ModelInfo.cpp" />
     <ClCompile Include="ModelInfos.cpp" />
     <ClCompile Include="mod\config.cpp" />
@@ -67,36 +51,26 @@
     <ClCompile Include="Patterns.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Vehicles.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="WindowLightGroups.cpp" />
-    <ClCompile Include="WindowMain.cpp" />
+    <ClCompile Include="windows\WindowLightGroups.cpp" />
+    <ClCompile Include="windows\WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cleo.h" />
-    <ClInclude Include="INIConfig.h" />
-    <ClInclude Include="Draw.h" />
+    <ClInclude Include="eDrawInfoType.h" />
     <ClInclude Include="eLightGroupType.h" />
     <ClInclude Include="icleo.h" />
+    <ClInclude Include="INIConfig.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="isautils.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="LightGroupData.h" />
     <ClInclude Include="LightGroupDatas.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="menu\Draw.h" />
+    <ClInclude Include="menu\Item.h" />
+    <ClInclude Include="menu\Menu.h" />
+    <ClInclude Include="menu\Window.h" />
     <ClInclude Include="Mod.h" />
     <ClInclude Include="ModelInfo.h" />
     <ClInclude Include="ModelInfos.h" />
-    <ClInclude Include="mod\amlmod.h" />
-    <ClInclude Include="mod\config.h" />
-    <ClInclude Include="mod\iaml.h" />
-    <ClInclude Include="mod\icfg.h" />
-    <ClInclude Include="mod\il2cpp.h" />
-    <ClInclude Include="mod\interface.h" />
-    <ClInclude Include="mod\logger.h" />
-    <ClInclude Include="mod\thirdparty\inipp.h" />
-    <ClInclude Include="mod\thirdparty\stb_sprintf.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="PatternLoop.h" />
     <ClInclude Include="Patterns.h" />
@@ -104,24 +78,20 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Vehicles.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowLightGroups.h" />
-    <ClInclude Include="WindowMain.h" />
+    <ClInclude Include="windows\WindowLightGroups.h" />
+    <ClInclude Include="windows\WindowMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mod\thirdparty\INIPP_LICENSE" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="sothisworks.txt" />
+    <Text Include="somecode.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7d621f86-f688-4030-a52d-24b570c4881f}</ProjectGuid>
     <Keyword>Android</Keyword>
-    <RootNamespace>Giroflex</RootNamespace>
+    <RootNamespace>GiroflexVSL</RootNamespace>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <ApplicationType>Android</ApplicationType>
     <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
-    <ProjectName>Giroflex</ProjectName>
+    <ProjectName>GiroflexVSL</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
@@ -130,11 +100,6 @@
     <PlatformToolset>Clang_5_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_5_0</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|ARM64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>Clang_5_0</PlatformToolset>
@@ -150,23 +115,12 @@
     <PlatformToolset>Clang_5_0</PlatformToolset>
     <AndroidAPILevel>android-27</AndroidAPILevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|ARM'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_5_0</PlatformToolset>
-    <AndroidAPILevel>android-27</AndroidAPILevel>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>Clang_5_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_5_0</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>Clang_5_0</PlatformToolset>
@@ -181,11 +135,6 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>Clang_5_0</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|x86'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_5_0</PlatformToolset>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
@@ -195,7 +144,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|x64'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -220,12 +168,6 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Console|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -238,12 +180,6 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Console|x86'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -251,12 +187,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Console|ARM64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -275,20 +205,6 @@
       <CLanguageStandard>c11</CLanguageStandard>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
       <PreprocessorDefinitions>ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <AdditionalOptions>-lm %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Console|ARM'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <CLanguageStandard>c11</CLanguageStandard>
-      <CppLanguageStandard>c++1z</CppLanguageStandard>
-      <PreprocessorDefinitions>ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalOptions>-lm %(AdditionalOptions)</AdditionalOptions>

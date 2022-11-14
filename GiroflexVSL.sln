@@ -3,14 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32428.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Giroflex", "CLEOMod\CLEOMod.vcxproj", "{7D621F86-F688-4030-A52D-24B570C4881F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLEOMod", "CLEOMod\CLEOMod.vcxproj", "{7D621F86-F688-4030-A52D-24B570C4881F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Console|ARM = Console|ARM
-		Console|ARM64 = Console|ARM64
-		Console|x64 = Console|x64
-		Console|x86 = Console|x86
 		Debug|ARM = Debug|ARM
 		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
@@ -21,14 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|ARM.ActiveCfg = Console|ARM
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|ARM.Build.0 = Console|ARM
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|ARM64.ActiveCfg = Console|ARM64
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|ARM64.Build.0 = Console|ARM64
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|x64.ActiveCfg = Console|x64
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|x64.Build.0 = Console|x64
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|x86.ActiveCfg = Console|x86
-		{7D621F86-F688-4030-A52D-24B570C4881F}.Console|x86.Build.0 = Console|x86
 		{7D621F86-F688-4030-A52D-24B570C4881F}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7D621F86-F688-4030-A52D-24B570C4881F}.Debug|ARM.Build.0 = Debug|ARM
 		{7D621F86-F688-4030-A52D-24B570C4881F}.Debug|ARM64.ActiveCfg = Debug|ARM64

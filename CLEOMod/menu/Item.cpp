@@ -1,6 +1,6 @@
 #include "Menu.h"
-#include "Input.h"
-#include "Log.h"
+#include "../Input.h"
+#include "../Log.h"
 
 Item::Item(eItemType type)
 {

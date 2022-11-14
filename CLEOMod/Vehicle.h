@@ -11,6 +11,8 @@ public:
 	CVector position = CVector(0, 0, 0);
 	CVector velocity = CVector(0, 0, 0);
 
+	bool canBeRemoved = false;
+
 	bool lightsOn = false;
 	bool lightsPaused = false;
 

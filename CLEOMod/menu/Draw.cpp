@@ -1,7 +1,7 @@
 #include "Draw.h"
 
-#include "Log.h"
-#include "Input.h"
+#include "../Log.h"
+#include "../Input.h"
 
 uintptr_t Draw::pPrintString = 0;
 

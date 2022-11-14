@@ -30,6 +30,7 @@ public:
 	static void TryCreateVehicle(int hVehicle, int modelId);
 	static bool HasVehicleHandle(int hVehicle);
 	static Vehicle* GetVehicleByHandle(int hVehicle);
+	static Vehicle* GetVehicleByVecIndex(int index);
 	static void RemoveVehicle(int hVehicle);
 	static void CheckStreamedOutVehicles();
 

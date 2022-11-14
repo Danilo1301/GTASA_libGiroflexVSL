@@ -1,17 +1,35 @@
 #include "Mod.h"
 
+#include "mod/amlmod.h"
+#include "mod/logger.h"
+#include "mod/config.h"
+
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <fstream>
+#include <stdint.h>
+#include <dlfcn.h>
+
 #include "Log.h"
 #include "Vehicles.h"
-#include "Draw.h"
+#include "eDrawInfoType.h"
 #include "Input.h"
-#include "Menu.h"
-#include "Patterns.h"
-#include "ModelInfos.h"
-#include "LightGroupDatas.h"
-
-#include "WindowMain.h"
 #include "INIConfig.h"
+#include "Patterns.h"
 
+#include "menu/Draw.h"
+#include "menu/Menu.h"
+
+#include "windows/WindowMain.h"
+
+char Mod::Version[256] = "2.0.1";
+int Mod::m_DeltaTime = 0;
+int Mod::m_FixLightsScale = 40;
+
+MYMODCFG(net.danilo1301.giroflex, Giroflex, Mod::Version, Danilo1301)
+BEGIN_DEPLIST()
+//ADD_DEPENDENCY_VER(net.rusjj.aml, 1.0.0.6)
+END_DEPLIST()
 
 // CLEO 2.0.1.2
 #include "icleo.h"
@@ -25,40 +43,11 @@ cleo_ifs_t* cleo2013 = NULL;
 #include "isautils.h"
 ISAUtils* sautils = NULL;
 
-#define __decl_op(__name, __int)	const char* NAME_##__name = #__name; const uint16_t OP_##__name = __int;
-//#define __print_to_log(__str)		cleo->PrintToCleoLog(__str); logger->Info(__str)
-
-#define __reg_opcode2012				cleo2012->RegisterOpcode
-#define __reg_func2012					cleo2012->RegisterOpcodeFunction
-
-//#define __reg_opcode				cleo->RegisterOpcode
-//#define __reg_func					cleo->RegisterOpcodeFunction
-
-#define __reg_opcode2013				cleo2013->RegisterOpcode
-#define __reg_func2013					cleo2013->RegisterOpcodeFunction
-
-#define __handler_params 			void *handle, uint32_t *ip, uint16_t opcode, const char *name
-#define __op_name_match(x) 			opcode == OP_##x || strcmp(name, NAME_##x) == 0
-#define __reg_op_func2012(x, h) 		__reg_opcode2012(OP_##x, h); __reg_func2012(NAME_##x, h);
-#define __reg_op_func2013(x, h) 		__reg_opcode2013(OP_##x, h); __reg_func2013(NAME_##x, h);
-
-
-#define __readParam(handle)         (cleo2012 ? reinterpret_cast<cleo_ifs_t::data_t*>(cleo2012->ReadParam(handle)) : cleo2013->ReadParam(handle))
-#define __getPointerToScriptVar(handle)         (cleo2012 ? reinterpret_cast<cleo_ifs_t::data_t*>(cleo2012->GetPointerToScriptVar(handle)) : cleo2013->GetPointerToScriptVar(handle))
-
-// Size of array
-#define sizeofA(__aVar)  ((int)(sizeof(__aVar)/sizeof(__aVar[0])))
-
-
 void* hGTASA = NULL;
 uintptr_t pGTASA = 0;
 uintptr_t pRegisterCorona = 0;
 
 unsigned int uniqueLightId = 65487;
-
-char Mod::Version[256] = "2.0.0";
-int Mod::m_DeltaTime = 0;
-int Mod::m_FixLightsScale = 40;
 
 bool canTurnSirenOn = true;
 
@@ -66,10 +55,28 @@ unsigned char ucharIntensity(unsigned char uc, float intensity) {
     return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
 }
 
-//---------------------------------------------------------------------------------------------------
+// Size of array
+#define sizeofA(__aVar)  ((int)(sizeof(__aVar)/sizeof(__aVar[0])))
+#define __decl_op(__name, __int)	const char* NAME_##__name = #__name; const uint16_t OP_##__name = __int;
+
+#define __reg_opcode2013				cleo2013->RegisterOpcode
+#define __reg_func2013					cleo2013->RegisterOpcodeFunction
+
+#define __reg_opcode2012				cleo2012->RegisterOpcode
+#define __reg_func2012					cleo2012->RegisterOpcodeFunction
+
+#define __reg_func					cleo->RegisterOpcodeFunction
+#define __handler_params 			void *handle, uint32_t *ip, uint16_t opcode, const char *name
+#define __op_name_match(x) 			opcode == OP_##x || strcmp(name, NAME_##x) == 0
+
+#define __reg_op_func2012(x, h) 		__reg_opcode2012(OP_##x, h); __reg_func2012(NAME_##x, h);
+#define __reg_op_func2013(x, h) 		__reg_opcode2013(OP_##x, h); __reg_func2013(NAME_##x, h);
+
+#define __readParam(handle)         (cleo2012 ? reinterpret_cast<cleo_ifs_t::data_t*>(cleo2012->ReadParam(handle)) : cleo2013->ReadParam(handle))
+#define __getPointerToScriptVar(handle)         (cleo2012 ? reinterpret_cast<cleo_ifs_t::data_t*>(cleo2012->GetPointerToScriptVar(handle)) : cleo2013->GetPointerToScriptVar(handle))
 
 __decl_op(SEND_CAR_POSITION, 0x0EF0); // 0EF0=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
-__decl_op(SEND_CURRENT_VEHICLE, 0x0EF1); //0EF1=1,send_current_vehicle %1d%
+__decl_op(SEND_CURRENT_VEHICLE, 0x0EF1); //0EF1=2,send_current_vehicle %1d% modelid %2d%
 __decl_op(PROCESS_GIROFLEX_LIB, 0x0EF2); // 0EF2=1,process_giroflex_lib deltaMs %1d%
 __decl_op(SEND_TOUCH_STATE, 0x0EF3); //0EF3=2,send_touch_state %1d% state %2d%
 //__decl_op(TOGGLE_GIROFLEX, 0x0EF4); // 0EF4=1,toggle_giroflex car %1d%
@@ -94,9 +101,8 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
     if (id > Vehicles::m_CoronasToRender.size() - 1)
     {
         /*
-        
-        issue here too
 
+        issue here too
         */
 
         //Log::file << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
@@ -113,7 +119,7 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
 
         auto probFps = 1000 / Mod::m_DeltaTime;
         float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
-        
+
 
         //float fixScale = 1.05 * (Mod::m_DeltaTime) + 15;
 
@@ -131,11 +137,17 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
 void SEND_CURRENT_VEHICLE(__handler_params)
 {
     int car = __readParam(handle)->i;
+    int modelId = __readParam(handle)->i;
 
     char szTemp[256];
-    sprintf(szTemp, "SEND_CURRENT_VEHICLE car=%d", car);
-    //Log::opcodes << szTemp << std::endl;
+    sprintf(szTemp, "SEND_CURRENT_VEHICLE car=%d modelId=%d", car, modelId);
+    ///Log::file << szTemp << std::endl;
 
+    if (car > 0)
+    {
+        Vehicles::TryCreateVehicle(car, modelId);
+    }
+ 
     Vehicles::hPlayerVehicle = car;
 }
 
@@ -152,25 +164,20 @@ void SEND_TOUCH_STATE(__handler_params)
 }
 
 /*
-
 void TOGGLE_GIROFLEX_MENU(__handler_params)
 {
     int car = __readParam(handle)->i;
-
     char szTemp[256];
     sprintf(szTemp, "TOGGLE_GIROFLEX_MENU car=%d", car);
     //Log::opcodes << szTemp << std::endl;
-
     //WindowMain::Create();
 }
 */
 
 /*
-
 void TOGGLE_GIROFLEX(__handler_params)
 {
     int car = __readParam(handle)->i;
-
     char szTemp[256];
     sprintf(szTemp, "TOGGLE_GIROFLEX car=%d", car);
     //Log::opcodes << szTemp << std::endl;
@@ -197,15 +204,53 @@ void GET_DRAW_ITEM_INFO(__handler_params)
         result->i = Vehicles::m_CoronasToRender.size();
         return;
     }
+    if (type == eDrawInfoType::CAR_GET_AMOUNT)
+    {
+        result->i = Vehicles::m_Vehicles.size();
+        return;
+    }
+    
+    bool carIdExceeds = (id > Vehicles::m_Vehicles.size() - 1);
+    if (type == eDrawInfoType::CAR_GET_ID)
+    {
+        if (carIdExceeds) return;
+        auto vehicle = Vehicles::GetVehicleByVecIndex(id);
+
+        if (!vehicle)
+        {
+            Log::file << "Vehicle index " << id << " not found" << std::endl;
+            return;
+        }
+
+        result->i = Vehicles::GetVehicleByVecIndex(id)->hVehicle;
+        return;
+    }
+    if (type == eDrawInfoType::CAR_SET_TO_REMOVE)
+    {
+        if (carIdExceeds) return;
+        auto vehicle = Vehicles::GetVehicleByHandle(id);
+
+        if (!vehicle)
+        {
+            Log::file << "Vehicle id " << id << " not found" << std::endl;
+            return;
+        }
+
+        vehicle->canBeRemoved = true;
+        return;
+    }
 
     //
 
     bool coronaIdExceeds = (id > Vehicles::m_CoronasToRender.size() - 1);
 
-    if (coronaIdExceeds)
+    /*
+     if (coronaIdExceeds)
     {
-        Log::file << "corona id " << id << " out of range" << std::endl;
+        //Log::file << "corona id " << id << " out of range" << std::endl;
     }
+    */
+   
     if (type == eDrawInfoType::CORONA_CAR)
     {
         if (coronaIdExceeds) return;
@@ -240,7 +285,7 @@ void GET_DRAW_ITEM_INFO(__handler_params)
     if (type == eDrawInfoType::CORONA_USE_SHADOW)
     {
         if (coronaIdExceeds) return;
-        result->i = Vehicles::m_CoronasToRender[id].renderShadow ? 1: 0;
+        result->i = Vehicles::m_CoronasToRender[id].renderShadow ? 1 : 0;
         return;
     }
     if (type == eDrawInfoType::CORONA_R)
@@ -354,10 +399,10 @@ void GET_DRAW_ITEM_INFO(__handler_params)
         }
         else {
             auto dir = (offset.x > 0) ? 1 : -1;
-            result->f = offset.x + dir * Vehicles::m_CoronasToRender[id].shadowSize/2;
+            result->f = offset.x + dir * Vehicles::m_CoronasToRender[id].shadowSize / 2;
         }
 
-        
+
         return;
     }
 
@@ -374,14 +419,13 @@ void GET_DRAW_ITEM_INFO(__handler_params)
         return;
     }
 
-    
+
 
     if (id > Draw::m_DrawItems.size() - 1)
     {
         /*
-        
-        theres an issue here
 
+        theres an issue here
         */
 
         Log::file << "draw item id " << id << " out of range" << std::endl;
@@ -417,40 +461,12 @@ void SEND_CAR_POSITION(__handler_params)
     sprintf(szTemp, "SEND_CAR_POSITION car=%d, modelId=%d, x=%.2f, y=%.2f, z=%.2f", car, modelId, x, y, z);
     //Log::file << szTemp << std::endl;
 
-    Vehicles::TryCreateVehicle(car, modelId);
+    //Vehicles::TryCreateVehicle(car, modelId);
 
     if (!Vehicles::HasVehicleHandle(car)) return;
 
     auto vehicle = Vehicles::m_Vehicles[car];
     vehicle->position = CVector(x, y, z);
-
-
-
-    /*
-    Vehicles::TryCreateVehicle(car, modelId);
-
-    if (!Vehicles::HasVehicleHandle(car)) return;
-
-    auto vehicle = Vehicles::m_Vehicles[car];
-    vehicle->position = CVector(x, y, z);
-
-    auto lightId = uniqueLightId + vehicle->hVehicle + 30000;
-
-    posStruct pos = {
-        vehicle->position.x,
-        vehicle->position.y,
-        vehicle->position.z
-    };
-
-    CRGBA color = CRGBA(255, 120, 0);
-
-    Mod::RegisterCorona(lightId++, 0, color.r, color.g, color.b, color.a, { pos.x, pos.y, pos.z }, 2.0f, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
-
-    pos.x += 1.0f;
-
-    Mod::RegisterCorona(lightId++, 0, color.r, color.g, color.b, color.a, { pos.x, pos.y, pos.z }, 1.0f, 300.0f, WindowMain::type, 0, false, false, 0, 0.0f, false, 0.1f, 0, 20.0f, false, false);
-
-    */
 }
 
 
@@ -468,7 +484,6 @@ void SEND_CAR_VELOCITY(__handler_params)
     if (!Vehicles::HasVehicleHandle(car)) return;
 
     auto vehicle = Vehicles::GetVehicleByHandle(car);
-
     vehicle->velocity = CVector(x, y, z);
 }
 
@@ -534,7 +549,7 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
     Menu::Draw();
 
     ProcessTouch();
-    
+
     Input::Update(dt);
 }
 
@@ -562,28 +577,6 @@ void OnLocationChanged(int oldVal, int newVal)
 }
 //---------------------------------------------------------------------------------------------------
 
-void Mod::OnModPreLoad()
-{
-    std::string configPath = aml->GetConfigPath();
-
-
-    bool insideCleo = true;
-    if (configPath.find("rockstargames") != std::string::npos) insideCleo = false;
-
-    if (insideCleo)
-    {
-        Log::file.open("/storage/emulated/0/cleo/giroflex.log", std::fstream::out | std::fstream::trunc);
-        //Log::opcodes.open("/storage/emulated/0/cleo/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
-    } else {
-        Log::file.open(configPath + "/giroflex/giroflex.log", std::fstream::out | std::fstream::trunc);
-        //Log::opcodes.open(configPath + "/giroflex/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
-    }
-
-    Log::file << "Preload..." << std::endl;
-    //Log::opcodes << "Preload..." << std::endl;
-
-    logger->SetTag("Giroflex");
-}
 
 std::string CheckModVersion(std::vector<std::string> GUIDs, std::vector<std::string> versions)
 {
@@ -604,12 +597,39 @@ std::string CheckModVersion(std::vector<std::string> GUIDs, std::vector<std::str
     return "";
 }
 
-void Mod::OnModLoad()
+
+extern "C" void OnModPreLoad()
+{
+
+    INIConfig::MakePaths();
+
+    std::string configPath = aml->GetConfigPath();
+
+    bool insideCleo = false;
+    //if (configPath.find("rockstargames") != std::string::npos) insideCleo = false;
+
+    if (insideCleo)
+    {
+        Log::file.open("/storage/emulated/0/cleo/giroflex.log", std::fstream::out | std::fstream::trunc);
+        //Log::opcodes.open("/storage/emulated/0/cleo/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
+    }
+    else {
+        Log::file.open(configPath + "/giroflex/giroflex.log", std::fstream::out | std::fstream::trunc);
+        //Log::opcodes.open(configPath + "/giroflex/giroflex_opcodes.log", std::fstream::out | std::fstream::trunc);
+    }
+
+    Log::file << "Preload..." << std::endl;
+    //Log::opcodes << "Preload..." << std::endl;
+
+    logger->SetTag("Giroflex");
+}
+
+extern "C" void OnModLoad()
 {
     Log::file << "Load..." << std::endl;
 
     std::string cleoVersion = CheckModVersion(
-        {"net.rusjj.cleolib", "net.rusjj.cleomod"},
+        { "net.rusjj.cleolib", "net.rusjj.cleomod" },
         { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3" }
     );
 
@@ -628,7 +648,6 @@ void Mod::OnModLoad()
       tested aml
       1.0.0.0
       1.0.0.6
-
       tested cleo
       2.0.1.3
       2.0.1 2
@@ -642,7 +661,7 @@ void Mod::OnModLoad()
 
 
     Log::file << "------------------------" << std::endl;
-    Log::file << "Giroflex version: " << Version << std::endl;
+    Log::file << "Giroflex version: " << Mod::Version << std::endl;
     Log::file << "SAUtils version: " << sautilsVersion << "  (expected 1.3.1)" << std::endl;
     Log::file << "AML version: " << amlVersion << "  (expected 1.0.0.6)" << std::endl;
     Log::file << "CLEO version: " << cleoVersion << "  (expected 2.0.1.3)" << std::endl;
@@ -668,7 +687,7 @@ void Mod::OnModLoad()
 
     Log::file << "------------------------" << std::endl;
 
-    
+
 
 
     //opcodes
@@ -700,7 +719,7 @@ void Mod::OnModLoad()
         __reg_op_func2013(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
 
     }
-   
+
 
     //libGTASA
     Log::file << "Loading libGTASA..." << std::endl;
@@ -781,15 +800,12 @@ void Mod::OnModLoad()
         pattern.push({values: [1, 0], time: 100});
         pattern.push({values: [0, 0], time: 80});
         pattern.push({values: [1, 0], time: 100});
-
         pattern.push({values: [0, 0], time: 150});
-
         pattern.push({values: [0, 1], time: 100});
         pattern.push({values: [0, 0], time: 80});
         pattern.push({values: [0, 1], time: 100});
         pattern.push({values: [0, 0], time: 80});
         pattern.push({values: [0, 1], time: 100});
-
         pattern.push({values: [0, 0], time: 150});
         */
 
@@ -870,15 +886,10 @@ void Mod::OnModLoad()
     }
 }
 
+
 void Mod::RegisterCorona(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, posStruct const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay)
 {
     void (*func)(unsigned int, void*, unsigned char, unsigned char, unsigned char, unsigned char, posStruct const&, float, float, int, int, bool, bool, int, float, bool, float, unsigned char, float, bool, bool) = (void (*)(unsigned int, void*, unsigned char, unsigned char, unsigned char, unsigned char, posStruct const&, float, float, int, int, bool, bool, int, float, bool, float, unsigned char, float, bool, bool)) pRegisterCorona;
 
     func(id, attachTo, red, green, blue, alpha, posn, radius, farClip, coronaType, flaretype, enableReflection, checkObstacles, _param_not_used, angle, longDistance, nearClip, fadeState, fadeSpeed, onlyFromBelow, reflectionDelay);
 }
-
-/*
-0EF1=4,send_car_speed %1d% x %2f% y %3f% z %4f%
-0EF3=2,%2d% = is_giroflex_enabled for_car %1d%
-0EF4=2,set_giroflex_enabled for_car %1d% enabled %2d%
-*/

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "pch.h"
-#include "Menu.h"
+#include "../pch.h"
+#include "../menu/Menu.h"
 
 class WindowMain {
 public:

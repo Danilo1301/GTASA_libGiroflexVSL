@@ -1,7 +1,7 @@
 #include "Menu.h"
 
-#include "Log.h"
-#include "Input.h"
+#include "../Log.h"
+#include "../Input.h"
 
 MenuPopup* Menu::m_PopUp = new MenuPopup();
 Window* Menu::m_MainWindow = new Window();

@@ -9,11 +9,11 @@ int Vehicles::hPlayerVehicle = -1;
 std::map<int, Vehicle*> Vehicles::m_Vehicles;
 std::vector<RenderCorona> Vehicles::m_CoronasToRender;
 
-std::vector<int> _vehicleExist;
+//std::vector<int> _vehicleExist;
 
 void Vehicles::TryCreateVehicle(int hVehicle, int modelId)
 {
-	_vehicleExist.push_back(hVehicle);
+	//_vehicleExist.push_back(hVehicle);
 
 	if (HasVehicleHandle(hVehicle)) return;
 
@@ -33,6 +33,18 @@ Vehicle* Vehicles::GetVehicleByHandle(int hVehicle)
 	return m_Vehicles.at(hVehicle);
 }
 
+
+Vehicle* Vehicles::GetVehicleByVecIndex(int index)
+{
+    int i = 0;
+    for (auto pair : m_Vehicles)
+    {
+        if (i == index) return pair.second;
+        i++;
+    }
+    return NULL;
+}
+
 void Vehicles::RemoveVehicle(int hVehicle) {
     if (!Vehicles::HasVehicleHandle(hVehicle)) return;
 
@@ -47,6 +59,21 @@ void Vehicles::RemoveVehicle(int hVehicle) {
 
 void Vehicles::CheckStreamedOutVehicles()
 {
+    std::vector<int> toRemove;
+
+    for (auto pair : m_Vehicles)
+    {
+        auto vehicle = pair.second;
+
+        if(vehicle->canBeRemoved) toRemove.push_back(vehicle->hVehicle);
+    }
+
+    for (auto hVehicle : toRemove)
+    {
+        RemoveVehicle(hVehicle);
+    }
+
+    /*
     std::vector<int> toRemove;
 
     for (auto pair : Vehicles::m_Vehicles)
@@ -74,6 +101,7 @@ void Vehicles::CheckStreamedOutVehicles()
     }
 
     _vehicleExist.clear();
+    */
 }
 
 void Vehicles::Update(int dt)

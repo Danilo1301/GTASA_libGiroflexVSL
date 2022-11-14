@@ -1,8 +1,8 @@
 #pragma once
 
-#include "pch.h"
-#include "Menu.h"
-#include "LightGroup.h"
+#include "../pch.h"
+#include "../menu/Menu.h"
+#include "../LightGroup.h"
 
 class WindowLightGroups {
 public:

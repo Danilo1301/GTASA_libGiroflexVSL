@@ -1,7 +1,7 @@
 #include "Window.h"
 
-#include "Log.h"
-#include "Input.h"
+#include "../Log.h"
+#include "../Input.h"
 #include "Menu.h"
 
 Window::Window()

@@ -3,6 +3,10 @@
 #include "ModelInfos.h"
 #include "Log.h"
 
+#include "mod/amlmod.h"
+#include "mod/logger.h"
+#include "mod/config.h"
+
 bool isDirExist(const std::string& path)
 {
     struct stat info;

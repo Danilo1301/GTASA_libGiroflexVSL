@@ -21,14 +21,14 @@ class CWidgetButton;
 #define SETITEM_SA_ACCELEROMETER            8
 #define SETITEM_SA_INVERT_LOOK              15
   // For touch screens GetInputType==0
-#define SETITEM_SA_ANALOG_BIKE_STEERING 18
-#define SETITEM_SA_ANALOG_SENSITIVITY   23
-// Joypad GetInputType==1
-#define SETITEM_SA_JOY_ACCEL_X          25
-#define SETITEM_SA_JOY_ACCEL_Y          26
-// Mouse+Keyboard GetInputType==2
-#define SETITEM_SA_MOUSE_ACCEL_X        31
-#define SETITEM_SA_MOUSE_ACCEL_Y        32
+    #define SETITEM_SA_ANALOG_BIKE_STEERING 18
+    #define SETITEM_SA_ANALOG_SENSITIVITY   23
+  // Joypad GetInputType==1
+    #define SETITEM_SA_JOY_ACCEL_X          25
+    #define SETITEM_SA_JOY_ACCEL_Y          26
+  // Mouse+Keyboard GetInputType==2
+    #define SETITEM_SA_MOUSE_ACCEL_X        31
+    #define SETITEM_SA_MOUSE_ACCEL_Y        32
 #define SETITEM_SA_AUTO_CLIMB               35
 
 // Game
@@ -93,18 +93,18 @@ enum eWidgetState : unsigned char
 class ISAUtils
 {
 public:
-    /* Functions below added in 1.0.0.0 */
+/* Functions below added in 1.0.0.0 */
 
-        /** Get an address of Fastman Limit Adjuster if included
-         *
-         *  \return Address of a FLA library
-         */
+    /** Get an address of Fastman Limit Adjuster if included
+     *
+     *  \return Address of a FLA library
+     */
     virtual uintptr_t IsFLALoaded() = 0;
-
+    
     // switchesArray is an array of items of clickable item (byteItemType = WithItems)
-#if __cplusplus >= 201300 // Do not create errors on C++11 and lower :P
-    [[deprecated("Use AddClickableItem or AddSliderItem")]]
-#endif
+    #if __cplusplus >= 201300 // Do not create errors on C++11 and lower :P
+      [[deprecated("Use AddClickableItem or AddSliderItem")]]
+    #endif
     virtual int AddSettingsItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, OnSettingChangedFn fnOnValueChange = NULL, bool isSlider = false, void* switchesArray = NULL) = 0;
 
     /** Get a value of setting (returned by AddClickableItem or AddSliderItem)
@@ -115,19 +115,19 @@ public:
     virtual int ValueOfSettingsItem(int settingId) = 0;
 
 
-    /* Functions below added in 1.1.0.0 */
+/* Functions below added in 1.1.0.0 */
 
-        /** Adds clickable text button in menu settings
-         *
-         *  \param typeOf In which setting option that item should be added
-         *  \param name Obviously a displayed name
-         *  \param initVal Initial value (def: 0)
-         *  \param minVal Minimum value (def: 0)
-         *  \param maxVal Maximum value (def: 0)
-         *  \param switchesArray An array that includes names of options
-         *  \param fnOnValueChange A function that will be called on value being saved (def: null)
-         *  \return Setting ID
-         */
+    /** Adds clickable text button in menu settings
+     *
+     *  \param typeOf In which setting option that item should be added
+     *  \param name Obviously a displayed name
+     *  \param initVal Initial value (def: 0)
+     *  \param minVal Minimum value (def: 0)
+     *  \param maxVal Maximum value (def: 0)
+     *  \param switchesArray An array that includes names of options
+     *  \param fnOnValueChange A function that will be called on value being saved (def: null)
+     *  \return Setting ID
+     */
     virtual int AddClickableItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, const char** switchesArray = NULL, OnSettingChangedFn fnOnValueChange = NULL) = 0;
 
     /** Adds a slider in menu settings
@@ -144,14 +144,14 @@ public:
     virtual int AddSliderItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, OnSettingChangedFn fnOnValueChange = NULL, OnSettingDrawedFn fnOnValueDraw = NULL) = 0;
 
 
-    /* Functions below added in 1.2.0.0 */
+/* Functions below added in 1.2.0.0 */
 
-        /** Adds a clickable button in menu settings
-         *
-         *  \param typeOf In which setting option that item should be added
-         *  \param name Obviously a displayed name
-         *  \param fnOnButtonPressed A function that will be called on button press (def: null)
-         */
+    /** Adds a clickable button in menu settings
+     *
+     *  \param typeOf In which setting option that item should be added
+     *  \param name Obviously a displayed name
+     *  \param fnOnButtonPressed A function that will be called on button press (def: null)
+     */
     virtual void AddButton(eTypeOfSettings typeOf, const char* name, OnButtonPressedFn fnOnButtonPressed = NULL) = 0;
 
     /** Loads texture db
@@ -176,14 +176,14 @@ public:
     virtual void AddIMG(const char* imgName) = 0;
 
 
-    /* Functions below added in 1.3.0.0 */
+/* Functions below added in 1.3.0.0 */
 
-        /** Creates a custom tabs in settings (like "Mods Settings")
-         *
-         *  \param name A name of settings tab
-         *  \param textureName A name of the texture from mobile.txt texdb (def: "menu_mainsettings")
-         *  \return An id to use with: AddButton or AddSliderItem or AddClickableItem
-         */
+    /** Creates a custom tabs in settings (like "Mods Settings")
+     *
+     *  \param name A name of settings tab
+     *  \param textureName A name of the texture from mobile.txt texdb (def: "menu_mainsettings")
+     *  \return An id to use with: AddButton or AddSliderItem or AddClickableItem
+     */
     virtual eTypeOfSettings AddSettingsTab(const char* name, const char* textureName = "menu_mainsettings") = 0;
 
     /** Get current game time in milliseconds
@@ -210,13 +210,13 @@ public:
      *  \param textureDbPtr Texture Database pointer, obviously.
      */
     virtual void RegisterTextureDB(uintptr_t textureDbPtr) = 0;
-
+    
     /** Unregisters Texture Database for texture lookup
      *
      *  \param textureDbPtr Texture Database pointer, obviously.
      */
     virtual void UnregisterTextureDB(uintptr_t textureDbPtr) = 0;
-
+    
     /** Get a RwTexture* (as a uintptr_t) from REGISTERED texture databases
      *
      *  \param texName Texture name

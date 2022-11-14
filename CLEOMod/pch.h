@@ -1,19 +1,5 @@
 #pragma once
 
-#define __AML
-
-#include "mod/amlmod.h"
-#include "mod/logger.h"
-#include "mod/config.h"
-
-/*
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdint.h>
-#include <dlfcn.h>
-*/
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -27,6 +13,58 @@
 
 #include <sys/stat.h> // stat
 #include <errno.h>    // errno, ENOENT, EEXIST
+
+enum eGameIdent
+{
+    GTA3,
+    GTAVC,
+    GTASA,
+    GTALCS,
+    GTAVCS
+};
+
+enum eGameVerInternal
+{
+    VER_NONE,
+    VER_GTA3_1_4,
+    VER_GTAVC_1_03,
+    VER_GTASA_1_00,
+    VER_GTASA_1_01,
+    VER_GTASA_1_02,
+    VER_GTASA_1_03,
+    VER_GTASA_1_05,
+    VER_GTASA_1_06,
+    VER_GTASA_1_05_GER,
+    VER_GTASA_1_07,
+    VER_GTA3_1_6,
+    VER_GTAVC_1_06,
+    VER_GTASA_1_08,
+    VER_GTALCS_2_2,
+    VER_GTA3_1_8_OR_HIGHER,
+    VER_GTAVC_1_09_OR_HIGHER,
+    VER_GTASA_2_00_OR_HIGHER,
+    VER_GTALCS_2_4_OR_HIGHER,
+    VER_GTALCS_PSP_1_05_OR_HIGHER,
+    VER_GTAVCS_PSP_1_02_OR_HIGHER
+};
+
+
+/*
+#define __AML
+
+#include "mod/amlmod.h"
+#include "mod/logger.h"
+#include "mod/config.h"
+
+
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <fstream>
+#include <stdint.h>
+#include <dlfcn.h>
+
+
+*/
 
 //#define __print_to_log(__str)	cleo->PrintToCleoLog(__str); logger->Info(__str)
 //#define __reg_opcode	cleo->RegisterOpcode
@@ -115,49 +153,4 @@ public:
         this->x = x;
         this->y = y;
     }
-};
-
-enum eDrawInfoType {
-    AMOUNT_OF_DRAWITEMS = 0,
-    TYPE,
-    UPDATE_TOUCH_STATE,
-    TOUCH_X,
-    TOUCH_Y,
-    POS_X,
-    POS_Y,
-    SIZE_X,
-    SIZE_Y,
-    R,
-    G,
-    B,
-    A,
-    GXT_ID,
-    NUM_1,
-    NUM_2,
-
-    AMOUNT_OF_CORONAS,
-    CORONA_CAR,
-    CORONA_OFFSET_X,
-    CORONA_OFFSET_Y,
-    CORONA_OFFSET_Z,
-
-    ALIGN,
-
-    CORONA_USE_SHADOW,
-    CORONA_USE_POINT_LIGHT,
-    CORONA_R,
-    CORONA_G,
-    CORONA_B,
-    CORONA_A,
-    CORONA_SHADOW_INTENSITY,
-    CORONA_SHADOW_SIZE,
-    CORONA_POINTLIGHT_DISTANCE,
-    SHADOW_R,
-    SHADOW_G,
-    SHADOW_B,
-    POINT_LIGHT_R,
-    POINT_LIGHT_G,
-    POINT_LIGHT_B,
-
-    CORONA_SHADOW_OFFSET_X
 };

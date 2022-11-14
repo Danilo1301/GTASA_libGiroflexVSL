@@ -1,0 +1,50 @@
+#pragma once
+
+enum eDrawInfoType {
+    AMOUNT_OF_DRAWITEMS = 0,
+    TYPE,
+    UPDATE_TOUCH_STATE,
+    TOUCH_X,
+    TOUCH_Y,
+    POS_X,
+    POS_Y,
+    SIZE_X,
+    SIZE_Y,
+    R,
+    G,
+    B,
+    A,
+    GXT_ID,
+    NUM_1,
+    NUM_2,
+
+    AMOUNT_OF_CORONAS,
+    CORONA_CAR,
+    CORONA_OFFSET_X,
+    CORONA_OFFSET_Y,
+    CORONA_OFFSET_Z,
+
+    ALIGN,
+
+    CORONA_USE_SHADOW,
+    CORONA_USE_POINT_LIGHT,
+    CORONA_R,
+    CORONA_G,
+    CORONA_B,
+    CORONA_A,
+    CORONA_SHADOW_INTENSITY,
+    CORONA_SHADOW_SIZE,
+    CORONA_POINTLIGHT_DISTANCE,
+    SHADOW_R,
+    SHADOW_G,
+    SHADOW_B,
+    POINT_LIGHT_R,
+    POINT_LIGHT_G,
+    POINT_LIGHT_B,
+
+    CORONA_SHADOW_OFFSET_X,
+
+    CAR_GET_AMOUNT,
+    CAR_GET_ID,
+    CAR_SET_TO_REMOVE
+};

@@ -2,8 +2,8 @@
 
 #include "WindowMain.h"
 
-#include "ModelInfos.h"
-#include "LightGroupDatas.h"
+#include "../ModelInfos.h"
+#include "../LightGroupDatas.h"
 
 void WindowLightGroups::Create(Window* parent)
 {

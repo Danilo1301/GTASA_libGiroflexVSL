@@ -1,10 +1,10 @@
 #include "WindowMain.h"
 
 #include "WindowLightGroups.h"
-#include "ModelInfos.h"
-#include "INIConfig.h"
-#include "Mod.h"
-#include "Log.h"
+#include "../ModelInfos.h"
+#include "../INIConfig.h"
+#include "../Mod.h"
+#include "../Log.h"
 
 Window* WindowMain::m_Window = NULL;
 int WindowMain::numCoronas = 1;
