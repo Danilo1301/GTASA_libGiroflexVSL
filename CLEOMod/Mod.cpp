@@ -22,7 +22,7 @@
 
 #include "windows/WindowMain.h"
 
-char Mod::Version[256] = "2.0.1";
+char Mod::Version[256] = "2.0.2";
 int Mod::m_DeltaTime = 0;
 int Mod::m_FixLightsScale = 40;
 
@@ -50,6 +50,8 @@ uintptr_t pRegisterCorona = 0;
 unsigned int uniqueLightId = 65487;
 
 bool canTurnSirenOn = true;
+
+ConfigEntry* cfgMenuOffset = NULL;
 
 unsigned char ucharIntensity(unsigned char uc, float intensity) {
     return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
@@ -434,8 +436,11 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     auto item = Draw::m_DrawItems[id];
 
+    
+    auto menuOffsetX = (cfgMenuOffset->GetInt() == 0) ? 0.0f : 195.0f;
+
     if (type == eDrawInfoType::TYPE) result->i = (int)item->type;
-    if (type == eDrawInfoType::POS_X) result->f = item->pos.x + item->size.x / 2.0f; //add, so it draw centered
+    if (type == eDrawInfoType::POS_X) result->f = item->pos.x + menuOffsetX + item->size.x / 2.0f; //add, so it draw centered
     if (type == eDrawInfoType::POS_Y) result->f = item->pos.y + item->size.y / 2.0f; //add, so it draw centered
     if (type == eDrawInfoType::SIZE_X) result->f = item->size.x;
     if (type == eDrawInfoType::SIZE_Y) result->f = item->size.y;
@@ -567,13 +572,19 @@ void RUN_TEST(__handler_params)
 
 //---------------------------------------------------------------------------------------------------
 //test
+
+
+
 const char* pLocations[] = {
-    "opt1",
-    "opt2",
+    "-195",
+    "0",
 };
 void OnLocationChanged(int oldVal, int newVal)
 {
     logger->Info("OnLocationChanged");
+
+    cfgMenuOffset->SetInt(newVal);
+    cfg->Save();
 }
 //---------------------------------------------------------------------------------------------------
 
@@ -655,6 +666,7 @@ extern "C" void OnModLoad()
       2.0.1  ?
     */
 
+    cfgMenuOffset = cfg->Bind("menu_offset", 0, "General");
     //cfg->Bind("pos.x", 45, "523");
     //cfg->Save();
 
@@ -881,7 +893,8 @@ extern "C" void OnModLoad()
     sautils = (ISAUtils*)GetInterface("SAUtils");
     if (sautils)
     {
-        sautils->AddClickableItem(SetType_Game, "Vehicle Siren Lights", 0, 0, sizeofA(pLocations) - 1, pLocations, OnLocationChanged);
+        sautils->AddClickableItem(SetType_Mods, "VSL Menu Offset", cfgMenuOffset->GetInt(), 0, sizeofA(pLocations) - 1, pLocations, OnLocationChanged);
+        
         Log::file << "SAUtils Loaded" << std::endl;
     }
 }

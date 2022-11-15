@@ -1,0 +1,50 @@
+DGFX1 ~1~
+DGFX2 ~1~, ~1~
+DGFX3 Short description of something
+DGFX4 <
+DGFX5 >
+DGFX6 ~1~.~1~
+DGFX7 Back
+DGFX8 Type
+DGFX9 Color 1
+DGFX10 Color 2
+DGFX11 Color 3
+DGFX12 Edit ~1~
+DGFX13 Add
+DGFX14 Giroflex
+DGFX15 Amount: ~1~
+DGFX16 You need to be~n~in a vehicle
+DGFX17 ON
+DGFX18 OFF
+DGFX19 Edit giroflex
+DGFX20 R
+DGFX21 G
+DGFX22 B
+DGFX23 X
+DGFX24 Y
+DGFX25 Z
+DGFX26 Edit position
+DGFX27 Distance
+DGFX28 A
+DGFX29 VSL - VehicleSirenLights (by Danilo1301)
+DGFX30 Vehicle ID ~1~
+DGFX31 Close
+DGFX32 Info
+DGFX33 1 light
+DGFX34 2 lights
+DGFX35 5 lights
+DGFX36 Shadow
+DGFX37 Shadow - intensity
+DGFX38 Shadow - size
+DGFX39 Reflex
+DGFX40 Reflex - distance
+DGFX41 Reflex - intensity
+DGFX42 Delete
+DGFX43 Near clip
+DGFX44 Size
+DGFX45 Fix lights scale
+DGFX46 Edit color
+DGFX47 Remove?
+DGFX48 Yes
+DGFX49 No
+DGFX0 #UNK#
