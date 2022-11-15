@@ -1,8 +1,9 @@
 # VehicleSirenLights - Mobile
 
 ## Necessário
-1. CLEO, libCLEOMod.so
-2. AML<br>
+1. FLA 6.5 ou maior (com suporte a AML)
+2. CLEO, libCLEOMod.so
+3. AML<br>
 Caso ainda não tenha instalado, dentro do .zip tem uma pasta "/libs necessárias", basta apenas jogar os arquivos .so dentro da sua pasta /mods<br>
 ( exemplo: para /Android/data/ro.samp_mobile.game/mods )<br>
 
