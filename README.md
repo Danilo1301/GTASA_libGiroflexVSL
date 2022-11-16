@@ -1,5 +1,9 @@
 # VehicleSirenLights - Mobile
 
+[English version](https://github.com/Danilo1301/GTASA_libGiroflexVSL/blob/main/README_EN.md)
+
+<br>
+
 ## Necessário
 * Apk com FLA 6.5 ou superior (com suporte a AML)
 
@@ -24,10 +28,10 @@ Pressione os números imaginários [5 e 6](https://i.imgur.com/gUIXtPG_d.webp?ma
 
 ## Config
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
-Os arquivos ficam em: PASTA_DO_JOGO/config/giroflex
+Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
 ## Crash
 Caso haja algum crash, há um log que é gerado na sua pasta /configs/giroflex<br>
-( Exemplo: em /Android/data/ro.samp_mobile.game/configs/giroflex/giroflex.log )<br>
+( exemplo: em /Android/data/ro.samp_mobile.game/configs/giroflex/giroflex.log )<br>
 
 Se tiver algum problema você pode criar uma [Issue aqui](https://github.com/Danilo1301/GTASA_libGiroflex/issues) e me mandar o .log, ou deixar um comentário no yt
