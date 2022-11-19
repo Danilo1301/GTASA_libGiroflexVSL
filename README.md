@@ -35,3 +35,14 @@ Caso haja algum crash, há um log que é gerado na sua pasta /configs/giroflex<b
 ( exemplo: em /Android/data/ro.samp_mobile.game/configs/giroflex/giroflex.log )<br>
 
 Se tiver algum problema você pode criar uma [Issue aqui](https://github.com/Danilo1301/GTASA_libGiroflex/issues) e me mandar o .log, ou deixar um comentário no yt
+
+## Problemas
+
+### Mods cleo sumiram do menu
+
+Bastar ir no jogo, em Opções > Game e mudar a opção do CLEO LOCATION<br>
+
+* OLD CLEO - com.rockstargames.gtasa / mod.csi
+* OLD CLEO (+CLEO) - com.rockstargames.gtasa / cleo / mod.csi
+* ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
+* CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
