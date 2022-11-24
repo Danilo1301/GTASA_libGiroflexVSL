@@ -31,6 +31,12 @@
     <ClCompile Include="menu\Window.cpp">
       <Filter>menu</Filter>
     </ClCompile>
+    <ClCompile Include="windows\WindowSettings.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowEditing.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -78,8 +84,15 @@
     <ClInclude Include="menu\Window.h">
       <Filter>menu</Filter>
     </ClInclude>
+    <ClInclude Include="windows\WindowSettings.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowEditing.h">
+      <Filter>windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="somecode.txt" />
+    <Text Include="..\info.txt" />
   </ItemGroup>
 </Project>

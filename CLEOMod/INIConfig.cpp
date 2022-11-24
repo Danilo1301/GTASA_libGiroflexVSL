@@ -84,6 +84,7 @@ void INIConfig::Save()
 
             file.AddInt("type", (int)lightGroup->type);
             file.AddBool("usePointPositionInsteadOfIndex", lightGroup->usePointPositionInsteadOfIndex);
+            file.AddBool("useSmallWhiteCorona", lightGroup->useSmallWhiteCorona);
 
             file.AddLine("");
         }
@@ -153,6 +154,7 @@ void INIConfig::Load()
                 lightGroup->distance = section.GetFloat("distance", lightGroup->distance);
                 lightGroup->type = (eLightGroupType)section.GetInt("type", (int)lightGroup->type);
                 lightGroup->usePointPositionInsteadOfIndex = section.GetBool("usePointPositionInsteadOfIndex", lightGroup->usePointPositionInsteadOfIndex);
+                lightGroup->useSmallWhiteCorona = section.GetBool("useSmallWhiteCorona", lightGroup->useSmallWhiteCorona);
 
                 lightGroup->MakeLightGroup();
 

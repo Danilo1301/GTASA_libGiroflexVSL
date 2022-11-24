@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "eLightGroupType.h"
 
+
 class LightGroup {
 public:
 	CVector offset = CVector(0, 0, 0);
@@ -24,15 +25,17 @@ public:
 	float pointLightIntensity = 1.00f;
 	float pointLightDistance = 60.0f;
 
-	float nearClip = 0.2f;
+	float nearClip = 0.0f;
 
 	int patternOffset = 0;
 
-	float distance = 0.2f;
+	float distance = 0.25f;
 
 	eLightGroupType type = eLightGroupType::SINGLE_LIGHT;
 
 	bool usePointPositionInsteadOfIndex = false;
+
+	bool useSmallWhiteCorona = false;
 
 	void ChangeDistance(float distance)
 	{

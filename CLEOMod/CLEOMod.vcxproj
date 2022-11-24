@@ -51,8 +51,10 @@
     <ClCompile Include="Patterns.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Vehicles.cpp" />
+    <ClCompile Include="windows\WindowEditing.cpp" />
     <ClCompile Include="windows\WindowLightGroups.cpp" />
     <ClCompile Include="windows\WindowMain.cpp" />
+    <ClCompile Include="windows\WindowSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eDrawInfoType.h" />
@@ -78,10 +80,13 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Vehicles.h" />
+    <ClInclude Include="windows\WindowEditing.h" />
     <ClInclude Include="windows\WindowLightGroups.h" />
     <ClInclude Include="windows\WindowMain.h" />
+    <ClInclude Include="windows\WindowSettings.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\info.txt" />
     <Text Include="somecode.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,0 +1,25 @@
+To release
+
+Check logs
+Check Mod::Version
+
+----
+
+Todo
+
+[2.1.0]
+[X] ADD: Option to fix menu offset issues
+[X] ADD: Freeze lights while editing
+[X] CHANGE: Move 'Distance' to 'Edit position'
+[X] ADD: White light at center option
+[X] ADD: Pattern offset to menu
+[X] ADD: option to show only this lightGroup
+[X] CHANGE: distance can be negative now
+
+Others:
+
+[ ] ADD: tipos diferentes de sequências, como estrobo/sinalização direita/sinalização esquerda/sinalização central para lado, ex https://youtu.be/Vz1lcUrjsUQ
+[ ] ADD: custom ground shadow texture
+[ ] ADD: support for all vehicles + check siren on
+[ ] ADD: big flash for long/close distance
+[ ] ADD: flare effect for long/close distance

@@ -47,4 +47,14 @@ DGFX46 Edit color
 DGFX47 Remove?
 DGFX48 Yes
 DGFX49 No
+DGFX50 Options
+DGFX51 <  ( Place it on CENTER )  >
+DGFX52 Pattern offset
+DGFX53 White light inside
+DGFX54 Editing options
+DGFX55 Freeze lights
+DGFX56 Show only these lights
+DGFX57 CoronaLerpNormal
+DGFX58 CoronaLerpTooMuch
+DGFX59 CoronaFixMinChange
 DGFX0 #UNK#

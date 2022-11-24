@@ -54,6 +54,7 @@ const
     eDrawInfoType_CAR_GET_AMOUNT = 38
     eDrawInfoType_CAR_GET_ID = 39
     eDrawInfoType_CAR_SET_TO_REMOVE = 40
+    eDrawInfoType_MENU_OFFSET_X = 41
 end
 
 const
@@ -96,10 +97,15 @@ const
     VAR_Float2 = 28@
     
     PrevClock = 29@
-    Clock = 33@
+
     //30
     //31
     //32
+    
+    Clock = 33@
+    
+    MenuOffsetX = 34@
+        
 end
 
 var
@@ -110,6 +116,9 @@ var
     Clock : Int = 0
     
     VAR_Veh : Int = 0
+
+    VAR_PosX : Float = 0.0    
+    MenuOffsetX : Float = 0.0
 end
 
 //----------------------------------------------------
@@ -141,61 +150,19 @@ wait 0
 
 gosub @SEND_TOUCH
 
-//crash
-//gosub @FIND_CARS
+//gosub @FIND_CARS   //crash
 
-0811: VAR_Veh = actor $PLAYER_ACTOR used_car
-VAR_ModelId = -1
+gosub @SEND_CURRENT_CAR
 
-
-if 056E: car VAR_Veh defined
-then
-    0441: VAR_ModelId = car VAR_Veh model
-end
-0EF1: send_current_vehicle VAR_Veh modelid VAR_ModelId
-
-0EF8: VAR_Integer2 = get_draw_item_info eDrawInfoType_CAR_GET_AMOUNT id 0
-VAR_Integer1 = 0
-while VAR_Integer1 < VAR_Integer2
-
-
-    0EF8: VAR_Veh = get_draw_item_info eDrawInfoType_CAR_GET_ID id VAR_Integer1
- 
-    if 056E: car VAR_Veh defined
-    then
-        0407: store_coords_to VAR_PosX VAR_PosY VAR_PosZ from_car VAR_Veh with_offset 0.0 0.0 0.0
-        0441: VAR_ModelId = car VAR_Veh model
-        0EF0: send_car_position VAR_Veh model_id VAR_ModelId pos VAR_PosX VAR_PosY VAR_PosZ
-    
-        06A2: get_car VAR_Veh velocity_in_direction_XYZ VAR_PosX VAR_PosY VAR_PosZ
-        0EF7: send_car_velocity VAR_Veh vel VAR_PosX VAR_PosY VAR_PosZ   
-    else
-        0EF8: VAR_Veh = get_draw_item_info eDrawInfoType_CAR_SET_TO_REMOVE id VAR_Veh
-    end
-
-    VAR_Integer1 += 1
-end
-
-/*
-if
-056E: car VAR_Veh defined
-then
-    0407: store_coords_to VAR_PosX VAR_PosY VAR_PosZ from_car VAR_Veh with_offset 0.0 0.0 0.0
-    0441: VAR_ModelId = car VAR_Veh model
-       
-    0EF0: send_car_position VAR_Veh model_id VAR_ModelId pos VAR_PosX VAR_PosY VAR_PosZ
-
-    06A2: get_car VAR_Veh velocity_in_direction_XYZ VAR_PosX VAR_PosY VAR_PosZ
-  
-    0EF7: send_car_velocity VAR_Veh vel VAR_PosX VAR_PosY VAR_PosZ   
-end
-*/
-
+gosub @UPDATE_CARS
 
 gosub @GET_DELTA_TIME
+
 0EF2: process_giroflex_lib deltaMs VAR_Integer1
 
 gosub @RENDER_CORONAS
+
+0EF8: MenuOffsetX = get_draw_item_info eDrawInfoType_MENU_OFFSET_X id 0
 
 gosub @DRAW_ITEMS
 
@@ -204,6 +171,7 @@ jump @MAIN
 //----------------------------------------------------
 
 :SEND_TOUCH
+
 for VAR_Integer1 = 1 to 9
     0DE0: VAR_Integer2 = get_touch_point_state VAR_Integer1 mintime 0
     0EF3: send_touch_state VAR_Integer1 state VAR_Integer2
@@ -212,8 +180,8 @@ return
 
 //----------------------------------------------------
 
-
 :FIND_CARS
+
 VAR_Integer1 = 0
     
 0DD0: 30@ = get_label_addr @VehiclePool
@@ -263,7 +231,49 @@ return
 
 //----------------------------------------------------
 
+:SEND_CURRENT_CAR
+
+0811: VAR_Veh = actor $PLAYER_ACTOR used_car
+VAR_ModelId = -1
+
+if 056E: car VAR_Veh defined
+then
+    0441: VAR_ModelId = car VAR_Veh model
+end
+0EF1: send_current_vehicle VAR_Veh modelid VAR_ModelId
+
+return
+
+//----------------------------------------------------
+
+:UPDATE_CARS
+
+0EF8: VAR_Integer2 = get_draw_item_info eDrawInfoType_CAR_GET_AMOUNT id 0
+VAR_Integer1 = 0
+while VAR_Integer1 < VAR_Integer2
+
+    0EF8: VAR_Veh = get_draw_item_info eDrawInfoType_CAR_GET_ID id VAR_Integer1
+ 
+    if 056E: car VAR_Veh defined
+    then
+        0407: store_coords_to VAR_PosX VAR_PosY VAR_PosZ from_car VAR_Veh with_offset 0.0 0.0 0.0
+        0441: VAR_ModelId = car VAR_Veh model
+        0EF0: send_car_position VAR_Veh model_id VAR_ModelId pos VAR_PosX VAR_PosY VAR_PosZ
+    
+        06A2: get_car VAR_Veh velocity_in_direction_XYZ VAR_PosX VAR_PosY VAR_PosZ
+        0EF7: send_car_velocity VAR_Veh vel VAR_PosX VAR_PosY VAR_PosZ   
+    else
+        0EF8: VAR_Veh = get_draw_item_info eDrawInfoType_CAR_SET_TO_REMOVE id VAR_Veh
+    end
+
+    VAR_Integer1 += 1
+end
+return
+
+//----------------------------------------------------
+
 :GET_DELTA_TIME
+
 VAR_Integer1 = 1
 
 01BD: Clock = current_time_in_ms
@@ -351,6 +361,7 @@ return
 //----------------------------------------------------
 
 :DRAW_ITEMS
+
 VAR_Integer1 = 0
 0EF8: VAR_Integer2 = get_draw_item_info eDrawInfoType_AMOUNT_OF_DRAWITEMS id 0
 
@@ -375,10 +386,11 @@ return
 //----------------------------------------------------
 
 :DRAW_BOX
+
 0EF8: VAR_PosX = get_draw_item_info eDrawInfoType_POS_X id VAR_Integer1
 0EF8: VAR_PosY = get_draw_item_info eDrawInfoType_POS_Y id VAR_Integer1
 
-VAR_PosX -= 195.0 // why tf is (0,0) offseted to (-195,0)
+VAR_PosX += MenuOffsetX // why tf is (0,0) offseted to (-195,0)
 //VAR_PosY -= 50.0
 
 0EF8: VAR_SizeX = get_draw_item_info eDrawInfoType_SIZE_X id VAR_Integer1
@@ -396,10 +408,11 @@ return
 //----------------------------------------------------
 
 :DRAW_TEXT
+
 0EF8: VAR_PosX = get_draw_item_info eDrawInfoType_POS_X id VAR_Integer1
 0EF8: VAR_PosY = get_draw_item_info eDrawInfoType_POS_Y id VAR_Integer1
 
-VAR_PosX -= 195.0 // why tf is (0,0) offseted to (-195,0)
+VAR_PosX += MenuOffsetX // why tf is (0,0) offseted to (-195,0)
 VAR_PosY -= 10.0
 
 0EF8: VAR_ColorR = get_draw_item_info eDrawInfoType_R id VAR_Integer1
@@ -447,6 +460,7 @@ return
 //----------------------------------------------------
 
 :FIND_GFX
+
 if VAR_GxtId == 0
 then
      VAR_STR_1 = "DGFX0"
@@ -646,5 +660,45 @@ end
 if VAR_GxtId == 49
 then
      VAR_STR_1 = "DGFX49"
+end
+if VAR_GxtId == 50
+then
+     VAR_STR_1 = "DGFX50"
+end
+if VAR_GxtId == 51
+then
+     VAR_STR_1 = "DGFX51"
+end
+if VAR_GxtId == 52
+then
+     VAR_STR_1 = "DGFX52"
+end
+if VAR_GxtId == 53
+then
+     VAR_STR_1 = "DGFX53"
+end
+if VAR_GxtId == 54
+then
+     VAR_STR_1 = "DGFX54"
+end
+if VAR_GxtId == 55
+then
+     VAR_STR_1 = "DGFX55"
+end
+if VAR_GxtId == 56
+then
+     VAR_STR_1 = "DGFX56"
+end
+if VAR_GxtId == 57
+then
+     VAR_STR_1 = "DGFX57"
+end
+if VAR_GxtId == 58
+then
+     VAR_STR_1 = "DGFX58"
+end
+if VAR_GxtId == 59
+then
+     VAR_STR_1 = "DGFX59"
 end
 return

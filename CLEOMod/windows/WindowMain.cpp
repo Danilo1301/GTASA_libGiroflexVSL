@@ -1,6 +1,7 @@
 #include "WindowMain.h"
 
 #include "WindowLightGroups.h"
+#include "WindowSettings.h"
 #include "../ModelInfos.h"
 #include "../INIConfig.h"
 #include "../Mod.h"
@@ -25,23 +26,20 @@ void WindowMain::Create(int modelId)
 
     auto window = m_Window = Menu::AddWindow(29);
     window->position = CVector2D(80, 200);
-    /*
-    window->showPageControls = true;
-    window->btnBack->onClick = [window]()
-    {
-        WindowMain::Remove();
-    };
-    */
 
     auto text_id = window->AddText(30, CRGBA(255, 255, 255));
     text_id->text->num1 = m_ModelId;
-
-    //window->AddIntRange(45, &Mod::m_FixLightsScale, 0, 100, 1);
 
     auto button_add = window->AddButton(14);
     button_add->onClick = [window]()
     {
         WindowLightGroups::Create(window);
+    };
+
+    auto button_settings = window->AddButton(50);
+    button_settings->onClick = [window]()
+    {
+        WindowSettings::Create(window);
     };
 
     auto button_close = window->AddButton(31, CRGBA(170, 70, 70));

@@ -1,6 +1,7 @@
 #include "WindowLightGroups.h"
 
 #include "WindowMain.h"
+#include "WindowEditing.h"
 
 #include "../ModelInfos.h"
 #include "../LightGroupDatas.h"
@@ -68,9 +69,6 @@ void WindowLightGroups::Create(Window* parent)
 
 }
 
-
-
-
 void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGroup)
 {
     auto modelId = WindowMain::m_ModelId;
@@ -82,6 +80,11 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         window->GoToPrevWindow();
     };
 
+    //Page 1
+
+
+
+    //ITEM
     auto option_giroflex = window->AddOptions(8);
     option_giroflex->optionsValue = (int)lightGroup->type;
     option_giroflex->AddOption(33, 0, 0);
@@ -93,54 +96,88 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         lightGroup->MakeLightGroup();
     };
 
-    auto distance = window->AddFloatRange(27, &lightGroup->distance, 0.0f, 10.0f, 0.01f);
-    distance->onValueChange = [lightGroup]() {
-        lightGroup->MakeLightGroup();
+    //ITEM
+    window->AddFloatRange(44, &lightGroup->radius, 0.0f, 5.0f, 0.01f);
+
+    //ITEM
+    window->AddCheckbox(53, &lightGroup->useSmallWhiteCorona);
+
+    //ITEM
+    auto button_position = window->AddButton(26);
+    button_position->onClick = [lightGroup, window]() {
+        auto posWindow = Menu::AddPositionWindow(window, &lightGroup->offset);
+
+        posWindow->width += 40.0f;
+
+        auto distance = posWindow->AddFloatRange(27, &lightGroup->distance, -10.0f, 10.0f, 0.01f);
+        distance->onValueChange = [lightGroup]() {
+            lightGroup->MakeLightGroup();
+        };
     };
 
-    //sha
+    //ITEM
+    auto button_editing_options = window->AddButton(54);
+    button_editing_options->onClick = [lightGroup, window]() {
+        WindowEditing::Create(window, lightGroup);
+    };
+
+    //--
+
+    //ITEM
     window->AddCheckbox(36, &lightGroup->renderShadow);
 
+    //ITEM
     auto shadow_intensity = window->AddFloatRange(37, &lightGroup->shadowIntensity, 0, 1, 0.01f);
     shadow_intensity->holdToChange = true;
 
+    //ITEM
     window->AddFloatRange(38, &lightGroup->shadowSize, 0.0f, 10.0f, 0.01f);
 
-    //point l
+    //ITEM
     window->AddCheckbox(39, &lightGroup->renderPointLight);
 
+    //ITEM
     window->AddFloatRange(40, &lightGroup->pointLightDistance, 0.0f, 100.0f, 0.2f);
 
+    //--
+ 
+    //ITEM
     window->AddFloatRange(41, &lightGroup->pointLightIntensity, 0.0f, 1.0f, 0.01f);
 
+    //ITEM
     window->AddFloatRange(43, &lightGroup->nearClip, 0.0f, 5.0f, 0.01f);
 
-    window->AddFloatRange(44, &lightGroup->radius, 0.0f, 5.0f, 0.01f);
-
-
-    auto button_position = window->AddButton(26);
-    button_position->onClick = [lightGroup, window]() {
-        Menu::AddPositionWindow(window, &lightGroup->offset);
-    };
-
+    //ITEM
     auto button_color1 = window->AddButton(9);
     button_color1->AddColorIndicator(&lightGroup->color1);
     button_color1->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color1);
     };
 
+    //ITEM
     auto button_color2 = window->AddButton(10);
     button_color2->AddColorIndicator(&lightGroup->color2);
     button_color2->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color2);
     };
 
+    //ITEM
     auto button_color3 = window->AddButton(11);
     button_color3->AddColorIndicator(&lightGroup->color3);
     button_color3->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color3);
     };
 
+    //-
+
+    //ITEM
+    auto patternOffset = window->AddIntRange(52, &lightGroup->patternOffset, 0, 10, 1);
+    patternOffset->holdToChange = false;
+    patternOffset->onValueChange = [lightGroup]() {
+        LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
+    };
+
+    //ITEM
     auto button_delete = window->AddButton(42, CRGBA(170, 70, 70));
     button_delete->onClick = [window, lightGroup, modelId]()
     {
@@ -154,8 +191,5 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         }, []() {
 
         });
-
-        
-
     };
 }

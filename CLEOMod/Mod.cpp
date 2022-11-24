@@ -21,10 +21,15 @@
 #include "menu/Menu.h"
 
 #include "windows/WindowMain.h"
+#include "windows/WindowSettings.h"
 
-char Mod::Version[256] = "2.0.2";
+char Mod::Version[256] = "2.1.0";
+int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
-int Mod::m_FixLightsScale = 40;
+
+float Mod::m_CoronaLerpNormal = 0.85;
+float Mod::m_CoronaLerpTooMuch = 0.85f;
+int Mod::m_CoronaFixMinChange = 15;
 
 MYMODCFG(net.danilo1301.giroflex, Giroflex, Mod::Version, Danilo1301)
 BEGIN_DEPLIST()
@@ -51,10 +56,16 @@ unsigned int uniqueLightId = 65487;
 
 bool canTurnSirenOn = true;
 
-ConfigEntry* cfgMenuOffset = NULL;
+ConfigEntry* cfgMenuOffsetX = NULL;
+//float menuOffsets[3] = { -195.0f, 0.0f, 195.0f };
 
 unsigned char ucharIntensity(unsigned char uc, float intensity) {
     return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
+}
+
+float lerp(float a, float b, float f)
+{
+    return a * (1.0 - f) + (b * f);
 }
 
 // Size of array
@@ -119,11 +130,11 @@ void REGISTER_GIROFLEX_CORONA(__handler_params)
     {
         auto vel = Vehicles::GetVehicleByHandle(renderCorona->car)->velocity;
 
-        auto probFps = 1000 / Mod::m_DeltaTime;
+
+        int dt = Mod::m_DeltaTime;
+
+        auto probFps = 1000 / dt;
         float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
-
-
-        //float fixScale = 1.05 * (Mod::m_DeltaTime) + 15;
 
         //Log::opcodes << "fix scale " << fixScale << ", dt " << Mod::m_DeltaTime << " : " << vel.x << ", " << vel.y << ", " << vel.z << std::endl;
 
@@ -196,6 +207,11 @@ void GET_DRAW_ITEM_INFO(__handler_params)
     sprintf(szTemp, "GET_DRAW_ITEM_INFO type=%d, id=%d", type, id);
     //Log::file << szTemp << std::endl;
 
+    if (type == eDrawInfoType::MENU_OFFSET_X)
+    {
+        result->f = Menu::m_MenuOffset.x;
+        return;
+    }
     if (type == eDrawInfoType::AMOUNT_OF_DRAWITEMS)
     {
         result->i = Draw::m_DrawItems.size();
@@ -436,11 +452,8 @@ void GET_DRAW_ITEM_INFO(__handler_params)
 
     auto item = Draw::m_DrawItems[id];
 
-    
-    auto menuOffsetX = (cfgMenuOffset->GetInt() == 0) ? 0.0f : 195.0f;
-
     if (type == eDrawInfoType::TYPE) result->i = (int)item->type;
-    if (type == eDrawInfoType::POS_X) result->f = item->pos.x + menuOffsetX + item->size.x / 2.0f; //add, so it draw centered
+    if (type == eDrawInfoType::POS_X) result->f = item->pos.x + item->size.x / 2.0f; //add, so it draw centered
     if (type == eDrawInfoType::POS_Y) result->f = item->pos.y + item->size.y / 2.0f; //add, so it draw centered
     if (type == eDrawInfoType::SIZE_X) result->f = item->size.x;
     if (type == eDrawInfoType::SIZE_Y) result->f = item->size.y;
@@ -534,11 +547,19 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
 
-    Mod::m_DeltaTime = dt;
+    if (dt == 0) dt = 1;
+    if (dt > 50) dt = 50;
 
-    //Log::opcodes << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
     //Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
 
+    float lerpAmount = Mod::m_CoronaLerpNormal;
+    if (abs(dt - Mod::m_PrevDeltaTime) >= Mod::m_CoronaFixMinChange) lerpAmount = Mod::m_CoronaLerpTooMuch;
+
+    dt = (int)round(lerp((float)Mod::m_PrevDeltaTime, (float)dt, lerpAmount));
+
+    //Log::file << "* fixed to dt=" << dt << std::endl;
+
+    Mod::m_DeltaTime = dt;
 
     while (Draw::m_DrawItems.size() > 0) {
         auto dw = Draw::m_DrawItems[0];
@@ -551,11 +572,15 @@ void PROCESS_GIROFLEX_LIB(__handler_params)
 
     Menu::Update(dt);
 
+    WindowSettings::Update();
+    WindowSettings::Draw();
     Menu::Draw();
 
     ProcessTouch();
 
     Input::Update(dt);
+
+    Mod::m_PrevDeltaTime = dt;
 }
 
 void RUN_TEST(__handler_params)
@@ -575,16 +600,25 @@ void RUN_TEST(__handler_params)
 
 
 
-const char* pLocations[] = {
-    "-195",
-    "0",
-};
-void OnLocationChanged(int oldVal, int newVal)
-{
-    logger->Info("OnLocationChanged");
 
-    cfgMenuOffset->SetInt(newVal);
-    cfg->Save();
+const char* optionsGiroflexEditMode[] = {
+    "OFF",
+    "ON"
+};
+void OnGiroflexEditModeChanged(int oldVal, int newVal)
+{
+    Log::file << "OnGiroflexEditModeChanged - changed to " << newVal << std::endl;
+
+    if (newVal == 1)
+    {
+        WindowSettings::ToggleEditScreenPos(true);
+    }
+    else {
+        WindowSettings::ToggleEditScreenPos(false);
+
+        cfgMenuOffsetX->SetInt((int)Menu::m_MenuOffset.x);
+        cfg->Save();
+    }
 }
 //---------------------------------------------------------------------------------------------------
 
@@ -666,11 +700,13 @@ extern "C" void OnModLoad()
       2.0.1  ?
     */
 
-    cfgMenuOffset = cfg->Bind("menu_offset", 0, "General");
+    cfgMenuOffsetX = cfg->Bind("menu_offset_x", -195, "General");
+
+    Menu::m_MenuOffset.x = (float)cfgMenuOffsetX->GetInt();
+
+
     //cfg->Bind("pos.x", 45, "523");
     //cfg->Save();
-
-
 
     Log::file << "------------------------" << std::endl;
     Log::file << "Giroflex version: " << Mod::Version << std::endl;
@@ -893,7 +929,11 @@ extern "C" void OnModLoad()
     sautils = (ISAUtils*)GetInterface("SAUtils");
     if (sautils)
     {
-        sautils->AddClickableItem(SetType_Mods, "VSL Menu Offset", cfgMenuOffset->GetInt(), 0, sizeofA(pLocations) - 1, pLocations, OnLocationChanged);
+        //sautils->AddButton(SetType_Mods, "Giroflex VSL - Edit mode", OnEditModeButtonPressed);
+
+        sautils->AddClickableItem(SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
+
+        //sautils->AddSliderItem(SetType_Mods, "Giroflex Menu Offset", cfgMenuOffsetX->GetInt(), -200, 200, OnMenuOffsetChanged);
         
         Log::file << "SAUtils Loaded" << std::endl;
     }

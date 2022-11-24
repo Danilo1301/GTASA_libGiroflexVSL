@@ -47,4 +47,7 @@ public:
 
 	void GoToPrevWindow();
 	void RemoveThisWindow();
+
+	int GetMaxPages();
+
 };

@@ -16,6 +16,7 @@ struct MenuPopup
 class Menu {
 public:
 	static MenuPopup* m_PopUp;
+	static CVector2D m_MenuOffset;
 
 	static Window* m_MainWindow;
 	static std::vector<Window*> m_Windows;
@@ -25,6 +26,7 @@ public:
 	static Window* AddWindow(int gxtId);
 	static Window* AddWindow(int gxtId, Window* parent);
 	static Window* AddPositionWindow(Window* parent, CVector* vec);
+	static Window* AddPositionWindow(Window* parent, CVector2D* vec, float min, float max, float addBy);
 	static Window* AddColorMenu(Window* parent, CRGBA* color);
 	static Window* AddConfirmWindow(Window* parent, int textGxtId, std::function<void()> ohYes, std::function<void()> ohNo);
 

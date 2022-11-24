@@ -10,15 +10,15 @@ struct RenderCorona {
 	CRGBA color = CRGBA(255, 0, 0);
 	float radius = 1.0f;
 
-	bool renderShadow = true;
+	bool renderShadow = false;
 	float shadowIntensity = 1.0f;
 	float shadowSize = 5.0f;
 
-	bool renderPointLight = true;
+	bool renderPointLight = false;
 	float pointLightIntensity = 1.0f;
 	float pointLightDistance = 60.0f;
 
-	float nearClip = 0.2f;
+	float nearClip = 0.0f;
 };
 
 class Vehicles {

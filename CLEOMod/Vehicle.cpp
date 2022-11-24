@@ -6,6 +6,8 @@
 
 #include "Vehicles.h"
 
+#include "windows/WindowEditing.h"
+
 Vehicle::Vehicle(int hVehicle, int modelId)
 {
 	this->hVehicle = hVehicle;
@@ -145,6 +147,13 @@ void Vehicle::Update(int dt)
 
             bool enabled = lightGroupData->GetPointIsEnabled(point, index);
 
+            if (WindowEditing::FreezeLights) enabled = true;
+
+            if (WindowEditing::ShowCurrentEditingLightGroup)
+            {
+                if (WindowEditing::LightGroupToShow != lightGroup) enabled = false;
+            }
+
             RenderCorona corona;
             corona.car = hVehicle;
             corona.id = lightId++;
@@ -158,8 +167,19 @@ void Vehicle::Update(int dt)
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
             corona.nearClip = lightGroup->nearClip;
-
             Vehicles::m_CoronasToRender.push_back(corona);
+
+            if (lightGroup->useSmallWhiteCorona)
+            {
+                RenderCorona corona2;
+                corona2.car = hVehicle;
+                corona2.id = lightId++;
+                corona2.color = CRGBA(255, 255, 255);
+                corona2.offset = corona.offset;
+                corona2.radius = corona.radius * 0.3f;
+                corona2.nearClip = corona.nearClip;
+                Vehicles::m_CoronasToRender.push_back(corona2);
+            }
 
             
 

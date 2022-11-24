@@ -16,14 +16,12 @@ Window::Window()
 	{
 		window->page += 1;
 
-		int maxPages = (int)std::ceil((float)window->items.size() / (float)window->maxItemsPerPage);
+		int maxPages = window->GetMaxPages();
 		if (window->page >= maxPages-1) window->page = maxPages-1;
 	};
 
 	btnLeft->onClick = [window]()
 	{
-		//int maxPages = (int)std::ceil((float)window->items.size() / (float)window->maxItemsPerPage);
-
 		window->page -= 1;
 		if (window->page < 0) window->page = 0;
 	};
@@ -186,25 +184,37 @@ void Window::Draw()
 		auto btnSize = CVector2D(40.0f, 40.0f);
 		auto btnColor = backgroundColor;
 
-		btnLeft->box->size = btnSize;
-		btnLeft->text->gxtId = 4;
-		btnLeft->box->color = btnColor;
-		btnLeft->position = CVector2D(position.x - 20.0f - btnSize.x, position.y + 20.0f);
-		btnLeft->Draw();
+		bool canGoLeft = page > 0;
+		bool canGoRight = page < GetMaxPages() - 1;
 
-		btnRight->box->size = btnSize;
-		btnRight->text->gxtId = 5;
-		btnRight->box->color = btnColor;
-		btnRight->position = CVector2D(position.x + width + 20.0f, position.y + 20.0f);
-		btnRight->Draw();
-
+		if (canGoLeft)
+		{
+			btnLeft->box->size = btnSize;
+			btnLeft->text->gxtId = 4;
+			btnLeft->box->color = btnColor;
+			btnLeft->position = CVector2D(position.x - 20.0f - btnSize.x, position.y + 20.0f);
+			btnLeft->Draw();
+		}
+		
+		if (canGoRight)
+		{
+			btnRight->box->size = btnSize;
+			btnRight->text->gxtId = 5;
+			btnRight->box->color = btnColor;
+			btnRight->position = CVector2D(position.x + width + 20.0f, position.y + 20.0f);
+			btnRight->Draw();
+		}
+		
 		btnSize = CVector2D(80.0f, 40.0f);
 
-		btnBack->box->size = btnSize;
-		btnBack->text->gxtId = 7;
-		btnBack->box->color = btnColor;
-		btnBack->position = CVector2D(position.x + width + 20.0f, position.y + 80.0f);
-		btnBack->Draw();
+		if (parentWindow != NULL)
+		{
+			btnBack->box->size = btnSize;
+			btnBack->text->gxtId = 7;
+			btnBack->box->color = btnColor;
+			btnBack->position = CVector2D(position.x + width + 20.0f, position.y + 80.0f);
+			btnBack->Draw();
+		}
 	}
 	//
 
@@ -281,4 +291,9 @@ void Window::GoToPrevWindow()
 void Window::RemoveThisWindow()
 {
 	Menu::RemoveWindow(this);
+}
+
+int Window::GetMaxPages()
+{
+	return (int)std::ceil((float)items.size() / (float)maxItemsPerPage);
 }

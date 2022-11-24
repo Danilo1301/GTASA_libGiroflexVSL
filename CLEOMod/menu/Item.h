@@ -89,6 +89,8 @@ public:
 	bool drawText = true;
 	bool drawLabel = true;
 
+	float btnWidth = 50.0f;
+
 	Item(eItemType type);
 
 	void AddColorIndicator(CRGBA* color);

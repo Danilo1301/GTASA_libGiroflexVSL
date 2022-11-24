@@ -4,6 +4,7 @@
 #include "../Input.h"
 
 MenuPopup* Menu::m_PopUp = new MenuPopup();
+CVector2D Menu::m_MenuOffset = CVector2D(0, -195.0f);
 Window* Menu::m_MainWindow = new Window();
 std::vector<Window*> Menu::m_Windows;
 
@@ -40,6 +41,25 @@ Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
     window->AddFloatRange(23, &vec->x, -10.0f, 10.0f, 0.01f);
     window->AddFloatRange(24, &vec->y, -10.0f, 10.0f, 0.01f);
     window->AddFloatRange(25, &vec->z, -10.0f, 10.0f, 0.01f);
+
+    window->btnBack->onClick = [window]()
+    {
+        window->GoToPrevWindow();
+    };
+
+    return window;
+}
+
+
+Window* Menu::AddPositionWindow(Window* parent, CVector2D* vec, float min, float max, float addBy)
+{
+    Window* window = AddWindow(26, parent);
+    window->width = 200.0f;
+    window->position = { 10, 200 };
+    window->showPageControls = true;
+
+    window->AddFloatRange(23, &vec->x, min, max, addBy);
+    window->AddFloatRange(24, &vec->y, min, max, addBy);
 
     window->btnBack->onClick = [window]()
     {

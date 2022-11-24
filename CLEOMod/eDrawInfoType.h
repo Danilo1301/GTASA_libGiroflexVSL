@@ -46,5 +46,7 @@ enum eDrawInfoType {
 
     CAR_GET_AMOUNT,
     CAR_GET_ID,
-    CAR_SET_TO_REMOVE
+    CAR_SET_TO_REMOVE,
+
+    MENU_OFFSET_X
 };
