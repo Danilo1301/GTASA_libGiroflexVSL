@@ -50,11 +50,16 @@ DGFX49 No
 DGFX50 Options
 DGFX51 <  ( Place it on CENTER )  >
 DGFX52 Pattern offset
-DGFX53 White light inside
+DGFX53 Show small white light 
 DGFX54 Editing options
 DGFX55 Freeze lights
 DGFX56 Show only these lights
-DGFX57 CoronaLerpNormal
-DGFX58 CoronaLerpTooMuch
-DGFX59 CoronaFixMinChange
+DGFX57 ShowDebug
+DGFX58 Change pattern time
+DGFX59 Clone
+DGFX60 Clone lights?
+DGFX61 _
+DGFX62 Flare
+DGFX63 Flare - distance
+DGFX64 Flare - intensity
 DGFX0 #UNK#

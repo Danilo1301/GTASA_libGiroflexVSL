@@ -15,13 +15,14 @@ struct MenuPopup
 
 class Menu {
 public:
-	static MenuPopup* m_PopUp;
 	static CVector2D m_MenuOffset;
 
-	static Window* m_MainWindow;
 	static std::vector<Window*> m_Windows;
+	static Window* m_MainWindow;
 
+	static MenuPopup* m_PopUp;
 
+	static bool m_DrawCursor;
 
 	static Window* AddWindow(int gxtId);
 	static Window* AddWindow(int gxtId, Window* parent);

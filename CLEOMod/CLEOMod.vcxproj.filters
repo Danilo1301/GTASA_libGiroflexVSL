@@ -18,7 +18,7 @@
     <ClCompile Include="windows\WindowMain.cpp">
       <Filter>windows</Filter>
     </ClCompile>
-    <ClCompile Include="INIConfig.cpp" />
+    <ClCompile Include="ModConfig.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LightGroupDatas.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -37,6 +37,16 @@
     <ClCompile Include="windows\WindowEditing.cpp">
       <Filter>windows</Filter>
     </ClCompile>
+    <ClCompile Include="iniconfig\INIFile.cpp">
+      <Filter>iniconfig</Filter>
+    </ClCompile>
+    <ClCompile Include="iniconfig\INISection.cpp">
+      <Filter>iniconfig</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowFlare.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -44,6 +54,12 @@
     </Filter>
     <Filter Include="windows">
       <UniqueIdentifier>{6ff912e9-a4cb-41a4-bbe8-5afcf95a08d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iniconfig">
+      <UniqueIdentifier>{1e9bef80-ee7f-4e8b-9f6e-db46ea2078f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="txt">
+      <UniqueIdentifier>{9ecf5440-61e9-47db-b225-975b481eeec7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +79,7 @@
       <Filter>windows</Filter>
     </ClInclude>
     <ClInclude Include="eLightGroupType.h" />
-    <ClInclude Include="INIConfig.h" />
+    <ClInclude Include="ModConfig.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="LightGroupData.h" />
@@ -90,9 +106,23 @@
     <ClInclude Include="windows\WindowEditing.h">
       <Filter>windows</Filter>
     </ClInclude>
+    <ClInclude Include="iniconfig\INIFile.h">
+      <Filter>iniconfig</Filter>
+    </ClInclude>
+    <ClInclude Include="iniconfig\INISection.h">
+      <Filter>iniconfig</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowFlare.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="opcodes.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="somecode.txt" />
-    <Text Include="..\info.txt" />
+    <Text Include="..\info.txt">
+      <Filter>txt</Filter>
+    </Text>
+    <Text Include="somecode.txt">
+      <Filter>txt</Filter>
+    </Text>
   </ItemGroup>
 </Project>

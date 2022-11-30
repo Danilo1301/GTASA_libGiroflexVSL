@@ -12,7 +12,7 @@ void WindowEditing::Create(Window* parent, LightGroup* lightGroup)
 {
     LightGroupToShow = lightGroup;
 
-    auto modelId = WindowMain::m_ModelId;
+    //auto modelId = WindowMain::m_ModelId;
 
     auto window = Menu::AddWindow(54, parent);
     window->showPageControls = true;

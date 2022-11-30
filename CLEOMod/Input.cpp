@@ -4,26 +4,22 @@
 
 std::map<int, TouchData> Input::touchStates;
 uintptr_t Input::pTouchPos = 0;
-uintptr_t Input::pScreenGetWidth= 0;
-uintptr_t Input::pScreenGetHeight= 0;
-uintptr_t Input::pScreenResX= 0;
-uintptr_t Input::pScreenResY= 0;
+uintptr_t Input::pScreenGetWidth = 0;
+uintptr_t Input::pScreenGetHeight = 0;
 bool Input::isTouchPressed = false;
 bool Input::hasTouchBeenPressedThisFrame = false;
 bool Input::hasTouchBeenReleasedThisFrame = false;
 
 char* strValue;
 
-int OS_ScreenGetHeight()
+int ScreenGetWidth()
 {
-    int (*func)() = (int (*)()) Input::pScreenGetHeight;
-    return func();
+    return ((int (*)()) Input::pScreenGetWidth)();
 }
 
-int OS_ScreenGetWidth()
+int ScreenGetHeight()
 {
-    int (*func)() = (int (*)()) Input::pScreenGetWidth;
-    return func();
+    return ((int (*)()) Input::pScreenGetHeight)();
 }
 
 void Input::Update(float dt)
@@ -58,7 +54,7 @@ void Input::Update(float dt)
 
 CVector2D Input::GetScreenSize()
 {
-    return { (float)OS_ScreenGetWidth(), (float)OS_ScreenGetHeight() };
+    return { (float)ScreenGetWidth(), (float)ScreenGetHeight() };
 }
 
 CVector2D Input::GetGTAScreenSize()

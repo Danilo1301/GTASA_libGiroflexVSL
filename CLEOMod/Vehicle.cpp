@@ -147,6 +147,8 @@ void Vehicle::Update(int dt)
 
             bool enabled = lightGroupData->GetPointIsEnabled(point, index);
 
+            if (lightGroup->freezeLights) enabled = true;
+
             if (WindowEditing::FreezeLights) enabled = true;
 
             if (WindowEditing::ShowCurrentEditingLightGroup)
@@ -167,18 +169,23 @@ void Vehicle::Update(int dt)
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
             corona.nearClip = lightGroup->nearClip;
-            Vehicles::m_CoronasToRender.push_back(corona);
+            corona.useFlare = lightGroup->useFlare;
+            corona.flareIntensity = lightGroup->flareIntensity;
+            corona.flareDistance = lightGroup->flareDistance;
+            Vehicles::AddCoronaToRender(corona);
+
+            if(corona.useFlare) lightId++;
 
             if (lightGroup->useSmallWhiteCorona)
             {
                 RenderCorona corona2;
                 corona2.car = hVehicle;
                 corona2.id = lightId++;
-                corona2.color = CRGBA(255, 255, 255);
+                corona2.color = CRGBA(255, 255, 255, corona.color.a);
                 corona2.offset = corona.offset;
                 corona2.radius = corona.radius * 0.3f;
                 corona2.nearClip = corona.nearClip;
-                Vehicles::m_CoronasToRender.push_back(corona2);
+                Vehicles::AddCoronaToRender(corona2);
             }
 
             

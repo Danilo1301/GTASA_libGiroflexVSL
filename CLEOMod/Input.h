@@ -14,8 +14,6 @@ public:
 	static uintptr_t pTouchPos;
 	static uintptr_t pScreenGetWidth;
 	static uintptr_t pScreenGetHeight;
-	static uintptr_t pScreenResX;
-	static uintptr_t pScreenResY;
 	static bool isTouchPressed;
 	static bool hasTouchBeenPressedThisFrame;
 	static bool hasTouchBeenReleasedThisFrame;

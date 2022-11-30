@@ -35,9 +35,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="iniconfig\INIFile.cpp" />
+    <ClCompile Include="iniconfig\INISection.cpp" />
     <ClCompile Include="menu\Window.cpp" />
     <ClCompile Include="Mod.cpp" />
-    <ClCompile Include="INIConfig.cpp" />
+    <ClCompile Include="ModConfig.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LightGroupDatas.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -49,9 +51,11 @@
     <ClCompile Include="mod\config.cpp" />
     <ClCompile Include="mod\logger.cpp" />
     <ClCompile Include="Patterns.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Vehicles.cpp" />
     <ClCompile Include="windows\WindowEditing.cpp" />
+    <ClCompile Include="windows\WindowFlare.cpp" />
     <ClCompile Include="windows\WindowLightGroups.cpp" />
     <ClCompile Include="windows\WindowMain.cpp" />
     <ClCompile Include="windows\WindowSettings.cpp" />
@@ -60,7 +64,9 @@
     <ClInclude Include="eDrawInfoType.h" />
     <ClInclude Include="eLightGroupType.h" />
     <ClInclude Include="icleo.h" />
-    <ClInclude Include="INIConfig.h" />
+    <ClInclude Include="ModConfig.h" />
+    <ClInclude Include="iniconfig\INIFile.h" />
+    <ClInclude Include="iniconfig\INISection.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="LightGroupData.h" />
@@ -73,6 +79,7 @@
     <ClInclude Include="Mod.h" />
     <ClInclude Include="ModelInfo.h" />
     <ClInclude Include="ModelInfos.h" />
+    <ClInclude Include="opcodes.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="PatternLoop.h" />
     <ClInclude Include="Patterns.h" />
@@ -81,6 +88,7 @@
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Vehicles.h" />
     <ClInclude Include="windows\WindowEditing.h" />
+    <ClInclude Include="windows\WindowFlare.h" />
     <ClInclude Include="windows\WindowLightGroups.h" />
     <ClInclude Include="windows\WindowMain.h" />
     <ClInclude Include="windows\WindowSettings.h" />
@@ -199,14 +207,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <CLanguageStandard>c11</CLanguageStandard>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
       <PreprocessorDefinitions>ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>

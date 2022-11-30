@@ -5,7 +5,6 @@
 #include "Patterns.h"
 #include "LightGroupDatas.h"
 
-int Vehicles::hPlayerVehicle = -1;
 std::map<int, Vehicle*> Vehicles::m_Vehicles;
 std::vector<RenderCorona> Vehicles::m_CoronasToRender;
 
@@ -118,14 +117,15 @@ void Vehicles::Update(int dt)
     }
 }
 
-bool Vehicles::IsPlayerInAnyVehicle()
+void Vehicles::AddCoronaToRender(RenderCorona corona)
 {
-    if (hPlayerVehicle <= 0) return false;
-    if (!HasVehicleHandle(hPlayerVehicle)) return false;
-    return true;
+    if (corona.color.a == 0) return;
+    if (corona.radius <= 0.0f) return;
+
+    m_CoronasToRender.push_back(corona);
 }
 
-Vehicle* Vehicles::GetPlayerVehicle()
-{
-    return m_Vehicles.at(hPlayerVehicle);
-}
+
+
+
+

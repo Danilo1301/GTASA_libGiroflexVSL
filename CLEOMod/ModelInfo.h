@@ -12,4 +12,5 @@ public:
 
 	LightGroup* AddLightGroup(LightGroup* lightGroup);
 	void RemoveLightGroup(LightGroup* lightGroup);
+	LightGroup* DuplicateLightGroup(LightGroup* lightGroup);
 };

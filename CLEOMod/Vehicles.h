@@ -19,11 +19,15 @@ struct RenderCorona {
 	float pointLightDistance = 60.0f;
 
 	float nearClip = 0.0f;
+
+	bool useFlare = false;
+	float flareIntensity = 1.00f;
+	float flareDistance = 1.00f;
 };
 
 class Vehicles {
 public:
-	static int hPlayerVehicle;
+	
 	static std::map<int, Vehicle*> m_Vehicles;
 	static std::vector<RenderCorona> m_CoronasToRender;
 
@@ -36,6 +40,5 @@ public:
 
 	static void Update(int dt);
 
-	static bool IsPlayerInAnyVehicle();
-	static Vehicle* GetPlayerVehicle();
+	static void AddCoronaToRender(RenderCorona corona);
 };

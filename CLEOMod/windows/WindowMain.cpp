@@ -3,7 +3,7 @@
 #include "WindowLightGroups.h"
 #include "WindowSettings.h"
 #include "../ModelInfos.h"
-#include "../INIConfig.h"
+#include "../ModConfig.h"
 #include "../Mod.h"
 #include "../Log.h"
 
@@ -55,5 +55,5 @@ void WindowMain::Remove()
     m_Window = NULL;
     m_ModelId = 0;
 
-    INIConfig::Save();
+    ModConfig::Save();
 }

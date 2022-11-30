@@ -16,10 +16,24 @@ Todo
 [X] ADD: option to show only this lightGroup
 [X] CHANGE: distance can be negative now
 
+----
+
+[2.2.0]
+[X] ADD: flare effect
+[X] CHANGE: delta time
+[X] CHANGE: nearclip fixed (can be negative)
+[X] ADD: 'duplicate' option to lightgroup
+[X] CHANGE: rewrite config system
+[X] ADD: option to show debug info
+[X] ADD: option to keep lights frozen after restart
+[X] REMOVE: some options to coronaLerp
+
+
+
 Others:
 
+[ ] FIX: vehicle never gets deleted '-'
 [ ] ADD: tipos diferentes de sequências, como estrobo/sinalização direita/sinalização esquerda/sinalização central para lado, ex https://youtu.be/Vz1lcUrjsUQ
 [ ] ADD: custom ground shadow texture
 [ ] ADD: support for all vehicles + check siren on
 [ ] ADD: big flash for long/close distance
-[ ] ADD: flare effect for long/close distance

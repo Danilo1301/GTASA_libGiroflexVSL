@@ -54,7 +54,12 @@ DGFX53 Luz branca por dentro
 DGFX54 Opcoes de edicao
 DGFX55 Congelar luzes
 DGFX56 Mostrar apenas esta luz
-DGFX57 CoronaLerpNormal
-DGFX58 CoronaLerpTooMuch
-DGFX59 CoronaFixMinChange
+DGFX57 ShowDebug
+DGFX58 Tempo trocar padroes
+DGFX59 Duplicar
+DGFX60 Duplicar luzes?
+DGFX61 _
+DGFX62 Flare
+DGFX63 Flare - distancia
+DGFX64 Flare - intensidade
 DGFX0 #UNK#

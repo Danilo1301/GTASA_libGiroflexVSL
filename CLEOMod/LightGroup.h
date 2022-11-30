@@ -4,6 +4,8 @@
 
 #include "Point.h"
 #include "eLightGroupType.h"
+#include "ModConfig.h"
+#include "iniconfig/INIsection.h"
 
 
 class LightGroup {
@@ -25,7 +27,7 @@ public:
 	float pointLightIntensity = 1.00f;
 	float pointLightDistance = 60.0f;
 
-	float nearClip = 0.0f;
+	float nearClip = -0.30f;
 
 	int patternOffset = 0;
 
@@ -36,6 +38,12 @@ public:
 	bool usePointPositionInsteadOfIndex = false;
 
 	bool useSmallWhiteCorona = false;
+
+	bool freezeLights = false;
+
+	bool useFlare = false;
+	float flareIntensity = 1.00f;
+	float flareDistance = 100.0f;
 
 	void ChangeDistance(float distance)
 	{
@@ -144,5 +152,72 @@ public:
 	void Destroy()
 	{
 		RemoveAllPoints();
+	}
+
+	INISection* ToINISection()
+	{
+		INISection* section = new INISection("Lightgroup");
+
+		//section->AddLine("[LightGroup]");
+
+		section->AddCVector("offset", offset);
+		section->AddCRGBA("color1", color1);
+		section->AddCRGBA("color2", color2);
+		section->AddCRGBA("color3", color3);
+		section->AddFloat("radius", radius);
+
+		section->AddBool("renderShadow", renderShadow);
+		section->AddFloat("shadowIntensity", shadowIntensity);
+		section->AddFloat("shadowSize", shadowSize);
+
+		section->AddBool("renderPointLight", renderPointLight);
+		section->AddFloat("pointLightIntensity", pointLightIntensity);
+		section->AddFloat("pointLightDistance", pointLightDistance);
+
+		section->AddFloat("nearClip", nearClip);
+		section->AddInt("patternOffset", patternOffset);
+		section->AddFloat("distance", distance);
+
+		section->AddInt("type", (int)type);
+		section->AddBool("usePointPositionInsteadOfIndex", usePointPositionInsteadOfIndex);
+		section->AddBool("useSmallWhiteCorona", useSmallWhiteCorona);
+		section->AddBool("freezeLights", freezeLights);
+
+		section->AddBool("useFlare", useFlare);
+		section->AddFloat("flareDistance", flareDistance);
+		section->AddFloat("flareIntensity", flareIntensity);
+
+		return section;
+	}
+
+	void FromINISection(INISection* section)
+	{
+		offset = section->GetCVector("offset");
+		color1 = section->GetCRGBA("color1");
+		color2 = section->GetCRGBA("color2");
+		color3 = section->GetCRGBA("color3");
+
+		radius = section->GetFloat("radius", radius);
+
+		renderShadow = section->GetBool("renderShadow", renderShadow);
+		shadowIntensity = section->GetFloat("shadowIntensity", shadowIntensity);
+		shadowSize = section->GetFloat("shadowSize", shadowSize);
+
+		renderPointLight = section->GetBool("renderPointLight", renderPointLight);
+		pointLightIntensity = section->GetFloat("pointLightIntensity", pointLightIntensity);
+		pointLightDistance = section->GetFloat("pointLightDistance", pointLightDistance);
+
+		nearClip = section->GetFloat("nearClip", nearClip);
+
+		patternOffset = section->GetInt("patternOffset", patternOffset);
+		distance = section->GetFloat("distance", distance);
+		type = (eLightGroupType)section->GetInt("type", (int)type);
+		usePointPositionInsteadOfIndex = section->GetBool("usePointPositionInsteadOfIndex", usePointPositionInsteadOfIndex);
+		useSmallWhiteCorona = section->GetBool("useSmallWhiteCorona", useSmallWhiteCorona);
+		freezeLights = section->GetBool("freezeLights", freezeLights);
+
+		useFlare = section->GetBool("useFlare", useFlare);
+		flareDistance = section->GetFloat("flareDistance", flareDistance);
+		flareIntensity = section->GetFloat("flareIntensity", flareIntensity);
 	}
 };

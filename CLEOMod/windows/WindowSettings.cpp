@@ -2,6 +2,7 @@
 #include "WindowMain.h"
 #include "../Input.h"
 #include "../Mod.h"
+#include "../Patterns.h"
 
 bool WindowSettings::EditScreenModeEnabled = false;
 
@@ -19,13 +20,10 @@ void WindowSettings::Create(Window* parent)
 		window->GoToPrevWindow();
 	};
 
-	window->AddFloatRange(57, &Mod::m_CoronaLerpNormal, 0.0f, 1.0f, 0.01f);
-
-	window->AddFloatRange(58, &Mod::m_CoronaLerpTooMuch, 0.0f, 1.0f, 0.01f);
-
-	window->AddIntRange(59, &Mod::m_CoronaFixMinChange, 0, 100, 1);
+	window->AddCheckbox(57, &Menu::m_DrawCursor);
+	
+	window->AddIntRange(58, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
 }
-
 
 void WindowSettings::Update()
 {

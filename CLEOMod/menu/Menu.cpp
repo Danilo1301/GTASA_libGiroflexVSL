@@ -3,10 +3,14 @@
 #include "../Log.h"
 #include "../Input.h"
 
-MenuPopup* Menu::m_PopUp = new MenuPopup();
 CVector2D Menu::m_MenuOffset = CVector2D(0, -195.0f);
-Window* Menu::m_MainWindow = new Window();
+
 std::vector<Window*> Menu::m_Windows;
+Window* Menu::m_MainWindow = new Window();
+
+MenuPopup* Menu::m_PopUp = new MenuPopup();
+
+bool Menu::m_DrawCursor = false;
 
 Window* Menu::AddWindow(int gxtId)
 {
@@ -182,13 +186,14 @@ void Menu::Draw()
     }
     
     //cursor
-    /*
-    CVector2D pos = Input::GetTouchPos();
-    CRGBA colorOn = { 0, 255, 0, 255 };
-    CRGBA colorOff = { 255, 0, 0, 255 };
+    if (m_DrawCursor)
+    {
+        CVector2D pos = Input::GetTouchPos();
+        CRGBA colorOn = { 0, 255, 0, 255 };
+        CRGBA colorOff = { 255, 0, 0, 255 };
 
-    Draw::DrawBox({ pos.x - 3, pos.y - 3 }, { 6, 6 }, (Input::isTouchPressed ? colorOn : colorOff));
-    */
+        Draw::DrawBox({ pos.x - 3, pos.y - 3 }, { 6, 6 }, (Input::isTouchPressed ? colorOn : colorOff));
+    }
 }
 
 void Menu::RemoveWindow(Window* window)

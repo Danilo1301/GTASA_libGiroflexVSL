@@ -22,3 +22,15 @@ void ModelInfo::RemoveLightGroup(LightGroup* lightGroup)
 	lightGroup->Destroy();
 	delete lightGroup;
 }
+
+LightGroup* ModelInfo::DuplicateLightGroup(LightGroup* lightGroup)
+{
+	LightGroup* newLightGroup = new LightGroup();
+	newLightGroup->FromINISection(lightGroup->ToINISection());
+
+	AddLightGroup(newLightGroup);
+
+	newLightGroup->MakeLightGroup();
+
+	return newLightGroup;
+}

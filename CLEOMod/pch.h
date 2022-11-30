@@ -14,72 +14,40 @@
 #include <sys/stat.h> // stat
 #include <errno.h>    // errno, ENOENT, EEXIST
 
-enum eGameIdent
-{
-    GTA3,
-    GTAVC,
-    GTASA,
-    GTALCS,
-    GTAVCS
-};
+// CLEO 2.0.1.2
+#include "icleo.h"
+static ICLEO* cleo2012 = NULL;
 
-enum eGameVerInternal
-{
-    VER_NONE,
-    VER_GTA3_1_4,
-    VER_GTAVC_1_03,
-    VER_GTASA_1_00,
-    VER_GTASA_1_01,
-    VER_GTASA_1_02,
-    VER_GTASA_1_03,
-    VER_GTASA_1_05,
-    VER_GTASA_1_06,
-    VER_GTASA_1_05_GER,
-    VER_GTASA_1_07,
-    VER_GTA3_1_6,
-    VER_GTAVC_1_06,
-    VER_GTASA_1_08,
-    VER_GTALCS_2_2,
-    VER_GTA3_1_8_OR_HIGHER,
-    VER_GTAVC_1_09_OR_HIGHER,
-    VER_GTASA_2_00_OR_HIGHER,
-    VER_GTALCS_2_4_OR_HIGHER,
-    VER_GTALCS_PSP_1_05_OR_HIGHER,
-    VER_GTAVCS_PSP_1_02_OR_HIGHER
-};
+// CLEO 2.0.1.3
+#include "cleo.h"
+static cleo_ifs_t* cleo2013 = NULL;
 
+// SAUtils
+#include "isautils.h"
+static ISAUtils* sautils = NULL;
 
-/*
-#define __AML
-
-#include "mod/amlmod.h"
-#include "mod/logger.h"
-#include "mod/config.h"
-
-
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdint.h>
-#include <dlfcn.h>
-
-
-*/
-
-//#define __print_to_log(__str)	cleo->PrintToCleoLog(__str); logger->Info(__str)
-//#define __reg_opcode	cleo->RegisterOpcode
-//#define __reg_func		cleo->RegisterOpcodeFunction
-
-/*
 static std::string to_upper(std::string data) {
     std::for_each(data.begin(), data.end(), [](char& c) {
         c = ::toupper(c);
         });
     return data;
 }
-*/
 
+static std::string to_lower(std::string data) {
+    std::for_each(data.begin(), data.end(), [](char& c) {
+        c = ::tolower(c);
+        });
+    return data;
+}
 
+static unsigned char ucharIntensity(unsigned char uc, float intensity) {
+    return (unsigned char)std::clamp((int)round(((float)uc) * intensity), 0, 255);
+}
+
+static float lerp(float a, float b, float f)
+{
+    return a * (1.0 - f) + (b * f);
+}
 
 struct posStruct
 {
@@ -154,3 +122,14 @@ public:
         this->y = y;
     }
 };
+
+static double DistanceBetween(CVector vec1, CVector vec2)
+{
+    double a = ((double)vec1.x - (double)vec2.x);
+    double b = ((double)vec1.y - (double)vec2.y);
+    double c = ((double)vec1.z - (double)vec2.z);
+
+    return sqrt(a * a + b * b + c * c);
+}
+
+static void (*RegisterCorona)(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, posStruct const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay);

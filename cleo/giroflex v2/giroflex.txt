@@ -152,7 +152,10 @@ gosub @SEND_TOUCH
 
 //gosub @FIND_CARS   //crash
 
+gosub @SEND_PLAYER_POS
+
 gosub @SEND_CURRENT_CAR
+
 
 gosub @UPDATE_CARS
 
@@ -227,6 +230,18 @@ end
 0343: set_text_draw_linewidth 640.0
 045B: draw_text_2numbers 300.0 200.0 GXT 'DGFX1' numbers VAR_Integer1 0 
 */
+return
+
+//----------------------------------------------------
+
+:SEND_PLAYER_POS
+if and
+    0256:   player $PLAYER_CHAR defined
+    056D:   actor $PLAYER_ACTOR defined 
+then
+    04C4: store_coords_to VAR_PosX VAR_PosY VAR_PosZ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.0
+    0EF4: send_player_position 0 pos VAR_PosX VAR_PosY VAR_PosZ
+end
 return
 
 //----------------------------------------------------
@@ -343,19 +358,23 @@ while VAR_Integer1 < VAR_Integer2
     VAR_Integer1 += 1
 end
 
+
 /*
 03F0: enable_text_draw 1
-0340: set_text_draw_RGBA 0 20 255 255 
+0340: set_text_draw_RGBA 255 255 0 255 
 033F: set_text_draw_letter_size 0.5 3.0 
 0343: set_text_draw_linewidth 640.0
 045B: draw_text_2numbers 300.0 230.0 GXT 'DGFX1' numbers VAR_Integer2 0
+*/
 
+/*
 03F0: enable_text_draw 1
 0340: set_text_draw_RGBA 0 20 255 255 
 033F: set_text_draw_letter_size 0.5 3.0 
 0343: set_text_draw_linewidth 640.0
 045B: draw_text_2numbers 300.0 260.0 GXT 'DGFX1' numbers VAR_Veh 0
 */
+
 return
 
 //----------------------------------------------------
@@ -700,5 +719,25 @@ end
 if VAR_GxtId == 59
 then
      VAR_STR_1 = "DGFX59"
+end
+if VAR_GxtId == 60
+then
+     VAR_STR_1 = "DGFX60"
+end
+if VAR_GxtId == 61
+then
+     VAR_STR_1 = "DGFX61"
+end
+if VAR_GxtId == 62
+then
+     VAR_STR_1 = "DGFX62"
+end
+if VAR_GxtId == 63
+then
+     VAR_STR_1 = "DGFX63"
+end
+if VAR_GxtId == 64
+then
+     VAR_STR_1 = "DGFX64"
 end
 return

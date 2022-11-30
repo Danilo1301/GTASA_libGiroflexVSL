@@ -2,6 +2,7 @@
 
 #include "WindowMain.h"
 #include "WindowEditing.h"
+#include "WindowFlare.h"
 
 #include "../ModelInfos.h"
 #include "../LightGroupDatas.h"
@@ -52,7 +53,7 @@ void WindowLightGroups::Create(Window* parent)
         for (auto lightGroup : ModelInfos::GetModelInfo(modelId)->lightGroups)
         {
             auto button_edit = window->AddButton(12, CRGBA(96, 125, 219));
-            button_edit->text->num1 = i;
+            button_edit->text->num1 = i+1;
 
             button_edit->AddColorIndicator(&lightGroup->color3);
             button_edit->AddColorIndicator(&lightGroup->color2);
@@ -145,7 +146,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     window->AddFloatRange(41, &lightGroup->pointLightIntensity, 0.0f, 1.0f, 0.01f);
 
     //ITEM
-    window->AddFloatRange(43, &lightGroup->nearClip, 0.0f, 5.0f, 0.01f);
+    window->AddFloatRange(43, &lightGroup->nearClip, -2.0f, 5.0f, 0.01f);
 
     //ITEM
     auto button_color1 = window->AddButton(9);
@@ -171,10 +172,35 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     //-
 
     //ITEM
+    window->AddCheckbox(55, &lightGroup->freezeLights);
+
+    //ITEM
     auto patternOffset = window->AddIntRange(52, &lightGroup->patternOffset, 0, 10, 1);
     patternOffset->holdToChange = false;
     patternOffset->onValueChange = [lightGroup]() {
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
+    };
+
+    //ITEM
+    auto button_flare = window->AddButton(62);
+    button_flare->onClick = [lightGroup, window]() {
+        WindowFlare::Create(window, lightGroup);
+    };
+
+    //ITEM
+    auto button_duplicate = window->AddButton(59);
+    button_duplicate->onClick = [window, lightGroup, modelId]()
+    {
+        Menu::AddConfirmWindow(window, 60, [lightGroup, modelId]() {
+            ModelInfos::GetModelInfo(WindowMain::m_ModelId)->DuplicateLightGroup(lightGroup);
+
+            Menu::RemoveAllWindows();
+
+            WindowMain::Remove();
+            WindowMain::Create(modelId);
+        }, []() {
+
+        });
     };
 
     //ITEM
