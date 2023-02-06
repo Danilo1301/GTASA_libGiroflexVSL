@@ -60,6 +60,7 @@ Item* Window::AddCheckbox(int gxtId, bool* value)
 	item->useFullWidth = true;
 
 	item->pCheckBoxBool = value;
+	if (value == NULL) item->pCheckBoxBool = &item->tmpCheckBoxBool;
 
 	item->label->gxtId = gxtId;
 

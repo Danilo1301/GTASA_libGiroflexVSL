@@ -1,6 +1,7 @@
 #include "ModConfig.h"
 
 #include "ModelInfos.h"
+#include "Patterns.h"
 #include "Log.h"
 
 #include "mod/amlmod.h"
@@ -26,6 +27,7 @@ void ModConfig::MakePaths()
 
     CreateFolder(GetConfigFolder());
     CreateFolder(GetConfigFolder() + "/vehicles");
+    CreateFolder(GetConfigFolder() + "/patterns");
 }
 
 std::string ModConfig::GetConfigFolder()
@@ -49,6 +51,44 @@ void ModConfig::Save()
     Log::file << "ModConfig: Save " << std::endl;
 
     MakePaths();
+
+    SavePatterns();
+    SaveVehicles();
+}
+
+void ModConfig::SavePatterns()
+{
+    Log::file << "ModConfig: SavePatterns " << std::endl;
+
+    for (auto pattern : Patterns::m_Patterns)
+    {
+        auto path = GetConfigFolder() + "/patterns/" + pattern->id + ".ini";
+
+        Log::file << "ModConfig: Saving pattern ID " << pattern->id + ".ini" << std::endl;
+        
+        INIFile file;
+
+        auto section = file.AddSection("Pattern");
+        for (auto step : pattern->steps)
+        {
+            std::string line = "";
+            for (auto value : step->data)
+            {
+                line += std::to_string(value);
+            }
+            line += "|" + std::to_string(step->duration);
+
+            section->AddLine(line);
+        }
+
+        file.Save(path);
+        file.Destroy();
+    }
+}
+
+void ModConfig::SaveVehicles()
+{
+    Log::file << "ModConfig: SaveVehicles " << std::endl;
 
     for (auto pair : ModelInfos::m_ModelInfos)
     {
@@ -76,7 +116,83 @@ void ModConfig::Load()
 {
     MakePaths();
 
-    Log::file << "ModConfig: Load" << std::endl;
+    LoadPatterns();
+    LoadVehicles();
+}
+
+void ModConfig::LoadPatterns()
+{
+    Log::file << "ModConfig: Load patterns..." << std::endl;
+
+    auto patternsPath = GetConfigFolder() + "/patterns/";
+
+    DIR* dirp;
+    struct dirent* dp;
+
+    if ((dirp = opendir(patternsPath.c_str())) == NULL) {
+        //perror("couldn't open '.'");
+        return;
+    }
+
+    while ((dp = readdir(dirp)) != NULL)
+    {
+        std::string name = dp->d_name;
+
+        if (name.find(".ini") == std::string::npos) continue;
+        
+        std::string id = name.substr(0, name.find("."));
+
+        std::string path = patternsPath + name;
+
+        Log::file << "Loading pattern '" << name << "' (" << id << ")" << std::endl;
+
+        //
+        auto pattern = Patterns::CreatePattern(id);
+        //
+
+        INIFile file;
+        file.Read(path);
+
+        auto sections = file.GetSections("Pattern");
+        if (sections.size() == 0) continue;
+        auto section = sections[0];
+
+        //
+        
+        auto lines = section->rawLines;
+        for (auto line : lines)
+        {
+            Log::file << line << std::endl;
+
+            auto patternStr = line.substr(0, line.find("|"));
+            auto timeStr = line.substr(line.find("|") + 1);
+
+            auto time = std::atoi(timeStr.c_str());
+
+            Log::file << "pattern=" << patternStr << std::endl;
+            Log::file << "time=" << time << std::endl;
+
+            std::vector<int> data;
+            for (char& c : patternStr)
+            {
+                auto value = c == '1' ? 1 : 0;
+                data.push_back(value);
+
+                Log::file << "value: " << value << std::endl;
+            }
+
+            pattern->AddStep(data, time);
+        }
+
+        //
+
+        file.Destroy();
+    }
+}
+
+void ModConfig::LoadVehicles()
+{
+    Log::file << "ModConfig: Load vehicles..." << std::endl;
 
     auto vehiclesPath = GetConfigFolder() + "/vehicles/";
 

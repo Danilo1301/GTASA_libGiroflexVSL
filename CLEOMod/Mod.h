@@ -8,6 +8,8 @@ public:
     static char Version[256];
     static int m_PrevDeltaTime;
     static int m_DeltaTime;
+    static uintptr_t pVehiclePool;
+    static void* hGTASA;
 
     static CVector m_PlayerPos;
     static int hPlayerVehicle;

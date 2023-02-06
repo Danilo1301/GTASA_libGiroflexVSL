@@ -30,6 +30,17 @@ void WindowMain::Create(int modelId)
     auto text_id = window->AddText(30, CRGBA(255, 255, 255));
     text_id->text->num1 = m_ModelId;
 
+    /*
+    for (int i = 0; i < 3; i++)
+    {
+        auto btn = window->AddCheckbox(14, NULL);
+        btn->onValueChange = [btn]() {
+            bool &value = btn->tmpCheckBoxBool;
+            Menu::ShowPopup(1, value ? 1 : 0, 0, 1000);
+        };
+    }
+    */
+
     auto button_add = window->AddButton(14);
     button_add->onClick = [window]()
     {

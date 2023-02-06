@@ -123,6 +123,25 @@ public:
     }
 };
 
+class CVehicle {
+public:
+
+};
+
+static std::string printmem(uintptr_t ptr, int size)
+{
+    unsigned char* p = (unsigned char*)(ptr);
+    std::string str;
+    char buffer[512];
+    for (int i = 0; i < size; i++)
+    {
+        sprintf(buffer, "%02hhX ", p[i]);
+        str += buffer;
+        if ((i + 1) % 4 == 0) str += "\n";
+    }
+    return str;
+}
+
 static double DistanceBetween(CVector vec1, CVector vec2)
 {
     double a = ((double)vec1.x - (double)vec2.x);

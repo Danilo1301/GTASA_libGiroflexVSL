@@ -5,6 +5,18 @@ INISection::INISection(std::string key)
     this->key = key;
 }
 
+/*
+* doesn't work
+std::vector<std::string> INISection::GetLines()
+{
+    std::vector<std::string> lines;
+    for (std::map<std::string, std::string>::iterator it = values.begin(); it != values.end(); ++it) {
+        lines.push_back(it->first);
+    }
+    return lines;
+}
+*/
+
 std::string INISection::GetString(std::string key)
 {
     for (auto v : values)
@@ -19,12 +31,14 @@ void INISection::AddString(std::string key, std::string value)
     std::cout << "AddString key=" << key << ", value= " << value << std::endl;
 
     values[key] = value;
+
     //file << key << " = " << value << std::endl;
 }
 
 void INISection::AddLine(std::string value)
 {
-    AddString(value, "\n");
+    AddString("##LINE_" + std::to_string(lineId), value);
+    lineId++;
     //file << value << std::endl;
 }
 

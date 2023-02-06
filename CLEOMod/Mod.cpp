@@ -27,6 +27,8 @@
 char Mod::Version[256] = "2.2.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
+uintptr_t Mod::pVehiclePool = 0;
+void* Mod::hGTASA = 0;
 
 CVector Mod::m_PlayerPos = CVector(0, 0, 0);
 int Mod::hPlayerVehicle = -1;
@@ -40,9 +42,8 @@ END_DEPLIST()
 
 
 
-void* hGTASA = NULL;
+
 uintptr_t pGTASA = 0;
-uintptr_t pVehiclePool = 0;
 
 unsigned int uniqueLightId = 65487;
 
@@ -173,6 +174,11 @@ extern "C" void OnModPreLoad()
     logger->SetTag("Giroflex");
 }
 
+
+//
+
+//
+
 extern "C" void OnModLoad()
 {
     Log::file << "Load..." << std::endl;
@@ -276,7 +282,7 @@ extern "C" void OnModLoad()
 
     //libGTASA
     Log::file << "Loading libGTASA..." << std::endl;
-    hGTASA = dlopen("libGTASA.so", RTLD_LAZY);
+    void* hGTASA = Mod::hGTASA = dlopen("libGTASA.so", RTLD_LAZY);
     pGTASA = aml->GetLib("libGTASA.so");
 
     //
@@ -291,7 +297,9 @@ extern "C" void OnModLoad()
 
     Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
     Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
-    pVehiclePool = (uintptr_t)reinterpret_cast<void*>(aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
+    Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"); ///wtf, why did I do that
+
+    
 
     //
 
@@ -300,17 +308,19 @@ extern "C" void OnModLoad()
     Log::file << "RegisterCorona = " << &RegisterCorona << std::endl;
 
     Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
-    Log::file << "pVehiclePool = " << pVehiclePool << std::endl;
+    Log::file << "pVehiclePool = " << Mod::pVehiclePool << std::endl;
 
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
 
     Log::file << "Loaded" << std::endl;
 
+    
+
     ModConfig::Load();
 
     if (Patterns::m_Patterns.size() == 0)
     {
-        auto pattern1 = Patterns::CreatePattern();
+        auto pattern1 = Patterns::CreatePattern("1_lights-1");
         pattern1->AddStep({ 0 }, 300);
         pattern1->AddStep({ 1 }, 300);
         /*
@@ -318,7 +328,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [1], time: 300});
         */
 
-        auto pattern2 = Patterns::CreatePattern();
+        auto pattern2 = Patterns::CreatePattern("1_lights-2");
         pattern2->AddStep({ 1 }, 80);
         pattern2->AddStep({ 0 }, 80);
         pattern2->AddStep({ 1 }, 80);
@@ -330,7 +340,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [0], time: 600});;
         */
 
-        auto pattern3 = Patterns::CreatePattern();
+        auto pattern3 = Patterns::CreatePattern("2_lights-1");
         pattern3->AddStep({ 1, 0 }, 200);
         pattern3->AddStep({ 0, 0 }, 200);
         pattern3->AddStep({ 0, 1 }, 200);
@@ -342,7 +352,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [0, 0], time: 200});
         */
 
-        auto pattern4 = Patterns::CreatePattern();
+        auto pattern4 = Patterns::CreatePattern("2_lights-2");
         pattern4->AddStep({ 1, 0 }, 100);
         pattern4->AddStep({ 0, 0 }, 80);
         pattern4->AddStep({ 1, 0 }, 100);
@@ -370,7 +380,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [0, 0], time: 150});
         */
 
-        auto pattern5 = Patterns::CreatePattern();
+        auto pattern5 = Patterns::CreatePattern("5_lights-1");
         pattern5->AddStep({ 1, 0, 0, 0, 1 }, 100);
         pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
         pattern5->AddStep({ 0, 1, 0, 1, 0 }, 100);
@@ -384,7 +394,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [0, 0, 1, 0, 0], time: 100});
         */
 
-        auto pattern6 = Patterns::CreatePattern();
+        auto pattern6 = Patterns::CreatePattern("5_lights-2");
         pattern6->AddStep({ 1, 0, 0, 0, 1 }, 220);
         pattern6->AddStep({ 0, 0, 0, 0, 0 }, 100);
         pattern6->AddStep({ 0, 0, 1, 0, 0 }, 100);
@@ -396,7 +406,7 @@ extern "C" void OnModLoad()
         pattern.push({values: [0, 0, 0, 0, 0], time: 100});
         */
 
-        auto pattern7 = Patterns::CreatePattern();
+        auto pattern7 = Patterns::CreatePattern("5_lights-3");
         pattern7->AddStep({ 1, 1, 0, 0, 0 }, 150);
         pattern7->AddStep({ 0, 0, 0, 1, 1 }, 150);
         pattern7->AddStep({ 0, 0, 0, 0, 0 }, 100);
@@ -413,7 +423,7 @@ extern "C" void OnModLoad()
         */
 
 
-        auto pattern8 = Patterns::CreatePattern();
+        auto pattern8 = Patterns::CreatePattern("5_lights-4");
         pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
         pattern8->AddStep({ 0, 1, 0, 1, 0 }, 100);
         pattern8->AddStep({ 0, 0, 1, 0, 0 }, 100);
@@ -432,7 +442,7 @@ extern "C" void OnModLoad()
 
 
 
-
+        ModConfig::Save();
     }
 
     //WindowMain::Create(523);

@@ -9,5 +9,9 @@ public:
 	static std::string GetConfigFolder();
 	static void CreateFolder(std::string path);
 	static void Save();
+	static void SavePatterns();
+	static void SaveVehicles();
 	static void Load();
+	static void LoadPatterns();
+	static void LoadVehicles();
 };

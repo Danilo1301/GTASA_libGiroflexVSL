@@ -67,6 +67,7 @@ public:
 	ValueRange<float> floatValueRange;
 
 	bool* pCheckBoxBool = NULL;
+	bool tmpCheckBoxBool = false;
 
 	//float* pResultFloat = NULL;
 	//int* pResultInt = NULL;

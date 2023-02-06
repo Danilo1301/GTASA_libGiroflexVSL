@@ -188,6 +188,12 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     };
 
     //ITEM
+    auto button_patterns = window->AddButton(62);
+    button_patterns->onClick = [lightGroup, window]() {
+        //WindowFlare::Create(window, lightGroup);
+    };
+
+    //ITEM
     auto button_duplicate = window->AddButton(59);
     button_duplicate->onClick = [window, lightGroup, modelId]()
     {

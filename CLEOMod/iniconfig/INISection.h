@@ -5,9 +5,13 @@
 class INISection {
 public:
     std::map<std::string, std::string> values;
+    std::vector<std::string> rawLines;
     std::string key;
+    int lineId = 0;
 
     INISection(std::string key);
+
+    //std::vector<std::string> GetLines();
 
     std::string GetString(std::string key);
     void AddString(std::string key, std::string value);

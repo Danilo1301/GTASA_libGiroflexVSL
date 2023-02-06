@@ -24,6 +24,8 @@ Item::Item(eItemType type)
 
 		onClick = [self]() {
 			*self->pCheckBoxBool = !*self->pCheckBoxBool;
+
+			if (self->onValueChange) self->onValueChange();
 		};
 	}
 }

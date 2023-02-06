@@ -29,6 +29,9 @@ Todo
 [X] REMOVE: some options to coronaLerp
 
 
+[ ] FIX: wrong menu titles
+[ ] ADD: load custom patterns
+
 
 Others:
 

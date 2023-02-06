@@ -4,9 +4,9 @@
 std::vector<Pattern*> Patterns::m_Patterns;
 int Patterns::m_TimeBetweenPatterns = 5000;
 
-Pattern* Patterns::CreatePattern()
+Pattern* Patterns::CreatePattern(std::string id)
 {
-	Pattern* pattern = new Pattern();
+	Pattern* pattern = new Pattern(id);
 	m_Patterns.push_back(pattern);
 
 	Log::file << "Patterns: Create pattern" << std::endl;

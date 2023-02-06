@@ -22,9 +22,9 @@ void INIFile::Save(std::string path)
 
 		for (auto value : section->values)
 		{
-			if (value.second == "\n")
+			if (value.first.find("##LINE_") != std::string::npos)
 			{
-				file << value.first << std::endl;
+				file << value.second << std::endl;
 				continue;
 			}
 
@@ -69,6 +69,10 @@ void INIFile::Read(std::string path)
 			std::string key = line.substr(0, line.find("="));
 			key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
 
+			//
+			section->rawLines.push_back(line);
+			//
+
 			if (line.find("=") == std::string::npos)
 			{
 				section->AddLine(key);
@@ -111,6 +115,8 @@ void INIFile::Read(std::string path)
 
 		lines.push_back(line);
 	}
+
+	PushSection();
 }
 
 std::vector<INISection*> INIFile::GetSections(std::string name)

@@ -9,7 +9,13 @@ struct PatternStep {
 
 class Pattern {
 public:
+	std::string id = "";
 	std::vector<PatternStep*> steps;
+
+	Pattern(std::string id)
+	{
+		this->id = id;
+	}
 
 	PatternStep* AddStep(std::vector<int> data, int duration)
 	{
