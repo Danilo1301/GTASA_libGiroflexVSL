@@ -46,8 +46,6 @@ public:
 	float flareIntensity = 1.00f;
 	float flareDistance = 100.0f;
 
-	std::vector<Pattern*> patterns;
-
 	void ChangeDistance(float distance)
 	{
 		this->distance = distance;
@@ -82,6 +80,15 @@ public:
 			return color1;
 		}
 
+		if (type == eLightGroupType::TEN_LIGHTS)
+		{
+			if (index >= 5) {
+				return color2;
+			}
+
+			return color1;
+		}
+
 		return color1;
 	}
 
@@ -109,16 +116,13 @@ public:
 			{
 				float x = (i * dist) - ((num - 1) * dist / 2);
 
-				CRGBA color = color1;
 				ePointPosition pos = ePointPosition::LEFT;
 
 				if (i == 2) {
-					color = color3;
 					pos = ePointPosition::CENTER;
 				}
 
 				if (i > 2) {
-					color = color2;
 					pos = ePointPosition::RIGHT;
 				}
 
@@ -126,14 +130,22 @@ public:
 			}
 		}
 
-		//patterns
-		if (patterns.size() == 0)
+		if (type == eLightGroupType::TEN_LIGHTS)
 		{
-			for (auto pattern : Patterns::m_Patterns)
-			{
-				if (pattern->steps[0]->data.size() != points.size()) continue;
+			int num = 10;
+			float dist = distance;
 
-				patterns.push_back(pattern);
+			for (int i = 0; i < num; i++)
+			{
+				float x = (i * dist) - ((num - 1) * dist / 2);
+
+				ePointPosition pos = ePointPosition::LEFT;
+
+				if (i >= 5) {
+					pos = ePointPosition::RIGHT;
+				}
+
+				AddPoint(CVector(x, 0, 0), pos);
 			}
 		}
 	}

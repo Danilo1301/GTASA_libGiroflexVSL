@@ -33,6 +33,7 @@ Todo
 [ ] ADD: load custom patterns
 [X] FIX: sync bug when duplicating lights
 [X] ADD: hability to load custom .ini patterns
+[ ] ADD: 10 lights pattern
 
 Others:
 

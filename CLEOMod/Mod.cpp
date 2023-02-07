@@ -439,8 +439,41 @@ extern "C" void OnModLoad()
         pattern.push({values: [0, 0, 0, 0, 0], time: 200});
         */
 
+        auto pattern_10lights_1 = Patterns::CreatePattern("10lights_1");
+        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
+        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
 
+        auto pattern_10lights_2 = Patterns::CreatePattern("10lights_2");
+        pattern_10lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 60);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
+        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
 
+        auto pattern_10lights_3 = Patterns::CreatePattern("10lights_3");
+        pattern_10lights_3->AddStep({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 150);
+        pattern_10lights_3->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 150);
 
         ModConfig::Save();
     }
