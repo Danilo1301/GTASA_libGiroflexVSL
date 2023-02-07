@@ -14,7 +14,7 @@ void WindowSettings::ToggleEditScreenPos(bool enabled)
 
 void WindowSettings::Create(Window* parent)
 {
-	auto window = Menu::AddWindow(26, parent);
+	auto window = Menu::AddWindow(50, parent);
 	window->showPageControls = true;
 	window->btnBack->onClick = [window]()
 	{
@@ -25,7 +25,7 @@ void WindowSettings::Create(Window* parent)
 	
 	window->AddIntRange(58, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
 
-	auto test_button = window->AddButton(57);
+	auto test_button = window->AddButton(66);
 	test_button->onClick = [window]() {
 
 		Log::file << "* pVehiclePool: " << (void*)Mod::pVehiclePool << std::endl;
@@ -34,9 +34,6 @@ void WindowSettings::Create(Window* parent)
 		uintptr_t objArr = *(uintptr_t*)(Mod::pVehiclePool);
 		Log::file << "* objArr: " << (void*)objArr << std::endl;
 		Log::file << printmem(objArr, 128) << std::endl;
-
-
-		
 
 		/*
 		for (int i = 0; i < 50; i++)
@@ -96,11 +93,8 @@ void WindowSettings::Create(Window* parent)
 		}
 		*/
 
-		Menu::ShowPopup(32, 0, 0, 400);
+		Menu::ShowPopup(0, 0, 0, 400);
 	};
-
-	
-
 }
 
 void WindowSettings::Update()

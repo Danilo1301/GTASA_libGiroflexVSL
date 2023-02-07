@@ -24,7 +24,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.2.0";
+char Mod::Version[256] = "2.3.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 uintptr_t Mod::pVehiclePool = 0;

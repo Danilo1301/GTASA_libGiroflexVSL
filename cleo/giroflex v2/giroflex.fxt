@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Editar posicao
 DGFX27 Distancia
 DGFX28 A
-DGFX29 VSL - VehicleSirenLights (by Danilo1301)
+DGFX29 Giroflex VSL v2.3.0 (Danilo1301)
 DGFX30 Veiculo ID ~1~
 DGFX31 Fechar
 DGFX32 Info
@@ -62,4 +62,6 @@ DGFX61 _
 DGFX62 Flare
 DGFX63 Flare - distancia
 DGFX64 Flare - intensidade
-DGFX0 #UNK#
+DGFX65 10 luzes
+DGFX66 Test
+DGFX0 #.FXT DESATUALIZADO#

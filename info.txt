@@ -2,6 +2,7 @@ To release
 
 Check logs
 Check Mod::Version
+Check .fxt mod version
 
 ----
 
@@ -29,11 +30,12 @@ Todo
 [X] REMOVE: some options to coronaLerp
 
 
-[ ] FIX: wrong menu titles
-[ ] ADD: load custom patterns
+[X] FIX: wrong menu titles
+[X] ADD: load custom patterns
 [X] FIX: sync bug when duplicating lights
 [X] ADD: hability to load custom .ini patterns
-[ ] ADD: 10 lights pattern
+[X] ADD: 10 lights pattern
+[X] fix 10 lights fxt
 
 Others:
 

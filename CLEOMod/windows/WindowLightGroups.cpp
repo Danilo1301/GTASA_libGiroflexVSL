@@ -12,7 +12,7 @@ void WindowLightGroups::Create(Window* parent)
 {
     auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(14, parent);
+    auto window = Menu::AddWindow(29, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -75,7 +75,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
 {
     auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(14, parent);
+    auto window = Menu::AddWindow(29, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -92,7 +92,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     option_giroflex->AddOption(33, 0, 0);
     option_giroflex->AddOption(34, 0, 0);
     option_giroflex->AddOption(35, 0, 0);
-    option_giroflex->AddOption(0, 0, 0);
+    option_giroflex->AddOption(65, 0, 0);
     option_giroflex->onValueChange = [option_giroflex, lightGroup]() {
         lightGroup->type = (eLightGroupType)option_giroflex->optionsValue;
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
