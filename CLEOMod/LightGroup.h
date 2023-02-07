@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "eLightGroupType.h"
 #include "ModConfig.h"
+#include "Patterns.h"
 #include "iniconfig/INIsection.h"
 
 
@@ -44,6 +45,8 @@ public:
 	bool useFlare = false;
 	float flareIntensity = 1.00f;
 	float flareDistance = 100.0f;
+
+	std::vector<Pattern*> patterns;
 
 	void ChangeDistance(float distance)
 	{
@@ -120,6 +123,17 @@ public:
 				}
 
 				AddPoint(CVector(x, 0, 0), pos);
+			}
+		}
+
+		//patterns
+		if (patterns.size() == 0)
+		{
+			for (auto pattern : Patterns::m_Patterns)
+			{
+				if (pattern->steps[0]->data.size() != points.size()) continue;
+
+				patterns.push_back(pattern);
 			}
 		}
 	}

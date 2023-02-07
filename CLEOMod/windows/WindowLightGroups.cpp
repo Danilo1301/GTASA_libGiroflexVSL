@@ -6,6 +6,7 @@
 
 #include "../ModelInfos.h"
 #include "../LightGroupDatas.h"
+#include "../Vehicles.h"
 
 void WindowLightGroups::Create(Window* parent)
 {
@@ -188,17 +189,19 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     };
 
     //ITEM
-    auto button_patterns = window->AddButton(62);
-    button_patterns->onClick = [lightGroup, window]() {
-        //WindowFlare::Create(window, lightGroup);
-    };
-
-    //ITEM
     auto button_duplicate = window->AddButton(59);
     button_duplicate->onClick = [window, lightGroup, modelId]()
     {
         Menu::AddConfirmWindow(window, 60, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->DuplicateLightGroup(lightGroup);
+
+            //reset lightGroupData
+            for (auto pair : Vehicles::m_Vehicles)
+            {
+                if (pair.second->modelId != WindowMain::m_ModelId) continue;
+
+                LightGroupDatas::RemoveLightGroupDataFromVehicle(pair.second->hVehicle);
+            }
 
             Menu::RemoveAllWindows();
 

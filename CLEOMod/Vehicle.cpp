@@ -50,12 +50,11 @@ void Vehicle::Update(int dt)
         {
             LightGroupData* lightGroupData = new LightGroupData(lightGroup, hVehicle);
 
-            for (auto pattern : Patterns::m_Patterns)
+            for (auto pattern : lightGroup->patterns)
             {
-                if (pattern->steps[0]->data.size() != lightGroup->points.size()) continue;
-
                 lightGroupData->patterns.push_back(pattern);
             }
+            
            
             LightGroupDatas::AddLightGroupData(lightGroupData);
 

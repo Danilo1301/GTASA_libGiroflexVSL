@@ -31,7 +31,8 @@ Todo
 
 [ ] FIX: wrong menu titles
 [ ] ADD: load custom patterns
-
+[X] FIX: sync bug when duplicating lights
+[X] ADD: hability to load custom .ini patterns
 
 Others:
 

@@ -10,6 +10,7 @@ public:
 
 	ModelInfo(int modelId);
 
+	LightGroup* CreateLightGroup();
 	LightGroup* AddLightGroup(LightGroup* lightGroup);
 	void RemoveLightGroup(LightGroup* lightGroup);
 	LightGroup* DuplicateLightGroup(LightGroup* lightGroup);
