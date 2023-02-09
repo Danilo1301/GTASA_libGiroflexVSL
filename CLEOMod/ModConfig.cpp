@@ -72,7 +72,7 @@ void ModConfig::SavePatterns()
         * TEMPORARY FIX
         */
         auto section = file.AddSection("Pattern");
-        section->tmpSaveFix = true;
+        //section->tmpSaveFix = true;
 
         for (auto step : pattern->steps)
         {
@@ -165,9 +165,11 @@ void ModConfig::LoadPatterns()
 
         //
         
-        auto lines = section->rawLines;
-        for (auto line : lines)
+     
+        for (auto value : section->values)
         {
+            auto line = value.second;
+
             Log::file << line << std::endl;
 
             auto patternStr = line.substr(0, line.find("|"));

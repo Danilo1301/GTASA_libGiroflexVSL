@@ -30,21 +30,23 @@ void INISection::AddString(std::string key, std::string value)
 {
     std::cout << "AddString key=" << key << ", value= " << value << std::endl;
 
-    values[key] = value;
+    values.push_back(std::pair<std::string, std::string>(key, value));
 
     //file << key << " = " << value << std::endl;
 }
 
 void INISection::AddLine(std::string value)
 {
+    /*
     if (tmpSaveFix)
     {
         rawLines.push_back(value);
         return;
     }
+    */
 
-    AddString("##LINE_" + std::to_string(lineId), value);
-    lineId++;
+    AddString("##LINE##", value);
+    //lineId++;
     //file << value << std::endl;
 }
 

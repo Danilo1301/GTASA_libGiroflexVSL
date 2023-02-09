@@ -24,17 +24,23 @@ void INIFile::Save(std::string path)
 		* TEMPORARY FIX
 		*/
 
+		/*
 		if (section->tmpSaveFix)
 		{
+		*/
+			/*
 			for (auto line : section->rawLines)
 			{
 				file << line << std::endl;
 			}
+			*/
+		/*
 		}
 		else {
+		*/
 			for (auto value : section->values)
 			{
-				if (value.first.find("##LINE_") != std::string::npos)
+				if (value.first.find("##LINE##") != std::string::npos)
 				{
 					file << value.second << std::endl;
 					continue;
@@ -42,7 +48,7 @@ void INIFile::Save(std::string path)
 
 				file << value.first << " = " << value.second << std::endl;
 			}
-		}
+		//}
 
 		file << std::endl;
 	}
@@ -83,7 +89,7 @@ void INIFile::Read(std::string path)
 			key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
 
 			//
-			section->rawLines.push_back(line);
+			//section->values.push_back(line);
 			//
 
 			if (line.find("=") == std::string::npos)

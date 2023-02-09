@@ -4,12 +4,12 @@
 
 class INISection {
 public:
-    std::map<std::string, std::string> values;
+    std::vector<std::pair<std::string, std::string>> values;
     std::string key;
 
-    int lineId = 0;
-    std::vector<std::string> rawLines;
-    bool tmpSaveFix = false;
+    //int lineId = 0;
+    //std::vector<std::string> rawLines;
+    //bool tmpSaveFix = false;
 
     INISection(std::string key);
 
