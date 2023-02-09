@@ -116,6 +116,11 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         distance->onValueChange = [lightGroup]() {
             lightGroup->MakeLightGroup();
         };
+
+        auto curve = posWindow->AddFloatRange(68, &lightGroup->curve, 0.0f, 1.0f, 0.001f);
+        curve->onValueChange = [lightGroup]() {
+            lightGroup->MakeLightGroup();
+        };
     };
 
     //ITEM

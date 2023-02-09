@@ -8,6 +8,10 @@
 #include "Patterns.h"
 #include "iniconfig/INIsection.h"
 
+static double arch_fn_parabola(float x, float curve, float len)
+{
+	return -(pow(x, 2) * (double)curve) + (((double)len * (double)curve) * (double)x);
+}
 
 class LightGroup {
 public:
@@ -45,6 +49,8 @@ public:
 	bool useFlare = false;
 	float flareIntensity = 1.00f;
 	float flareDistance = 100.0f;
+
+	float curve = 0.0f;
 
 	void ChangeDistance(float distance)
 	{
@@ -96,57 +102,34 @@ public:
 	{
 		RemoveAllPoints();
 
-		if (type == eLightGroupType::SINGLE_LIGHT)
-		{
-			AddPoint(CVector(0, 0, 0), ePointPosition::CENTER);
-		}
 
-		if (type == eLightGroupType::TWO_LIGHTS)
-		{
-			AddPoint(CVector(-distance, 0, 0), ePointPosition::LEFT);
-			AddPoint(CVector(distance, 0, 0), ePointPosition::RIGHT);
-		}
 
-		if (type == eLightGroupType::FIVE_LIGHTS)
-		{
-			int num = 5;
-			float dist = distance;
+		int amountOfLights = 0;
 
-			for (int i = 0; i < num; i++)
+		if (type == eLightGroupType::SINGLE_LIGHT) amountOfLights = 1;
+		if (type == eLightGroupType::TWO_LIGHTS) amountOfLights = 2;
+		if (type == eLightGroupType::FIVE_LIGHTS) amountOfLights = 5;
+		if (type == eLightGroupType::TEN_LIGHTS) amountOfLights = 10;
+
+		for (int i = 0; i < amountOfLights; i++)
+		{
+			float x = (i * distance) - ((amountOfLights - 1) * distance / 2);
+			float y = (float)arch_fn_parabola((float)i, curve, (float)(amountOfLights - 1));
+
+			ePointPosition pos = ePointPosition::LEFT;
+
+			if (type == eLightGroupType::FIVE_LIGHTS)
 			{
-				float x = (i * dist) - ((num - 1) * dist / 2);
-
-				ePointPosition pos = ePointPosition::LEFT;
-
-				if (i == 2) {
-					pos = ePointPosition::CENTER;
-				}
-
-				if (i > 2) {
-					pos = ePointPosition::RIGHT;
-				}
-
-				AddPoint(CVector(x, 0, 0), pos);
+				if (i == 2) pos = ePointPosition::CENTER;
+				if (i > 2) pos = ePointPosition::RIGHT;
 			}
-		}
 
-		if (type == eLightGroupType::TEN_LIGHTS)
-		{
-			int num = 10;
-			float dist = distance;
-
-			for (int i = 0; i < num; i++)
+			if (type == eLightGroupType::TEN_LIGHTS)
 			{
-				float x = (i * dist) - ((num - 1) * dist / 2);
-
-				ePointPosition pos = ePointPosition::LEFT;
-
-				if (i >= 5) {
-					pos = ePointPosition::RIGHT;
-				}
-
-				AddPoint(CVector(x, 0, 0), pos);
+				if (i >= 5) pos = ePointPosition::RIGHT;
 			}
+			
+			AddPoint(CVector(x, y, 0), pos);
 		}
 	}
 
@@ -213,6 +196,8 @@ public:
 		section->AddFloat("flareDistance", flareDistance);
 		section->AddFloat("flareIntensity", flareIntensity);
 
+		section->AddFloat("curve", curve);
+
 		return section;
 	}
 
@@ -245,5 +230,7 @@ public:
 		useFlare = section->GetBool("useFlare", useFlare);
 		flareDistance = section->GetFloat("flareDistance", flareDistance);
 		flareIntensity = section->GetFloat("flareIntensity", flareIntensity);
+
+		curve = section->GetFloat("curve", curve);
 	}
 };

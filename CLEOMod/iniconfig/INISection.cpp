@@ -37,6 +37,12 @@ void INISection::AddString(std::string key, std::string value)
 
 void INISection::AddLine(std::string value)
 {
+    if (tmpSaveFix)
+    {
+        rawLines.push_back(value);
+        return;
+    }
+
     AddString("##LINE_" + std::to_string(lineId), value);
     lineId++;
     //file << value << std::endl;

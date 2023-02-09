@@ -68,7 +68,12 @@ void ModConfig::SavePatterns()
         
         INIFile file;
 
+        /*
+        * TEMPORARY FIX
+        */
         auto section = file.AddSection("Pattern");
+        section->tmpSaveFix = true;
+
         for (auto step : pattern->steps)
         {
             std::string line = "";
@@ -78,6 +83,7 @@ void ModConfig::SavePatterns()
             }
             line += "|" + std::to_string(step->duration);
 
+            
             section->AddLine(line);
         }
 

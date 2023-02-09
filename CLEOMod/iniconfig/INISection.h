@@ -5,9 +5,11 @@
 class INISection {
 public:
     std::map<std::string, std::string> values;
-    std::vector<std::string> rawLines;
     std::string key;
+
     int lineId = 0;
+    std::vector<std::string> rawLines;
+    bool tmpSaveFix = false;
 
     INISection(std::string key);
 

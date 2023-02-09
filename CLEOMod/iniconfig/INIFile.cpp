@@ -20,15 +20,28 @@ void INIFile::Save(std::string path)
 	{
 		file << "[" << section->key << "]" << std::endl;
 
-		for (auto value : section->values)
-		{
-			if (value.first.find("##LINE_") != std::string::npos)
-			{
-				file << value.second << std::endl;
-				continue;
-			}
+		/*
+		* TEMPORARY FIX
+		*/
 
-			file << value.first << " = " << value.second << std::endl;
+		if (section->tmpSaveFix)
+		{
+			for (auto line : section->rawLines)
+			{
+				file << line << std::endl;
+			}
+		}
+		else {
+			for (auto value : section->values)
+			{
+				if (value.first.find("##LINE_") != std::string::npos)
+				{
+					file << value.second << std::endl;
+					continue;
+				}
+
+				file << value.first << " = " << value.second << std::endl;
+			}
 		}
 
 		file << std::endl;

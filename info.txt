@@ -3,6 +3,7 @@ To release
 Check logs
 Check Mod::Version
 Check .fxt mod version
+Check game more than once to make sure
 
 ----
 
@@ -17,8 +18,6 @@ Todo
 [X] ADD: option to show only this lightGroup
 [X] CHANGE: distance can be negative now
 
-----
-
 [2.2.0]
 [X] ADD: flare effect
 [X] CHANGE: delta time
@@ -29,7 +28,7 @@ Todo
 [X] ADD: option to keep lights frozen after restart
 [X] REMOVE: some options to coronaLerp
 
-
+[2.3.0]
 [X] FIX: wrong menu titles
 [X] ADD: load custom patterns
 [X] FIX: sync bug when duplicating lights
