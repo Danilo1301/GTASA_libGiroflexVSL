@@ -1,4 +1,5 @@
 #include "INIFile.h"
+#include "../Log.h"
 
 INISection* INIFile::AddSection(std::string key)
 {
@@ -94,13 +95,15 @@ void INIFile::Read(std::string path)
 
 			if (line.find("=") == std::string::npos)
 			{
-				section->AddLine(key);
+				Log::file << "INIFile: AddLine " << line << std::endl;
+				section->AddLine(line);
 				continue;
 			}
 
 			std::string value = line.substr(line.find("=") + 1);
 			value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
 			
+			Log::file << "INIFile: AddString " << key << " | " << value << std::endl;
 			section->AddString(key, value);
 		}
 

@@ -170,15 +170,15 @@ void ModConfig::LoadPatterns()
         {
             auto line = value.second;
 
-            Log::file << line << std::endl;
+            //Log::file << line << std::endl;
 
             auto patternStr = line.substr(0, line.find("|"));
             auto timeStr = line.substr(line.find("|") + 1);
 
             auto time = std::atoi(timeStr.c_str());
 
-            Log::file << "pattern=" << patternStr << std::endl;
-            Log::file << "time=" << time << std::endl;
+            //Log::file << "pattern=" << patternStr << std::endl;
+            //Log::file << "time=" << time << std::endl;
 
             std::vector<int> data;
             for (char& c : patternStr)
@@ -186,7 +186,7 @@ void ModConfig::LoadPatterns()
                 auto value = c == '1' ? 1 : 0;
                 data.push_back(value);
 
-                Log::file << "value: " << value << std::endl;
+                //Log::file << "value: " << value << std::endl;
             }
 
             pattern->AddStep(data, time);
