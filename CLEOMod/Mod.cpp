@@ -24,9 +24,10 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.3.0";
+char Mod::Version[256] = "2.3.2";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
+eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_60;
 uintptr_t Mod::pVehiclePool = 0;
 void* Mod::hGTASA = 0;
 
@@ -50,6 +51,9 @@ unsigned int uniqueLightId = 65487;
 bool canTurnSirenOn = true;
 
 ConfigEntry* cfgMenuOffsetX = NULL;
+ConfigEntry* cfgTimeBetweenPatterns = NULL;
+ConfigEntry* cfgCoronaFpsFix = NULL;
+
 //float menuOffsets[3] = { -195.0f, 0.0f, 195.0f };
 
 bool Mod::IsPlayerInAnyVehicle()
@@ -64,6 +68,14 @@ Vehicle* Mod::GetPlayerVehicle()
     return Vehicles::m_Vehicles.at(hPlayerVehicle);
 }
 
+void Mod::SaveCfg()
+{
+    cfgMenuOffsetX->SetInt((int)Menu::m_MenuOffset.x);
+    cfgTimeBetweenPatterns->SetInt(Patterns::m_TimeBetweenPatterns);
+    cfgCoronaFpsFix->SetInt((int)Mod::CoronaFixFPS);
+
+    cfg->Save();
+}
 
 void Mod::ProcessTouch()
 {
@@ -121,8 +133,7 @@ void OnGiroflexEditModeChanged(int oldVal, int newVal)
     else {
         WindowSettings::ToggleEditScreenPos(false);
 
-        cfgMenuOffsetX->SetInt((int)Menu::m_MenuOffset.x);
-        cfg->Save();
+        Mod::SaveCfg();
     }
 }
 //---------------------------------------------------------------------------------------------------
@@ -211,9 +222,14 @@ extern "C" void OnModLoad()
     */
 
     cfgMenuOffsetX = cfg->Bind("menu_offset_x", -195, "General");
+    cfgTimeBetweenPatterns = cfg->Bind("time_between_patterns", Patterns::m_TimeBetweenPatterns, "General");
+    cfgCoronaFpsFix = cfg->Bind("corona_fps_fix", Mod::CoronaFixFPS, "General");
 
     Menu::m_MenuOffset.x = (float)cfgMenuOffsetX->GetInt();
+    Patterns::m_TimeBetweenPatterns = cfgTimeBetweenPatterns->GetInt();
+    Mod::CoronaFixFPS = (eCoronaFixFPS)cfgCoronaFpsFix->GetInt();
 
+    Mod::SaveCfg();
 
     //cfg->Bind("pos.x", 45, "523");
     //cfg->Save();

@@ -2,7 +2,7 @@
 #include "Log.h"
 
 std::vector<Pattern*> Patterns::m_Patterns;
-int Patterns::m_TimeBetweenPatterns = 5000;
+int Patterns::m_TimeBetweenPatterns = 7000;
 
 Pattern* Patterns::CreatePattern(std::string id)
 {

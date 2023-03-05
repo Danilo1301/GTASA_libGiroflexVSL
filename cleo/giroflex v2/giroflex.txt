@@ -756,4 +756,16 @@ if VAR_GxtId == 68
 then
      VAR_STR_1 = "DGFX68"
 end
+if VAR_GxtId == 69
+then
+     VAR_STR_1 = "DGFX69"
+end
+if VAR_GxtId == 70
+then
+     VAR_STR_1 = "DGFX70"
+end
+if VAR_GxtId == 71
+then
+     VAR_STR_1 = "DGFX71"
+end
 return

@@ -79,13 +79,27 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
     if (renderCorona->car > 0 && Vehicles::HasVehicleHandle(renderCorona->car))
     {
         auto vel = Vehicles::GetVehicleByHandle(renderCorona->car)->velocity;
-
-        int dt = Mod::m_DeltaTime;
-
+        auto dt = Mod::m_DeltaTime;
         auto probFps = 1000 / dt;
-        float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
 
-        //Log::opcodes << "fix scale " << fixScale << ", dt " << Mod::m_DeltaTime << " : " << vel.x << ", " << vel.y << ", " << vel.z << std::endl;
+        float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
+        if (!Mod::CoronaFixFPS == eCoronaFixFPS::FPS_AUTO)
+        {
+            switch (Mod::CoronaFixFPS)
+            {
+            case eCoronaFixFPS::FPS_30:
+                fixScale = 40;
+                break;
+            case eCoronaFixFPS::FPS_45:
+                fixScale = 55;
+                break;
+            case eCoronaFixFPS::FPS_60:
+                fixScale = 70;
+                break;
+            default:
+                break;
+            }
+        }
 
         position.x += vel.x / fixScale;
         position.y += vel.y / fixScale;
@@ -515,8 +529,8 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
 
-    if (dt == 0) dt = 1;
-    if (dt > 50) dt = 50;
+    if (dt < 16) dt = 16;
+    if (dt > 30) dt = 30;
 
     //Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
 

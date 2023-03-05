@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Editar posicao
 DGFX27 Distancia
 DGFX28 A
-DGFX29 Giroflex VSL v2.3.0 (Danilo1301)
+DGFX29 Giroflex VSL v2.4.0 (Danilo1301)
 DGFX30 Veiculo ID ~1~
 DGFX31 Fechar
 DGFX32 Info
@@ -64,6 +64,9 @@ DGFX63 Flare - distancia
 DGFX64 Flare - intensidade
 DGFX65 10 luzes
 DGFX66 Test
-DGFX67 Giroflex VSL v2.3.0 (by Danilo1301)
+DGFX67 -
 DGFX68 Curva
+DGFX69 ~1~ FPS
+DGFX70 Auto
+DGFX71 FPS Rastro
 DGFX0 #.FXT DESATUALIZADO#

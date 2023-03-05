@@ -2,6 +2,7 @@ To release
 
 Check logs
 Check Mod::Version
+Check EN and PT .fxt
 Check .fxt mod version
 Check game more than once to make sure
 
@@ -40,10 +41,16 @@ Todo
 [X] FIX: config read order issue
 [X] ADD: curve to lightgroup
 
+[2.3.2]
+[X] FIX: settings not saving
+[X] ADD: option to try to fix corona fps bug
+[X] FIX: add negative curve
+[X] FIX: bug lights speed with high fps
+
 Others:
 
 [ ] FIX: vehicle never gets deleted '-'
 [ ] ADD: tipos diferentes de sequências, como estrobo/sinalização direita/sinalização esquerda/sinalização central para lado, ex https://youtu.be/Vz1lcUrjsUQ
 [ ] ADD: custom ground shadow texture
-[ ] ADD: support for all vehicles + check siren on
+[-] ADD: support for all vehicles + check siren on
 [ ] ADD: big flash for long/close distance

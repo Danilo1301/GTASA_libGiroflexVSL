@@ -21,9 +21,23 @@ void WindowSettings::Create(Window* parent)
 		window->GoToPrevWindow();
 	};
 
+	auto options_fpscorona = window->AddOptions(71);
+	options_fpscorona->optionsValue = Mod::CoronaFixFPS;
+	options_fpscorona->AddOption(69, 30, 0);
+	options_fpscorona->AddOption(69, 45, 0);
+	options_fpscorona->AddOption(69, 60, 0);
+	options_fpscorona->AddOption(70, 0, 0);
+	options_fpscorona->onValueChange = [options_fpscorona]() {
+		Mod::CoronaFixFPS = (eCoronaFixFPS)options_fpscorona->optionsValue;
+		Mod::SaveCfg();
+	};
+
 	window->AddCheckbox(57, &Menu::m_DrawCursor);
 	
-	window->AddIntRange(58, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
+	auto time_between_patterns = window->AddIntRange(58, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
+	time_between_patterns->onValueChange = []() {
+		Mod::SaveCfg();
+	};
 
 	auto test_button = window->AddButton(66);
 	test_button->onClick = [window]() {
