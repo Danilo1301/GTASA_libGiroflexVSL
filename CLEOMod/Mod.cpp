@@ -24,7 +24,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.3.2";
+char Mod::Version[256] = "2.4.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_60;

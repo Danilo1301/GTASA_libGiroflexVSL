@@ -41,7 +41,7 @@ Todo
 [X] FIX: config read order issue
 [X] ADD: curve to lightgroup
 
-[2.3.2]
+[2.4.0]
 [X] FIX: settings not saving
 [X] ADD: option to try to fix corona fps bug
 [X] FIX: add negative curve
