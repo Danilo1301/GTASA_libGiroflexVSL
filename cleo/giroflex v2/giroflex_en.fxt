@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Edit position
 DGFX27 Distance
 DGFX28 A
-DGFX29 Giroflex VSL v2.4.0 (Danilo1301)
+DGFX29 Giroflex VSL v2.5.0 (Danilo1301)
 DGFX30 Vehicle ID ~1~
 DGFX31 Close
 DGFX32 Info
@@ -69,4 +69,6 @@ DGFX68 Curve
 DGFX69 ~1~ FPS
 DGFX70 Auto
 DGFX71 Lights FPS
+DGFX72 Corona texture
+DGFX73 Textura
 DGFX0 #OUTDATED .FXT#

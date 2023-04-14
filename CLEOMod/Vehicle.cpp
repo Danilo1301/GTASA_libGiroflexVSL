@@ -166,12 +166,15 @@ void Vehicle::Update(int dt)
             corona.renderPointLight = enabled ? lightGroup->renderPointLight : false;
             corona.shadowIntensity = lightGroup->shadowIntensity;
             corona.shadowSize = lightGroup->shadowSize;
+            corona.shadowOffsetX = lightGroup->shadowPositionX;
+            corona.shadowOffsetY = lightGroup->shadowPositionY;
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
             corona.nearClip = lightGroup->nearClip;
             corona.useFlare = lightGroup->useFlare;
             corona.flareIntensity = lightGroup->flareIntensity;
             corona.flareDistance = lightGroup->flareDistance;
+            corona.coronaTexture = lightGroup->coronaTexture;
             Vehicles::AddCoronaToRender(corona);
 
             if(corona.useFlare) lightId++;
@@ -183,8 +186,9 @@ void Vehicle::Update(int dt)
                 corona2.id = lightId++;
                 corona2.color = CRGBA(255, 255, 255, corona.color.a);
                 corona2.offset = corona.offset;
-                corona2.radius = corona.radius * 0.3f;
+                corona2.radius = corona.radius * lightGroup->smallWhiteCoronaScale;
                 corona2.nearClip = corona.nearClip;
+                corona2.coronaTexture = lightGroup->smallWhiteCoronaTexture;
                 Vehicles::AddCoronaToRender(corona2);
             }
 

@@ -27,6 +27,8 @@ public:
 	bool renderShadow = false;
 	float shadowIntensity = 0.80f;
 	float shadowSize = 5.0f;
+	float shadowPositionX = 0.0f;
+	float shadowPositionY = 0.0f;
 
 	bool renderPointLight = true;
 	float pointLightIntensity = 1.00f;
@@ -43,6 +45,8 @@ public:
 	bool usePointPositionInsteadOfIndex = false;
 
 	bool useSmallWhiteCorona = false;
+	float smallWhiteCoronaScale = 0.3f;
+	int smallWhiteCoronaTexture = 0;
 
 	bool freezeLights = false;
 
@@ -51,6 +55,10 @@ public:
 	float flareDistance = 100.0f;
 
 	float curve = 0.0f;
+
+	int coronaTexture = 0;
+
+
 
 	void ChangeDistance(float distance)
 	{
@@ -178,6 +186,8 @@ public:
 		section->AddBool("renderShadow", renderShadow);
 		section->AddFloat("shadowIntensity", shadowIntensity);
 		section->AddFloat("shadowSize", shadowSize);
+		section->AddFloat("shadowPositionX", shadowPositionX);
+		section->AddFloat("shadowPositionY", shadowPositionY);
 
 		section->AddBool("renderPointLight", renderPointLight);
 		section->AddFloat("pointLightIntensity", pointLightIntensity);
@@ -189,7 +199,11 @@ public:
 
 		section->AddInt("type", (int)type);
 		section->AddBool("usePointPositionInsteadOfIndex", usePointPositionInsteadOfIndex);
+
 		section->AddBool("useSmallWhiteCorona", useSmallWhiteCorona);
+		section->AddFloat("smallWhiteCoronaScale", smallWhiteCoronaScale);
+		section->AddInt("smallWhiteCoronaTexture", smallWhiteCoronaTexture);
+
 		section->AddBool("freezeLights", freezeLights);
 
 		section->AddBool("useFlare", useFlare);
@@ -197,6 +211,8 @@ public:
 		section->AddFloat("flareIntensity", flareIntensity);
 
 		section->AddFloat("curve", curve);
+
+		section->AddInt("coronaTexture", coronaTexture);
 
 		return section;
 	}
@@ -213,6 +229,8 @@ public:
 		renderShadow = section->GetBool("renderShadow", renderShadow);
 		shadowIntensity = section->GetFloat("shadowIntensity", shadowIntensity);
 		shadowSize = section->GetFloat("shadowSize", shadowSize);
+		shadowPositionX = section->GetFloat("shadowPositionX", shadowPositionX);
+		shadowPositionY = section->GetFloat("shadowPositionY", shadowPositionY);
 
 		renderPointLight = section->GetBool("renderPointLight", renderPointLight);
 		pointLightIntensity = section->GetFloat("pointLightIntensity", pointLightIntensity);
@@ -224,7 +242,11 @@ public:
 		distance = section->GetFloat("distance", distance);
 		type = (eLightGroupType)section->GetInt("type", (int)type);
 		usePointPositionInsteadOfIndex = section->GetBool("usePointPositionInsteadOfIndex", usePointPositionInsteadOfIndex);
+		
 		useSmallWhiteCorona = section->GetBool("useSmallWhiteCorona", useSmallWhiteCorona);
+		smallWhiteCoronaScale = section->GetFloat("smallWhiteCoronaScale", smallWhiteCoronaScale);
+		smallWhiteCoronaTexture = section->GetInt("smallWhiteCoronaTexture", smallWhiteCoronaTexture);
+		
 		freezeLights = section->GetBool("freezeLights", freezeLights);
 
 		useFlare = section->GetBool("useFlare", useFlare);
@@ -232,5 +254,7 @@ public:
 		flareIntensity = section->GetFloat("flareIntensity", flareIntensity);
 
 		curve = section->GetFloat("curve", curve);
+
+		coronaTexture = section->GetInt("coronaTexture", coronaTexture);
 	}
 };

@@ -47,6 +47,15 @@
       <Filter>windows</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="windows\WindowWhiteCorona.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowShadow.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowPointLight.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -116,6 +125,15 @@
       <Filter>windows</Filter>
     </ClInclude>
     <ClInclude Include="opcodes.h" />
+    <ClInclude Include="windows\WindowWhiteCorona.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowShadow.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowPointLight.h">
+      <Filter>windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\info.txt">

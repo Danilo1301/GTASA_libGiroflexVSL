@@ -48,5 +48,7 @@ enum eDrawInfoType {
     CAR_GET_ID,
     CAR_SET_TO_REMOVE,
 
-    MENU_OFFSET_X
+    MENU_OFFSET_X,
+
+    CORONA_SHADOW_OFFSET_Y
 };

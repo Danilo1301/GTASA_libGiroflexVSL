@@ -24,10 +24,10 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.4.0";
+char Mod::Version[256] = "2.5.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
-eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_60;
+eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO;
 uintptr_t Mod::pVehiclePool = 0;
 void* Mod::hGTASA = 0;
 
@@ -313,7 +313,7 @@ extern "C" void OnModLoad()
 
     Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
     Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
-    Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"); ///wtf, why did I do that
+    Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE");
 
     
 

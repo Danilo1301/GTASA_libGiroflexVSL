@@ -80,13 +80,12 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
     {
         auto vel = Vehicles::GetVehicleByHandle(renderCorona->car)->velocity;
         auto dt = Mod::m_DeltaTime;
-        auto probFps = 1000 / dt;
 
-        float fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
-        if (!Mod::CoronaFixFPS == eCoronaFixFPS::FPS_AUTO)
+        auto probFps = 1000.0f / (float)dt;
+        auto fixScale = probFps + 10.0f; //60fps = 70.0, 30fps = 40.0
+        //if (!Mod::CoronaFixFPS == eCoronaFixFPS::FPS_AUTO) why
+        switch (Mod::CoronaFixFPS)
         {
-            switch (Mod::CoronaFixFPS)
-            {
             case eCoronaFixFPS::FPS_30:
                 fixScale = 40;
                 break;
@@ -98,7 +97,6 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
                 break;
             default:
                 break;
-            }
         }
 
         position.x += vel.x / fixScale;
@@ -125,7 +123,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
             { position.x, position.y, position.z },
             0.0f,
             1000.0f,
-            0,
+            renderCorona->coronaTexture,
             1,
             true,
             false,
@@ -150,7 +148,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
         { position.x, position.y, position.z },
         renderCorona->radius,
         1000.0f,
-        0,
+        renderCorona->coronaTexture,
         0,
         true,
         false,
@@ -425,24 +423,31 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
     {
         if (coronaIdExceeds) return;
 
-        auto offset = Vehicles::m_CoronasToRender[id].offset;
+        auto& renderCorona = Vehicles::m_CoronasToRender[id];
 
+        auto dir = (renderCorona.offset.x > 0) ? 1 : -1;
         float margin = 0.15f;
-        float distance = abs(offset.x);
+        float distance = abs(renderCorona.offset.x);
 
-        if (distance < margin)
+        result->f = renderCorona.offset.x + (dir * renderCorona.shadowOffsetX);
+
+        if (distance > margin)
         {
-            result->f = offset.x;
+            result->f += (dir * renderCorona.shadowSize / 2);
         }
-        else {
-            auto dir = (offset.x > 0) ? 1 : -1;
-            result->f = offset.x + dir * Vehicles::m_CoronasToRender[id].shadowSize / 2;
-        }
-
 
         return;
     }
+    if (type == eDrawInfoType::CORONA_SHADOW_OFFSET_Y)
+    {
+        if (coronaIdExceeds) return;
 
+        auto& renderCorona = Vehicles::m_CoronasToRender[id];
+
+        result->f = renderCorona.offset.y + renderCorona.shadowOffsetY;
+
+        return;
+    }
     //
 
     if (type == eDrawInfoType::TOUCH_X)
@@ -529,8 +534,8 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
 
-    if (dt < 16) dt = 16;
-    if (dt > 30) dt = 30;
+    if (dt < 1) dt = 1;
+    if (dt > 40) dt = 40;
 
     //Log::file << "PROCESS_GIROFLEX_LIB dt=" << dt << std::endl;
 
@@ -568,6 +573,24 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
         Draw::DrawText(1, Vehicles::m_Vehicles.size(), 0, CVector2D(20, 320), CRGBA(255, 255, 0));
         Draw::DrawText(1, Draw::m_DrawItems.size(), 0, CVector2D(20, 340), CRGBA(255, 255, 0));
         Draw::DrawText(1, dt, 0, CVector2D(20, 360), CRGBA(255, 255, 0));
+
+        auto probFps = 1000.0f / (float)dt;
+        auto fixScale = probFps + 10.0f;
+        switch (Mod::CoronaFixFPS)
+        {
+        case eCoronaFixFPS::FPS_30:
+            fixScale = 40;
+            break;
+        case eCoronaFixFPS::FPS_45:
+            fixScale = 55;
+            break;
+        case eCoronaFixFPS::FPS_60:
+            fixScale = 70;
+            break;
+        default:
+            break;
+        }
+        Draw::DrawText(1, (int)fixScale, 0, CVector2D(20, 380), CRGBA(255, 240, 0));
     }
 
     Mod::m_PrevDeltaTime = dt;

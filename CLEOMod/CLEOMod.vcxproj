@@ -58,7 +58,10 @@
     <ClCompile Include="windows\WindowFlare.cpp" />
     <ClCompile Include="windows\WindowLightGroups.cpp" />
     <ClCompile Include="windows\WindowMain.cpp" />
+    <ClCompile Include="windows\WindowPointLight.cpp" />
     <ClCompile Include="windows\WindowSettings.cpp" />
+    <ClCompile Include="windows\WindowShadow.cpp" />
+    <ClCompile Include="windows\WindowWhiteCorona.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eDrawInfoType.h" />
@@ -91,7 +94,10 @@
     <ClInclude Include="windows\WindowFlare.h" />
     <ClInclude Include="windows\WindowLightGroups.h" />
     <ClInclude Include="windows\WindowMain.h" />
+    <ClInclude Include="windows\WindowPointLight.h" />
     <ClInclude Include="windows\WindowSettings.h" />
+    <ClInclude Include="windows\WindowShadow.h" />
+    <ClInclude Include="windows\WindowWhiteCorona.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\info.txt" />

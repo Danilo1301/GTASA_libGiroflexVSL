@@ -13,6 +13,8 @@ struct RenderCorona {
 	bool renderShadow = false;
 	float shadowIntensity = 1.0f;
 	float shadowSize = 5.0f;
+	float shadowOffsetX = 0.0f;
+	float shadowOffsetY = 0.0f;
 
 	bool renderPointLight = false;
 	float pointLightIntensity = 1.0f;
@@ -23,6 +25,8 @@ struct RenderCorona {
 	bool useFlare = false;
 	float flareIntensity = 1.00f;
 	float flareDistance = 1.00f;
+
+	int coronaTexture = 0;
 };
 
 class Vehicles {

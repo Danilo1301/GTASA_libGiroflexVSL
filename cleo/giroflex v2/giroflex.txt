@@ -55,6 +55,7 @@ const
     eDrawInfoType_CAR_GET_ID = 39
     eDrawInfoType_CAR_SET_TO_REMOVE = 40
     eDrawInfoType_MENU_OFFSET_X = 41
+    eDrawInfoType_CORONA_SHADOW_OFFSET_Y = 42
 end
 
 const
@@ -136,7 +137,7 @@ end
 //----------------------------------------------------
 
 :MAIN
-wait 0
+
 
 /*
 03F0: enable_text_draw 1
@@ -168,6 +169,8 @@ gosub @RENDER_CORONAS
 0EF8: MenuOffsetX = get_draw_item_info eDrawInfoType_MENU_OFFSET_X id 0
 
 gosub @DRAW_ITEMS
+
+wait 0
 
 jump @MAIN
 
@@ -320,7 +323,7 @@ while VAR_Integer1 < VAR_Integer2
         if VAR_Num1 == 1
         then
             0EF8: VAR_PosX = get_draw_item_info eDrawInfoType_CORONA_SHADOW_OFFSET_X id VAR_Integer1
-            0EF8: VAR_PosY = get_draw_item_info eDrawInfoType_CORONA_OFFSET_Y id VAR_Integer1
+            0EF8: VAR_PosY = get_draw_item_info eDrawInfoType_CORONA_SHADOW_OFFSET_Y id VAR_Integer1
             0EF8: VAR_PosZ = get_draw_item_info eDrawInfoType_CORONA_OFFSET_Z id VAR_Integer1
             0407: store_coords_to VAR_VehX VAR_VehY VAR_VehZ from_car VAR_Veh with_offset VAR_PosX VAR_PosY VAR_PosZ
         
@@ -767,5 +770,13 @@ end
 if VAR_GxtId == 71
 then
      VAR_STR_1 = "DGFX71"
+end
+if VAR_GxtId == 72
+then
+     VAR_STR_1 = "DGFX72"
+end
+if VAR_GxtId == 73
+then
+     VAR_STR_1 = "DGFX73"
 end
 return
