@@ -15,6 +15,7 @@
 #include "eDrawInfoType.h"
 #include "Input.h"
 #include "Patterns.h"
+#include "ModelInfos.h"
 
 #include "menu/Draw.h"
 #include "menu/Menu.h"
@@ -80,13 +81,31 @@ void Mod::SaveCfg()
 
 void Mod::ProcessTouch()
 {
-    if (Input::GetTouchIdState(3) && Input::GetTouchIdState(5))
+    if (Input::GetTouchIdState(5) && Input::GetTouchIdState(9))
     {
-        if (Input::GetTouchIdPressTime(3) > 500 && canTurnPanelOn)
+        if (Input::GetTouchIdPressTime(5) > 500 && Input::GetTouchIdPressTime(9) > 500)
         {
-            canTurnPanelOn = false;
 
-            WindowPanel::Toggle(!WindowPanel::Visible);
+            if (IsPlayerInAnyVehicle())
+            {
+                auto veh = Mod::GetPlayerVehicle();
+
+                if (ModelInfos::HasModelInfo(veh->modelId))
+                {
+                    if (canTurnPanelOn)
+                    {
+                        canTurnPanelOn = false;
+
+                        WindowPanel::Toggle(!WindowPanel::Visible);
+                    }
+                }
+                else {
+                    Menu::ShowPopup(16, 0, 0, 1000);
+                }
+            }
+            else {
+                Menu::ShowPopup(16, 0, 0, 1000);
+            }
         }
     }
     else {

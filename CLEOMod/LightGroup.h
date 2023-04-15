@@ -126,6 +126,12 @@ public:
 
 			ePointPosition pos = ePointPosition::LEFT;
 
+			if (type == eLightGroupType::TWO_LIGHTS)
+			{
+				if (i == 0) pos = ePointPosition::LEFT;
+				if (i == 1) pos = ePointPosition::RIGHT;
+			}
+
 			if (type == eLightGroupType::FIVE_LIGHTS)
 			{
 				if (i == 2) pos = ePointPosition::CENTER;
