@@ -196,6 +196,10 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     //=====================
 
     //1
+    auto lightSlotId = window->AddIntRange(75, &lightGroup->lightSlotId, 0, 3, 1);
+    lightSlotId->holdToChange = false;
+
+    //2
     auto button_duplicate = window->AddButton(59);
     button_duplicate->onClick = [window, lightGroup, modelId]()
     {
@@ -219,7 +223,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         });
     };
 
-    //2
+    //3
     auto button_delete = window->AddButton(42, CRGBA(170, 70, 70));
     button_delete->onClick = [window, lightGroup, modelId]()
     {
@@ -234,4 +238,6 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
 
         });
     };
+
+
 }

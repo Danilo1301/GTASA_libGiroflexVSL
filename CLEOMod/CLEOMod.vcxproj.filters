@@ -56,6 +56,9 @@
     <ClCompile Include="windows\WindowPointLight.cpp">
       <Filter>windows</Filter>
     </ClCompile>
+    <ClCompile Include="windows\WindowPanel.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -132,6 +135,9 @@
       <Filter>windows</Filter>
     </ClInclude>
     <ClInclude Include="windows\WindowPointLight.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowPanel.h">
       <Filter>windows</Filter>
     </ClInclude>
   </ItemGroup>

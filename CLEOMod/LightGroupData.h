@@ -14,6 +14,7 @@ public:
 	PatternLoop* stepLoop = new PatternLoop();
 	LightGroup* lightGroup;
 	int hVehicle;
+	bool lightsOn = true;
 
 	LightGroupData(LightGroup* lightGroup, int hVehicle)
 	{

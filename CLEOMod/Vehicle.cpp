@@ -149,6 +149,8 @@ void Vehicle::Update(int dt)
 
             if (lightGroup->freezeLights) enabled = true;
 
+            if (!lightGroupData->lightsOn) enabled = false;
+
             if (WindowEditing::FreezeLights) enabled = true;
 
             if (WindowEditing::ShowCurrentEditingLightGroup)
@@ -209,12 +211,9 @@ void Vehicle::Update(int dt)
     }
 }
 
-/*
 
 std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
 {
-	std::cout << "GetLightGroupsData" << std::endl;
-
 	std::vector<LightGroupData*> lightGroupDataList;
 
 	if (!ModelInfos::HasModelInfo(this->modelId)) return lightGroupDataList;
@@ -223,22 +222,26 @@ std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
 
 	for (auto lightGroup : modelInfo->lightGroups)
 	{
-		if (!LightGroupDatas::HasLightGroupData(lightGroup)) continue;
+        auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, this->hVehicle);
 
-		lightGroupDataList.push_back(LightGroupDatas::m_LightGroupDatas[lightGroup]);
+        lightGroupDataList.push_back(lightGroupData);
 	}
 
 	return lightGroupDataList;
 }
-*/
 
 void Vehicle::SetGiroflexEnabled(bool enabled)
 {
 	lightsPaused = !enabled;
 	lightsOn = enabled;
 
-	/*
 	auto lightGroupDataList = GetLightGroupsData();
+    for (auto lightGroupData : lightGroupDataList)
+    {
+        lightGroupData->lightsOn = enabled;
+    }
+
+	/*
 
 	std::cout << "lightGroupDataList " << lightGroupDataList.size() << std::endl;
 

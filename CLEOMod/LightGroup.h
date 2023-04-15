@@ -58,7 +58,7 @@ public:
 
 	int coronaTexture = 0;
 
-
+	int lightSlotId = 0;
 
 	void ChangeDistance(float distance)
 	{
@@ -214,6 +214,8 @@ public:
 
 		section->AddInt("coronaTexture", coronaTexture);
 
+		section->AddInt("lightSlotId", lightSlotId);
+
 		return section;
 	}
 
@@ -256,5 +258,7 @@ public:
 		curve = section->GetFloat("curve", curve);
 
 		coronaTexture = section->GetInt("coronaTexture", coronaTexture);
+
+		lightSlotId = section->GetInt("lightSlotId", lightSlotId);
 	}
 };

@@ -24,7 +24,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.5.0";
+char Mod::Version[256] = "2.6.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO;
@@ -49,6 +49,7 @@ uintptr_t pGTASA = 0;
 unsigned int uniqueLightId = 65487;
 
 bool canTurnSirenOn = true;
+bool canTurnPanelOn = true;
 
 ConfigEntry* cfgMenuOffsetX = NULL;
 ConfigEntry* cfgTimeBetweenPatterns = NULL;
@@ -79,6 +80,19 @@ void Mod::SaveCfg()
 
 void Mod::ProcessTouch()
 {
+    if (Input::GetTouchIdState(3) && Input::GetTouchIdState(5))
+    {
+        if (Input::GetTouchIdPressTime(3) > 500 && canTurnPanelOn)
+        {
+            canTurnPanelOn = false;
+
+            WindowPanel::Toggle(!WindowPanel::Visible);
+        }
+    }
+    else {
+        canTurnPanelOn = true;
+    }
+
     if (Input::GetTouchIdState(6) && Input::GetTouchIdState(5))
     {
         if (Input::GetTouchIdPressTime(6) > 500)

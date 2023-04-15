@@ -5,6 +5,7 @@
 #include "Vehicles.h"
 #include "Mod.h"
 #include "Input.h"
+#include "windows/WindowPanel.h"
 
 #define __decl_op(__name, __int)	const char* NAME_##__name = #__name; const uint16_t OP_##__name = __int;
 
@@ -132,7 +133,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
             false,
             renderCorona->nearClip,
             0,
-            200.0f,
+            10000.0f,
             false,
             false
         );
@@ -157,7 +158,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
         false,
         renderCorona->nearClip,
         0,
-        200.0f,
+        10000.0f,
         false,
         false
     );
@@ -561,6 +562,10 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
 
     WindowSettings::Update();
     WindowSettings::Draw();
+
+    WindowPanel::Update();
+    WindowPanel::Draw();
+
     Menu::Draw();
 
     Mod::ProcessTouch();

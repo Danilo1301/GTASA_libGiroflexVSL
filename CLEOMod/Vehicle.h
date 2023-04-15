@@ -21,7 +21,7 @@ public:
 	void Destroy();
 	void Update(int dt);
 
-	//std::vector<LightGroupData*> GetLightGroupsData();
+	std::vector<LightGroupData*> GetLightGroupsData();
 
 	void SetGiroflexEnabled(bool enabled);
 };

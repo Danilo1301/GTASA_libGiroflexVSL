@@ -121,6 +121,22 @@ public:
         this->x = x;
         this->y = y;
     }
+
+    CVector2D operator+(const CVector2D vec)
+    {
+        CVector2D result(this->x, this->y);
+        result.x += vec.x;
+        result.y += vec.y;
+        return result;
+    }
+
+    CVector2D operator-(const CVector2D vec)
+    {
+        CVector2D result(this->x, this->y);
+        result.x -= vec.x;
+        result.y -= vec.y;
+        return result;
+    }
 };
 
 class CVehicle {

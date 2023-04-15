@@ -21,6 +21,10 @@ public:
 		Reset();
 	}
 
+	void ChangeStep() {
+		
+	}
+
 	bool HasNoSteps()
 	{
 		return Steps.size() == 0;

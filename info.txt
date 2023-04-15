@@ -47,6 +47,14 @@ Todo
 [X] FIX: add negative curve
 [X] FIX: bug lights speed with high fps
 
+[2.5.0]
+[X] ADD: option to move shadows
+[X] ADD: option to change corona textures
+[X] CHANGE: layout
+
+[2.6.0]
+[X] ADD: panel for changing/toggling patterns and lights
+
 Others:
 
 [ ] FIX: vehicle never gets deleted '-'

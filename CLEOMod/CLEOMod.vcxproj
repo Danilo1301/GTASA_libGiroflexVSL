@@ -58,6 +58,7 @@
     <ClCompile Include="windows\WindowFlare.cpp" />
     <ClCompile Include="windows\WindowLightGroups.cpp" />
     <ClCompile Include="windows\WindowMain.cpp" />
+    <ClCompile Include="windows\WindowPanel.cpp" />
     <ClCompile Include="windows\WindowPointLight.cpp" />
     <ClCompile Include="windows\WindowSettings.cpp" />
     <ClCompile Include="windows\WindowShadow.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="windows\WindowFlare.h" />
     <ClInclude Include="windows\WindowLightGroups.h" />
     <ClInclude Include="windows\WindowMain.h" />
+    <ClInclude Include="windows\WindowPanel.h" />
     <ClInclude Include="windows\WindowPointLight.h" />
     <ClInclude Include="windows\WindowSettings.h" />
     <ClInclude Include="windows\WindowShadow.h" />
