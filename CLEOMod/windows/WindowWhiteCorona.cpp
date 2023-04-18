@@ -19,4 +19,10 @@ void WindowWhiteCorona::Create(Window* parent, LightGroup* lightGroup)
 
     auto coronaType = window->AddIntRange(73, &lightGroup->smallWhiteCoronaTexture, 0, 9, 1);
     coronaType->holdToChange = false;
+
+    auto button_color = window->AddButton(9);
+    button_color->AddColorIndicator(&lightGroup->smallWhiteCoronaColor);
+    button_color->onClick = [lightGroup, window]() {
+        Menu::AddColorMenu(window, &lightGroup->smallWhiteCoronaColor);
+    };
 }

@@ -133,7 +133,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
             false,
             renderCorona->nearClip,
             0,
-            10000.0f,
+            200.0f,
             false,
             false
         );

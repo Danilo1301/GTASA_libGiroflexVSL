@@ -89,12 +89,12 @@ void INISection::AddBool(std::string key, bool value)
     //file << key << " = " << (value ? "true" : "false") << std::endl;
 }
 
-CVector INISection::GetCVector(std::string key)
+CVector INISection::GetCVector(std::string key, CVector defaultValue)
 {
     return CVector(
-        GetFloat(key + ".x", 0),
-        GetFloat(key + ".y", 0),
-        GetFloat(key + ".z", 0)
+        GetFloat(key + ".x", defaultValue.x),
+        GetFloat(key + ".y", defaultValue.y),
+        GetFloat(key + ".z", defaultValue.z)
     );
 }
 
@@ -105,13 +105,13 @@ void INISection::AddCVector(std::string key, CVector value)
     AddFloat(key + ".z", value.z);
 }
 
-CRGBA INISection::GetCRGBA(std::string key)
+CRGBA INISection::GetCRGBA(std::string key, CRGBA defaultValue)
 {
     return CRGBA(
-        GetInt(key + ".r", 0),
-        GetInt(key + ".g", 0),
-        GetInt(key + ".b", 0),
-        GetInt(key + ".a", 0)
+        GetInt(key + ".r", defaultValue.r),
+        GetInt(key + ".g", defaultValue.g),
+        GetInt(key + ".b", defaultValue.b),
+        GetInt(key + ".a", defaultValue.a)
     );
 }
 

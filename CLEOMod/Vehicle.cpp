@@ -186,7 +186,7 @@ void Vehicle::Update(int dt)
                 RenderCorona corona2;
                 corona2.car = hVehicle;
                 corona2.id = lightId++;
-                corona2.color = CRGBA(255, 255, 255, corona.color.a);
+                corona2.color = lightGroup->smallWhiteCoronaColor;
                 corona2.offset = corona.offset;
                 corona2.radius = corona.radius * lightGroup->smallWhiteCoronaScale;
                 corona2.nearClip = corona.nearClip;

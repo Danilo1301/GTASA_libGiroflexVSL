@@ -59,6 +59,12 @@ void WindowPanel::Draw()
 
 	//
 
+
+	CRGBA COLOR_PANEL_BACKGROUND = CRGBA(45, 45, 45);
+	CRGBA COLOR_PANEL_BTN_OFF = CRGBA(70, 70, 70);
+	CRGBA COLOR_PANEL_BTN_LIGHT = CRGBA(109, 132, 91);
+	CRGBA COLOR_PANEL_BTN_DARK = CRGBA(127, 127, 127);
+
 	CVector2D panelPosition = CVector2D(10, 200);
 
 	CVector2D pos = panelPosition;
@@ -93,20 +99,23 @@ void WindowPanel::Draw()
 				margin + btnBigSize.x + margin,
 				margin + btnSmallSize.y + margin + btnBigSize.y + margin + btnBigSize.y + margin + btnSmallSize.y + margin
 			),
-			CRGBA(57, 64, 130)
+			COLOR_PANEL_BACKGROUND
 		);
 
 		// ON / OFF
 		CVector2D btnToggle_Pos = pos + CVector2D(margin, margin);
 		
+		bool lightsOn = demoLightGroupData ? demoLightGroupData->lightsOn : false;
+		if (!veh->lightsOn) lightsOn = false;
+
 		if (DrawButton(
-			demoLightGroupData ? (demoLightGroupData->lightsOn ? 17 : 18) : 67,
+			demoLightGroupData ? (lightsOn ? 17 : 18) : 67,
 			0,
 			0,
 			btnToggle_Pos,
 			btnSmallSize,
 			false,
-			demoLightGroupData ? (demoLightGroupData->lightsOn ? CRGBA(72, 124, 62) : CRGBA(191, 128, 124)) : CRGBA(85, 103, 127)
+			demoLightGroupData ? (lightsOn ? COLOR_PANEL_BTN_LIGHT : COLOR_PANEL_BTN_OFF) : COLOR_PANEL_BTN_OFF
 		))
 		{
 			bool newState = !demoLightGroupData->lightsOn;
@@ -129,7 +138,7 @@ void WindowPanel::Draw()
 			btnPattern_Pos,
 			btnBigSize,
 			false,
-			CRGBA(85, 103, 127)
+			COLOR_PANEL_BTN_LIGHT
 		))
 		{
 			for (auto lightGroup : lightGroups)
@@ -154,7 +163,7 @@ void WindowPanel::Draw()
 			btnStep_Pos,
 			btnBigSize,
 			false,
-			CRGBA(85, 103, 127)
+			COLOR_PANEL_BTN_LIGHT
 		))
 		{
 			bool newState = !demoLightGroupData->stepLoop->DontChangeSteps;
@@ -166,7 +175,6 @@ void WindowPanel::Draw()
 			}
 		}
 
-
 		// Manual / Auto
 		CVector2D btnMode_Pos = btnStep_Pos + CVector2D(0, margin) + CVector2D(0, btnBigSize.y);
 
@@ -177,7 +185,7 @@ void WindowPanel::Draw()
 			btnMode_Pos,
 			btnSmallSize,
 			false,
-			CRGBA(85, 103, 127)
+			COLOR_PANEL_BTN_DARK
 		))
 		{
 			bool newState = !demoLightGroupData->patternLoop->DontChangeSteps;

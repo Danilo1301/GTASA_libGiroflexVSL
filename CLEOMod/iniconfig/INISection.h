@@ -29,9 +29,9 @@ public:
     bool GetBool(std::string key, bool defaultValue);
 	void AddBool(std::string key, bool value);
 
-    CVector GetCVector(std::string key);
+    CVector GetCVector(std::string key, CVector defaultValue);
 	void AddCVector(std::string key, CVector value);
 
-    CRGBA GetCRGBA(std::string key);
+    CRGBA GetCRGBA(std::string key, CRGBA defaultValue);
 	void AddCRGBA(std::string key, CRGBA value);
 };

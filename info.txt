@@ -55,7 +55,12 @@ Todo
 [2.6.0]
 [X] ADD: panel for changing/toggling patterns and lights
 
+[2.6.1]
+[X] CHANGE: panel layout colors
+[X] ADD: option to change small corona color
+
 Others:
+
 
 [ ] FIX: vehicle never gets deleted '-'
 [ ] ADD: tipos diferentes de sequências, como estrobo/sinalização direita/sinalização esquerda/sinalização central para lado, ex https://youtu.be/Vz1lcUrjsUQ

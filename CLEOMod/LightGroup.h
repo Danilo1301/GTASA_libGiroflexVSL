@@ -47,6 +47,7 @@ public:
 	bool useSmallWhiteCorona = false;
 	float smallWhiteCoronaScale = 0.3f;
 	int smallWhiteCoronaTexture = 0;
+	CRGBA smallWhiteCoronaColor = CRGBA(255, 255, 255);
 
 	bool freezeLights = false;
 
@@ -209,6 +210,7 @@ public:
 		section->AddBool("useSmallWhiteCorona", useSmallWhiteCorona);
 		section->AddFloat("smallWhiteCoronaScale", smallWhiteCoronaScale);
 		section->AddInt("smallWhiteCoronaTexture", smallWhiteCoronaTexture);
+		section->AddCRGBA("smallWhiteCoronaColor", smallWhiteCoronaColor);
 
 		section->AddBool("freezeLights", freezeLights);
 
@@ -227,10 +229,10 @@ public:
 
 	void FromINISection(INISection* section)
 	{
-		offset = section->GetCVector("offset");
-		color1 = section->GetCRGBA("color1");
-		color2 = section->GetCRGBA("color2");
-		color3 = section->GetCRGBA("color3");
+		offset = section->GetCVector("offset", offset);
+		color1 = section->GetCRGBA("color1", color1);
+		color2 = section->GetCRGBA("color2", color2);
+		color3 = section->GetCRGBA("color3", color3);
 
 		radius = section->GetFloat("radius", radius);
 
@@ -254,6 +256,7 @@ public:
 		useSmallWhiteCorona = section->GetBool("useSmallWhiteCorona", useSmallWhiteCorona);
 		smallWhiteCoronaScale = section->GetFloat("smallWhiteCoronaScale", smallWhiteCoronaScale);
 		smallWhiteCoronaTexture = section->GetInt("smallWhiteCoronaTexture", smallWhiteCoronaTexture);
+		smallWhiteCoronaColor = section->GetCRGBA("smallWhiteCoronaColor", smallWhiteCoronaColor);
 		
 		freezeLights = section->GetBool("freezeLights", freezeLights);
 
