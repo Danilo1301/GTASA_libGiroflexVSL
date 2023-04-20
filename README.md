@@ -24,7 +24,8 @@ Vídeo: [Como instalar](https://www.youtube.com/watch?v=QWzTS0r7288)
 3. Jogue os arquivos .csa e .fxt em "/dentro da CLEO" para sua pasta CLEO
 
 ## Como usar
-Pressione os números imaginários [5 e 6](https://i.imgur.com/gUIXtPG_d.webp?maxwidth=1520&fidelity=grand) por 0.5s pra ligar/desligar, e por 1s para abrir o menu
+* Pressione os números imaginários 5 e 6 ([Exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
+* Painel: Pressione os números imaginários 5 e 9 ([Exemplo](https://imgur.com/LLddMfg)) por 0.5s
 
 ## Config
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
