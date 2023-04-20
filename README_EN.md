@@ -20,7 +20,8 @@ Vídeo: [How to install](https://www.youtube.com/watch?v=QWzTS0r7288)
 3. Move the .csa and .fxt files from "/dentro da CLEO" to your CLEO folder
 
 ## How to use
-Press the 'imaginary buttons' [5 and 6](https://i.imgur.com/gUIXtPG_d.webp?maxwidth=1520&fidelity=grand) for 0.5s to turn lights on/off, and for 1s to open menu
+* Press the 'imaginary buttons' 5 and 6 ([Example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off, and for 1s to open menu
+* Panel: press the 'imaginary buttons' 5 and 9 ([Example](https://imgur.com/LLddMfg)) for 0.5s
 
 ## Config
 Each vehicle has a .ini file where it stores its config<br>
