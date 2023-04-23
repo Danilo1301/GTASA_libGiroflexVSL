@@ -21,8 +21,9 @@ Vídeo: [Como instalar](https://www.youtube.com/watch?v=QWzTS0r7288)
 
 1. Baixe o .zip em [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
 2. Arraste o que estiver dentro da "/dentro da pasta do jogo" para a pasta do jogo
-3. Jogue os arquivos .csa e .fxt em "/dentro da CLEO" para sua pasta CLEO
-
+3. Jogue os arquivos .csa e .fxt da "/dentro da CLEO" para sua pasta CLEO
+4. Caso ainda não tenha feito, coloque as libs da parte "Necessário" dentro da pasta mods
+ 
 ## Como usar
 * Pressione os números imaginários 5 e 6 ([Exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
 * Painel: Pressione os números imaginários 5 e 9 ([Exemplo](https://imgur.com/LLddMfg)) por 0.5s
