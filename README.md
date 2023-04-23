@@ -20,7 +20,7 @@ Libs:<br>
 Vídeo: [Como instalar](https://www.youtube.com/watch?v=QWzTS0r7288)
 
 1. Baixe o .zip em [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
-2. Arraste o que estiver dentro da "/dentro da pasta do jogo" para a pasta do jogo
+2. Arraste o que estiver dentro da "/dentro da pasta do jogo" para a pasta do jogo (ex: /mods dentro de /Android/data/ro.samp_mobile.game/mods )
 3. Jogue os arquivos .csa e .fxt da "/dentro da CLEO" para sua pasta CLEO
 4. Caso ainda não tenha feito, coloque as libs da parte "Necessário" dentro da pasta mods
  
