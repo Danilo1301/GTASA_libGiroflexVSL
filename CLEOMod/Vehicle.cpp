@@ -62,7 +62,7 @@ void Vehicle::Update(int dt)
             Log::file << vehicleIdString << "Created LightGroupData with " << lightGroupData->patterns.size() << " patterns [global: " << LightGroupDatas::m_LightGroupDatas.size() << "]" << std::endl;
         }
 
-        if (!lightsOn) continue;
+        //if (!lightsOn) continue;
 
         LightGroupData* lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, hVehicle);
 
@@ -94,7 +94,7 @@ void Vehicle::Update(int dt)
 
        
         //
-        if (!lightsPaused)
+        //if (!lightsPaused)
         {
             lightGroupData->patternLoop->Update(dt);
 
@@ -147,9 +147,10 @@ void Vehicle::Update(int dt)
 
             bool enabled = lightGroupData->GetPointIsEnabled(point, index);
 
+            if (!lightGroupData->lightsOn) enabled = false;
+
             if (lightGroup->freezeLights) enabled = true;
 
-            if (!lightGroupData->lightsOn) enabled = false;
 
             if (WindowEditing::FreezeLights) enabled = true;
 
@@ -232,8 +233,9 @@ std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
 
 void Vehicle::SetGiroflexEnabled(bool enabled)
 {
-	lightsPaused = !enabled;
-	lightsOn = enabled;
+    prevLightsState = enabled;
+	//lightsPaused = !enabled;
+	//lightsOn = enabled;
 
 	auto lightGroupDataList = GetLightGroupsData();
     for (auto lightGroupData : lightGroupDataList)

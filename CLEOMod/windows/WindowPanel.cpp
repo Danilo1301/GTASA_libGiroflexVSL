@@ -106,7 +106,7 @@ void WindowPanel::Draw()
 		CVector2D btnToggle_Pos = pos + CVector2D(margin, margin);
 		
 		bool lightsOn = demoLightGroupData ? demoLightGroupData->lightsOn : false;
-		if (!veh->lightsOn) lightsOn = false;
+		//if (!veh->lightsOn) lightsOn = false;
 
 		if (DrawButton(
 			demoLightGroupData ? (lightsOn ? 17 : 18) : 67,

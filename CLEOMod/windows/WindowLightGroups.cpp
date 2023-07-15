@@ -10,6 +10,7 @@
 #include "../ModelInfos.h"
 #include "../LightGroupDatas.h"
 #include "../Vehicles.h"
+#include "../Mod.h"
 
 void WindowLightGroups::Create(Window* parent)
 {
@@ -98,6 +99,13 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         lightGroup->type = (eLightGroupType)option_giroflex->optionsValue;
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
         lightGroup->MakeLightGroup();
+
+        auto vehicle = Mod::GetPlayerVehicle();
+        if (vehicle)
+        {
+            vehicle->Update(0);
+            vehicle->SetGiroflexEnabled(true);
+        }
     };
 
     //2
@@ -125,11 +133,25 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         auto distance = posWindow->AddFloatRange(27, &lightGroup->distance, -10.0f, 10.0f, 0.01f);
         distance->onValueChange = [lightGroup]() {
             lightGroup->MakeLightGroup();
+
+            auto vehicle = Mod::GetPlayerVehicle();
+            if (vehicle)
+            {
+                vehicle->Update(0);
+                vehicle->SetGiroflexEnabled(true);
+            }
         };
 
         auto curve = posWindow->AddFloatRange(68, &lightGroup->curve, -1.0f, 1.0f, 0.0005f);
         curve->onValueChange = [lightGroup]() {
             lightGroup->MakeLightGroup();
+
+            auto vehicle = Mod::GetPlayerVehicle();
+            if (vehicle)
+            {
+                vehicle->Update(0);
+                vehicle->SetGiroflexEnabled(true);
+            }
         };
     };
     
@@ -140,6 +162,13 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     patternOffset->holdToChange = false;
     patternOffset->onValueChange = [lightGroup]() {
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
+
+        auto vehicle = Mod::GetPlayerVehicle();
+        if (vehicle)
+        {
+            vehicle->Update(0);
+            vehicle->SetGiroflexEnabled(true);
+        }
     };
     
     //2
@@ -214,10 +243,20 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
                 LightGroupDatas::RemoveLightGroupDataFromVehicle(pair.second->hVehicle);
             }
 
+            //enable again
+            auto vehicle = Mod::GetPlayerVehicle();
+            if (vehicle)
+            {
+                vehicle->Update(0);
+                vehicle->SetGiroflexEnabled(true);
+            }
+
             Menu::RemoveAllWindows();
 
             WindowMain::Remove();
             WindowMain::Create(modelId);
+
+            
         }, []() {
 
         });
@@ -230,10 +269,20 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         Menu::AddConfirmWindow(window, 47, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->RemoveLightGroup(lightGroup);
 
+            //enable lights again
+            auto vehicle = Mod::GetPlayerVehicle();
+            if (vehicle)
+            {
+                vehicle->Update(0);
+                vehicle->SetGiroflexEnabled(true);
+            }
+
             Menu::RemoveAllWindows();
 
             WindowMain::Remove();
             WindowMain::Create(modelId);
+
+            
         }, []() {
 
         });

@@ -128,7 +128,7 @@ void Mod::ProcessTouch()
             {
                 canTurnSirenOn = false;
 
-                vehicle->SetGiroflexEnabled(!vehicle->lightsOn);
+                vehicle->SetGiroflexEnabled(!vehicle->prevLightsState);
             }
 
             if (Input::GetTouchIdPressTime(6) > 1000)

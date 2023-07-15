@@ -59,6 +59,9 @@ Todo
 [X] CHANGE: panel layout colors
 [X] ADD: option to change small corona color
 
+[2.6.2]
+lights can now be enabled when siren is off (panel on/off fix)
+
 Others:
 
 

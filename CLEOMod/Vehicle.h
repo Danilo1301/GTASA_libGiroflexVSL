@@ -13,8 +13,9 @@ public:
 
 	bool canBeRemoved = false;
 
-	bool lightsOn = false;
-	bool lightsPaused = false;
+	bool prevLightsState = false;
+	//bool lightsOn = false;
+	//bool lightsPaused = false;
 
 	Vehicle(int hVehicle, int modelId);
 
