@@ -25,6 +25,7 @@ struct RenderCorona {
 	bool useFlare = false;
 	float flareIntensity = 1.00f;
 	float flareDistance = 1.00f;
+	int flareTexture = 0;
 
 	int coronaTexture = 0;
 };

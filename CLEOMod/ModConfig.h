@@ -14,4 +14,8 @@ public:
 	static void Load();
 	static void LoadPatterns();
 	static void LoadVehicles();
+
+	static std::string ReadVersionFile();
+	static void ProcessVersionChanges_PreConfigLoad();
+	static void ProcessVersionChanges_PostConfigLoad();
 };

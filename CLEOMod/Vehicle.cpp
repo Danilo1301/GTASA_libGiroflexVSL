@@ -177,6 +177,7 @@ void Vehicle::Update(int dt)
             corona.useFlare = lightGroup->useFlare;
             corona.flareIntensity = lightGroup->flareIntensity;
             corona.flareDistance = lightGroup->flareDistance;
+            corona.flareTexture = lightGroup->flareTexture;
             corona.coronaTexture = lightGroup->coronaTexture;
             Vehicles::AddCoronaToRender(corona);
 

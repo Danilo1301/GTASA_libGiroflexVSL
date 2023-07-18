@@ -59,8 +59,11 @@ Todo
 [X] CHANGE: panel layout colors
 [X] ADD: option to change small corona color
 
-[2.6.2]
-lights can now be enabled when siren is off (panel on/off fix)
+[2.7.0]
+[X] FIX: lights can now be enabled when siren is off (panel on/off fix)
+[X] ADD: 'version' file
+[X] ADD: 6 lights type
+[X] ADD: flare texture
 
 Others:
 

@@ -10,4 +10,9 @@ public:
 	static int m_TimeBetweenPatterns;
 
 	static Pattern* CreatePattern(std::string id);
+	static bool HasPattern(std::string name);
+	static Pattern* GetPatternById(std::string name);
+
+	static void CreateDefaultPatterns();
+
 };

@@ -54,6 +54,7 @@ public:
 	bool useFlare = false;
 	float flareIntensity = 1.00f;
 	float flareDistance = 100.0f;
+	int flareTexture = 1;
 
 	float curve = 0.0f;
 
@@ -95,6 +96,15 @@ public:
 			return color1;
 		}
 
+		if (type == eLightGroupType::SIX_LIGHTS)
+		{
+			if (index >= 3) {
+				return color2;
+			}
+
+			return color1;
+		}
+
 		if (type == eLightGroupType::TEN_LIGHTS)
 		{
 			if (index >= 5) {
@@ -118,6 +128,7 @@ public:
 		if (type == eLightGroupType::SINGLE_LIGHT) amountOfLights = 1;
 		if (type == eLightGroupType::TWO_LIGHTS) amountOfLights = 2;
 		if (type == eLightGroupType::FIVE_LIGHTS) amountOfLights = 5;
+		if (type == eLightGroupType::SIX_LIGHTS) amountOfLights = 6;
 		if (type == eLightGroupType::TEN_LIGHTS) amountOfLights = 10;
 
 		for (int i = 0; i < amountOfLights; i++)
@@ -137,6 +148,11 @@ public:
 			{
 				if (i == 2) pos = ePointPosition::CENTER;
 				if (i > 2) pos = ePointPosition::RIGHT;
+			}
+
+			if (type == eLightGroupType::SIX_LIGHTS)
+			{
+				if (i >= 3) pos = ePointPosition::RIGHT;
 			}
 
 			if (type == eLightGroupType::TEN_LIGHTS)
@@ -217,6 +233,7 @@ public:
 		section->AddBool("useFlare", useFlare);
 		section->AddFloat("flareDistance", flareDistance);
 		section->AddFloat("flareIntensity", flareIntensity);
+		section->AddFloat("flareTexture", flareTexture);
 
 		section->AddFloat("curve", curve);
 
@@ -263,6 +280,7 @@ public:
 		useFlare = section->GetBool("useFlare", useFlare);
 		flareDistance = section->GetFloat("flareDistance", flareDistance);
 		flareIntensity = section->GetFloat("flareIntensity", flareIntensity);
+		flareTexture = section->GetInt("flareTexture", flareTexture);
 
 		curve = section->GetFloat("curve", curve);
 

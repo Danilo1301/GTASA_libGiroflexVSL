@@ -125,7 +125,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
             0.0f,
             1000.0f,
             renderCorona->coronaTexture,
-            1,
+            renderCorona->flareTexture,
             true,
             false,
             0,
@@ -260,6 +260,9 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
         result->i = Vehicles::GetVehicleByVecIndex(id)->hVehicle;
         return;
     }
+    /*
+    * never gets called for some reason
+    */
     if (type == eDrawInfoType::CAR_SET_TO_REMOVE)
     {
         if (carIdExceeds) return;
@@ -267,12 +270,15 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
 
         if (!vehicle)
         {
-            Log::file << "Vehicle id " << id << " not found" << std::endl;
+            Log::file << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " not found" << std::endl;
             return;
         }
 
         vehicle->canBeRemoved = true;
-        Log::file << "Vehicle id " << id << " set to remove" << std::endl;
+        Log::file << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " set to remove" << std::endl;
+
+        result->i = id;
+
         return;
     }
 

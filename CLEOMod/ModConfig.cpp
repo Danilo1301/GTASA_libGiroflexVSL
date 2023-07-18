@@ -3,13 +3,14 @@
 #include "ModelInfos.h"
 #include "Patterns.h"
 #include "Log.h"
+#include "Mod.h"
+#include "LightGroupDatas.h"
 
 #include "mod/amlmod.h"
 #include "mod/logger.h"
 #include "mod/config.h"
 
 #include "iniconfig/INIFile.h"
-
 
 bool isDirExist(const std::string& path)
 {
@@ -248,4 +249,98 @@ void ModConfig::LoadVehicles()
             file.Destroy();
         }
     }
+}
+
+std::string ModConfig::ReadVersionFile()
+{
+    std::string prevVersion = "unknown";
+    std::string path = GetConfigFolder() + "/version";
+
+    std::ifstream file;
+    file.open(path);
+    if (file.good())
+    {
+        getline(file, prevVersion);
+    }
+    file.close();
+
+    return prevVersion;
+}
+
+void ModConfig::ProcessVersionChanges_PreConfigLoad()
+{
+    std::string prevVersion = ReadVersionFile();
+    std::string currentVersion = Mod::Version;
+
+    Log::file << "ModConfig: [PRE] Updating from " << prevVersion << " to " << currentVersion << std::endl;
+
+    if (prevVersion == "unknown")
+    {
+        prevVersion = "2.7.0";
+
+        auto patternsPath = GetConfigFolder() + "/patterns/";
+        remove((patternsPath + "10lights_1.ini").c_str());
+        remove((patternsPath + "10lights_2.ini").c_str());
+        remove((patternsPath + "10lights_3.ini").c_str());
+    }
+
+    /*
+    if (prevVersion == "2.7.0")
+    {
+        prevVersion = "2.";
+    }
+    */
+}
+
+void ModConfig::ProcessVersionChanges_PostConfigLoad()
+{
+    std::string prevVersion = ReadVersionFile();
+    std::string currentVersion = Mod::Version;
+
+    Log::file << "ModConfig: [POST] Updating from " << prevVersion << " to " << currentVersion << std::endl;
+
+    //--------------
+
+    if (prevVersion == "unknown")
+    {
+        prevVersion = "2.7.0";
+
+        Patterns::CreateDefaultPatterns();
+
+        /*
+        * changing 10 lights type from 3 (old) to 4
+        */
+        for (auto pairModelInfo : ModelInfos::m_ModelInfos)
+        {
+            auto modelInfo = pairModelInfo.second;
+
+            for (auto lightGroup : modelInfo->lightGroups)
+            {
+                if (lightGroup->type == eLightGroupType::SIX_LIGHTS)
+                {
+                    lightGroup->type = eLightGroupType::TEN_LIGHTS;
+                    lightGroup->MakeLightGroup();
+                }
+            }
+        }
+    }
+
+    /*
+    if (prevVersion == "2.7.0")
+    {
+        prevVersion = "2.";
+    }
+    */
+
+    //--------------
+
+
+    Log::file << "ModConfig: Saving version file" << std::endl;
+
+    std::string path = GetConfigFolder() + "/version";
+
+    std::fstream file;
+    file.open(path, std::fstream::out);
+    file << currentVersion;
+    file.close();
 }

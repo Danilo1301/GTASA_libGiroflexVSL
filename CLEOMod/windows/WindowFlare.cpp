@@ -18,4 +18,7 @@ void WindowFlare::Create(Window* parent, LightGroup* lightGroup)
     window->AddFloatRange(63, &lightGroup->flareDistance, 10.0f, 1000.0f, 0.2f);
 
     window->AddFloatRange(64, &lightGroup->flareIntensity, 0, 1, 0.01f);
+
+    auto flareTexture = window->AddIntRange(73, &lightGroup->flareTexture, 1, 2, 1);
+    flareTexture->holdToChange = false;
 }

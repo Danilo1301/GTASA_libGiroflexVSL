@@ -25,7 +25,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.6.1";
+char Mod::Version[256] = "2.7.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO;
@@ -361,171 +361,20 @@ extern "C" void OnModLoad()
 
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
 
-    Log::file << "Loaded" << std::endl;
+    Log::file << "Load" << std::endl;
 
-    
+    ModConfig::ProcessVersionChanges_PreConfigLoad();
 
     ModConfig::Load();
 
     if (Patterns::m_Patterns.size() == 0)
     {
-        auto pattern1 = Patterns::CreatePattern("1_lights-1");
-        pattern1->AddStep({ 0 }, 300);
-        pattern1->AddStep({ 1 }, 300);
-        /*
-        pattern.push({values: [0], time: 300});
-        pattern.push({values: [1], time: 300});
-        */
-
-        auto pattern2 = Patterns::CreatePattern("1_lights-2");
-        pattern2->AddStep({ 1 }, 80);
-        pattern2->AddStep({ 0 }, 80);
-        pattern2->AddStep({ 1 }, 80);
-        pattern2->AddStep({ 0 }, 600);
-        /*
-        pattern.push({values: [1], time: 80});
-        pattern.push({values: [0], time: 80});
-        pattern.push({values: [1], time: 80});
-        pattern.push({values: [0], time: 600});;
-        */
-
-        auto pattern3 = Patterns::CreatePattern("2_lights-1");
-        pattern3->AddStep({ 1, 0 }, 200);
-        pattern3->AddStep({ 0, 0 }, 200);
-        pattern3->AddStep({ 0, 1 }, 200);
-        pattern3->AddStep({ 0, 0 }, 200);
-        /*
-        pattern.push({values: [1, 0], time: 200});
-        pattern.push({values: [0, 0], time: 200});
-        pattern.push({values: [0, 1], time: 200});
-        pattern.push({values: [0, 0], time: 200});
-        */
-
-        auto pattern4 = Patterns::CreatePattern("2_lights-2");
-        pattern4->AddStep({ 1, 0 }, 100);
-        pattern4->AddStep({ 0, 0 }, 80);
-        pattern4->AddStep({ 1, 0 }, 100);
-        pattern4->AddStep({ 0, 0 }, 80);
-        pattern4->AddStep({ 1, 0 }, 100);
-        pattern4->AddStep({ 0, 0 }, 150);
-        pattern4->AddStep({ 0, 1 }, 100);
-        pattern4->AddStep({ 0, 0 }, 80);
-        pattern4->AddStep({ 0, 1 }, 100);
-        pattern4->AddStep({ 0, 0 }, 80);
-        pattern4->AddStep({ 0, 1 }, 100);
-        pattern4->AddStep({ 0, 0 }, 150);
-        /*
-        pattern.push({values: [1, 0], time: 100});
-        pattern.push({values: [0, 0], time: 80});
-        pattern.push({values: [1, 0], time: 100});
-        pattern.push({values: [0, 0], time: 80});
-        pattern.push({values: [1, 0], time: 100});
-        pattern.push({values: [0, 0], time: 150});
-        pattern.push({values: [0, 1], time: 100});
-        pattern.push({values: [0, 0], time: 80});
-        pattern.push({values: [0, 1], time: 100});
-        pattern.push({values: [0, 0], time: 80});
-        pattern.push({values: [0, 1], time: 100});
-        pattern.push({values: [0, 0], time: 150});
-        */
-
-        auto pattern5 = Patterns::CreatePattern("5_lights-1");
-        pattern5->AddStep({ 1, 0, 0, 0, 1 }, 100);
-        pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        pattern5->AddStep({ 0, 1, 0, 1, 0 }, 100);
-        pattern5->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        pattern5->AddStep({ 0, 0, 1, 0, 0 }, 100);
-        /*
-        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
-        */
-
-        auto pattern6 = Patterns::CreatePattern("5_lights-2");
-        pattern6->AddStep({ 1, 0, 0, 0, 1 }, 220);
-        pattern6->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        pattern6->AddStep({ 0, 0, 1, 0, 0 }, 100);
-        pattern6->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        /*
-        pattern.push({values: [1, 0, 0, 0, 1], time: 220});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        */
-
-        auto pattern7 = Patterns::CreatePattern("5_lights-3");
-        pattern7->AddStep({ 1, 1, 0, 0, 0 }, 150);
-        pattern7->AddStep({ 0, 0, 0, 1, 1 }, 150);
-        pattern7->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        pattern7->AddStep({ 1, 1, 0, 0, 0 }, 150);
-        pattern7->AddStep({ 0, 0, 0, 1, 1 }, 150);
-        pattern7->AddStep({ 0, 0, 0, 0, 0 }, 100);
-        /*
-        pattern.push({values: [1, 1, 0, 0, 0], time: 150});
-        pattern.push({values: [0, 0, 0, 1, 1], time: 150});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        pattern.push({values: [1, 1, 0, 0, 0], time: 150});
-        pattern.push({values: [0, 0, 0, 1, 1], time: 150});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 100});
-        */
-
-
-        auto pattern8 = Patterns::CreatePattern("5_lights-4");
-        pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
-        pattern8->AddStep({ 0, 1, 0, 1, 0 }, 100);
-        pattern8->AddStep({ 0, 0, 1, 0, 0 }, 100);
-        pattern8->AddStep({ 0, 1, 0, 1, 0 }, 100);
-        pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
-        pattern8->AddStep({ 0, 0, 0, 0, 0 }, 200);
-        /*
-        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
-        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
-        pattern.push({values: [0, 0, 1, 0, 0], time: 100});
-        pattern.push({values: [0, 1, 0, 1, 0], time: 100});
-        pattern.push({values: [1, 0, 0, 0, 1], time: 100});
-        pattern.push({values: [0, 0, 0, 0, 0], time: 200});
-        */
-
-        auto pattern_10lights_1 = Patterns::CreatePattern("10lights_1");
-        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 }, 100);
-        pattern_10lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
-
-        auto pattern_10lights_2 = Patterns::CreatePattern("10lights_2");
-        pattern_10lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 60);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
-        pattern_10lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
-
-        auto pattern_10lights_3 = Patterns::CreatePattern("10lights_3");
-        pattern_10lights_3->AddStep({ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 150);
-        pattern_10lights_3->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 150);
-
-        ModConfig::Save();
+        Patterns::CreateDefaultPatterns();
     }
+
+    ModConfig::ProcessVersionChanges_PostConfigLoad();
+
+    ModConfig::Save();
 
     //WindowMain::Create(523);
 

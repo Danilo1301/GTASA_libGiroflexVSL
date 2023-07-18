@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Editar posicao
 DGFX27 Distancia
 DGFX28 A
-DGFX29 Giroflex VSL v2.6.1 (Danilo1301)
+DGFX29 Giroflex VSL v2.7.0 (Danilo1301)
 DGFX30 Veiculo ID ~1~
 DGFX31 Fechar
 DGFX32 Info
@@ -73,4 +73,5 @@ DGFX72 Corona texture
 DGFX73 Textura
 DGFX74 Manual
 DGFX75 Painel slot ID
+DGFX76 6 luzes
 DGFX0 #.FXT DESATUALIZADO#
