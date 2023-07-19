@@ -147,10 +147,9 @@ void Vehicle::Update(int dt)
 
             bool enabled = lightGroupData->GetPointIsEnabled(point, index);
 
-            if (!lightGroupData->lightsOn) enabled = false;
-
             if (lightGroup->freezeLights) enabled = true;
 
+            if (!lightGroupData->lightsOn) enabled = false;
 
             if (WindowEditing::FreezeLights) enabled = true;
 

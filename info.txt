@@ -65,6 +65,15 @@ Todo
 [X] ADD: 6 lights type
 [X] ADD: flare texture
 
+[2.7.0 update 1]
+[] fix lights frozen not being able to turn off
+[] fix bug when creating new light (the light doesnt show up)
+[] change (in code): SIX_LIGHTS and TEN_LIGHTS to number during version update
+
+[ ] ADD: option to rotate shadows
+[ ] ADD: option to change shadow texture
+
+
 Others:
 
 
