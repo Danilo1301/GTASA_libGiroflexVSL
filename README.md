@@ -1,4 +1,4 @@
-# VehicleSirenLights - Mobile
+# Giroflex VSL (VehicleSirenLights
 
 [English version](https://github.com/Danilo1301/GTASA_libGiroflexVSL/blob/main/README_EN.md)
 
@@ -32,12 +32,6 @@ Vídeo: [Como instalar](https://www.youtube.com/watch?v=QWzTS0r7288)
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
 Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
-## Crash
-Caso haja algum crash, há um log que é gerado na sua pasta /configs/giroflex<br>
-( exemplo: em /Android/data/ro.samp_mobile.game/configs/giroflex/giroflex.log )<br>
-
-Se tiver algum problema você pode criar uma [Issue aqui](https://github.com/Danilo1301/GTASA_libGiroflex/issues) e me mandar o .log, ou deixar um comentário no yt
-
 ## Problemas
 
 ### Mods cleo sumiram do menu
@@ -48,3 +42,7 @@ Bastar ir no jogo, em Opções > Game e mudar a opção do CLEO LOCATION<br>
 * OLD CLEO (+CLEO) - com.rockstargames.gtasa / cleo / mod.csi
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
+
+### Menu muito pra esquerda
+
+Para mudar a posição do menu você precisa ativar o modo edição em: Options > Mods Settings > "Giroflex VSL - Edit mode"

@@ -316,7 +316,7 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
 
             for (auto lightGroup : modelInfo->lightGroups)
             {
-                if (lightGroup->type == eLightGroupType::SIX_LIGHTS)
+                if (lightGroup->type == 3) //3 is old TEN_LIGHTS (before 2.7.0)
                 {
                     lightGroup->type = eLightGroupType::TEN_LIGHTS;
                     lightGroup->MakeLightGroup();
