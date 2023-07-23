@@ -15,6 +15,8 @@ struct RenderCorona {
 	float shadowSize = 5.0f;
 	float shadowOffsetX = 0.0f;
 	float shadowOffsetY = 0.0f;
+	int shadowTexture = 3;
+	float shadowRotation = 0.0f;
 
 	bool renderPointLight = false;
 	float pointLightIntensity = 1.0f;

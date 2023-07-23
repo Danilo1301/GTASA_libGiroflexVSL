@@ -455,6 +455,24 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
 
         return;
     }
+    if (type == eDrawInfoType::CORONA_SHADOW_TEXTURE_ID)
+    {
+        if (coronaIdExceeds) return;
+
+        auto& renderCorona = Vehicles::m_CoronasToRender[id];
+        result->i = renderCorona.shadowTexture;
+
+        return;
+    }
+    if (type == eDrawInfoType::CORONA_SHADOW_ROTATION)
+    {
+        if (coronaIdExceeds) return;
+
+        auto& renderCorona = Vehicles::m_CoronasToRender[id];
+        result->f = renderCorona.shadowRotation;
+
+        return;
+    }
     //
 
     if (type == eDrawInfoType::TOUCH_X)

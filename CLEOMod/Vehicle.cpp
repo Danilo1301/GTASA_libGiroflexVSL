@@ -166,12 +166,17 @@ void Vehicle::Update(int dt)
             corona.radius = enabled ? lightGroup->radius : 0.0f;
             corona.renderShadow = enabled ? lightGroup->renderShadow : false;
             corona.renderPointLight = enabled ? lightGroup->renderPointLight : false;
+
             corona.shadowIntensity = lightGroup->shadowIntensity;
             corona.shadowSize = lightGroup->shadowSize;
             corona.shadowOffsetX = lightGroup->shadowPositionX;
             corona.shadowOffsetY = lightGroup->shadowPositionY;
+            corona.shadowTexture = lightGroup->shadowTexture;
+            corona.shadowRotation = lightGroup->shadowRotation;
+
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;
+
             corona.nearClip = lightGroup->nearClip;
             corona.useFlare = lightGroup->useFlare;
             corona.flareIntensity = lightGroup->flareIntensity;

@@ -29,6 +29,8 @@ public:
 	float shadowSize = 5.0f;
 	float shadowPositionX = 0.0f;
 	float shadowPositionY = 0.0f;
+	int shadowTexture = 3;
+	float shadowRotation = 0.0f;
 
 	bool renderPointLight = true;
 	float pointLightIntensity = 1.00f;
@@ -44,7 +46,7 @@ public:
 
 	bool usePointPositionInsteadOfIndex = false;
 
-	bool useSmallWhiteCorona = false;
+	bool useSmallWhiteCorona = true;
 	float smallWhiteCoronaScale = 0.3f;
 	int smallWhiteCoronaTexture = 0;
 	CRGBA smallWhiteCoronaColor = CRGBA(255, 255, 255);
@@ -211,6 +213,8 @@ public:
 		section->AddFloat("shadowSize", shadowSize);
 		section->AddFloat("shadowPositionX", shadowPositionX);
 		section->AddFloat("shadowPositionY", shadowPositionY);
+		section->AddInt("shadowTexture", shadowTexture);
+		section->AddFloat("shadowRotation", shadowRotation);
 
 		section->AddBool("renderPointLight", renderPointLight);
 		section->AddFloat("pointLightIntensity", pointLightIntensity);
@@ -258,6 +262,8 @@ public:
 		shadowSize = section->GetFloat("shadowSize", shadowSize);
 		shadowPositionX = section->GetFloat("shadowPositionX", shadowPositionX);
 		shadowPositionY = section->GetFloat("shadowPositionY", shadowPositionY);
+		shadowTexture = section->GetInt("shadowTexture", shadowTexture);
+		shadowRotation = section->GetFloat("shadowRotation", shadowRotation);
 
 		renderPointLight = section->GetBool("renderPointLight", renderPointLight);
 		pointLightIntensity = section->GetFloat("pointLightIntensity", pointLightIntensity);
