@@ -9,16 +9,16 @@ Libs:<br>
 * AML - (libAML.so) (already inside .zip)
 * SA Utils - (libSAUtils.so) (already inside .zip)
 
-( those libs are all inside the .zip file, in 'libs necessárias', you just have to copy the .so files inside your /mods folder )<br>
+( those libs are all inside the .zip file, in '/required libs', you just have to copy the .so files inside your /mods folder )<br>
 ( example: inside /Android/data/ro.samp_mobile.game/mods )<br>
 
 ## How to install
 Vídeo: [How to install](https://www.youtube.com/watch?v=QWzTS0r7288)
 
 1. Download the .zip file in [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
-2. Move the files from "/dentro da pasta do jogo" to your game folder
-3. Move the .csa and .fxt files from "/dentro da CLEO" to your CLEO folder
-4. If you haven't done yet, move the libs from "libs necessárias" inside your mods folder
+2. Move the files from "/inside game folder" to your game folder (inside your mods folder)
+3. Move the .csa and .fxt files from "/inside CLEO" to your CLEO folder
+4. If you haven't done yet, move the libs from "/required libs" inside your mods folder
 
 ## How to use
 * Press the 'imaginary buttons' 5 and 6 ([Example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off, and for 1s to open menu
