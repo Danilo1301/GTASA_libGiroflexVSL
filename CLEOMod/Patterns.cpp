@@ -175,7 +175,7 @@ void Patterns::CreateDefaultPatterns()
         */
     }
 
-    if (!Patterns::HasPattern("6_lights-1"))
+    if (!Patterns::HasPattern("5_lights-4"))
     {
         auto pattern8 = Patterns::CreatePattern("5_lights-4");
         pattern8->AddStep({ 1, 0, 0, 0, 1 }, 100);
