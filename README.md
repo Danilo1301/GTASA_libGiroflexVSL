@@ -4,29 +4,24 @@
 
 <br>
 
-## Necessário
-* Apk com FLA 6.5 ou superior (com suporte a AML)
+## Instalação
+* Apk necessário: GTA SA com FLA 6.5 ou superior (com suporte a AML)
+* Libs necessárias:
+  * AML (https://github.com/RusJJ/AndroidModLoader)
+  * SAUtils (https://github.com/AndroidModLoader/SAUtils)
+  * CLEO Mod (https://github.com/AndroidModLoader/GTA_CLEOMod)
 
-Libs:<br>
-
-* CLEO - (libCLEOMod.so) (vem dentro do .zip)
-* AML - (libAML.so) (vem dentro do .zip)
-* SA Utils - (libSAUtils.so) (vem dentro do .zip)
-
-( vem dentro do .zip, em 'libs necessárias', basta apenas jogar os arquivos .so dentro da sua pasta /mods )<br>
+( as libs já vem dentro do .zip, em 'libs necessárias', basta apenas jogar os arquivos .so dentro da sua pasta /mods )<br>
 ( exemplo: para /Android/data/ro.samp_mobile.game/mods )<br>
 
-## Como instalar
-Vídeo: [Como instalar](https://www.youtube.com/watch?v=QWzTS0r7288)
-
 1. Baixe o .zip em [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
-2. Arraste o que estiver dentro da "/dentro da pasta do jogo" para a pasta do jogo (ex: /mods dentro de /Android/data/ro.samp_mobile.game/mods )
-3. Jogue os arquivos .csa e .fxt da "/dentro da CLEO" para sua pasta CLEO
-4. Caso ainda não tenha feito, coloque as libs da "libs necessárias" dentro da pasta mods
+2. Arraste o arquivo 'libGiroflex.so' da "/dentro da pasta do jogo" para sua pasta '/mods'
+3. Jogue os arquivos 'giroflex.csa' e 'giroflex.fxt' da "/dentro da CLEO" para onde você carrega seus mods cleo (csa, csi, fxt)
+4. Caso ainda não tenha feito, coloque as libs da "/libs necessárias" dentro da pasta '/mods'
  
 ## Como usar
-* Pressione os números imaginários 5 e 6 ([Exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
-* Painel: Pressione os números imaginários 5 e 9 ([Exemplo](https://imgur.com/LLddMfg)) por 0.5s
+* Pressione os números imaginários 5 e 6 ([exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
+* Painel: Pressione os números imaginários 5 e 9 ([exemplo](https://imgur.com/LLddMfg)) por 0.5s
 
 ## Config
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
