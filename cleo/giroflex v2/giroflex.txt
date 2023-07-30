@@ -111,6 +111,7 @@ const
     
     VAR_TextureID = 35@
     VAR_Rotation = 36@
+    VAR_VehRotation = 37@
         
 end
 
@@ -125,6 +126,9 @@ var
 
     VAR_PosX : Float = 0.0    
     MenuOffsetX : Float = 0.0
+    
+    VAR_Rotation : Float = 0.0
+    VAR_VehRotation : Float = 0.0
 end
 
 //----------------------------------------------------
@@ -338,7 +342,11 @@ while VAR_Integer1 < VAR_Integer2
             0EF8: VAR_Float1 = get_draw_item_info eDrawInfoType_CORONA_SHADOW_SIZE id VAR_Integer1
             0EF8: VAR_TextureID = get_draw_item_info eDrawInfoType_CORONA_SHADOW_TEXTURE_ID id VAR_Integer1
             0EF8: VAR_Rotation = get_draw_item_info eDrawInfoType_CORONA_SHADOW_ROTATION id VAR_Integer1
-            
+        
+            0174: VAR_VehRotation = car VAR_Veh Z_angle
+            VAR_VehRotation /= 360.0
+            VAR_Rotation += VAR_VehRotation
+
             016F: create_particle VAR_TextureID rotation_factor VAR_Rotation size VAR_Float1 intensity 255 flags VAR_ColorR VAR_ColorG VAR_ColorB at VAR_VehX VAR_VehY VAR_VehZ
         end
        
