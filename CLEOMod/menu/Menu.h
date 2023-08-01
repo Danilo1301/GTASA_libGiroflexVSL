@@ -11,6 +11,7 @@ struct MenuPopup
 	int val1 = 0;
 	int val2 = 0;
 	int timeLeft = 0;
+	float width = 200.0f;
 };
 
 class Menu {
@@ -31,7 +32,7 @@ public:
 	static Window* AddColorMenu(Window* parent, CRGBA* color);
 	static Window* AddConfirmWindow(Window* parent, int textGxtId, std::function<void()> ohYes, std::function<void()> ohNo);
 
-	static void ShowPopup(int gfxId, int val1, int val2, int time);
+	static void ShowPopup(int gfxId, int val1, int val2, int time, float width = 200.0f);
 
 	static void Update(int dt);
 	static void Draw();

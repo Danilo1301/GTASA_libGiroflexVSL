@@ -136,12 +136,13 @@ Window* Menu::AddConfirmWindow(Window* parent, int textGxtId, std::function<void
     return window;
 }
 
-void Menu::ShowPopup(int gfxId, int val1, int val2, int time)
+void Menu::ShowPopup(int gfxId, int val1, int val2, int time, float width)
 {
     m_PopUp->gfxId = gfxId;
     m_PopUp->val1 = val1;
     m_PopUp->val2 = val2;
     m_PopUp->timeLeft = time;
+    m_PopUp->width = width;
 }
 
 void Menu::Update(int dt)
@@ -176,7 +177,7 @@ void Menu::Draw()
         float titleH = 20;
         float hoxH = 60;
 
-        float w = 200;
+        float w = m_PopUp->width;
 
         CRGBA white = { 255, 255, 255, 255 };
 

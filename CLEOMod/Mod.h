@@ -19,7 +19,7 @@ public:
     static eCoronaFixFPS CoronaFixFPS;
     static uintptr_t pVehiclePool;
     static void* hGTASA;
-
+    static bool HasShownCredits;
     static CVector m_PlayerPos;
     static int hPlayerVehicle;
     static bool IsPlayerInAnyVehicle();

@@ -31,6 +31,7 @@ int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO;
 uintptr_t Mod::pVehiclePool = 0;
 void* Mod::hGTASA = 0;
+bool Mod::HasShownCredits = false;
 
 CVector Mod::m_PlayerPos = CVector(0, 0, 0);
 int Mod::hPlayerVehicle = -1;
@@ -227,33 +228,6 @@ extern "C" void OnModLoad()
 {
     Log::file << "Load..." << std::endl;
 
-    std::string cleoVersion = CheckModVersion(
-        { "net.rusjj.cleolib", "net.rusjj.cleomod" },
-        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3" }
-    );
-
-    std::string sautilsVersion = CheckModVersion(
-        { "net.rusjj.gtasa.utils" },
-        { "1.1", "1.2", "1.2.1", "1.3.0", "1.3.1" }
-    );
-
-    std::string amlVersion = CheckModVersion(
-        { "net.rusjj.aml" },
-        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6" }
-    );
-
-
-    /*
-      tested aml
-      1.0.0.0
-      1.0.0.6
-      tested cleo
-      2.0.1.3
-      2.0.1 2
-      2.0.1.1 ?
-      2.0.1  ?
-    */
-
     cfgMenuOffsetX = cfg->Bind("menu_offset_x", -195, "General");
     cfgTimeBetweenPatterns = cfg->Bind("time_between_patterns", Patterns::m_TimeBetweenPatterns, "General");
     cfgCoronaFpsFix = cfg->Bind("corona_fps_fix", Mod::CoronaFixFPS, "General");
@@ -264,14 +238,29 @@ extern "C" void OnModLoad()
 
     Mod::SaveCfg();
 
-    //cfg->Bind("pos.x", 45, "523");
-    //cfg->Save();
+    std::string cleoVersion = CheckModVersion(
+        { "net.rusjj.cleolib", "net.rusjj.cleomod" },
+        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3" }
+    );
+
+    std::string sautilsVersion = CheckModVersion(
+        { "net.rusjj.gtasa.utils" },
+        { "1.1", "1.2", "1.2.1", "1.3.0", "1.3.1", "1.4", "1.4.1" }
+    );
+
+    std::string amlVersion = CheckModVersion(
+        { "net.rusjj.aml" },
+        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6", "1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1" }
+    );
 
     Log::file << "------------------------" << std::endl;
+    Log::file << "Game: " << aml->GetCurrentGame() << std::endl;
     Log::file << "Giroflex version: " << Mod::Version << std::endl;
-    Log::file << "SAUtils version: " << sautilsVersion << "  (expected 1.3.1)" << std::endl;
-    Log::file << "AML version: " << amlVersion << "  (expected 1.0.0.6)" << std::endl;
-    Log::file << "CLEO version: " << cleoVersion << "  (expected 2.0.1.3)" << std::endl;
+
+    Log::file << "CLEO version: " << cleoVersion << "  (recommended 2.0.1.3)" << std::endl;
+    Log::file << "SAUtils version: " << sautilsVersion << "  (recommended 1.3.1)" << std::endl;
+    Log::file << "AML version: " << amlVersion << "  (recommended 1.0.3.1)" << std::endl;
+
     Log::file << "Config: " << aml->GetConfigPath() << std::endl;
 
     //CLEO
@@ -294,8 +283,7 @@ extern "C" void OnModLoad()
 
     Log::file << "------------------------" << std::endl;
 
-
-
+    Log::file << "------------------------" << std::endl;
 
     //opcodes
     Log::file << "Registering opcodes..." << std::endl;

@@ -274,6 +274,8 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
 
     Log::file << "ModConfig: [PRE] Updating from " << prevVersion << " to " << currentVersion << std::endl;
 
+    if (prevVersion == currentVersion) return;
+
     if (prevVersion == "unknown")
     {
         prevVersion = "2.7.0";
@@ -298,8 +300,8 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
     std::string currentVersion = Mod::Version;
 
     Log::file << "ModConfig: [POST] Updating from " << prevVersion << " to " << currentVersion << std::endl;
-
-    //--------------
+    
+    if (prevVersion == currentVersion) return;
 
     if (prevVersion == "unknown")
     {

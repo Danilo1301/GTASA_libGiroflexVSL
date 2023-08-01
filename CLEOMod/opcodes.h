@@ -622,8 +622,27 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
         Draw::DrawText(1, (int)fixScale, 0, CVector2D(20, 380), CRGBA(255, 240, 0));
     }
 
-    Mod::m_PrevDeltaTime = dt;
+    if (!Mod::HasShownCredits)
+    {
+        Mod::HasShownCredits = true;
 
+        /*
+        Log::file << "Show credits" << std::endl;
+
+        Menu::ShowPopup(29, 0, 0, 2500, 260.0f);
+        */
+
+        /*
+        char buffer[256];
+        sprintf(buffer, "Using Giroflex VSL v%s (by Danilo1301)", Mod::Version);
+        if (aml->HasModOfVersion("net.rusjj.aml", "1.0.2"))
+        {
+            aml->ShowToast(false, buffer);
+        }
+        */
+    }
+
+    Mod::m_PrevDeltaTime = dt;
 }
 
 static void RUN_TEST(__handler_params)
