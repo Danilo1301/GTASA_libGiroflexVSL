@@ -75,6 +75,11 @@ Todo
 [X] ADD: option to rotate shadows
 [X] CHANGE: set 'small white corona' enabled by default
 
+[2.8.0]
+[X] FIX: rastro das luzes
+
+
+[ ] bass stuff
 ---------------------------
 Others:
 

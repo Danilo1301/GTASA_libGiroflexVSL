@@ -21,6 +21,7 @@ void WindowSettings::Create(Window* parent)
 		window->GoToPrevWindow();
 	};
 
+	/*
 	auto options_fpscorona = window->AddOptions(71);
 	options_fpscorona->optionsValue = Mod::CoronaFixFPS;
 	options_fpscorona->AddOption(69, 30, 0);
@@ -31,6 +32,7 @@ void WindowSettings::Create(Window* parent)
 		Mod::CoronaFixFPS = (eCoronaFixFPS)options_fpscorona->optionsValue;
 		Mod::SaveCfg();
 	};
+	*/
 
 	window->AddCheckbox(57, &Menu::m_DrawCursor);
 	
@@ -48,6 +50,27 @@ void WindowSettings::Create(Window* parent)
 		uintptr_t objArr = *(uintptr_t*)(Mod::pVehiclePool);
 		Log::file << "* objArr: " << (void*)objArr << std::endl;
 		Log::file << printmem(objArr, 128) << std::endl;
+
+		//
+
+		struct CVehicle
+		{
+			uint8_t padding[0x14];
+			CVector gradRot;
+			CVector lookRot;
+			CVector pos;
+		};
+
+		void** pool = (void**)Mod::pVehiclePool;
+
+		CVehicle* veh1 = (CVehicle*)pool[0];
+
+		Log::file << pool << std::endl;
+		Log::file << pool[0] << std::endl;
+		Log::file << veh1 << std::endl;
+		Log::file << veh1->pos.x << ", " << veh1->pos.y << ", " << veh1->pos.z << std::endl;
+
+		//
 
 		/*
 		for (int i = 0; i < 50; i++)

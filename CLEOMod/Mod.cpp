@@ -16,6 +16,7 @@
 #include "Input.h"
 #include "Patterns.h"
 #include "ModelInfos.h"
+#include "AudioStream.h"
 
 #include "menu/Draw.h"
 #include "menu/Menu.h"
@@ -25,10 +26,10 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.7.0";
+char Mod::Version[256] = "2.8.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
-eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO;
+eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
 uintptr_t Mod::pVehiclePool = 0;
 void* Mod::hGTASA = 0;
 bool Mod::HasShownCredits = false;
@@ -147,6 +148,20 @@ void Mod::ProcessTouch()
     else {
         canTurnSirenOn = true;
     }
+}
+
+void* Mod::FindVehicleFromRef(int h)
+{
+    if (!GetVehicleFromRef)
+    {
+        Log::file << "GetVehicleFromRef " << h << " is NULL" << std::endl;
+        return NULL;
+    }
+    void* result = GetVehicleFromRef(h);
+
+    //Log::file << "GetVehicleFromRef " << h << " is " << result << std::endl;
+
+    return result;
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -281,6 +296,14 @@ extern "C" void OnModLoad()
         Log::file << "CLEO interface: (ICLEO)" << std::endl;
     }
 
+    if (cleo2013)
+    {
+        Log::file << "Game version: " << cleo2013->GetGameVersionInternal() << std::endl;
+    }
+    else {
+        Log::file << "Game version: " << cleo2012->GetGameVersionInternal() << std::endl;
+    }
+
     Log::file << "------------------------" << std::endl;
 
     Log::file << "------------------------" << std::endl;
@@ -290,6 +313,7 @@ extern "C" void OnModLoad()
 
     if (cleo2012)
     {
+
         __reg_op_func2012(SEND_PLAYER_POSITION, SEND_PLAYER_POSITION);
         __reg_op_func2012(SEND_CAR_POSITION, SEND_CAR_POSITION);
         __reg_op_func2012(GET_DRAW_ITEM_INFO, GET_DRAW_ITEM_INFO);
@@ -331,6 +355,7 @@ extern "C" void OnModLoad()
 
     //SET_TO(ScreenGetInches, aml->GetSym(hGTASA, "_Z18OS_ScreenGetInchesv"));
     SET_TO(RegisterCorona, aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb"));
+    SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
 
     Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
     Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
@@ -338,11 +363,15 @@ extern "C" void OnModLoad()
 
     
 
+    // pool = (CVehicle**)Mod::pVehiclePool;
+
+
     //
 
     Log::file << "pScreenGetHeight = " << Input::pScreenGetHeight << std::endl;
     Log::file << "pScreenGetWidth = " << Input::pScreenGetWidth << std::endl;
     Log::file << "RegisterCorona = " << &RegisterCorona << std::endl;
+    Log::file << "GetVehicleFromRef = " << &GetVehicleFromRef << std::endl;
 
     Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
     Log::file << "pVehiclePool = " << Mod::pVehiclePool << std::endl;
@@ -371,12 +400,63 @@ extern "C" void OnModLoad()
     sautils = (ISAUtils*)GetInterface("SAUtils");
     if (sautils)
     {
+        Log::file << "SAUtils loaded" << std::endl;
+
         //sautils->AddButton(SetType_Mods, "Giroflex VSL - Edit mode", OnEditModeButtonPressed);
 
         sautils->AddClickableItem(SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
 
         //sautils->AddSliderItem(SetType_Mods, "Giroflex Menu Offset", cfgMenuOffsetX->GetInt(), -200, 200, OnMenuOffsetChanged);
+    }
+
+    //BASS
+    //https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams
+    if (!(BASS = (IBASS*)GetInterface("BASS")))
+    {
+        Log::file << "BASS is not loaded" << std::endl;
+    } else {
+        Log::file << "BASS loaded: " << BASS << std::endl;
+
+        AudioStream::_BASS = BASS; //what am I doing
+
+        std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+      
+        /*
+        auto audioStream = new AudioStream(audiosPath + "/loli_dancando.mp3");
+        audioStream->Loop(false);
+        audioStream->Play();
+
+        auto audioStream2 = new AudioStream(audiosPath + "/siren1.wav");
+        audioStream2->Loop(true);
+        audioStream2->Play();
+        */
+
+        /*
         
-        Log::file << "SAUtils Loaded" << std::endl;
+        uint64_t streamInternal;
+        const char* src = "loli_dancando.mp3";
+        const char* sGameRoot = aml->GetAndroidDataPath();
+        std::string path = sGameRoot + std::string(src);
+
+        char buffer[256];
+
+
+        Log::file << "sGameRoot: " << sGameRoot << std::endl;
+        Log::file << "path: " << path << std::endl;
+
+        unsigned flags = BASS_SAMPLE_SOFTWARE;
+        //if (soundsys->bUseFPAudio) flags |= BASS_SAMPLE_FLOAT;
+        if (!(streamInternal = BASS->StreamCreateFile(false, audioPath.c_str(), 0, 0, flags)))
+        {
+            Log::file << "Loading audiostream failed. Error code: " << BASS->ErrorGetCode() << std::endl;
+        }
+        else
+        {
+            Log::file << "Loading audiostream OK" << std::endl;
+
+            BASS->ChannelPlay(streamInternal, true);
+            BASS->ChannelFlags(streamInternal, true ? BASS_SAMPLE_LOOP : 0, BASS_SAMPLE_LOOP);
+        }
+        */
     }
 }

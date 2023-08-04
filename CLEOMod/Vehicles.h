@@ -6,6 +6,7 @@
 struct RenderCorona {
 	int id = 25;
 	int car = 0;
+	void* pVehicle = 0;
 	CVector offset = CVector(0, 0, 0);
 	CRGBA color = CRGBA(255, 0, 0);
 	float radius = 1.0f;

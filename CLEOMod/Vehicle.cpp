@@ -3,6 +3,7 @@
 #include "ModelInfos.h"
 #include "Log.h"
 #include "Patterns.h"
+#include "Mod.h"
 
 #include "Vehicles.h"
 
@@ -160,6 +161,7 @@ void Vehicle::Update(int dt)
 
             RenderCorona corona;
             corona.car = hVehicle;
+            corona.pVehicle = Mod::FindVehicleFromRef(hVehicle); //test
             corona.id = lightId++;
             corona.color = lightGroup->GetPointColor(point, index);
             corona.offset = lightGroup->offset + point->offset;
@@ -191,6 +193,7 @@ void Vehicle::Update(int dt)
             {
                 RenderCorona corona2;
                 corona2.car = hVehicle;
+                corona2.pVehicle = Mod::FindVehicleFromRef(hVehicle); //test
                 corona2.id = lightId++;
                 corona2.color = lightGroup->smallWhiteCoronaColor;
                 corona2.offset = corona.offset;

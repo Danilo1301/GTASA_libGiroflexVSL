@@ -31,6 +31,11 @@ void ModConfig::MakePaths()
     CreateFolder(GetConfigFolder() + "/patterns");
 }
 
+bool ModConfig::DirExists(std::string path)
+{
+    return isDirExist(path);
+}
+
 std::string ModConfig::GetConfigFolder()
 {
     char path[0xFF];
@@ -40,7 +45,7 @@ std::string ModConfig::GetConfigFolder()
 
 void ModConfig::CreateFolder(std::string path)
 {
-    if (isDirExist(path)) return;
+    if (DirExists(path)) return;
 
     Log::file << "ModConfig: CreateFolder " << path << std::endl;
 

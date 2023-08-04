@@ -27,4 +27,5 @@ public:
     static void SaveCfg();
 
     static void ProcessTouch();
+    static void* FindVehicleFromRef(int h);
 };

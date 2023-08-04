@@ -26,6 +26,10 @@ static cleo_ifs_t* cleo2013 = NULL;
 #include "isautils.h"
 static ISAUtils* sautils = NULL;
 
+// BASS
+#include "ibass.h"
+static IBASS* BASS = NULL;
+
 static std::string to_upper(std::string data) {
     std::for_each(data.begin(), data.end(), [](char& c) {
         c = ::toupper(c);
@@ -168,3 +172,5 @@ static double DistanceBetween(CVector vec1, CVector vec2)
 }
 
 static void (*RegisterCorona)(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, posStruct const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay);
+
+static void* (*GetVehicleFromRef)(int);

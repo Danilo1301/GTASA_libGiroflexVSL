@@ -141,12 +141,12 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
 
     RegisterCorona(
         renderCorona->id,
-        0,
+        renderCorona->pVehicle, //test, and it worked, thank god
         renderCorona->color.r,
         renderCorona->color.g,
         renderCorona->color.b,
         renderCorona->color.a,
-        { position.x, position.y, position.z },
+        { renderCorona->offset.x, renderCorona->offset.y, renderCorona->offset.z }, //{ position.x, position.y, position.z },
         renderCorona->radius,
         1000.0f,
         renderCorona->coronaTexture,
@@ -629,7 +629,7 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
         /*
         Log::file << "Show credits" << std::endl;
 
-        Menu::ShowPopup(29, 0, 0, 2500, 260.0f);
+        Menu::ShowPopup(29, 0, 0, 2500, 270.0f);
         */
 
         /*

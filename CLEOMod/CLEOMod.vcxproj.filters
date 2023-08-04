@@ -59,6 +59,7 @@
     <ClCompile Include="windows\WindowPanel.cpp">
       <Filter>windows</Filter>
     </ClCompile>
+    <ClCompile Include="AudioStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -140,6 +141,8 @@
     <ClInclude Include="windows\WindowPanel.h">
       <Filter>windows</Filter>
     </ClInclude>
+    <ClInclude Include="ibass.h" />
+    <ClInclude Include="AudioStream.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\info.txt">
