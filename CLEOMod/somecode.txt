@@ -41,3 +41,8 @@ void GET_STRING(__handler_params)
    
 }
 */
+
+
+https://gtamods.com/wiki/Memory_Addresses_(SA)
+
+https://github.com/AndroidModLoader/GTASA_CLEOPlus/blob/main/externs.h

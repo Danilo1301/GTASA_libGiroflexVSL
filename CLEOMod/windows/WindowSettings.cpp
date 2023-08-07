@@ -45,7 +45,7 @@ void WindowSettings::Create(Window* parent)
 	test_button->onClick = [window]() {
 
 		Log::file << "* pVehiclePool: " << (void*)Mod::pVehiclePool << std::endl;
-		Log::file << printmem(Mod::pVehiclePool, 128) << std::endl;
+		Log::file << printmem(*Mod::pVehiclePool, 128) << std::endl;
 
 		uintptr_t objArr = *(uintptr_t*)(Mod::pVehiclePool);
 		Log::file << "* objArr: " << (void*)objArr << std::endl;

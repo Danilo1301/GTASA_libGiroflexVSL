@@ -38,6 +38,7 @@ public:
 	
 	static std::map<int, Vehicle*> m_Vehicles;
 	static std::vector<RenderCorona> m_CoronasToRender;
+	static std::vector<int> m_NewVehiclesRef;
 
 	static void TryCreateVehicle(int hVehicle, int modelId);
 	static bool HasVehicleHandle(int hVehicle);
@@ -49,4 +50,6 @@ public:
 	static void Update(int dt);
 
 	static void AddCoronaToRender(RenderCorona corona);
+
+	static void TryFindNewVehicles();
 };

@@ -11,6 +11,10 @@ public:
 	CVector position = CVector(0, 0, 0);
 	CVector velocity = CVector(0, 0, 0);
 
+	void* pVehicle = NULL;
+	bool gameSirenState = false;
+	void* pDriver = NULL;
+
 	bool canBeRemoved = false;
 
 	bool prevLightsState = false;

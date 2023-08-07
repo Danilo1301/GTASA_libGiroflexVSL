@@ -4,9 +4,11 @@
 #include "ModelInfos.h"
 #include "Patterns.h"
 #include "LightGroupDatas.h"
+#include "Mod.h"
 
 std::map<int, Vehicle*> Vehicles::m_Vehicles;
 std::vector<RenderCorona> Vehicles::m_CoronasToRender;
+std::vector<int> Vehicles::m_NewVehiclesRef;
 
 //std::vector<int> _vehicleExist;
 
@@ -125,7 +127,44 @@ void Vehicles::AddCoronaToRender(RenderCorona corona)
     m_CoronasToRender.push_back(corona);
 }
 
+void Vehicles::TryFindNewVehicles()
+{
+    //Log::file << "TryFindNewVehicles" << std::endl;
 
+    m_NewVehiclesRef.clear();
 
+    auto objects = *(GTAVehicleSA**)(*Mod::pVehiclePool + 0);
+    tByteFlag* flags = *(tByteFlag**)(*Mod::pVehiclePool + 4);
+    int size = *(int*)(*Mod::pVehiclePool + 8);
 
+    for (int i = 0; i < size; ++i)
+    {
+        if (flags[i].bEmpty) continue;
+        auto& ent = objects[i];
+        
+        //bool sirenOn = *(uint8_t*)((uintptr_t)vehicle + 0x42D + 4) >> 7;
+        bool sirenOn = ent.UInt8At(0x42D + 4) >> 7;
 
+        void* driver = (void*)ent.UIntAt(0x460 + 4);
+
+        int ref = Mod::ModGetVehicleRef(ent.AsInt());
+
+        //Log::file << "Found " << ent.AsInt() << " ref " << ref << " siren " << (sirenOn ? "ON" : "OFF") << std::endl;
+        //Log::file << "driver " << driver << std::endl;
+
+        for (auto vpair : Vehicles::m_Vehicles)
+        {
+            auto vehicle = vpair.second;
+
+            if (vehicle->hVehicle != ref) continue;
+            
+            vehicle->gameSirenState = sirenOn;
+            vehicle->pDriver = driver;
+        }
+
+        m_NewVehiclesRef.push_back(ref); //important
+
+    }
+
+    //Log::file << "Found: " << m_NewVehiclesRef.size() << std::endl;
+}

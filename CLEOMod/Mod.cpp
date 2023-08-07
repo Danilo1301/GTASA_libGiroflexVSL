@@ -26,11 +26,11 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.8.0";
+char Mod::Version[256] = "2.9.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
-uintptr_t Mod::pVehiclePool = 0;
+uintptr_t* Mod::pVehiclePool = 0;
 void* Mod::hGTASA = 0;
 bool Mod::HasShownCredits = false;
 
@@ -150,7 +150,7 @@ void Mod::ProcessTouch()
     }
 }
 
-void* Mod::FindVehicleFromRef(int h)
+void* Mod::ModGetVehicleFromRef(int h)
 {
     if (!GetVehicleFromRef)
     {
@@ -163,7 +163,16 @@ void* Mod::FindVehicleFromRef(int h)
 
     return result;
 }
+int Mod::ModGetVehicleRef(int pVehicle)
+{
+    if (!GetVehicleRef)
+    {
+        Log::file << "GetVehicleRef " << pVehicle << " is NULL" << std::endl;
+        return NULL;
+    }
 
+    return GetVehicleRef(pVehicle);
+}
 //---------------------------------------------------------------------------------------------------
 //test
 
@@ -325,6 +334,7 @@ extern "C" void OnModLoad()
         __reg_op_func2012(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
         __reg_op_func2012(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
         __reg_op_func2012(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
+        __reg_op_func2012(CREATE_NEW_VEHICLE, CREATE_NEW_VEHICLE);
     }
     else {
         __reg_op_func2013(SEND_PLAYER_POSITION, SEND_PLAYER_POSITION);
@@ -338,6 +348,7 @@ extern "C" void OnModLoad()
         __reg_op_func2013(SEND_TOUCH_STATE, SEND_TOUCH_STATE);
         __reg_op_func2013(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
         __reg_op_func2013(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
+        __reg_op_func2013(CREATE_NEW_VEHICLE, CREATE_NEW_VEHICLE);
 
     }
 
@@ -355,11 +366,16 @@ extern "C" void OnModLoad()
 
     //SET_TO(ScreenGetInches, aml->GetSym(hGTASA, "_Z18OS_ScreenGetInchesv"));
     SET_TO(RegisterCorona, aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb"));
-    SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
 
     Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
     Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
-    Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE");
+    
+
+    //Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE");
+    SET_TO(Mod::pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
+    SET_TO(GetVehicleRef, aml->GetSym(hGTASA, "_ZN6CPools13GetVehicleRefEP8CVehicle"));
+    SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
+
 
     
 

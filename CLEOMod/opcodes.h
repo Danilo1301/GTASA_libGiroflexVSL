@@ -40,6 +40,22 @@ __decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF5); // 0EF5=4,register_giroflex_corona 
 __decl_op(RUN_TEST, 0x0EF6); // 0EF6=1,run_test %1d%
 __decl_op(SEND_CAR_VELOCITY, 0x0EF7); // 0EF7=4,send_car_velocity %1d% vel %2f% %3f% %4f%
 __decl_op(GET_DRAW_ITEM_INFO, 0x0EF8); // 0EF8=3,%3g% = get_draw_item_info %1d% id %2d%
+__decl_op(CREATE_NEW_VEHICLE, 0x0EF9); //0EF1=2,create_new_vehicle %1d% modelid %2d%
+
+static void CREATE_NEW_VEHICLE(__handler_params)
+{
+    int car = __readParam(handle)->i;
+    int modelId = __readParam(handle)->i;
+
+    //char szTemp[256];
+    //sprintf(szTemp, "CREATE_NEW_VEHICLE car=%d modelId=%d", car, modelId);
+    //Log::file << szTemp << std::endl;
+
+    if (car > 0)
+    {
+        Vehicles::TryCreateVehicle(car, modelId);
+    }
+}
 
 static void SEND_PLAYER_POSITION(__handler_params)
 {
@@ -242,6 +258,17 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
     if (type == eDrawInfoType::CAR_GET_AMOUNT)
     {
         result->i = Vehicles::m_Vehicles.size();
+        return;
+    }
+    if (type == eDrawInfoType::CHECKVEHICLE_GET_AMOUNT)
+    {
+        result->i = Vehicles::m_NewVehiclesRef.size();
+        return;
+    }
+
+    if (type == eDrawInfoType::CHECKVEHICLE_GET_ID)
+    {
+        result->i = Vehicles::m_NewVehiclesRef[id];
         return;
     }
 
@@ -579,6 +606,8 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
         delete dw;
     }
     //Draw::m_DrawItems.clear();
+
+    Vehicles::TryFindNewVehicles();
 
     Vehicles::Update(dt);
 

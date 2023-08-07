@@ -58,6 +58,8 @@ const
     eDrawInfoType_CORONA_SHADOW_OFFSET_Y = 42
     eDrawInfoType_CORONA_SHADOW_TEXTURE_ID = 43
     eDrawInfoType_CORONA_SHADOW_ROTATION = 44
+    eDrawInfoType_CHECKVEHICLE_GET_AMOUNT = 45
+    eDrawInfoType_CHECKVEHICLE_GET_ID = 46
 end
 
 const
@@ -173,6 +175,8 @@ gosub @GET_DELTA_TIME
 
 0EF2: process_giroflex_lib deltaMs VAR_Integer1
 
+gosub @CHECK_NEW_VEHICLES
+
 gosub @RENDER_CORONAS
 
 0EF8: MenuOffsetX = get_draw_item_info eDrawInfoType_MENU_OFFSET_X id 0
@@ -182,6 +186,25 @@ gosub @DRAW_ITEMS
 wait 0
 
 jump @MAIN
+
+//----------------------------------------------------
+:CHECK_NEW_VEHICLES
+ 
+0EF8: VAR_Integer2 = get_draw_item_info eDrawInfoType_CHECKVEHICLE_GET_AMOUNT id 0
+VAR_Integer1 = 0
+while VAR_Integer1 < VAR_Integer2
+    0EF8: VAR_Veh = get_draw_item_info eDrawInfoType_CHECKVEHICLE_GET_ID id VAR_Integer1
+    
+    if 056E: car VAR_Veh defined
+    then
+        0441: VAR_ModelId = car VAR_Veh model
+        0EF9: create_new_vehicle VAR_Veh modelid VAR_ModelId
+    end
+    
+    VAR_Integer1 += 1
+end
+return  
+
 
 //----------------------------------------------------
 

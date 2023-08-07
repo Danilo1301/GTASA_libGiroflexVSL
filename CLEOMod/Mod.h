@@ -11,13 +11,15 @@ enum eCoronaFixFPS
     FPS_AUTO
 };
 
+
+
 class Mod {
 public:
     static char Version[256];
     static int m_PrevDeltaTime;
     static int m_DeltaTime;
     static eCoronaFixFPS CoronaFixFPS;
-    static uintptr_t pVehiclePool;
+    static uintptr_t* pVehiclePool;
     static void* hGTASA;
     static bool HasShownCredits;
     static CVector m_PlayerPos;
@@ -27,5 +29,7 @@ public:
     static void SaveCfg();
 
     static void ProcessTouch();
-    static void* FindVehicleFromRef(int h);
+
+    static void* ModGetVehicleFromRef(int h);
+    static int ModGetVehicleRef(int pVehicle);
 };

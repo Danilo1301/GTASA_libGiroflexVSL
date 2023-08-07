@@ -30,8 +30,9 @@ void Vehicle::Update(int dt)
 
     //Log::file << vehicleIdString << "Update" << std::endl;
 
-    if (!ModelInfos::HasModelInfo(modelId)) return;
+    pVehicle = Mod::ModGetVehicleFromRef(hVehicle);
 
+    if (!ModelInfos::HasModelInfo(modelId)) return;
 
     auto modelInfo = ModelInfos::GetModelInfo(modelId);
 
@@ -161,7 +162,7 @@ void Vehicle::Update(int dt)
 
             RenderCorona corona;
             corona.car = hVehicle;
-            corona.pVehicle = Mod::FindVehicleFromRef(hVehicle); //test
+            corona.pVehicle = pVehicle;
             corona.id = lightId++;
             corona.color = lightGroup->GetPointColor(point, index);
             corona.offset = lightGroup->offset + point->offset;
@@ -193,7 +194,7 @@ void Vehicle::Update(int dt)
             {
                 RenderCorona corona2;
                 corona2.car = hVehicle;
-                corona2.pVehicle = Mod::FindVehicleFromRef(hVehicle); //test
+                corona2.pVehicle = pVehicle;
                 corona2.id = lightId++;
                 corona2.color = lightGroup->smallWhiteCoronaColor;
                 corona2.offset = corona.offset;
@@ -202,11 +203,6 @@ void Vehicle::Update(int dt)
                 corona2.coronaTexture = lightGroup->smallWhiteCoronaTexture;
                 Vehicles::AddCoronaToRender(corona2);
             }
-
-            
-
-
-            
 
             //
 
@@ -218,6 +214,27 @@ void Vehicle::Update(int dt)
         //std::cout << "Points: " << debugPoints << " | " << lightGroupData->patternLoop->StepIndex << "/" << lightGroupData->patternLoop->Steps.size() << ", " << lightGroupData->stepLoop->StepIndex << std::endl;
         //Log::file << "Points: " << debugPoints << std::endl;
     }
+
+    //-----------
+
+    //Log::file << vehicleIdString << "Getting siren state: " << std::endl;
+
+    //void* vehicleEntity = Mod::ModGetVehicleFromRef(hVehicle);
+    //bool sirenOn = *(uint8_t*)((uintptr_t)vehicleEntity + 0x42D + 4) >> 7;
+
+    //Log::file << vehicleIdString << "siren state: " << sirenOn << std::endl;
+
+
+    if (Mod::hPlayerVehicle != hVehicle && pDriver)
+    {
+        if (prevLightsState != gameSirenState)
+        {
+            SetGiroflexEnabled(gameSirenState);
+        }
+    }
+
+    //Log::file << vehicleIdString << "Update end" << std::endl;
+
 }
 
 
