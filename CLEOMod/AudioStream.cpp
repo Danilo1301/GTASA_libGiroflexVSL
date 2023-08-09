@@ -51,3 +51,8 @@ void AudioStream::Loop(bool enable)
 {
     _BASS->ChannelFlags(streamInternal, enable ? BASS_SAMPLE_LOOP : 0, BASS_SAMPLE_LOOP);
 }
+
+void AudioStream::SetVolume(float val)
+{
+    _BASS->ChannelSetAttribute(streamInternal, BASS_ATTRIB_VOL, val);
+}

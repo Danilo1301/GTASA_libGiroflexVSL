@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+//https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams/blob/main/audiosystem.cpp
+
 class AudioStream {
 public:
 	uint64_t streamInternal;
@@ -14,4 +16,5 @@ public:
 	void Stop();
 	void Resume();
 	void Loop(bool enable);
+	void SetVolume(float val);
 };
