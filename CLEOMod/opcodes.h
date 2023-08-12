@@ -6,6 +6,7 @@
 #include "Mod.h"
 #include "Input.h"
 #include "windows/WindowPanel.h"
+#include "windows/WindowSoundPanel.h"
 
 #define __decl_op(__name, __int)	const char* NAME_##__name = #__name; const uint16_t OP_##__name = __int;
 
@@ -615,6 +616,9 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
 
     WindowSettings::Update();
     WindowSettings::Draw();
+
+    WindowSoundPanel::Draw();
+    WindowSoundPanel::Update(dt);
 
     WindowPanel::Update();
     WindowPanel::Draw();

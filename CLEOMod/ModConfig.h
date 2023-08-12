@@ -9,12 +9,16 @@ public:
 
 	static std::string GetConfigFolder();
 	static void CreateFolder(std::string path);
+
 	static void Save();
 	static void SavePatterns();
 	static void SaveVehicles();
+	static void SaveSettings();
+
 	static void Load();
 	static void LoadPatterns();
 	static void LoadVehicles();
+	static void LoadSettings();
 
 	static std::string ReadVersionFile();
 	static void ProcessVersionChanges_PreConfigLoad();

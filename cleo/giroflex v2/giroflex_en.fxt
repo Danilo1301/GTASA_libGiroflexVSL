@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Edit position
 DGFX27 Distance
 DGFX28 A
-DGFX29 Giroflex VSL v2.9.0 (Danilo1301)
+DGFX29 Giroflex VSL v2.10.0 (Danilo1301)
 DGFX30 Vehicle ID ~1~
 DGFX31 Close
 DGFX32 Info
@@ -63,7 +63,7 @@ DGFX62 Flare
 DGFX63 Flare - distance
 DGFX64 Flare - intensity
 DGFX65 10 lights
-DGFX66 Test
+DGFX66 Test ~1~
 DGFX67 -
 DGFX68 Curve
 DGFX69 ~1~ FPS
@@ -75,4 +75,12 @@ DGFX74 Manual
 DGFX75 Panel slot ID
 DGFX76 6 lights
 DGFX77 Rotation
+DGFX78 X
+DGFX79 +
+DGFX80 Lights panel
+DGFX81 Audio panel
+DGFX82 Volume ~1~
+DGFX83 Multiple audios at once
+DGFX84 Move lights speed
+DGFX85 8 lights
 DGFX0 #OUTDATED .FXT#

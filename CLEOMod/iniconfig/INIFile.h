@@ -12,7 +12,7 @@ public:
 	void Save(std::string path);
 	void Destroy();
 
-	void Read(std::string path);
+	bool Read(std::string path);
 
 	std::vector<INISection*> GetSections(std::string name);
 };

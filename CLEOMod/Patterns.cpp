@@ -238,6 +238,68 @@ void Patterns::CreateDefaultPatterns()
         */
     }
 
+    if (!Patterns::HasPattern("8_lights-1"))
+    {
+        auto pattern_8_lights_1 = Patterns::CreatePattern("8_lights-1");
+        pattern_8_lights_1->AddStep({ 1, 1, 1, 1, 0, 0, 0, 0 }, 200);
+        pattern_8_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
+        pattern_8_lights_1->AddStep({ 0, 0, 0, 0, 1, 1, 1, 1 }, 200);
+        pattern_8_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
+        pattern_8_lights_1->AddStep({ 1, 1, 1, 1, 1, 1, 1, 1 }, 200);
+        pattern_8_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0 }, 200);
+
+        /*
+        [Pattern]
+        11110000|200
+        00000000|200
+        00001111|200
+        00000000|200
+        11111111|200
+        00000000|200
+        */
+    }
+
+    if (!Patterns::HasPattern("8_lights-2"))
+    {
+        auto pattern_8_lights_2 = Patterns::CreatePattern("8_lights-2");
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 1, 1, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 1, 1, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 1, 1, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 1, 1, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 1, 0, 0, 0, 0, 0, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 0 }, 50);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 1, 1, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 1, 1, 0, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 1, 1, 0 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 1, 1 }, 100);
+        pattern_8_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0, 1 }, 100);
+
+        /*
+        [Pattern]
+        00000000|100
+        10000000|100
+        11000000|100
+        01100000|100
+        00110000|100
+        01100000|100
+        11000000|100
+        10000000|100
+        00000000|50
+        00000001|100
+        00000011|100
+        00000110|100
+        00001100|100
+        00000110|100
+        00000011|100
+        00000001|100
+        */
+    }
+
     if (!Patterns::HasPattern("10_lights-1"))
     {
         auto pattern_10lights_1 = Patterns::CreatePattern("10_lights-1");

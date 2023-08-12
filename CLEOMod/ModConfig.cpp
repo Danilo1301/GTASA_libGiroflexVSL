@@ -10,6 +10,8 @@
 #include "mod/logger.h"
 #include "mod/config.h"
 
+#include "windows/WindowSoundPanel.h"
+
 #include "iniconfig/INIFile.h"
 
 bool isDirExist(const std::string& path)
@@ -54,12 +56,13 @@ void ModConfig::CreateFolder(std::string path)
 
 void ModConfig::Save()
 {
-    Log::file << "ModConfig: Save " << std::endl;
+    Log::file << "ModConfig: Save" << std::endl;
 
     MakePaths();
 
     SavePatterns();
     SaveVehicles();
+    SaveSettings();
 }
 
 void ModConfig::SavePatterns()
@@ -124,12 +127,32 @@ void ModConfig::SaveVehicles()
     }
 }
 
+void ModConfig::SaveSettings()
+{
+    Log::file << "ModConfig: SaveSettings  (settings.ini)" << std::endl;
+
+    auto settingsFileDir = GetConfigFolder() + "/settings.ini";
+
+    INIFile file;
+
+    auto soundPanelSection = file.AddSection("SoundPanel");
+    soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::AllowMultipleSounds);
+    soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::ButtonColor);
+    soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::ButtonOutlineColor);
+    soundPanelSection->AddCVector2D("offset_position", WindowSoundPanel::OffsetPosition);
+    soundPanelSection->AddFloat("button_size", WindowSoundPanel::ButtonSize);
+
+    file.Save(settingsFileDir);
+    file.Destroy();
+}
+
 void ModConfig::Load()
 {
     MakePaths();
 
     LoadPatterns();
     LoadVehicles();
+    LoadSettings();
 }
 
 void ModConfig::LoadPatterns()
@@ -256,6 +279,34 @@ void ModConfig::LoadVehicles()
     }
 }
 
+void ModConfig::LoadSettings()
+{
+    auto settingsFileDir = GetConfigFolder() + "/settings.ini";
+
+    Log::file << "ModConfig: LoadSettings  (settings.ini)" << std::endl;
+
+    INIFile file;
+    if (!file.Read(settingsFileDir))
+    {
+        Log::file << "ModConfig: Error reading settings.ini (Not found)" << std::endl;
+        return;
+    }
+
+    auto soundPanelSections = file.GetSections("SoundPanel");
+    if (soundPanelSections.size() > 0)
+    {
+        auto soundPanelSection = soundPanelSections[0];
+
+        WindowSoundPanel::AllowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::AllowMultipleSounds);
+        WindowSoundPanel::ButtonColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::ButtonColor);
+        WindowSoundPanel::ButtonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::ButtonOutlineColor);
+        WindowSoundPanel::OffsetPosition = soundPanelSection->GetCVector2D("offset_position", WindowSoundPanel::OffsetPosition);
+        WindowSoundPanel::ButtonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::ButtonSize);
+    }
+
+    Log::file << "ModConfig: Success reading settings.ini" << std::endl;
+}
+
 std::string ModConfig::ReadVersionFile()
 {
     std::string prevVersion = "unknown";
@@ -310,8 +361,6 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
 
     if (prevVersion == "unknown")
     {
-        prevVersion = "2.7.0";
-
         Patterns::CreateDefaultPatterns();
 
         /*
@@ -330,15 +379,34 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
                 }
             }
         }
+
+        prevVersion = "2.9.0";
     }
 
-    /*
-    if (prevVersion == "2.7.0")
+    if (prevVersion == "2.9.0")
     {
-        prevVersion = "2.";
-    }
-    */
+        Patterns::CreateDefaultPatterns();
 
+        /*
+        * changing 10 lights type from 3 (old) to 4
+        */
+        for (auto pairModelInfo : ModelInfos::m_ModelInfos)
+        {
+            auto modelInfo = pairModelInfo.second;
+
+            for (auto lightGroup : modelInfo->lightGroups)
+            {
+                if (lightGroup->type == 4) //4 is old TEN_LIGHTS (before 2.10.0)
+                {
+                    lightGroup->type = eLightGroupType::TEN_LIGHTS;
+                    lightGroup->MakeLightGroup();
+                }
+            }
+        }
+
+        prevVersion = "2.10.0";
+    }
+ 
     //--------------
 
 

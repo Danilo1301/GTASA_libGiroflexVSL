@@ -78,8 +78,32 @@ Todo
 [2.8.0]
 [X] FIX: rastro das luzes
 
+[2.9.0]
+[X] ADD: lights on NPC 
+[X] ADD: light turns on/off with siren state
 
-[ ] bass stuff
+[2.10.0]
+[X] ADD: audio painel
+[X] ADD: window to customize audio panel
+[X] ADD: settings.ini
+[X] ADD: option to change speed when moving lights
+[X] 8 lights + patterns
+
+
+Sugestões:
+
+[ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
+[ DONE ] poderia botar mais opções de sons? Tipo 10
+[ DONE ] podermos configurar algumas coisas como Tamanho, opacidade e cor do painel
+
+
+[ ] Colocar de 11 luzes tmb pq os Giroflex (não todos) mais a maioria são 11 luzes 
+[] Teria como vc adicionar PATTERN de 8 luzes 
+
+[] Ativação do painel por códigos virtuais para facilitar (3+9 por exemplo)
+
+[ NOT POSSIBLE ] (Apenas se possível) a sirene ter a funcionalidade original de os NPC darem passagem
+[ NOT POSSIBLE ] E tmb colocar rotação na hora de fazer curva no giro pq fica torto quando a sirene é um pouco envergada para baixo
 ---------------------------
 Others:
 

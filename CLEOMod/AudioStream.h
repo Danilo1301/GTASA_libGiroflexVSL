@@ -17,4 +17,6 @@ public:
 	void Resume();
 	void Loop(bool enable);
 	void SetVolume(float val);
+	void Destroy();
+	int GetState();
 };

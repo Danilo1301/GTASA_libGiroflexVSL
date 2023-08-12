@@ -66,7 +66,7 @@ void INIFile::Destroy()
 	sections.clear();
 }
 
-void INIFile::Read(std::string path)
+bool INIFile::Read(std::string path)
 {
 	std::cout << "Read from " << path << std::endl;
 
@@ -95,7 +95,7 @@ void INIFile::Read(std::string path)
 
 			if (line.find("=") == std::string::npos)
 			{
-				Log::file << "INIFile: AddLine " << line << std::endl;
+				//Log::file << "INIFile: AddLine " << line << std::endl;
 				section->AddLine(line);
 				continue;
 			}
@@ -103,7 +103,7 @@ void INIFile::Read(std::string path)
 			std::string value = line.substr(line.find("=") + 1);
 			value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
 			
-			Log::file << "INIFile: AddString " << key << " | " << value << std::endl;
+			//Log::file << "INIFile: AddString " << key << " | " << value << std::endl;
 			section->AddString(key, value);
 		}
 
@@ -114,6 +114,8 @@ void INIFile::Read(std::string path)
 	PushSection();
 
 	std::ifstream infile(path);
+
+	if (!infile.good()) return false;
 
 	std::string line;
 	while (std::getline(infile, line))
@@ -139,6 +141,8 @@ void INIFile::Read(std::string path)
 	}
 
 	PushSection();
+
+	return true;
 }
 
 std::vector<INISection*> INIFile::GetSections(std::string name)

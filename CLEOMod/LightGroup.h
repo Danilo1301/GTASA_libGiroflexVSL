@@ -87,13 +87,8 @@ public:
 
 		if (type == eLightGroupType::FIVE_LIGHTS)
 		{
-			if (index == 2) {
-				return color3;
-			}
-
-			if (index > 2) {
-				return color2;
-			}
+			if (index == 2) return color3;
+			if (index > 2) return color2;
 
 			return color1;
 		}
@@ -103,7 +98,14 @@ public:
 			if (index >= 3) {
 				return color2;
 			}
+			return color1;
+		}
 
+		if (type == eLightGroupType::EIGHT_LIGHTS)
+		{
+			if (index >= 4) {
+				return color2;
+			}
 			return color1;
 		}
 
@@ -112,7 +114,6 @@ public:
 			if (index >= 5) {
 				return color2;
 			}
-
 			return color1;
 		}
 
@@ -131,6 +132,7 @@ public:
 		if (type == eLightGroupType::TWO_LIGHTS) amountOfLights = 2;
 		if (type == eLightGroupType::FIVE_LIGHTS) amountOfLights = 5;
 		if (type == eLightGroupType::SIX_LIGHTS) amountOfLights = 6;
+		if (type == eLightGroupType::EIGHT_LIGHTS) amountOfLights = 8;
 		if (type == eLightGroupType::TEN_LIGHTS) amountOfLights = 10;
 
 		for (int i = 0; i < amountOfLights; i++)
@@ -155,6 +157,11 @@ public:
 			if (type == eLightGroupType::SIX_LIGHTS)
 			{
 				if (i >= 3) pos = ePointPosition::RIGHT;
+			}
+
+			if (type == eLightGroupType::EIGHT_LIGHTS)
+			{
+				if (i >= 4) pos = ePointPosition::RIGHT;
 			}
 
 			if (type == eLightGroupType::TEN_LIGHTS)

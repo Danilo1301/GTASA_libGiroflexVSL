@@ -99,11 +99,12 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     //1
     auto option_giroflex = window->AddOptions(8);
     option_giroflex->optionsValue = (int)lightGroup->type;
-    option_giroflex->AddOption(33, 0, 0);
-    option_giroflex->AddOption(34, 0, 0);
-    option_giroflex->AddOption(35, 0, 0);
-    option_giroflex->AddOption(76, 0, 0); 
-    option_giroflex->AddOption(65, 0, 0);
+    option_giroflex->AddOption(33, 0, 0); //1
+    option_giroflex->AddOption(34, 0, 0); //2
+    option_giroflex->AddOption(35, 0, 0); //5
+    option_giroflex->AddOption(76, 0, 0); //6
+    option_giroflex->AddOption(85, 0, 0); //8
+    option_giroflex->AddOption(65, 0, 0); //10
     option_giroflex->onValueChange = [option_giroflex, lightGroup]() {
         lightGroup->type = (eLightGroupType)option_giroflex->optionsValue;
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
@@ -135,11 +136,20 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     //5
     auto button_position = window->AddButton(26);
     button_position->onClick = [lightGroup, window]() {
-        auto posWindow = Menu::AddPositionWindow(window, &lightGroup->offset);
+        /*
+        MoveLightsSpeed from 
+        * 0.01
+        0.0f  0.00
+        1.0f  0.01
+        2.0f  0.02
+        */
+        float moveSpeed = WindowEditing::MoveLightsSpeed * 0.01f;
+
+        auto posWindow = Menu::AddPositionWindow(window, &lightGroup->offset, -1000.0f, 1000.0f, moveSpeed, []() {});
 
         posWindow->width += 40.0f;
 
-        auto distance = posWindow->AddFloatRange(27, &lightGroup->distance, -10.0f, 10.0f, 0.01f);
+        auto distance = posWindow->AddFloatRange(27, &lightGroup->distance, -10.0f, 10.0f, moveSpeed);
         distance->onValueChange = [lightGroup]() {
             lightGroup->MakeLightGroup();
 

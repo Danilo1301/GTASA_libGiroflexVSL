@@ -105,6 +105,20 @@ void INISection::AddCVector(std::string key, CVector value)
     AddFloat(key + ".z", value.z);
 }
 
+CVector2D INISection::GetCVector2D(std::string key, CVector2D defaultValue)
+{
+    return CVector2D(
+        GetFloat(key + ".x", defaultValue.x),
+        GetFloat(key + ".y", defaultValue.y)
+    );
+}
+
+void INISection::AddCVector2D(std::string key, CVector2D value)
+{
+    AddFloat(key + ".x", value.x);
+    AddFloat(key + ".y", value.y);
+}
+
 CRGBA INISection::GetCRGBA(std::string key, CRGBA defaultValue)
 {
     return CRGBA(

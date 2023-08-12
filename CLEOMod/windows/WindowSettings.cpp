@@ -4,6 +4,7 @@
 #include "../Mod.h"
 #include "../Patterns.h"
 #include "../Log.h"
+#include "../AudioStream.h"
 
 bool WindowSettings::EditScreenModeEnabled = false;
 
@@ -42,6 +43,7 @@ void WindowSettings::Create(Window* parent)
 	};
 
 	auto test_button = window->AddButton(66);
+	test_button->text->num1 = 1;
 	test_button->onClick = [window]() {
 
 		Log::file << "* pVehiclePool: " << (void*)Mod::pVehiclePool << std::endl;
@@ -132,6 +134,18 @@ void WindowSettings::Create(Window* parent)
 
 		Menu::ShowPopup(0, 0, 0, 400);
 	};
+
+	auto test_button_2 = window->AddButton(66);
+	test_button_2->text->num1 = 2;
+	test_button_2->onClick = [window]() {
+		std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+
+		auto audioStream = new AudioStream(audiosPath + "/funk_raca_negra.mp3");
+		audioStream->SetVolume(0.5f);
+		audioStream->Loop(false);
+		audioStream->Play();
+	};
+	
 }
 
 void WindowSettings::Update()

@@ -8,6 +8,7 @@ class WindowEditing {
 public:
 	static bool FreezeLights;
 	static bool ShowCurrentEditingLightGroup;
+	static float MoveLightsSpeed;
 	static LightGroup* LightGroupToShow;
 
 	static void Create(Window* parent, LightGroup* lightGroup);

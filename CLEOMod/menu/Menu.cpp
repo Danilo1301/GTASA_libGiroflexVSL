@@ -35,16 +35,21 @@ Window* Menu::AddWindow(int gxtId, Window* parent)
     return window;
 }
 
-Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
+Window* Menu::AddPositionWindow(Window* parent, CVector* vec, float min, float max, float addBy, std::function<void()> onChange)
 {
     Window* window = AddWindow(26, parent);
     window->width = 200.0f;
     window->position = { 10, 200 };
     window->showPageControls = true;
 
-    window->AddFloatRange(23, &vec->x, -10.0f, 10.0f, 0.01f);
-    window->AddFloatRange(24, &vec->y, -10.0f, 10.0f, 0.01f);
-    window->AddFloatRange(25, &vec->z, -10.0f, 10.0f, 0.01f);
+    auto floatx = window->AddFloatRange(23, &vec->x, min, max, addBy);
+    floatx->onValueChange = [onChange]() {onChange(); };
+
+    auto floaty = window->AddFloatRange(24, &vec->y, min, max, addBy);
+    floaty->onValueChange = [onChange]() {onChange(); };
+
+    auto floatz = window->AddFloatRange(25, &vec->z, min, max, addBy);
+    floatz->onValueChange = [onChange]() {onChange(); };
 
     window->btnBack->onClick = [window]()
     {
@@ -54,16 +59,24 @@ Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
     return window;
 }
 
+Window* Menu::AddPositionWindow(Window* parent, CVector* vec)
+{
+    return AddPositionWindow(parent, vec, 1000.0f, -1000.0f, 0.01f, []() {});
+}
 
-Window* Menu::AddPositionWindow(Window* parent, CVector2D* vec, float min, float max, float addBy)
+Window* Menu::AddPosition2DWindow(Window* parent, CVector2D* vec, float min, float max, float addBy, std::function<void()> onChange)
 {
     Window* window = AddWindow(26, parent);
     window->width = 200.0f;
     window->position = { 10, 200 };
     window->showPageControls = true;
 
-    window->AddFloatRange(23, &vec->x, min, max, addBy);
-    window->AddFloatRange(24, &vec->y, min, max, addBy);
+    auto floatx = window->AddFloatRange(23, &vec->x, min, max, addBy);
+    floatx->onValueChange = [onChange]() {onChange(); };
+
+    auto floaty = window->AddFloatRange(24, &vec->y, min, max, addBy);
+    floaty->onValueChange = [onChange]() {onChange(); };
+
 
     window->btnBack->onClick = [window]()
     {
@@ -71,6 +84,11 @@ Window* Menu::AddPositionWindow(Window* parent, CVector2D* vec, float min, float
     };
 
     return window;
+}
+
+Window* Menu::AddPosition2DWindow(Window* parent, CVector2D* vec, float min, float max, float addBy)
+{
+    return Menu::AddPosition2DWindow(parent, vec, min, max, addBy, []() {});
 }
 
 
@@ -79,7 +97,7 @@ static int colormenu_g = 0;
 static int colormenu_b = 0;
 static int colormenu_a = 0;
 
-Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
+Window* Menu::AddColorMenu(Window* parent, CRGBA* color, std::function<void()> onValueChange)
 {
     Window* window = AddWindow(46, parent);
     window->width = 200.0f;
@@ -96,10 +114,10 @@ Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
     auto option_b = window->AddIntRange(22, &colormenu_b, 0, 255, 1);
     auto option_a = window->AddIntRange(28, &colormenu_a, 0, 255, 1);
 
-    option_r->onValueChange = [color]() { color->r = colormenu_r; };
-    option_g->onValueChange = [color]() { color->g = colormenu_g; };
-    option_b->onValueChange = [color]() { color->b = colormenu_b; };
-    option_a->onValueChange = [color]() { color->a = colormenu_a; };
+    option_r->onValueChange = [color, onValueChange]() { color->r = colormenu_r; onValueChange(); };
+    option_g->onValueChange = [color, onValueChange]() { color->g = colormenu_g; onValueChange(); };
+    option_b->onValueChange = [color, onValueChange]() { color->b = colormenu_b; onValueChange(); };
+    option_a->onValueChange = [color, onValueChange]() { color->a = colormenu_a; onValueChange(); };
 
     window->btnBack->onClick = [window]()
     {
@@ -107,6 +125,11 @@ Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
     };
 
     return window;
+}
+
+Window* Menu::AddColorMenu(Window* parent, CRGBA* color)
+{
+    return AddColorMenu(parent, color, []() {});
 }
 
 Window* Menu::AddConfirmWindow(Window* parent, int textGxtId, std::function<void()> ohYes, std::function<void()> ohNo)

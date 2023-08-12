@@ -60,6 +60,15 @@
       <Filter>windows</Filter>
     </ClCompile>
     <ClCompile Include="AudioStream.cpp" />
+    <ClCompile Include="windows\WindowSoundPanel.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowSelectPanel.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowSoundPanelSettings.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="menu">
@@ -143,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="ibass.h" />
     <ClInclude Include="AudioStream.h" />
+    <ClInclude Include="windows\WindowSoundPanel.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowSelectPanel.h">
+      <Filter>windows</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowSoundPanelSettings.h">
+      <Filter>windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\info.txt">

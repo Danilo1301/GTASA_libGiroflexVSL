@@ -32,6 +32,9 @@ public:
     CVector GetCVector(std::string key, CVector defaultValue);
 	void AddCVector(std::string key, CVector value);
 
+    CVector2D GetCVector2D(std::string key, CVector2D defaultValue);
+    void AddCVector2D(std::string key, CVector2D value);
+
     CRGBA GetCRGBA(std::string key, CRGBA defaultValue);
 	void AddCRGBA(std::string key, CRGBA value);
 };

@@ -23,10 +23,11 @@
 
 #include "windows/WindowMain.h"
 #include "windows/WindowSettings.h"
+#include "windows/WindowSelectPanel.h"
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.9.0";
+char Mod::Version[256] = "2.10.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
@@ -98,7 +99,8 @@ void Mod::ProcessTouch()
                     {
                         canTurnPanelOn = false;
 
-                        WindowPanel::Toggle(!WindowPanel::Visible);
+                        WindowSelectPanel::Create();
+                        //WindowPanel::Toggle(!WindowPanel::Visible);
                     }
                 }
                 else {
@@ -435,9 +437,10 @@ extern "C" void OnModLoad()
 
         AudioStream::_BASS = BASS; //what am I doing
 
-        std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
       
         /*
+        std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+
         auto audioStream = new AudioStream(audiosPath + "/loli_dancando.mp3");
         audioStream->Loop(false);
         audioStream->Play();
@@ -446,33 +449,9 @@ extern "C" void OnModLoad()
         audioStream2->Loop(true);
         audioStream2->Play();
         */
-
-        /*
-        
-        uint64_t streamInternal;
-        const char* src = "loli_dancando.mp3";
-        const char* sGameRoot = aml->GetAndroidDataPath();
-        std::string path = sGameRoot + std::string(src);
-
-        char buffer[256];
-
-
-        Log::file << "sGameRoot: " << sGameRoot << std::endl;
-        Log::file << "path: " << path << std::endl;
-
-        unsigned flags = BASS_SAMPLE_SOFTWARE;
-        //if (soundsys->bUseFPAudio) flags |= BASS_SAMPLE_FLOAT;
-        if (!(streamInternal = BASS->StreamCreateFile(false, audioPath.c_str(), 0, 0, flags)))
-        {
-            Log::file << "Loading audiostream failed. Error code: " << BASS->ErrorGetCode() << std::endl;
-        }
-        else
-        {
-            Log::file << "Loading audiostream OK" << std::endl;
-
-            BASS->ChannelPlay(streamInternal, true);
-            BASS->ChannelFlags(streamInternal, true ? BASS_SAMPLE_LOOP : 0, BASS_SAMPLE_LOOP);
-        }
-        */
     }
+
+
+    //test
+    //WindowSelectPanel::Create();
 }

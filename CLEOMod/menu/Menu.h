@@ -27,8 +27,11 @@ public:
 
 	static Window* AddWindow(int gxtId);
 	static Window* AddWindow(int gxtId, Window* parent);
+	static Window* AddPositionWindow(Window* parent, CVector* vec, float min, float max, float addBy, std::function<void()> onChange);
 	static Window* AddPositionWindow(Window* parent, CVector* vec);
-	static Window* AddPositionWindow(Window* parent, CVector2D* vec, float min, float max, float addBy);
+	static Window* AddPosition2DWindow(Window* parent, CVector2D* vec, float min, float max, float addBy, std::function<void()> onChange);
+	static Window* AddPosition2DWindow(Window* parent, CVector2D* vec, float min, float max, float addBy);
+	static Window* AddColorMenu(Window* parent, CRGBA* color, std::function<void()> onValueChange);
 	static Window* AddColorMenu(Window* parent, CRGBA* color);
 	static Window* AddConfirmWindow(Window* parent, int textGxtId, std::function<void()> ohYes, std::function<void()> ohNo);
 
