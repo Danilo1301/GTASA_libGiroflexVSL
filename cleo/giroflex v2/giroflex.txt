@@ -367,7 +367,12 @@ while VAR_Integer1 < VAR_Integer2
             0EF8: VAR_Rotation = get_draw_item_info eDrawInfoType_CORONA_SHADOW_ROTATION id VAR_Integer1
         
             0174: VAR_VehRotation = car VAR_Veh Z_angle
-            VAR_VehRotation /= 360.0
+            // 56.09         (by Mod Taillight & Headlight MyPUTR4 Remake)
+            // 57.09         really close
+            //info: 3.1415 is like a 180 rotation
+            //thanks to 'Call of GTAFIVE' from Discord and 'Mod Taillight & Headlight MyPUTR4 Remake'
+            VAR_VehRotation /= 57.09
+            
             VAR_Rotation += VAR_VehRotation
 
             016F: create_particle VAR_TextureID rotation_factor VAR_Rotation size VAR_Float1 intensity 255 flags VAR_ColorR VAR_ColorG VAR_ColorB at VAR_VehX VAR_VehY VAR_VehZ
