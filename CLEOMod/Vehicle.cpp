@@ -176,6 +176,7 @@ void Vehicle::Update(int dt)
             corona.shadowOffsetY = lightGroup->shadowPositionY;
             corona.shadowTexture = lightGroup->shadowTexture;
             corona.shadowRotation = lightGroup->shadowRotation;
+            corona.shadowFlipTextures = lightGroup->shadowFlipTextures;
 
             corona.pointLightDistance = lightGroup->pointLightDistance;
             corona.pointLightIntensity = lightGroup->pointLightIntensity;

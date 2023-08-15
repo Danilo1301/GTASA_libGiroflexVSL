@@ -89,6 +89,11 @@ Todo
 [X] ADD: option to change speed when moving lights
 [X] 8 lights + patterns
 
+[2.10.1]
+[X] FIX: shadow rotation issues
+
+[2.10.2]
+[X] ADD: flip shadows + save to ini
 
 Sugestões:
 

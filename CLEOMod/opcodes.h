@@ -497,7 +497,21 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
         if (coronaIdExceeds) return;
 
         auto& renderCorona = Vehicles::m_CoronasToRender[id];
+        
         result->f = renderCorona.shadowRotation;
+
+        if (renderCorona.shadowFlipTextures)
+        {
+            float margin = 0.15f;
+            float distance = abs(renderCorona.offset.x);
+
+            if (distance > margin)
+            {
+                float addRotation = renderCorona.offset.x > 0 ? 3.1415f : 0.0f;
+
+                result->f += renderCorona.shadowRotation + addRotation;
+            }
+        }
 
         return;
     }

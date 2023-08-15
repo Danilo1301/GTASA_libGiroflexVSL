@@ -2,33 +2,59 @@
 #define _SAUTILS_INTERFACE
 
 #include <stdint.h>
+//#include "sa_scripting.h"
 
-typedef void        (*OnSettingChangedFn)(int nOldValue, int nNewValue);
-typedef const char* (*OnSettingDrawedFn) (int nNewValue);
+/* Helper-defines */
+#define _VA_ARGS(...) , ##__VA_ARGS__
+#define MAX_SCRIPT_VARS 16
+#define MAX_SCRIPT_SIZE	255
+// Use those for easier CLEO opcodes calling and defining!
+#define DEFOPCODE(__opcode, __name, __args) const SCRIPT_COMMAND scm_##__name = { 0x##__opcode, #__args }
+#define CALLSCM(__name, ...)             sautils->ScriptCommand(&scm_##__name _VA_ARGS(__VA_ARGS__))
+
+/* Structures */
+struct SCRIPT_COMMAND
+{
+    uint16_t  opCode;
+    char      params[MAX_SCRIPT_VARS];
+};
+// Example:
+DEFOPCODE(FFFF, CRASH_GAME, ); // CALLSCM(CRASH_GAME); calls an unknown opcode FFFF and it crashes the game
+
+/* Just a class declarations */
+class CWidgetButton;
+class RpAtomic;
+class RwFrame;
+
+/* Type definitions */
+typedef void        (*OnSettingChangedFn)(int nOldValue, int nNewValue, void* pData); // Has pData since v1.4
+typedef const char* (*OnSettingDrawedFn) (int nNewValue, void* pData);
 typedef void        (*OnButtonPressedFn) (uintptr_t screen); // "screen" is just a pointer of SelectScreen if you need it...
 typedef void        (*OnPlayerProcessFn) (uintptr_t info); // "info" is a pointer of CPlayerInfo
+typedef void* (*LookingForTextureFn)(const char* name);
 typedef void        (*SimpleFn)();
+typedef void        (*SimpleDataFn)(void* data);
 
+/* !!! UNCHANGEABLE VALUES !!! */
 #define MAX_IMG_ARCHIVES                    32 // Def. is 6
-
 #define MAX_WIDGETS_GAME                    190
 #define MAX_WIDGETS                         0xFF
-class CWidgetButton;
 
+/* Settings "shortcuts" */
 // Controllers
 #define SETITEM_SA_TOUCH_LAYOUT             9
 #define SETITEM_SA_TOUCH_STEERING           3
 #define SETITEM_SA_ACCELEROMETER            8
 #define SETITEM_SA_INVERT_LOOK              15
   // For touch screens GetInputType==0
-    #define SETITEM_SA_ANALOG_BIKE_STEERING 18
-    #define SETITEM_SA_ANALOG_SENSITIVITY   23
-  // Joypad GetInputType==1
-    #define SETITEM_SA_JOY_ACCEL_X          25
-    #define SETITEM_SA_JOY_ACCEL_Y          26
-  // Mouse+Keyboard GetInputType==2
-    #define SETITEM_SA_MOUSE_ACCEL_X        31
-    #define SETITEM_SA_MOUSE_ACCEL_Y        32
+#define SETITEM_SA_ANALOG_BIKE_STEERING 18
+#define SETITEM_SA_ANALOG_SENSITIVITY   23
+// Joypad GetInputType==1
+#define SETITEM_SA_JOY_ACCEL_X          25
+#define SETITEM_SA_JOY_ACCEL_Y          26
+// Mouse+Keyboard GetInputType==2
+#define SETITEM_SA_MOUSE_ACCEL_X        31
+#define SETITEM_SA_MOUSE_ACCEL_Y        32
 #define SETITEM_SA_AUTO_CLIMB               35
 
 // Game
@@ -54,6 +80,16 @@ class CWidgetButton;
 #define SETITEM_SA_RADIO_AUTOTUNE           13
 #define SETITEM_SA_CURRENT_RADIO            14
 
+/* Enumerations */
+enum eLoadedGame
+{
+    Unknown = 0,
+    GTASA_2_00,
+    GTAVC_1_09,
+    GTA3_1_09,
+    GTALCS_1_09,
+    GTASA_2_10,
+};
 
 enum eTypeOfSettings : unsigned char
 {
@@ -90,21 +126,64 @@ enum eWidgetState : unsigned char
     WIDGETSTATE_MAX
 };
 
+enum eRenderOfType : unsigned char
+{
+    ROfType_Effects = 0,
+    ROfType_Menu,
+    ROfType_Hud,
+    ROfType_Ped,
+    ROfType_Vehicle,
+    ROfType_Object,
+    ROfType_RadarBlips,
+    ROfType_MapBlips,
+
+    RENDEROFTYPE_MAX
+};
+
+enum eSettingsTabButtonLoc : unsigned char
+{
+    STB_MainMenu = 0,
+    STB_Pause,
+    STB_StartGame,
+    STB_Settings,
+
+    TABBUTTONLOC_MAX,
+};
+
+enum ePoolType : unsigned char
+{
+    POOLTYPE_PEDS,
+    POOLTYPE_VEHICLES,
+    POOLTYPE_OBJECTS,
+
+    POOLTYPES_MAX,
+};
+
+enum eTexDBType : unsigned char
+{
+    TEXDBTYPE_DXT,
+    TEXDBTYPE_ETC,
+    TEXDBTYPE_PVR,
+
+    TEXDBTYPES_MAX,
+};
+
+/* Interface */
 class ISAUtils
 {
 public:
-/* Functions below added in 1.0.0.0 */
+    /* Functions below added in 1.0.0.0 */
 
-    /** Get an address of Fastman Limit Adjuster if included
-     *
-     *  \return Address of a FLA library
-     */
+        /** Get an address of Fastman Limit Adjuster if included
+         *
+         *  \return Address of a FLA library
+         */
     virtual uintptr_t IsFLALoaded() = 0;
-    
+
     // switchesArray is an array of items of clickable item (byteItemType = WithItems)
-    #if __cplusplus >= 201300 // Do not create errors on C++11 and lower :P
-      [[deprecated("Use AddClickableItem or AddSliderItem")]]
-    #endif
+#if __cplusplus >= 201300 // Do not create errors on C++11 and lower :P
+    [[deprecated("Use AddClickableItem or AddSliderItem")]]
+#endif
     virtual int AddSettingsItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, OnSettingChangedFn fnOnValueChange = NULL, bool isSlider = false, void* switchesArray = NULL) = 0;
 
     /** Get a value of setting (returned by AddClickableItem or AddSliderItem)
@@ -115,19 +194,19 @@ public:
     virtual int ValueOfSettingsItem(int settingId) = 0;
 
 
-/* Functions below added in 1.1.0.0 */
+    /* Functions below added in 1.1.0.0 */
 
-    /** Adds clickable text button in menu settings
-     *
-     *  \param typeOf In which setting option that item should be added
-     *  \param name Obviously a displayed name
-     *  \param initVal Initial value (def: 0)
-     *  \param minVal Minimum value (def: 0)
-     *  \param maxVal Maximum value (def: 0)
-     *  \param switchesArray An array that includes names of options
-     *  \param fnOnValueChange A function that will be called on value being saved (def: null)
-     *  \return Setting ID
-     */
+        /** Adds clickable text button in menu settings
+         *
+         *  \param typeOf In which setting option that item should be added
+         *  \param name Obviously a displayed name
+         *  \param initVal Initial value (def: 0)
+         *  \param minVal Minimum value (def: 0)
+         *  \param maxVal Maximum value (def: 0)
+         *  \param switchesArray An array that includes names of options
+         *  \param fnOnValueChange A function that will be called on value being saved (def: null)
+         *  \return Setting ID
+         */
     virtual int AddClickableItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, const char** switchesArray = NULL, OnSettingChangedFn fnOnValueChange = NULL) = 0;
 
     /** Adds a slider in menu settings
@@ -144,14 +223,14 @@ public:
     virtual int AddSliderItem(eTypeOfSettings typeOf, const char* name, int initVal = 0, int minVal = 0, int maxVal = 0, OnSettingChangedFn fnOnValueChange = NULL, OnSettingDrawedFn fnOnValueDraw = NULL) = 0;
 
 
-/* Functions below added in 1.2.0.0 */
+    /* Functions below added in 1.2.0.0 */
 
-    /** Adds a clickable button in menu settings
-     *
-     *  \param typeOf In which setting option that item should be added
-     *  \param name Obviously a displayed name
-     *  \param fnOnButtonPressed A function that will be called on button press (def: null)
-     */
+        /** Adds a clickable button in menu settings
+         *
+         *  \param typeOf In which setting option that item should be added
+         *  \param name Obviously a displayed name
+         *  \param fnOnButtonPressed A function that will be called on button press (def: null)
+         */
     virtual void AddButton(eTypeOfSettings typeOf, const char* name, OnButtonPressedFn fnOnButtonPressed = NULL) = 0;
 
     /** Loads texture db
@@ -176,14 +255,15 @@ public:
     virtual void AddIMG(const char* imgName) = 0;
 
 
-/* Functions below added in 1.3.0.0 */
+    /* Functions below added in 1.3.0.0 */
 
-    /** Creates a custom tabs in settings (like "Mods Settings")
-     *
-     *  \param name A name of settings tab
-     *  \param textureName A name of the texture from mobile.txt texdb (def: "menu_mainsettings")
-     *  \return An id to use with: AddButton or AddSliderItem or AddClickableItem
-     */
+        /** Creates a custom tabs in settings (like "Mods Settings")
+         *
+         *  \param name A name of settings tab
+         *  \param textureName A name of the texture from mobile.txt texdb (def: "menu_mainsettings")
+         *  \param data A user-defined data
+         *  \return An id to use with: AddButton or AddSliderItem or AddClickableItem
+         */
     virtual eTypeOfSettings AddSettingsTab(const char* name, const char* textureName = "menu_mainsettings") = 0;
 
     /** Get current game time in milliseconds
@@ -210,13 +290,13 @@ public:
      *  \param textureDbPtr Texture Database pointer, obviously.
      */
     virtual void RegisterTextureDB(uintptr_t textureDbPtr) = 0;
-    
+
     /** Unregisters Texture Database for texture lookup
      *
      *  \param textureDbPtr Texture Database pointer, obviously.
      */
     virtual void UnregisterTextureDB(uintptr_t textureDbPtr) = 0;
-    
+
     /** Get a RwTexture* (as a uintptr_t) from REGISTERED texture databases
      *
      *  \param texName Texture name
@@ -307,7 +387,11 @@ public:
      *  \param widget A pointer of the widget
      *  \return True if enabled
      */
-    inline bool IsWidgetEnabled(CWidgetButton* widget) { return *(bool*)((int)widget + 77); };
+#ifdef AML32
+    inline bool IsWidgetEnabled(CWidgetButton* widget) { return *(bool*)((uintptr_t)widget + 77); };
+#else
+    inline bool IsWidgetEnabled(CWidgetButton* widget) { return *(bool*)((uintptr_t)widget + 92); };
+#endif
 
     /** Clear widget's tap history
      *
@@ -359,6 +443,153 @@ public:
      *  \param sy Scale Y
      */
     virtual void SetWidgetPos(int widgetId, float x, float y, float sx, float sy);
+
+
+    /* Functions below added in 1.4.0.0 */
+
+        /** Reads the png image file and converts it to RwTexture*
+         *
+         *  \param filename Self-explained?
+         *  \return An actual pointer of RwTexture*
+         */
+    virtual void* LoadRwTextureFromPNG(const char* filename) = 0;
+
+    /** Reads the bmp image file and converts it to RwTexture*
+     *
+     *  \param filename Self-explained?
+     *  \return An actual pointer of RwTexture*
+     */
+    virtual void* LoadRwTextureFromBMP(const char* filename) = 0;
+
+    /** Add a listener of "RenderWare Engine initialized"
+     *
+     *  \param fn A function that will be called when Widgets are added
+     */
+    virtual void AddOnRWInitListener(SimpleFn fn) = 0;
+
+    /** Add a listener of "RenderWare Engine initialized"
+     *
+     *  \param fn A function that will be called when Widgets are added
+     */
+    virtual void AddTextureLookupListener(LookingForTextureFn fn) = 0;
+
+    /** Adds clickable text button in menu settings + sends own data
+     *
+     *  \param typeOf In which setting option that item should be added
+     *  \param name Obviously a displayed name
+     *  \param initVal Initial value (def: 0)
+     *  \param minVal Minimum value (def: 0)
+     *  \param maxVal Maximum value (def: 0)
+     *  \param switchesArray An array that includes names of options
+     *  \param fnOnValueChange A function that will be called on value being saved (def: null)
+     *  \param data An own data (def: null)
+     *  \return Setting ID
+     */
+    virtual int AddClickableItem(eTypeOfSettings typeOf, const char* name, int initVal, int minVal, int maxVal, const char** switchesArray, OnSettingChangedFn fnOnValueChange, void* data) = 0;
+
+    /** Adds a slider in menu settings + data
+     *
+     *  \param typeOf In which setting option that item should be added
+     *  \param name Obviously a displayed name
+     *  \param initVal Initial value (def: 0)
+     *  \param minVal Minimum value (def: 0)
+     *  \param maxVal Maximum value (def: 0)
+     *  \param fnOnValueChange A function that will be called on value being saved (def: null)
+     *  \param fnOnValueDraw A function that will control a text of a slider (def: null)
+     *  \param data An own data (def: null)
+     *  \return Setting ID
+     */
+    virtual int AddSliderItem(eTypeOfSettings typeOf, const char* name, int initVal, int minVal, int maxVal, OnSettingChangedFn fnOnValueChange, OnSettingDrawedFn fnOnValueDraw, void* data) = 0;
+
+    /** Calls a script opcode (mini-cleo)
+     *
+     *  \param pScriptCommand A pointer to SCRIPT_COMMAND struct var
+     *  \param ... All arguments
+     *  \return A possibly returned value
+     */
+    virtual int ScriptCommand(const SCRIPT_COMMAND* pScriptCommand, ...) = 0;
+
+    /** Add a listener to "Render" function of something
+     *
+     *  \param typeOf What are listening to? See eRenderOfType
+     *  \param fn Function that will be called
+     */
+    virtual void AddOnRenderListener(eRenderOfType typeOf, SimpleDataFn fn) = 0;
+
+
+    /* Functions below added in 1.4.1.0 */
+
+        /** Creates a custom tabs in settings (like "Mods Settings") but as a button
+         *
+         *  \param name A name of settings tab btn
+         *  \param textureName A name of the texture from mobile.txt texdb (def: "menu_mainsettings")
+         *  \param data A user-defined data
+         *  \noreturn
+         */
+    virtual void AddSettingsTabButton(const char* name, SimpleDataFn fn, eSettingsTabButtonLoc loc = STB_Settings, const char* textureName = "menu_mainsettings", void* data = NULL) = 0;
+
+    /** Loads a DLL file from the folder
+     *
+     *  \param name A name of settings tab btn
+     *  \param doPrelit Do a prelit process if there's no prelit info in a model (def: false)
+     *  \param atomic Save RpAtomic struct to this pointer (def: null)
+     *  \param frame Save RwFrame struct to this pointer (def: null)
+     *  \return If this process was successful
+     */
+    virtual bool LoadDFF(const char* name, bool doPrelit = false, RpAtomic** atomic = NULL, RwFrame** frame = NULL) = 0;
+
+    /** Gets the loaded game Enumeration (how did i forget that?!)
+     *
+     *  \return The enum which tells you about the loaded game!
+     */
+    virtual eLoadedGame GetLoadedGame() = 0;
+
+    /** Gets the loaded game lib addr (how did i forget that?!)
+     *
+     *  \return The game library address
+     */
+    virtual uintptr_t GetLoadedGameLibAddress() = 0;
+
+
+    /* Functions below added in 1.5.1.0 */
+
+        /** Loads texture db
+         *
+         *  \param name Obviously a name of texdb
+         *  \param type A type of the texture database: DXT, ETC, PVR
+         *  \param registerMe Should this texdb be registered for searching in or just be loaded until we register it manually?
+         *  \return Pointer of value that contains loaded TexDB address
+         */
+    virtual uintptr_t* AddTextureDBOfType(const char* name, eTexDBType type, bool registerMe = false);
+
+    /** Returns a number of items allocated in a pool
+     *
+     *  \param poolType Enumeration of which pool size you needed
+     *  \return A size of Object pool (returns 0 if there is any error)
+     */
+    virtual int GetPoolSize(ePoolType poolType) = 0;
+
+    /** Returns a number of allocated memory count for a pool
+     *
+     *  \param poolType Enumeration of which pool size you needed
+     *  \return An allocated memory size of Object pool (returns 0 if there is any error)
+     */
+    virtual int GetPoolMemSize(ePoolType poolType) = 0;
+
+    /** Returns a pool index of a given entity (only pools from ePoolType are supported!)
+     *
+     *  \param entityPtr A pointer of an entity
+     *  \return An index of a value (value less than 0 if error occured)
+     */
+    virtual int GetPoolIndex(void* entityPtr) = 0;
+
+    /** Returns a pool member locate at the index
+     *
+     *  \param poolType Enumeration of which pool's member pointer you needed
+     *  \param index An index
+     *  \return A pointer of a value located at the index (value is NULL if any error occured or member doesnt exists)
+     */
+    virtual void* GetPoolMember(ePoolType poolType, int index) = 0;
 };
 
 #endif // _SAUTILS_INTERFACE

@@ -31,6 +31,7 @@ public:
 	float shadowPositionY = 0.0f;
 	int shadowTexture = 3;
 	float shadowRotation = 0.0f;
+	bool shadowFlipTextures = false;
 
 	bool renderPointLight = true;
 	float pointLightIntensity = 1.00f;
@@ -222,6 +223,7 @@ public:
 		section->AddFloat("shadowPositionY", shadowPositionY);
 		section->AddInt("shadowTexture", shadowTexture);
 		section->AddFloat("shadowRotation", shadowRotation);
+		section->AddBool("shadowFlipTextures", shadowFlipTextures);
 
 		section->AddBool("renderPointLight", renderPointLight);
 		section->AddFloat("pointLightIntensity", pointLightIntensity);
@@ -271,6 +273,7 @@ public:
 		shadowPositionY = section->GetFloat("shadowPositionY", shadowPositionY);
 		shadowTexture = section->GetInt("shadowTexture", shadowTexture);
 		shadowRotation = section->GetFloat("shadowRotation", shadowRotation);
+		shadowFlipTextures = section->GetBool("shadowFlipTextures", shadowFlipTextures);
 
 		renderPointLight = section->GetBool("renderPointLight", renderPointLight);
 		pointLightIntensity = section->GetFloat("pointLightIntensity", pointLightIntensity);

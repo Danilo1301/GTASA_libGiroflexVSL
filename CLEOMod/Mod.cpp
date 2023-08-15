@@ -27,7 +27,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.10.1";
+char Mod::Version[256] = "2.10.2";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
@@ -182,7 +182,7 @@ const char* optionsGiroflexEditMode[] = {
     "OFF",
     "ON"
 };
-void OnGiroflexEditModeChanged(int oldVal, int newVal)
+void OnGiroflexEditModeChanged(int oldVal, int newVal, void* data)
 {
     Log::file << "OnGiroflexEditModeChanged - changed to " << newVal << std::endl;
 
@@ -365,33 +365,23 @@ extern "C" void OnModLoad()
 
     Input::pScreenGetWidth = aml->GetSym(hGTASA, "_Z17OS_ScreenGetWidthv");
     Input::pScreenGetHeight = aml->GetSym(hGTASA, "_Z18OS_ScreenGetHeightv");
+    Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
+    Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
+
+    Log::file << "pScreenGetWidth = " << Input::pScreenGetWidth << std::endl;
+    Log::file << "pScreenGetHeight = " << Input::pScreenGetHeight << std::endl;
+    Log::file << "pPrintString = " << Draw::pPrintString << std::endl;
+    Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
 
     //SET_TO(ScreenGetInches, aml->GetSym(hGTASA, "_Z18OS_ScreenGetInchesv"));
     SET_TO(RegisterCorona, aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb"));
-
-    Draw::pPrintString = aml->GetSym(hGTASA, "_ZN5CFont11PrintStringEffPt");
-    Input::pTouchPos = aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE");
-    
-
-    //Mod::pVehiclePool = aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE");
-    SET_TO(Mod::pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
     SET_TO(GetVehicleRef, aml->GetSym(hGTASA, "_ZN6CPools13GetVehicleRefEP8CVehicle"));
     SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
+    SET_TO(Mod::pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
 
-
-    
-
-    // pool = (CVehicle**)Mod::pVehiclePool;
-
-
-    //
-
-    Log::file << "pScreenGetHeight = " << Input::pScreenGetHeight << std::endl;
-    Log::file << "pScreenGetWidth = " << Input::pScreenGetWidth << std::endl;
-    Log::file << "RegisterCorona = " << &RegisterCorona << std::endl;
-    Log::file << "GetVehicleFromRef = " << &GetVehicleFromRef << std::endl;
-
-    Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
+    Log::file << "RegisterCorona = " << (void*)RegisterCorona << std::endl;
+    Log::file << "GetVehicleRef = " << (void*)GetVehicleRef << std::endl;
+    Log::file << "GetVehicleFromRef = " << (void*)GetVehicleFromRef << std::endl;
     Log::file << "pVehiclePool = " << Mod::pVehiclePool << std::endl;
 
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
@@ -415,23 +405,20 @@ extern "C" void OnModLoad()
 
     //SAUtils
     Log::file << "Loading SAUtils..." << std::endl;
-    sautils = (ISAUtils*)GetInterface("SAUtils");
-    if (sautils)
+    if (!(sautils = (ISAUtils*)GetInterface("SAUtils")))
     {
+        Log::file << "SAUtils was not loaded" << std::endl;
+    } else {
         Log::file << "SAUtils loaded" << std::endl;
 
-        //sautils->AddButton(SetType_Mods, "Giroflex VSL - Edit mode", OnEditModeButtonPressed);
-
-        sautils->AddClickableItem(SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
-
-        //sautils->AddSliderItem(SetType_Mods, "Giroflex Menu Offset", cfgMenuOffsetX->GetInt(), -200, 200, OnMenuOffsetChanged);
+        sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
     }
 
     //BASS
     //https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams
     if (!(BASS = (IBASS*)GetInterface("BASS")))
     {
-        Log::file << "BASS is not loaded" << std::endl;
+        Log::file << "BASS was not loaded" << std::endl;
     } else {
         Log::file << "BASS loaded: " << BASS << std::endl;
 

@@ -25,8 +25,10 @@ void WindowShadow::Create(Window* parent, LightGroup* lightGroup)
 
     window->AddFloatRange(24, &lightGroup->shadowPositionY, -10.0f, 10.0f, 0.01f);
 
-    window->AddFloatRange(77, &lightGroup->shadowRotation, 0.0f, 360.0f, 0.01f);
+    window->AddFloatRange(77, &lightGroup->shadowRotation, -1000.0f, 1000.0f, 0.01f);
 
-    auto coronaTexture = window->AddIntRange(73, &lightGroup->shadowTexture, 3, 6, 1);
+    window->AddCheckbox(86, &lightGroup->shadowFlipTextures);
+
+    auto coronaTexture = window->AddIntRange(73, &lightGroup->shadowTexture, 0, 100, 1);
     coronaTexture->holdToChange = false;
 }

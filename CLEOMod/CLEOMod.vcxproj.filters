@@ -80,7 +80,7 @@
     <Filter Include="iniconfig">
       <UniqueIdentifier>{1e9bef80-ee7f-4e8b-9f6e-db46ea2078f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="txt">
+    <Filter Include="windows\txt">
       <UniqueIdentifier>{9ecf5440-61e9-47db-b225-975b481eeec7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -164,10 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\info.txt">
-      <Filter>txt</Filter>
+      <Filter>windows\txt</Filter>
     </Text>
     <Text Include="somecode.txt">
-      <Filter>txt</Filter>
+      <Filter>windows\txt</Filter>
     </Text>
   </ItemGroup>
 </Project>
