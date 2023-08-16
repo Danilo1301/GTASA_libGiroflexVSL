@@ -412,6 +412,25 @@ extern "C" void OnModLoad()
         Log::file << "SAUtils loaded" << std::endl;
 
         sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
+    
+        if (aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.4.0"))
+        {
+            sautils->AddOnRWInitListener([]() {
+                Log::file << "RwInit" << std::endl;
+
+                std::string imageFile = std::string(aml->GetConfigPath()) + "/giroflex/textures/1.png";
+
+                Log::file << "Loading texture: " << imageFile << std::endl;
+
+                //its returning 0x0 for some reason
+                auto texture = sautils->LoadRwTextureFromPNG(imageFile.c_str());
+
+                Log::file << "Texture: " << texture << std::endl;
+            });
+        }
+        else {
+            Log::file << "SAUtils 1.4 or superior not found" << std::endl;
+        }
     }
 
     //BASS
