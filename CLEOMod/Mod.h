@@ -28,6 +28,7 @@ public:
     static Vehicle* GetPlayerVehicle();
     static void SaveCfg();
 
+    static void TestUpdate();
     static void ProcessTouch();
 
     static void* ModGetVehicleFromRef(int h);

@@ -136,6 +136,10 @@ end
 //----------------------------------------------------
 
 0000:
+0390: load_txd_dictionary 'TXD'
+038F: load_texture "gtxd1" as 1
+038F: load_texture "gtxd2" as 2
+038F: load_texture "gtxd3" as 3
 jump @MAIN
 
 //----------------------------------------------------
@@ -149,14 +153,15 @@ end
 
 :MAIN
 
-
-/*
 03F0: enable_text_draw 1
 0340: set_text_draw_RGBA 0 20 255 255 
 033F: set_text_draw_letter_size 0.5 3.0 
 0343: set_text_draw_linewidth 640.0
-045B: draw_text_2numbers 300.0 200.0 GXT 'DGFX2' numbers 22 22
-*/
+045B: draw_text_2numbers 300.0 200.0 GXT 'DGFX2' numbers 1 2
+
+038D: draw_texture 2 position 200.0 200.0 size 200.0 200.0 RGBA 255 0 0 255
+038D: draw_texture 1 position 210.0 210.0 size 50.0 50.0 RGBA 0 255 0 255
+038D: draw_texture 3 position 200.0 200.0 size 50.0 50.0 RGBA 0 100 0 255
 
 //0E00: test_giroflex_lib 152
 

@@ -82,6 +82,19 @@ void Mod::SaveCfg()
     cfg->Save();
 }
 
+void Mod::TestUpdate()
+{
+    /*
+    if (DrawRect)
+    {
+        CRect rect = {0.0f, 0.0f, 200.0f, 200.0f};
+        CRGBA color = { 255, 0, 0, 255 };
+
+        DrawRect(rect, color);
+    }
+    */
+}
+
 void Mod::ProcessTouch()
 {
     if (Input::GetTouchIdState(5) && Input::GetTouchIdState(9))
@@ -165,6 +178,7 @@ void* Mod::ModGetVehicleFromRef(int h)
 
     return result;
 }
+
 int Mod::ModGetVehicleRef(int pVehicle)
 {
     if (!GetVehicleRef)
@@ -175,6 +189,7 @@ int Mod::ModGetVehicleRef(int pVehicle)
 
     return GetVehicleRef(pVehicle);
 }
+
 //---------------------------------------------------------------------------------------------------
 //test
 
@@ -378,11 +393,13 @@ extern "C" void OnModLoad()
     SET_TO(GetVehicleRef, aml->GetSym(hGTASA, "_ZN6CPools13GetVehicleRefEP8CVehicle"));
     SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
     SET_TO(Mod::pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
+    SET_TO(DrawRect, aml->GetSym(hGTASA, "_ZN9CSprite2d8DrawRectERK5CRectRK5CRGBA"));
 
     Log::file << "RegisterCorona = " << (void*)RegisterCorona << std::endl;
     Log::file << "GetVehicleRef = " << (void*)GetVehicleRef << std::endl;
     Log::file << "GetVehicleFromRef = " << (void*)GetVehicleFromRef << std::endl;
     Log::file << "pVehiclePool = " << Mod::pVehiclePool << std::endl;
+    Log::file << "DrawRect = " << (void*)DrawRect << std::endl;
 
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
 
@@ -413,6 +430,7 @@ extern "C" void OnModLoad()
 
         sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
     
+        
         if (aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.4.0"))
         {
             sautils->AddOnRWInitListener([]() {

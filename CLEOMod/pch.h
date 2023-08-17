@@ -215,5 +215,9 @@ static double DistanceBetween(CVector vec1, CVector vec2)
 
 static void (*RegisterCorona)(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, posStruct const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay);
 
-static void* (*GetVehicleFromRef)(int);
 static int (*GetVehicleRef)(int);
+static void* (*GetVehicleFromRef)(int);
+
+//_ZN9CSprite2d8DrawRectERK5CRectRK5CRGBA
+//CSprite2d::DrawRect(CRect const&, CRGBA const&)
+static void* (*DrawRect)(CRect const&, CRGBA const&);

@@ -107,6 +107,15 @@ Sugestões:
 
 [] Ativação do painel por códigos virtuais para facilitar (3+9 por exemplo)
 
+[] Mudar o painel de sirene, deixar igual da PMESP, se for possível .-.
+[] Adiciona essa função que eu falei na próxima atualização com essa função vai dar para simular que tá girando as luzes como no GTA trilogia
+
+[] and it's coming from the vehicle. 
+[] or we can have the siren controller
+[] Or like i said before we can change the tones With a tap on the horn i 
+[] and we could make our own own custom controller to match the siren 
+
+
 [ NOT POSSIBLE ] (Apenas se possível) a sirene ter a funcionalidade original de os NPC darem passagem
 [ NOT POSSIBLE ] E tmb colocar rotação na hora de fazer curva no giro pq fica torto quando a sirene é um pouco envergada para baixo
 ---------------------------

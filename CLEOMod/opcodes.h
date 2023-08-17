@@ -639,6 +639,7 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
 
     Menu::Draw();
 
+    Mod::TestUpdate();
     Mod::ProcessTouch();
 
     Input::Update(dt);
