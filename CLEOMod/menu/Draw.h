@@ -4,7 +4,8 @@
 
 enum eDrawType {
 	BOX,
-	TEXT
+	TEXT,
+	SPRITE
 };
 
 enum eTextAlign {
@@ -23,6 +24,7 @@ public:
 	CVector2D pos = { 0, 0 };
 	CVector2D size = { 0, 0 };
 	CRGBA color = CRGBA(255, 255, 255, 255);
+	int spriteId = -1;
 
 	DrawItem(eDrawType type)
 	{
@@ -53,5 +55,7 @@ public:
 	static void DrawText(int gxtId, int num1, int num2, CVector2D pos, CRGBA color);
 	static void DrawBoxWithText(int gxtId, int num1, int num2, CVector2D pos, CVector2D boxSize, CRGBA boxColor, CRGBA textColor, eTextAlign align);
 	static void DrawBoxWithText(int gxtId, int num1, int num2, CVector2D pos, CVector2D boxSize, CRGBA boxColor, CRGBA textColor);
+	static void DrawSprite(int spriteId, CVector2D pos, CVector2D size, CRGBA color);
+	static void DrawSpriteWithText(int spriteId, int gxtId, int num1, int num2, CVector2D pos, CVector2D size, CRGBA spriteColor, CRGBA textColor, eTextAlign align);
 
 };

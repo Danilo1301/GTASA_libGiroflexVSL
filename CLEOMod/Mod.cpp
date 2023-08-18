@@ -478,4 +478,6 @@ extern "C" void OnModLoad()
 
     //test
     //WindowSelectPanel::Create();
+
+    //WindowSoundPanel::Toggle(true);
 }

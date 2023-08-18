@@ -136,12 +136,12 @@ void ModConfig::SaveSettings()
     INIFile file;
 
     auto soundPanelSection = file.AddSection("SoundPanel");
-    soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::AllowMultipleSounds);
-    soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::ButtonColor);
-    soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::ButtonOutlineColor);
-    soundPanelSection->AddCVector2D("offset_position", WindowSoundPanel::OffsetPosition);
-    soundPanelSection->AddFloat("button_size", WindowSoundPanel::ButtonSize);
-
+    
+    soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
+    soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
+    soundPanelSection->AddCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
+    soundPanelSection->AddCVector2D("position", WindowSoundPanel::m_position);
+    
     file.Save(settingsFileDir);
     file.Destroy();
 }
@@ -297,11 +297,10 @@ void ModConfig::LoadSettings()
     {
         auto soundPanelSection = soundPanelSections[0];
 
-        WindowSoundPanel::AllowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::AllowMultipleSounds);
-        WindowSoundPanel::ButtonColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::ButtonColor);
-        WindowSoundPanel::ButtonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::ButtonOutlineColor);
-        WindowSoundPanel::OffsetPosition = soundPanelSection->GetCVector2D("offset_position", WindowSoundPanel::OffsetPosition);
-        WindowSoundPanel::ButtonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::ButtonSize);
+        WindowSoundPanel::m_allowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
+        WindowSoundPanel::m_buttonDefaultColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
+        WindowSoundPanel::m_buttonActiveColor = soundPanelSection->GetCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
+        WindowSoundPanel::m_position = soundPanelSection->GetCVector2D("position", WindowSoundPanel::m_position);
     }
 
     Log::file << "ModConfig: Success reading settings.ini" << std::endl;

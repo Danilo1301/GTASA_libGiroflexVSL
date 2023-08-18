@@ -75,3 +75,36 @@ void Draw::DrawText(int gxtId, int num1, int num2, CVector2D pos, CRGBA color)
 {
 	DrawText(gxtId, num1, num2, pos, color, eTextAlign::ALIGN_CENTER);
 }
+
+void Draw::DrawSprite(int spriteId, CVector2D pos, CVector2D size, CRGBA color)
+{
+	DrawItem* item = new DrawItem(eDrawType::SPRITE);
+	item->type = eDrawType::SPRITE;
+	item->spriteId = spriteId;
+	item->pos = pos;
+	item->size = size;
+	item->color = color;
+
+	m_DrawItems.push_back(item);
+}
+
+void Draw::DrawSpriteWithText(int spriteId, int gxtId, int num1, int num2, CVector2D pos, CVector2D size, CRGBA spriteColor, CRGBA textColor, eTextAlign align)
+{
+	Draw::DrawSprite(spriteId, pos, size, spriteColor);
+
+	CVector2D textPos = pos;
+	textPos.y += size.y / 2;
+
+	if (align == eTextAlign::ALIGN_CENTER)
+	{
+		textPos.x += size.x / 2;
+	}
+
+	if (align == eTextAlign::ALIGN_RIGHT)
+	{
+		textPos.x += size.x;
+
+	}
+
+	Draw::DrawText(gxtId, num1, num2, textPos, textColor, align);
+}

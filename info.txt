@@ -95,7 +95,13 @@ Todo
 [2.10.2]
 [X] ADD: flip shadows + save to ini
 
+[2.11.0]
+[] ADD: draw sprite
+[] CHANGE: layout of sound panel
+[] ADD: documentation about how to add textures, and libBASS.so
+
 Sugestões:
+
 
 [ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
 [ DONE ] poderia botar mais opções de sons? Tipo 10

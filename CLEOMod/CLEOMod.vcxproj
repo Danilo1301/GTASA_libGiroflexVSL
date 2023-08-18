@@ -55,6 +55,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Vehicles.cpp" />
+    <ClCompile Include="windows\SoundPanelButton.cpp" />
     <ClCompile Include="windows\WindowEditing.cpp" />
     <ClCompile Include="windows\WindowFlare.cpp" />
     <ClCompile Include="windows\WindowLightGroups.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Vehicles.h" />
+    <ClInclude Include="windows\SoundPanelButton.h" />
     <ClInclude Include="windows\WindowEditing.h" />
     <ClInclude Include="windows\WindowFlare.h" />
     <ClInclude Include="windows\WindowLightGroups.h" />

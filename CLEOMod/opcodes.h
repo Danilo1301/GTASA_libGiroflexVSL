@@ -556,6 +556,7 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
     if (type == eDrawInfoType::NUM_1) result->i = item->num1;
     if (type == eDrawInfoType::NUM_2) result->i = item->num2;
     if (type == eDrawInfoType::ALIGN) result->i = (int)item->textAlign;
+    if (type == eDrawInfoType::SPRITE_ID) result->i = item->spriteId;
 }
 
 static void SEND_CAR_POSITION(__handler_params)

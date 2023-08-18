@@ -196,6 +196,7 @@ void Item::Draw()
 	if (type == eItemType::ITEM_OPTIONS || type == eItemType::ITEM_INT_RANGE || type == eItemType::ITEM_FLOAT_RANGE)
 	{
 		text->gxtId = 1;
+		text->color = CRGBA(0, 0, 0);
 
 		if (type == eItemType::ITEM_FLOAT_RANGE && floatValueRange.value != NULL)
 		{
@@ -230,6 +231,7 @@ void Item::Draw()
 		{
 			btnLeft->box->size = btnSize;
 			btnLeft->text->gxtId = 4;
+			btnLeft->text->color = CRGBA(0, 0, 0);
 			btnLeft->box->color = btnColor;
 			btnLeft->position = position;
 			btnLeft->Draw();
@@ -239,6 +241,7 @@ void Item::Draw()
 		{
 			btnRight->box->size = btnSize;
 			btnRight->text->gxtId = 5;
+			btnRight->text->color = CRGBA(0, 0, 0);
 			btnRight->box->color = btnColor;
 			btnRight->position = CVector2D(position.x + box->size.x - btnSize.x, position.y);
 			btnRight->Draw();
