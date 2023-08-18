@@ -4,7 +4,10 @@
 
 <br>
 
-## Instalação
+<h1>
+ Instalação
+</h1>
+
 * Apk necessário: GTA SA 2.00 com FLA 6.5 ou superior (com suporte a AML)
 * Libs necessárias:
   * AML (https://github.com/RusJJ/AndroidModLoader)
@@ -19,22 +22,35 @@
 2. Arraste o arquivo 'libGiroflex.so' da "/dentro da pasta do jogo" para sua pasta '/mods'
 3. Jogue os arquivos 'giroflex.csa' e 'giroflex.fxt' da "/dentro da CLEO" para onde você carrega seus mods cleo (csa, csi, fxt)
 4. Caso ainda não tenha feito, coloque as libs da "/libs necessárias" dentro da pasta '/mods'
- 
-## Como usar
+5. Opcional: Coloque as texturas do giroflex no seu 'txd.txt' usando o 'TXD Tool'. [Tutorial](#how-to-add-textures)
+
+<h1>
+ Como usar
+</h1>
+
 * Pressione os números imaginários 5 e 6 ([exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
 * Painel: Pressione os números imaginários 5 e 9 ([exemplo](https://imgur.com/LLddMfg)) por 0.5s
 
-## Config
+<h1>
+ Config
+</h1>
+
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
 Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
-## Problemas
+<h1>
+ Problemas
+</h1>
 
-### Crash com a libBASSMod.so
+<h3>
+ Crash com a libBASSMod.so
+</h3>
 
 Alguns usuários relataram crashes com a nova libBASSMod (que serve para tocar áudio). Se o seu jogo estiver crashando, experimente remover a 'libBASSMod.so' da pasta /mods
 
-### Mods cleo sumiram do menu
+<h3>
+ Mods cleo sumiram do menu
+</h3>
 
 Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<br>
 
@@ -43,21 +59,26 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
 
-### Menu muito pra esquerda
+<h3>
+ Menu muito pra esquerda
+</h3>
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
-## Como colocar as texturas
-* 1º Abra o TXD Tool
-* 2º Clique no símbolo de uma pasta em rosa
-* 3º Aperte OK
-* 4º Procure pelo "txd.txt". Ele está localizado na pasta "Android/data/com.rockstargames.gtasa/files/textdb/txd"
+<h1 id="how-to-add-textures">
+ Como colocar as texturas
+</h1>
+
+1. Abra o TXD Tool
+2. Clique no símbolo de uma pasta em rosa
+3. Aperte OK
+4. Procure pelo "txd.txt". Ele está localizado na pasta "Android/data/com.rockstargames.gtasa/files/textdb/txd"
 * Caso dê erro ao tentar abrir a pasta /data/, mova temporariamente a pasta '/txd' para fora da pasta '/data' usando o ZArchive (ou algum outro gerenciador de arquivos)
-* 5º Clique no + em rosa
-* 6º Clique em "From images"
-* 7º Clique em "Uncompressed 32bpp"
-* 8º Selecione as texturas do mod
-* 9º Clique no símbolo de "ok" no canto superior direito
-* 10º Selecione a opção "Overwrite" > Aperte "OK"
-* 11º IMPORTANTE: Não se esqueca de fechar o CACHE: vá nas "três setinhas" e selecione Close
+5. Clique no + em rosa
+6. Clique em "From images"
+7. Clique em "Uncompressed 32bpp"
+8. Selecione as texturas do mod
+9. Clique no símbolo de "ok" no canto superior direito
+10. Selecione a opção "Overwrite" > Aperte "OK"
+11. IMPORTANTE: Não se esqueca de fechar o CACHE: vá nos "tres pontinhos" e selecione 'Close'
 * Vídeo (tutorial por: NEYgamer): https://youtu.be/85NgNUoSkEY?t=629

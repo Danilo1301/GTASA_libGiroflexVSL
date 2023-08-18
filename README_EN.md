@@ -1,6 +1,7 @@
 # Giroflex VSL (VehicleSirenLights)
 
-## Install
+<h1>Install</h1>
+
 * Required Apk: GTA SA 2.00 with FLA 6.5 or superior (with AML support)
 * Required Libs:
   * AML (https://github.com/RusJJ/AndroidModLoader)
@@ -15,22 +16,25 @@
 2. Move the 'libGiroflex.so' from "/inside game folder" to your '/mods' folder
 3. Move the 'giroflex.csa' and 'giroflex.fxt' files from "/inside CLEO" to where you load your cleo mods
 4. If you haven't done yet, move the libs from "/required libs" inside your '/mods' folder
+5. Optional: Coloque as texturas do giroflex no seu 'txd.txt' usando o 'TXD Tool'. [Tutorial](#how-to-add-textures)
 
-## How to use
+<h1>How to use</h1>
+
 * Press the 'imaginary buttons' 5 and 6 ([example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off, and for 1s to open menu
 * Panel: press the 'imaginary buttons' 5 and 9 ([example](https://imgur.com/LLddMfg)) for 0.5s
 
-## Config
+<h1>Config</h1>
+
 Each vehicle has a .ini file where it stores its config<br>
 Those files are located at: GAME_FOLDER/configs/giroflex
 
-## Problems
+<h1>Issues</h1>
 
-### Crash with the libBASSMod.so
+<h3>Crash with the libBASSMod.so</h3>
 
 Some users have reported crashes with the new libBASSMod (which is for playing audio). If your game is crashing, try removing 'libBASSMod.so' from /mods folder
 
-### Mods cleo sumiram do menu
+<h3>Mods cleo not showing on menu</h3>
 
 You just need to go in the game, then "Options" > "Game" and change the "CLEO LOCATION"<br>
 
@@ -39,22 +43,22 @@ You just need to go in the game, then "Options" > "Game" and change the "CLEO LO
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
 
-### Menu too much to the left
+<h3>Menu too much to the left</h3>
 
 To change the menu's position, you need to enable the edit mode in: "Options" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
-## How to add the textures
+<h1 id="how-to-add-textures">How to add the textures</h1>
 
-* 1º Open TXD Tool
-* 2º Click on the folder button (in rose)
-* 3º Click OK
-* 4º Search for your "txd.txt". It's located in "Android/data/com.rockstargames.gtasa/files/textdb/txd"
+1. Open TXD Tool
+2. Click on the folder button (in rose)
+3. Click OK
+4. Search for your "txd.txt". It's located in "Android/data/com.rockstargames.gtasa/files/textdb/txd"
 * If you get an error when trying to open the folder /data/, temporarily move the folder '/txd' from out of the '/data' using the ZArchive (or another file explorer app)
-* 5º Click on + (in rose)
-* 6º Click "From images"
-* 7º Select "Uncompressed 32bpp"
-* 8º Select the mod textures
-* 9º Click on the "ok" symbol in the upper right corner
-* 10º Select "Overwrite" > Click "OK"
-* 11º IMPORTANT: Don't forget to close the CACHE: click on ":" "then Close cache"
+5. Click on + (in rose)
+6. Click "From images"
+7. Select "Uncompressed 32bpp"
+8. Select the mod textures
+9. Click on the "ok" symbol in the upper right corner
+10. Select "Overwrite" > Click "OK"
+11. IMPORTANT: Don't forget to close the CACHE: click on ":" then "Close cache"
 * Vídeo (tutorial by: NEYgamer): https://youtu.be/85NgNUoSkEY?t=629
