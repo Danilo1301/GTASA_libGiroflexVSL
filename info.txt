@@ -96,8 +96,9 @@ Todo
 [X] ADD: flip shadows + save to ini
 
 [2.11.0]
-[] ADD: draw sprite
-[] CHANGE: layout of sound panel
+[X] ADD: draw sprite
+[X] CHANGE: layout of sound panel
+[X] ADD: three different sound panel styles
 [] ADD: documentation about how to add textures, and libBASS.so
 
 Sugestões:

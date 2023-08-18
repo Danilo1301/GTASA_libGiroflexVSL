@@ -15,11 +15,19 @@ public:
 	CRGBA color = CRGBA(255, 255, 255);
 	CRGBA activeColor = CRGBA(255, 0, 0);
 
+	CRGBA outlineColor = CRGBA(255, 0, 0);
+	bool drawOutline = false;
+
 	bool isPointerOver = false;
 	bool isPressed = false;
 
 	bool canBeActivated = true;
 	bool isActive = false;
+
+	bool blinkOnActive = false;
+
+	bool blink = false;
+	float blinkState = 0.0f;
 
 	std::function<void()> onClick;
 	std::function<void()> onPressBegin;

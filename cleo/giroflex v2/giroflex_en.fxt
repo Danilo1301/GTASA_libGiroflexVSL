@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Edit position
 DGFX27 Distance
 DGFX28 A
-DGFX29 Giroflex VSL v2.10.2 (Danilo1301)
+DGFX29 Giroflex VSL v2.11.0 (Danilo1301)
 DGFX30 Vehicle ID ~1~
 DGFX31 Close
 DGFX32 Info
@@ -84,4 +84,8 @@ DGFX83 Multiple audios at once
 DGFX84 Move lights speed
 DGFX85 8 lights
 DGFX86 Flip shadows
+DGFX87 Color
+DGFX88 Color (active)
+DGFX89 Color (outline)
+DGFX90 Style
 DGFX0 #OUTDATED .FXT#

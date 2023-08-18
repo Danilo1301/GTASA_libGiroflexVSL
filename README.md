@@ -5,11 +5,12 @@
 <br>
 
 ## Instalação
-* Apk necessário: GTA SA com FLA 6.5 ou superior (com suporte a AML)
+* Apk necessário: GTA SA 2.00 com FLA 6.5 ou superior (com suporte a AML)
 * Libs necessárias:
   * AML (https://github.com/RusJJ/AndroidModLoader)
   * SAUtils (https://github.com/AndroidModLoader/SAUtils)
   * CLEO Mod (https://github.com/AndroidModLoader/GTA_CLEOMod)
+  * BASS Mod (https://github.com/AndroidModLoader/BASSMod)
 
 ( as libs já vem dentro do .zip, em 'libs necessárias', basta apenas jogar os arquivos .so dentro da sua pasta /mods )<br>
 ( exemplo: para /Android/data/ro.samp_mobile.game/mods )<br>
@@ -29,9 +30,13 @@ Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
 ## Problemas
 
+### Crash com a libBASSMod.so
+
+Alguns usuários relataram crashes com a nova libBASSMod (que serve para tocar áudio). Se o seu jogo estiver crashando, experimente remover a 'libBASSMod.so' da pasta /mods
+
 ### Mods cleo sumiram do menu
 
-Bastar ir no jogo, em Opções > Game e mudar a opção do CLEO LOCATION<br>
+Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<br>
 
 * OLD CLEO - com.rockstargames.gtasa / mod.csi
 * OLD CLEO (+CLEO) - com.rockstargames.gtasa / cleo / mod.csi
@@ -40,4 +45,19 @@ Bastar ir no jogo, em Opções > Game e mudar a opção do CLEO LOCATION<br>
 
 ### Menu muito pra esquerda
 
-Para mudar a posição do menu você precisa ativar o modo edição em: Options > Mods Settings > "Giroflex VSL - Edit mode"
+Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
+
+## Como colocar as texturas
+* 1º Abra o TXD Tool
+* 2º Clique no símbolo de uma pasta em rosa
+* 3º Aperte OK
+* 4º Procure pelo "txd.txt". Ele está localizado na pasta "Android/data/com.rockstargames.gtasa/files/textdb/txd"
+* Caso dê erro ao tentar abrir a pasta /data/, mova temporariamente a pasta '/txd' para fora da pasta '/data' usando o ZArchive (ou algum outro gerenciador de arquivos)
+* 5º Clique no + em rosa
+* 6º CLique em "From images"
+* 7º Clique em "Uncompressed 32bpp"
+* 8º Selecione as texturas do mod
+* 9º Clique no símbolo de "ok" no canto superior direito
+* 10º Selecione a opção "Overwrite" > Aperte "OK"
+* 11º IMPORTANTE: Não se esqueca de fechar o CACHE: vá nas "três setinhas" e selecione Close
+* Vídeo (tutorial por: NEYgamer): https://youtu.be/85NgNUoSkEY?t=629

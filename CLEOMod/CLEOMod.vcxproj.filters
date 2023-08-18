@@ -60,17 +60,17 @@
       <Filter>windows</Filter>
     </ClCompile>
     <ClCompile Include="AudioStream.cpp" />
-    <ClCompile Include="windows\WindowSoundPanel.cpp">
-      <Filter>windows</Filter>
-    </ClCompile>
     <ClCompile Include="windows\WindowSelectPanel.cpp">
       <Filter>windows</Filter>
     </ClCompile>
-    <ClCompile Include="windows\WindowSoundPanelSettings.cpp">
-      <Filter>windows</Filter>
-    </ClCompile>
     <ClCompile Include="windows\SoundPanelButton.cpp">
-      <Filter>windows</Filter>
+      <Filter>windows\soundPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowSoundPanelSettings.cpp">
+      <Filter>windows\soundPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\WindowSoundPanel.cpp">
+      <Filter>windows\soundPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +85,9 @@
     </Filter>
     <Filter Include="txt">
       <UniqueIdentifier>{9ecf5440-61e9-47db-b225-975b481eeec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows\soundPanel">
+      <UniqueIdentifier>{db51c2cc-0a05-4451-91d0-7cc262fdebd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -155,17 +158,17 @@
     </ClInclude>
     <ClInclude Include="ibass.h" />
     <ClInclude Include="AudioStream.h" />
-    <ClInclude Include="windows\WindowSoundPanel.h">
-      <Filter>windows</Filter>
-    </ClInclude>
     <ClInclude Include="windows\WindowSelectPanel.h">
       <Filter>windows</Filter>
     </ClInclude>
-    <ClInclude Include="windows\WindowSoundPanelSettings.h">
-      <Filter>windows</Filter>
-    </ClInclude>
     <ClInclude Include="windows\SoundPanelButton.h">
-      <Filter>windows</Filter>
+      <Filter>windows\soundPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowSoundPanelSettings.h">
+      <Filter>windows\soundPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="windows\WindowSoundPanel.h">
+      <Filter>windows\soundPanel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

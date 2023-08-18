@@ -13,7 +13,11 @@ int WindowSoundPanel::m_prevActiveIndex = -1;
 bool WindowSoundPanel::m_allowMultipleSounds = false;
 CRGBA WindowSoundPanel::m_buttonDefaultColor = { 109, 167, 100, 255 };
 CRGBA WindowSoundPanel::m_buttonActiveColor = { 255, 131, 131, 255 };
+CRGBA WindowSoundPanel::m_buttonOutlineColor = { 46, 77, 51, 255 };
 CVector2D WindowSoundPanel::m_position = CVector2D(260, 340);
+int WindowSoundPanel::m_style = 1;
+float WindowSoundPanel::m_buttonSize = 30.0f;
+
 bool WindowSoundPanel::m_visible = false;
 
 void WindowSoundPanel::Toggle(bool state)
@@ -34,12 +38,105 @@ void WindowSoundPanel::Toggle(bool state)
 
 void WindowSoundPanel::Create()
 {
+	switch (m_style)
+	{
+	case 1:
+		CreateStyle1();
+		break;
+	case 2:
+		CreateStyle2();
+		break;
+	case 3:
+	default:
+		CreateStyle3();
+		break;
+	}
+}
+
+
+void WindowSoundPanel::CreateStyle1()
+{
+	float buttonSize = m_buttonSize;
+	int numOfButtons = 8;
+	float margin = 5.0f;
+	//CVector2D buttonSize = CVector2D(buttonSize, buttonSize);
+
+	/*
+	CVector2D screenSize = Input::GetGTAScreenSize();
+	CVector2D startPos = {
+		(screenSize.x / 2) - ((numOfButtons + 2) * (buttonSize + margin)) / 2,
+		screenSize.y - 45.0f
+	};
+	*/
+
+	CRGBA buttonDefaultColor = m_buttonDefaultColor;
+	CRGBA buttonActiveColor = m_buttonActiveColor;
+	CRGBA buttonOutlineColor = m_buttonOutlineColor;
+	CRGBA textDefaultColor = { 0, 0, 0, 255 };
+
+	CVector2D currentPos = m_position;
+
+	currentPos = currentPos + CVector2D(0, 67);
+
+	for (int i = 0; i < numOfButtons; i++)
+	{
+		auto button = AddButton();
+		button->position = currentPos;
+		button->size = CVector2D(buttonSize, buttonSize);
+		button->text.gxtId = 1;
+		button->text.num1 = i + 1;
+		button->text.color = textDefaultColor;
+		button->color = buttonDefaultColor;
+		button->drawOutline = true;
+		button->outlineColor = buttonOutlineColor;
+		button->activeColor = buttonActiveColor;
+		button->blinkOnActive = true;
+
+		if (i == 0 || i == 1)
+		{
+			AddButtonToAudioList(button, i + 1, true);
+		}
+		else {
+			AddButtonToAudioList(button, i + 1);
+		}
+
+
+		currentPos = currentPos + CVector2D(buttonSize + margin, 0);
+	}
+
+	auto buttonSettings = AddButton();
+	buttonSettings->position = currentPos;
+	buttonSettings->size = CVector2D(buttonSize, buttonSize);
+	buttonSettings->text.gxtId = 79;
+	buttonSettings->text.color = textDefaultColor;
+	buttonSettings->color = CRGBA(110, 110, 110);
+	buttonSettings->drawOutline = true;
+	buttonSettings->outlineColor = CRGBA(80, 80, 80);
+	buttonSettings->canBeActivated = false;
+	buttonSettings->onClick = []() {
+		WindowSoundPanelSettings::Create();
+	};
+
+	currentPos = currentPos + CVector2D(buttonSize + margin, 0);
+
+	auto buttonClose = AddButton();
+	buttonClose->position = currentPos;
+	buttonClose->size = CVector2D(buttonSize, buttonSize);
+	buttonClose->text.gxtId = 78;
+	buttonClose->text.color = textDefaultColor;
+	buttonClose->color = CRGBA(255, 100, 100);
+	buttonClose->drawOutline = true;
+	buttonClose->outlineColor = CRGBA(178, 70, 70);
+	buttonClose->canBeActivated = false;
+	buttonClose->onClick = []() {
+		Toggle(false);
+	};
+}
+
+void WindowSoundPanel::CreateStyle2()
+{
 	CVector2D bgPosition = m_position;
-	CVector2D bgSize = { 235.0f, 103.0f };
-
-	Draw::DrawBox(bgPosition, bgSize, CRGBA(32, 32, 32));
-
-	//
+	//CVector2D bgSize = { 235.0f, 103.0f };
 
 	CRGBA buttonDefaultColor = m_buttonDefaultColor;
 	CRGBA buttonActiveColor = m_buttonActiveColor;
@@ -66,7 +163,7 @@ void WindowSoundPanel::Create()
 	buttonSiren1->text.color = textDefaultColor;
 	buttonSiren1->color = buttonDefaultColor;
 	buttonSiren1->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren1, 1);
+	AddButtonToAudioList(buttonSiren1, 1, true);
 
 	auto buttonSiren2 = AddButton();
 	buttonSiren2->position = bgPosition + CVector2D(3, 65);
@@ -77,7 +174,7 @@ void WindowSoundPanel::Create()
 	buttonSiren2->text.color = textDefaultColor;
 	buttonSiren2->color = buttonDefaultColor;
 	buttonSiren2->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren2, 2);
+	AddButtonToAudioList(buttonSiren2, 2, true);
 
 	//
 
@@ -162,39 +259,114 @@ void WindowSoundPanel::Create()
 	buttonSiren8->color = buttonDefaultColor;
 	buttonSiren8->activeColor = buttonActiveColor;
 	AddButtonToAudioList(buttonSiren8, 8);
+}
 
+void WindowSoundPanel::CreateStyle3()
+{
+	int numButtonsX = 5;
+	int numButtonsY = 2;
+	float buttonSize = m_buttonSize;
+	float margin = 3.0f;
+
+	CRGBA buttonDefaultColor = m_buttonDefaultColor;
+	CRGBA buttonActiveColor = m_buttonActiveColor;
+	CRGBA buttonOutlineColor = m_buttonOutlineColor;
+	CRGBA textDefaultColor = { 0, 0, 0, 255 };
+
+	CVector2D currentPos = m_position;
+
+	currentPos = currentPos + CVector2D(0, 33);
+
+	int i = 0;
+	for (int x = 0; x < numButtonsX; x++)
+	{
+		for (int y = 0; y < numButtonsY; y++)
+		{
+			CVector2D offset = CVector2D(
+				x * (buttonSize + margin),
+				y * (buttonSize + margin)
+			);
+
+			auto button = AddButton();
+			button->position = currentPos + offset;
+			button->size = CVector2D(buttonSize, buttonSize);
+			button->text.gxtId = 1;
+			button->text.num1 = i + 1;
+			button->text.color = textDefaultColor;
+			button->color = buttonDefaultColor;
+			button->drawOutline = true;
+			button->outlineColor = buttonOutlineColor;
+			button->activeColor = buttonActiveColor;
+			button->blinkOnActive = true;
+
+			//0 2 4 6 8
+			//1 3 5 7 9
+
+			if (i == 8)
+			{
+				button->text.gxtId = 78;
+				button->canBeActivated = false;
+				button->color = CRGBA(255, 100, 100);
+				button->outlineColor = CRGBA(178, 70, 70);
+				button->onClick = []() {
+					Toggle(false);
+				};
+			} else if (i == 9)
+			{
+				button->text.gxtId = 79;
+				button->canBeActivated = false;
+				button->color = CRGBA(110, 110, 110);
+				button->outlineColor = CRGBA(80, 80, 80);
+				button->onClick = []() {
+					WindowSoundPanelSettings::Create();
+				};
+			}
+			else {
+
+				if (i == 0 || i == 1)
+				{
+					AddButtonToAudioList(button, i + 1, true);
+				}
+				else {
+					AddButtonToAudioList(button, i + 1);
+				}
+			}
+
+			i++;
+		}
+	}
 }
 
 
 void WindowSoundPanel::Update(int dt)
 {
 	//enable if testing
-	/*
-	if (!Visible)
-	{
-		Toggle(true);
-	}
-	*/
+	//if (!m_visible) Toggle(true);
 
 	if (!m_visible) return;
 
 	std::for_each(m_buttons.begin(), m_buttons.end(), [dt](SoundPanelButton* button) { button->Update(dt); });
 
 	//disable if testing
+	
 	if (!Mod::IsPlayerInAnyVehicle())
 	{
 		Toggle(false);
 	}
+
 }
 
 void WindowSoundPanel::Draw()
 {
 	if (!m_visible) return;
 
-	CVector2D bgPosition = m_position;
-	CVector2D bgSize = { 235.0f, 103.0f };
+	if (m_style == 2)
+	{
+		CVector2D bgPosition = m_position;
+		CVector2D bgSize = { 235.0f, 103.0f };
 
-	Draw::DrawBox(bgPosition, bgSize, CRGBA(32, 32, 32));
+		Draw::DrawBox(bgPosition, bgSize, CRGBA(32, 32, 32, 200));
+	}
 
 	std::for_each(m_buttons.begin(), m_buttons.end(), [](SoundPanelButton* button) { button->Draw(); });
 }
@@ -226,7 +398,7 @@ void WindowSoundPanel::RecreateButtons()
 	Create();
 }
 
-void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioId)
+void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioId, bool horn)
 {
 	std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
 
@@ -234,12 +406,29 @@ void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioI
 	audioStreamData.button = button;
 	audioStreamData.audioStream = new AudioStream(audiosPath + "/siren" + std::to_string(audioId) + ".wav");
 	audioStreamData.audioStream->Loop(true);
+	audioStreamData.audioStream->SetVolume(0.5f);
 
 	m_audioStreamData.push_back(audioStreamData);
 
-	button->onClick = [audioId]() {
-		ToggleAudioButton(audioId - 1);
-	};
+	if (horn)
+	{
+		button->onPressBegin = [audioStreamData]() {
+			audioStreamData.audioStream->Play();
+			audioStreamData.button->isActive = true;
+		};
+
+		button->onPressEnd = [audioStreamData]() {
+			audioStreamData.audioStream->Stop();
+			audioStreamData.button->isActive = false;
+		};
+	}
+	else {
+		button->onClick = [audioId]() {
+			ToggleAudioButton(audioId - 1);
+		};
+	}
+
+	
 }
 
 

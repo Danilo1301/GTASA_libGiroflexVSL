@@ -140,7 +140,9 @@ void ModConfig::SaveSettings()
     soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
     soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
     soundPanelSection->AddCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
+    soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
     soundPanelSection->AddCVector2D("position", WindowSoundPanel::m_position);
+    soundPanelSection->AddFloat("button_size", WindowSoundPanel::m_buttonSize);
     
     file.Save(settingsFileDir);
     file.Destroy();
@@ -300,7 +302,9 @@ void ModConfig::LoadSettings()
         WindowSoundPanel::m_allowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
         WindowSoundPanel::m_buttonDefaultColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
         WindowSoundPanel::m_buttonActiveColor = soundPanelSection->GetCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
+        WindowSoundPanel::m_buttonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
         WindowSoundPanel::m_position = soundPanelSection->GetCVector2D("position", WindowSoundPanel::m_position);
+        WindowSoundPanel::m_buttonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::m_buttonSize);
     }
 
     Log::file << "ModConfig: Success reading settings.ini" << std::endl;

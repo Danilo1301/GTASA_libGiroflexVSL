@@ -19,13 +19,19 @@ public:
 	static bool m_allowMultipleSounds;
 	static CRGBA m_buttonDefaultColor;
 	static CRGBA m_buttonActiveColor;
+	static CRGBA m_buttonOutlineColor;
 	static CVector2D m_position;
+	static int m_style;
+	static float m_buttonSize;
 
 	static bool m_visible;
 
 
 	static void Toggle(bool state);
 	static void Create();
+	static void CreateStyle1();
+	static void CreateStyle2();
+	static void CreateStyle3();
 	static void Update(int dt);
 	static void Draw();
 	static void DestroyButtons();
@@ -33,7 +39,7 @@ public:
 	static SoundPanelButton* AddButton();
 	static void RecreateButtons();
 
-	static void AddButtonToAudioList(SoundPanelButton* button, int audioId);
+	static void AddButtonToAudioList(SoundPanelButton* button, int audioId, bool horn = false);
 	static void ToggleAudioButton(int index);
 	static void StopAllSounds();
 };
