@@ -6,6 +6,7 @@ Check Mod::Version
 Check EN and PT .fxt
 Check .fxt mod version
 Check game more than once to make sure
+Check if config is saving
 
 ---------------------------
 Todo
@@ -99,7 +100,7 @@ Todo
 [X] ADD: draw sprite
 [X] CHANGE: layout of sound panel
 [X] ADD: three different sound panel styles
-[] ADD: documentation about how to add textures, and libBASS.so
+[X] ADD: documentation about how to add textures, and libBASS.so
 
 Sugestões:
 
@@ -107,21 +108,20 @@ Sugestões:
 [ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
 [ DONE ] poderia botar mais opções de sons? Tipo 10
 [ DONE ] podermos configurar algumas coisas como Tamanho, opacidade e cor do painel
+[ DONE ] Teria como vc adicionar PATTERN de 8 luzes 
+[ DONE? ] Mudar o painel de sirene, deixar igual da PMESP, se for possível .-.
 
 
 [ ] Colocar de 11 luzes tmb pq os Giroflex (não todos) mais a maioria são 11 luzes 
-[] Teria como vc adicionar PATTERN de 8 luzes 
 
 [] Ativação do painel por códigos virtuais para facilitar (3+9 por exemplo)
 
-[] Mudar o painel de sirene, deixar igual da PMESP, se for possível .-.
 [] Adiciona essa função que eu falei na próxima atualização com essa função vai dar para simular que tá girando as luzes como no GTA trilogia
 
-[] and it's coming from the vehicle. 
+[] and it [the audio] is coming from the vehicle.  
 [] or we can have the siren controller
 [] Or like i said before we can change the tones With a tap on the horn i 
 [] and we could make our own own custom controller to match the siren 
-
 
 [ NOT POSSIBLE ] (Apenas se possível) a sirene ter a funcionalidade original de os NPC darem passagem
 [ NOT POSSIBLE ] E tmb colocar rotação na hora de fazer curva no giro pq fica torto quando a sirene é um pouco envergada para baixo

@@ -143,6 +143,7 @@ void ModConfig::SaveSettings()
     soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
     soundPanelSection->AddCVector2D("position", WindowSoundPanel::m_position);
     soundPanelSection->AddFloat("button_size", WindowSoundPanel::m_buttonSize);
+    soundPanelSection->AddInt("style", WindowSoundPanel::m_style);
     
     file.Save(settingsFileDir);
     file.Destroy();
@@ -305,6 +306,7 @@ void ModConfig::LoadSettings()
         WindowSoundPanel::m_buttonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
         WindowSoundPanel::m_position = soundPanelSection->GetCVector2D("position", WindowSoundPanel::m_position);
         WindowSoundPanel::m_buttonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::m_buttonSize);
+        WindowSoundPanel::m_style = soundPanelSection->GetFloat("style", WindowSoundPanel::m_style);
     }
 
     Log::file << "ModConfig: Success reading settings.ini" << std::endl;
