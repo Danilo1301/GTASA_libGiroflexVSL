@@ -34,10 +34,6 @@ Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
 <h1>Problemas</h1>
 
-<h3>Discord</h3>
-
-* https://discord.gg/mkCDRf4zJA
-
 <h3>Crash com a libBASSMod.so</h3>
 
 Alguns usuários relataram crashes com a nova libBASSMod (que serve para tocar áudio). Se o seu jogo estiver crashando, experimente remover a 'libBASSMod.so' da pasta /mods
@@ -54,6 +50,10 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 <h3>Menu muito pra esquerda</h3>
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
+
+<h3>Discord</h3>
+
+* https://discord.gg/mkCDRf4zJA
 
 <h1 id="how-to-add-textures">Como colocar as texturas</h1>
 
