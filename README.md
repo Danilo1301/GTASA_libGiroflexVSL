@@ -4,9 +4,7 @@
 
 <br>
 
-<h1>
- Instalação
-</h1>
+<h1>Instalação</h1>
 
 * Apk necessário: GTA SA 2.00 com FLA 6.5 ou superior (com suporte a AML)
 * Libs necessárias:
@@ -24,33 +22,27 @@
 4. Caso ainda não tenha feito, coloque as libs da "/libs necessárias" dentro da pasta '/mods'
 5. Opcional: Coloque as texturas do giroflex no seu 'txd.txt' usando o 'TXD Tool'. [Tutorial](#how-to-add-textures)
 
-<h1>
- Como usar
-</h1>
+<h1>Como usar</h1>
 
 * Pressione os números imaginários 5 e 6 ([exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
 * Painel: Pressione os números imaginários 5 e 9 ([exemplo](https://imgur.com/LLddMfg)) por 0.5s
 
-<h1>
- Config
-</h1>
+<h1>Config</h1>
 
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>
 Os arquivos ficam em: PASTA_DO_JOGO/configs/giroflex
 
-<h1>
- Problemas
-</h1>
+<h1>Problemas</h1>
 
-<h3>
- Crash com a libBASSMod.so
-</h3>
+<h3>Discord</h3>
+
+* https://discord.gg/mkCDRf4zJA
+
+<h3>Crash com a libBASSMod.so</h3>
 
 Alguns usuários relataram crashes com a nova libBASSMod (que serve para tocar áudio). Se o seu jogo estiver crashando, experimente remover a 'libBASSMod.so' da pasta /mods
 
-<h3>
- Mods cleo sumiram do menu
-</h3>
+<h3>Mods cleo sumiram do menu</h3>
 
 Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<br>
 
@@ -59,15 +51,11 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
 
-<h3>
- Menu muito pra esquerda
-</h3>
+<h3>Menu muito pra esquerda</h3>
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
-<h1 id="how-to-add-textures">
- Como colocar as texturas
-</h1>
+<h1 id="how-to-add-textures">Como colocar as texturas</h1>
 
 1. Abra o TXD Tool
 2. Clique no símbolo de uma pasta em rosa

@@ -47,6 +47,10 @@ You just need to go in the game, then "Options" > "Game" and change the "CLEO LO
 
 To change the menu's position, you need to enable the edit mode in: "Options" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
+<h3>Discord</h3>
+
+* https://discord.gg/mkCDRf4zJA
+
 <h1 id="how-to-add-textures">How to add the textures</h1>
 
 1. Open TXD Tool
