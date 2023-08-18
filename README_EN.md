@@ -1,7 +1,7 @@
 # Giroflex VSL (VehicleSirenLights)
 
 ## Install
-* Required Apk: GTA SA FLA 6.5 or superior (with AML support)
+* Required Apk: GTA SA 2.00 with FLA 6.5 or superior (with AML support)
 * Required Libs:
   * AML (https://github.com/RusJJ/AndroidModLoader)
   * SAUtils (https://github.com/AndroidModLoader/SAUtils)

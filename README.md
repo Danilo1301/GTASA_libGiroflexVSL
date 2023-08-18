@@ -54,7 +54,7 @@ Para mudar a posição do menu você precisa ativar o modo edição em: "Opçõe
 * 4º Procure pelo "txd.txt". Ele está localizado na pasta "Android/data/com.rockstargames.gtasa/files/textdb/txd"
 * Caso dê erro ao tentar abrir a pasta /data/, mova temporariamente a pasta '/txd' para fora da pasta '/data' usando o ZArchive (ou algum outro gerenciador de arquivos)
 * 5º Clique no + em rosa
-* 6º CLique em "From images"
+* 6º Clique em "From images"
 * 7º Clique em "Uncompressed 32bpp"
 * 8º Selecione as texturas do mod
 * 9º Clique no símbolo de "ok" no canto superior direito
