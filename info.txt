@@ -93,12 +93,9 @@ Todo
 [2.10.1]
 [X] FIX: shadow rotation issues
 
-[2.10.2]
-[X] ADD: flip shadows + save to ini
-
 [2.11.0]
+[X] ADD: flip shadows + save to ini
 [X] ADD: draw sprite
-[X] CHANGE: layout of sound panel
 [X] ADD: three different sound panel styles
 [X] ADD: documentation about how to add textures, and libBASS.so
 
