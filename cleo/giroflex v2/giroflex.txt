@@ -92,6 +92,9 @@ const
     VAR_Num1 = 18@
     VAR_Num2 = 19@
 
+    VAR_VelX = 17@
+    VAR_VelY = 18@
+    VAR_VelZ = 19@
     
     VAR_STR_1 = 20@v
     
@@ -118,7 +121,8 @@ const
     VAR_VehRotation = 37@
     
     VAR_SpriteID = 38@
-        
+    
+    VAR_DeltaTime = 39@
 end
 
 var
@@ -135,6 +139,21 @@ var
     
     VAR_Rotation : Float = 0.0
     VAR_VehRotation : Float = 0.0
+    
+    VAR_Integer1 : Int = 0
+    VAR_DeltaTime : Int = 0
+    
+    VAR_Float1 : Float = 0.0
+    VAR_Float2 : Float = 0.0
+    
+    VAR_VelX : Float = 0.0
+    VAR_VelY : Float = 0.0
+    VAR_VelZ : Float = 0.0
+    
+    VAR_VehX : Float = 0.0
+    VAR_VehY : Float = 0.0
+    VAR_VehZ : Float = 0.0
+    
 end
 
 //----------------------------------------------------
@@ -144,6 +163,34 @@ end
 038F: load_texture "gtxd1" as 1
 038F: load_texture "gtxd2" as 2
 038F: load_texture "gtxd3" as 3
+
+/*
+03CF: load_wav 2000 as 1
+03CF: load_wav 2006 as 2
+*/
+
+jump @Preload
+
+//----------------------------------------------------
+
+:Preload
+wait 0
+
+/*
+00BB: show_text_lowpriority GXT 'DGXF0' time 3000 flag 1
+
+if 03D0: wav 1 loaded
+jf @Preload
+
+if 03D0: wav 2 loaded
+jf @Preload
+
+00BB: show_text_lowpriority GXT 'DGXF1' time 3000 flag 1
+
+03D1: play_wav 1
+03D1: play_wav 2
+*/
+ 
 jump @MAIN
 
 //----------------------------------------------------
@@ -345,6 +392,7 @@ else
     VAR_Integer1 = 0
     VAR_Integer1 = Clock
     VAR_Integer1 -= PrevClock
+    VAR_DeltaTime = VAR_Integer1
     01BD: PrevClock = current_time_in_ms 
 end   
 return
@@ -369,6 +417,23 @@ while VAR_Integer1 < VAR_Integer2
             0EF8: VAR_PosY = get_draw_item_info eDrawInfoType_CORONA_SHADOW_OFFSET_Y id VAR_Integer1
             0EF8: VAR_PosZ = get_draw_item_info eDrawInfoType_CORONA_OFFSET_Z id VAR_Integer1
             0407: store_coords_to VAR_VehX VAR_VehY VAR_VehZ from_car VAR_Veh with_offset VAR_PosX VAR_PosY VAR_PosZ
+        
+            // ## fix for shadows not following ##
+            0093: VAR_Float1 = integer VAR_DeltaTime to_float //float1 = dt
+            VAR_Float2 = 1000.0
+            VAR_Float2 /= VAR_Float1 //float2 = fixScale
+            
+            //vel = vel / fixScale
+            06A2: get_car VAR_Veh velocity_in_direction_XYZ VAR_VelX VAR_VelY VAR_VelZ
+            
+            VAR_VelX /= VAR_Float2
+            VAR_VelY /= VAR_Float2
+            VAR_VelZ /= VAR_Float2
+            
+            VAR_VehX += VAR_VelX
+            VAR_VehY += VAR_VelY
+            VAR_VehZ += VAR_VelZ        
+            //####################################            
         
             0EF8: VAR_ColorR = get_draw_item_info eDrawInfoType_SHADOW_R id VAR_Integer1
             0EF8: VAR_ColorG = get_draw_item_info eDrawInfoType_SHADOW_G id VAR_Integer1
