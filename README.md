@@ -51,10 +51,6 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
-<h3>Discord</h3>
-
-* https://discord.gg/mkCDRf4zJA
-
 <h1 id="how-to-add-textures">Como colocar as texturas</h1>
 
 1. Abra o TXD Tool
