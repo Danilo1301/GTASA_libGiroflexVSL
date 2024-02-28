@@ -1,6 +1,7 @@
 #ifndef _SAUTILS_INTERFACE
 #define _SAUTILS_INTERFACE
 
+#include "mod/amlmod.h"
 #include <stdint.h>
 //#include "sa_scripting.h"
 
@@ -25,6 +26,11 @@ DEFOPCODE(FFFF, CRASH_GAME, ); // CALLSCM(CRASH_GAME); calls an unknown opcode F
 class CWidgetButton;
 class RpAtomic;
 class RwFrame;
+class CPhysical;
+class CEntity;
+class CPed;
+class CObject;
+class CVehicle;
 
 /* Type definitions */
 typedef void        (*OnSettingChangedFn)(int nOldValue, int nNewValue, void* pData); // Has pData since v1.4
@@ -501,7 +507,11 @@ public:
      */
     virtual int AddSliderItem(eTypeOfSettings typeOf, const char* name, int initVal, int minVal, int maxVal, OnSettingChangedFn fnOnValueChange, OnSettingDrawedFn fnOnValueDraw, void* data) = 0;
 
-    /** Calls a script opcode (mini-cleo)
+    /** Calls a script opcode (mini-cleo).
+     *  A serious crash may appear if you are using this function and one of the arguments is a pointer (&scmHandle).
+     *  Make sure, that the variable you need pointer for (scmHandle1 in this case)
+     *  is defined OUTSIDE of the function, otherwise the stack corruption and crash will be your best friends!
+     *  For more info, check SAUtils's sautils.cpp, line #1462, you will see.
      *
      *  \param pScriptCommand A pointer to SCRIPT_COMMAND struct var
      *  \param ... All arguments
@@ -590,6 +600,128 @@ public:
      *  \return A pointer of a value located at the index (value is NULL if any error occured or member doesnt exists)
      */
     virtual void* GetPoolMember(ePoolType poolType, int index) = 0;
+
+
+    /* Functions below added in 1.5.2.0 */
+
+        /** Is the game's engine has been loaded?
+         *
+         *  \return Is the game loaded
+         */
+    virtual bool IsGameInitialised();
+
+    /** Teleport physical
+     *
+     *  \param ent Any physical (entity, object, vehicle, ped)
+     *  \param x X coordinate
+     *  \param y Y coordinate
+     *  \param z Z coordinate
+     *  \param resetRotation Should i reset the rotation of this physical
+     *  \noreturn
+     */
+    virtual void SetPosition(CPhysical* ent, float x, float y, float z, bool resetRotation = false);
+
+    /** Set angles for physical (faster)
+     *
+     *  \param ent Any physical (entity, object, vehicle, ped)
+     *  \param axis An axis (x = 0, y = 1, z = 2)
+     *  \param angle An angle in degrees
+     *  \noreturn
+     */
+    virtual void SetAngle(CPhysical* ent, unsigned char axis, float angle);
+
+    /** Set angles for physical
+     *
+     *  \param ent Any physical (entity, object, vehicle, ped)
+     *  \param x X angle (from -359.99... to 359.99..., otherwise dont rotate)
+     *  \param y Y angle (from -359.99... to 359.99..., otherwise dont rotate)
+     *  \param z Z angle (from -359.99... to 359.99..., otherwise dont rotate)
+     *  \noreturn
+     */
+    virtual void SetAngle(CPhysical* ent, float x = -999, float y = -999, float z = -999);
+
+    /** Request model id to be loaded
+     *
+     *  \param modelId Id of the model
+     *  \noreturn
+     */
+    virtual void LoadModelId(int modelId);
+
+    /** Request the game to load collision at the specific area
+     *
+     *  \param x X coordinate
+     *  \param y Y coordinate
+     *  \noreturn
+     */
+    virtual void LoadArea(float x, float y);
+
+    /** Creates ped
+     *
+     *  \param pedType Type of ped (ePedType, from 0 to 31)
+     *  \param modelId Id of the model
+     *  \param x X coordinate
+     *  \param y Y coordinate
+     *  \param z Z coordinate
+     *  \param ref An optional pointer to save the script's handle of this ped
+     *  \return Ped pointer (always check if it's NULL)
+     */
+    virtual CPed* CreatePed(int pedType, int modelId, float x, float y, float z, int* ref = NULL);
+
+    /** Creates ped inside a vehicle
+     *
+     *  \param pedType Type of ped (ePedType, from 0 to 31)
+     *  \param modelId Id of the model
+     *  \param vehicle A vehicle ped should be spawned in
+     *  \param seat Seat id (-1 = driver)
+     *  \param ref An optional pointer to save the script's handle of this ped
+     *  \return Ped pointer (always check if it's NULL)
+     */
+    virtual CPed* CreatePed(int pedType, int modelId, CVehicle* vehicle, int seat = -1, int* ref = NULL);
+
+    /** Creates vehicle
+     *
+     *  \param modelId Id of the model
+     *  \param x X coordinate
+     *  \param y Y coordinate
+     *  \param z Z coordinate
+     *  \param ref An optional pointer to save the script's handle of this car
+     *  \return Vehicle pointer (always check if it's NULL)
+     */
+    virtual CVehicle* CreateVehicle(int modelId, float x, float y, float z, int* ref = NULL);
+
+    /** Creates object
+     *
+     *  \param modelId Id of the model
+     *  \param x X coordinate
+     *  \param y Y coordinate
+     *  \param z Z coordinate
+     *  \param ref An optional pointer to save the script's handle of this object
+     *  \return Object pointer (always check if it's NULL)
+     */
+    virtual CObject* CreateObject(int modelId, float x, float y, float z, int* ref = NULL);
+
+    /** Mark entity to be able to delete
+     *
+     *  \param ent Supported entities (object, vehicle, ped)
+     *  \noreturn
+     */
+    virtual void MarkEntityAsNotNeeded(CEntity* ent);
+
+    /** Mark model id to be able to be freed by streaming
+     *
+     *  \param modelId Id of the model
+     *  \noreturn
+     */
+    virtual void MarkModelAsNotNeeded(int modelId);
+
+    /** Places a ped into a vehicle
+     *
+     *  \param ped Ped pointer
+     *  \param vehicle Vehicle pointer
+     *  \param seat Seat id (-1 = driver)
+     *  \noreturn
+     */
+    virtual void PutPedInVehicle(CPed* ped, CVehicle* vehicle, int seat = -1);
 };
 
 #endif // _SAUTILS_INTERFACE

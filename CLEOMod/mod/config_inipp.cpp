@@ -1,10 +1,10 @@
 #ifndef DONT_USE_STB
-    #include <../CLEOMod/mod/thirdparty/stb_sprintf.h>
+    #include <mod/thirdparty/stb_sprintf.h>
     #define sprintf stbsp_sprintf
     #define snprintf stbsp_snprintf
 #endif
 #include "config.h"
-#include <../CLEOMod/mod/logger.h>
+#include <mod/logger.h>
 
 #include "amlmod.h"
 #include "iaml.h"

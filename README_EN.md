@@ -43,6 +43,8 @@ You just need to go in the game, then "Options" > "Game" and change the "CLEO LO
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
 
+(Don't forget to restart the game to apply the changes)
+
 <h3>Menu too much to the left</h3>
 
 To change the menu's position, you need to enable the edit mode in: "Options" > "Mods Settings" > "Giroflex VSL - Edit mode"

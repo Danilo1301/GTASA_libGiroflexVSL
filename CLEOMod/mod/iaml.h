@@ -17,10 +17,6 @@ enum eManifestPermissions
     P_READ_EXTERNAL_STORAGE = 0,
     P_WRITE_EXTERNAL_STORAGE,
 }; // Unused
-#if defined(__cplusplus)
-    extern "C"
-#endif
-size_t strlen(char const*);
 
 class IAML
 {
@@ -32,19 +28,13 @@ public:
     virtual bool        HasModOfVersion(const char* szGUID, const char* szVersion) = 0;
     virtual uintptr_t   GetLib(const char* szLib) = 0;
     virtual uintptr_t   GetSym(void* handle, const char* sym) = 0;
-    virtual bool        Hook(void* handle, void* fnAddress, void** orgFnAddress = NULL) = 0;
+    virtual bool        Hook(void* handle, void* fnAddress, void** orgFnAddress = NULL) = 0; // AML 1.0.0.5: Returns true on success
     virtual bool        HookPLT(void* handle, void* fnAddress, void** orgFnAddress = NULL) = 0;
     virtual int         Unprot(uintptr_t handle, size_t len = PAGE_SIZE) = 0;
     virtual void        Write(uintptr_t dest, uintptr_t src, size_t size) = 0;
-    inline void         Write(uintptr_t dest, const char* str, size_t size) { Write(dest, (uintptr_t)str, size); } // Inline
-    inline void         Write(uintptr_t dest, const char* str) { Write(dest, (uintptr_t)str, strlen(str)); } // Inline
-    inline void         Write8(uintptr_t dest, uint8_t v) { uint8_t vPtr = v; Write(dest, (uintptr_t)&vPtr, 1); } // Inline
-    inline void         Write16(uintptr_t dest, uint16_t v) { uint16_t vPtr = v; Write(dest, (uintptr_t)&vPtr, 2); } // Inline
-    inline void         Write32(uintptr_t dest, uint32_t v) { uint32_t vPtr = v; Write(dest, (uintptr_t)&vPtr, 4); } // Inline
-    inline void         WriteAddr(uintptr_t dest, uintptr_t addr) { uintptr_t addrPtr = addr; Write(dest, (uintptr_t)&addrPtr, sizeof(uintptr_t)); } // Inline
     virtual void        Read(uintptr_t src, uintptr_t dest, size_t size) = 0;
     virtual int         PlaceNOP(uintptr_t addr, size_t count = 1) = 0;
-    virtual int         PlaceJMP(uintptr_t addr, uintptr_t dest) = 0;
+    virtual int         PlaceJMP(uintptr_t addr, uintptr_t dest) = 0; // Untested on ARMv8
     virtual int         PlaceRET(uintptr_t addr) = 0;
 
     /* AML 1.0.0.4 */
@@ -56,7 +46,7 @@ public:
 
     /* AML 1.0.0.6 */
     virtual uintptr_t   GetLibLength(const char* szLib) = 0;
-    virtual int         Redirect(uintptr_t addr, uintptr_t to) = 0; // Move directly to "to" from "addr" with the same stack
+    virtual int         Redirect(uintptr_t addr, uintptr_t to) = 0; // Move directly to "to" from "addr" with the same stack (not on ARMv8 ?)
     virtual void        PlaceBL(uintptr_t addr, uintptr_t dest) = 0;
     virtual void        PlaceBLX(uintptr_t addr, uintptr_t dest) = 0;
     virtual uintptr_t   PatternScan(const char* pattern, const char* soLib) = 0;

@@ -8,6 +8,14 @@ Check .fxt mod version
 Check game more than once to make sure
 Check if config is saving
 
+TODO
+
+Check Todo
+
+README
+
+Change readme EN and PT
+
 ---------------------------
 Todo
 
@@ -99,8 +107,14 @@ Todo
 [X] ADD: three different sound panel styles
 [X] ADD: documentation about how to add textures, and libBASS.so
 
-Sugestões:
+[2.11.1]
+[X] Update SAUtils interface
+[X] Change cleo file to giroflexVSL.csa
 
+
+
+
+Sugestões:
 
 [ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
 [ DONE ] poderia botar mais opções de sons? Tipo 10
@@ -122,7 +136,9 @@ Sugestões:
 
 [ NOT POSSIBLE ] (Apenas se possível) a sirene ter a funcionalidade original de os NPC darem passagem
 [ NOT POSSIBLE ] E tmb colocar rotação na hora de fazer curva no giro pq fica torto quando a sirene é um pouco envergada para baixo
+
 ---------------------------
+
 Others:
 
 [ ] FIX: vehicle never gets deleted '-'
@@ -131,16 +147,20 @@ Others:
 [-] ADD: support for all vehicles + check siren on
 [ ] ADD: big flash for long/close distance
 
----------------------------
-Tests
+-------------
 
 tested SAUtils
+1.6			( GTA SA 2.0: OK | SAMP: ?? )
+1.5.1		?
 1.4.1		?
-1.4			X (crash on SAMP)
-1.3.1
+1.4			( GTA SA 2.0: OK | SAMP: CRASH )
+1.3.1       ( GTA SA 2.0: OK | SAMP: OK )
 
 tested AML
-1.0.3.1
+1.2.1		( GTA SA 2.0: OK | SAMP: CRASH )
+1.2			no files
+1.1			( GTA SA 2.0: ?? | SAMP: CRASH )
+1.0.3.1		( GTA SA 2.0: OK | SAMP: OK )
 1.0.3		?
 1.0.2.2		?
 1.0.2.1		?
@@ -154,3 +174,11 @@ tested CLEO
 2.0.1.2
 2.0.1.1		?
 2.0.1		?
+
+-----------
+
+To update AML
+
+go to https://github.com/RusJJ/AndroidModLoader
+download project
+copy files from 'mod' to 'GTASA_libGiroflexVSL\CLEOMod\mod'

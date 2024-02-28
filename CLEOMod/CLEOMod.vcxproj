@@ -75,6 +75,7 @@
     <ClInclude Include="eLightGroupType.h" />
     <ClInclude Include="ibass.h" />
     <ClInclude Include="icleo.h" />
+    <ClInclude Include="isautils.h" />
     <ClInclude Include="ModConfig.h" />
     <ClInclude Include="iniconfig\INIFile.h" />
     <ClInclude Include="iniconfig\INISection.h" />

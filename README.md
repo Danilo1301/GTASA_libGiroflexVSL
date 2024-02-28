@@ -47,9 +47,15 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 * ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
 * CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
 
+(Não se esqueça de reiniciar o jogo para aplicar as modificações)
+
 <h3>Menu muito pra esquerda</h3>
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
+
+<h3>Discord</h3>
+
+* https://discord.gg/mkCDRf4zJA
 
 <h1 id="how-to-add-textures">Como colocar as texturas</h1>
 

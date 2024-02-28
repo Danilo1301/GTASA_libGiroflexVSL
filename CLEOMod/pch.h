@@ -14,6 +14,8 @@
 #include <sys/stat.h> // stat
 #include <errno.h>    // errno, ENOENT, EEXIST
 
+// AML 1.0.3.1
+
 // CLEO 2.0.1.2
 #include "icleo.h"
 static ICLEO* cleo2012 = NULL;
@@ -22,7 +24,7 @@ static ICLEO* cleo2012 = NULL;
 #include "cleo.h"
 static cleo_ifs_t* cleo2013 = NULL;
 
-// SAUtils
+// SAUtils 1.6 (but it says 1.5.2)
 #include "isautils.h"
 static ISAUtils* sautils = NULL;
 

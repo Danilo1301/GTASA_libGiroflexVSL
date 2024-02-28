@@ -7,6 +7,14 @@
 #include <cstring>
 #include <stdlib.h>
 
+#ifdef __arm__
+    #define AML32
+#elif defined __aarch64__
+    #define AML64
+#else
+    #error This lib is supposed to work on ARM only!
+#endif
+
 #ifdef __clang__
     #define TARGET_ARM __attribute__((target("no-thumb-mode")))
     #define TARGET_THUMB  __attribute__((target("thumb-mode")))
@@ -51,11 +59,28 @@
     {"", ""} };                                                         \
     extern "C" ModInfoDependency* __GetDepsList() { return &g_listDependencies[0]; }
 
+    
 
+#define MINIMUM_MD5_BUF_SIZE 33
+    
+struct MemChunk_t
+{
+    char* out;
+    size_t out_len;
+};
+    
 struct ModInfoDependency
 {
     const char* szGUID;
     const char* szVersion;
+};
+
+struct ModVersion
+{
+    unsigned short major;
+    unsigned short minor;
+    unsigned short revision;
+    unsigned short build;
 };
 
 class ModInfo
@@ -76,37 +101,34 @@ public:
         }
 
         /* Parse version string */
-        if(sscanf(this->szVersion, "%hu.%hu.%hu.%hu", &major, &minor, &revision, &build) < 4)
+        if(sscanf(this->szVersion, "%hu.%hu.%hu.%hu", &version.major, &version.minor, &version.revision, &version.build) < 4)
         {
-            if(sscanf(this->szVersion, "%hu.%hu.%hu", &major, &minor, &revision) < 3)
+            if(sscanf(this->szVersion, "%hu.%hu.%hu", &version.major, &version.minor, &version.revision) < 3)
             {
-                if(sscanf(this->szVersion, "%hu.%hu", &major, &minor) < 2)
+                if(sscanf(this->szVersion, "%hu.%hu", &version.major, &version.minor) < 2)
                 {
-                    major = (unsigned short)atoi(this->szVersion);
+                    version.major = (unsigned short)atoi(this->szVersion);
                 }
-                revision = 0;
+                version.revision = 0;
             }
-            build = 0;
+            version.build = 0;
         }
     }
     inline const char* GUID() { return szGUID; }
     inline const char* Name() { return szName; }
     inline const char* VersionString() { return szVersion; }
     inline const char* Author() { return szAuthor; }
-    inline unsigned short Major() { return major; }
-    inline unsigned short Minor() { return minor; }
-    inline unsigned short Revision() { return revision; }
-    inline unsigned short Build() { return build; }
+    inline unsigned short Major() { return version.major; }
+    inline unsigned short Minor() { return version.minor; }
+    inline unsigned short Revision() { return version.revision; }
+    inline unsigned short Build() { return version.build; }
     inline void* Handle() { return handle; }
 private:
     char szGUID[48];
     char szName[48];
     char szVersion[24];
     char szAuthor[48];
-    unsigned short major;
-    unsigned short minor;
-    unsigned short revision;
-    unsigned short build;
+    ModVersion version;
     void* handle;
     ModInfoDependency* dependencies;
 
