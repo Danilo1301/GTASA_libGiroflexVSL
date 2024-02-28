@@ -72,3 +72,11 @@ Para mudar a posição do menu você precisa ativar o modo edição em: "Opçõe
 10. Selecione a opção "Overwrite" > Aperte "OK"
 11. IMPORTANTE: Não se esqueca de fechar o CACHE: vá nos "tres pontinhos" e selecione 'Close'
 * Vídeo (tutorial por: NEYgamer): https://youtu.be/85NgNUoSkEY?t=629
+
+<h1>Lib versions</h1>
+
+* SAUtils: 1.6
+* SAUtils for SAMP: 1.3.1
+* AML: 1.2.1
+* CLEO Mod: 2.0.1.3
+* BASS Mod: 1.0.0.0
