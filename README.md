@@ -77,6 +77,6 @@ Para mudar a posição do menu você precisa ativar o modo edição em: "Opçõe
 
 * SAUtils: 1.6
 * SAUtils for SAMP: 1.3.1
-* AML: 1.2.1
+* AML: 1.0.3.1
 * CLEO Mod: 2.0.1.3
 * BASS Mod: 1.0.0.0
