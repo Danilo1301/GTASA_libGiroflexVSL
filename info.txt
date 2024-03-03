@@ -11,11 +11,11 @@ Check if config is saving
 
 TODO
 
-Check Todo
+Check Todo to see if all changes are correcly documented
 
 README
 
-Change readme EN and PT
+Change readme EN and PT if necessary
 
 ---------------------------
 Todo
