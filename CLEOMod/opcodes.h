@@ -643,6 +643,22 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
     Mod::TestUpdate();
     Mod::ProcessTouch();
 
+    //check old giroflex.csa
+    //theres a bug when displaying two popups at same time
+    
+    //Log::file << "Check 1 '" + std::string("/storage/emulated/0/cleo/sa/giroflex.csa") + "'" << std::endl;
+    //Log::file << "Check 2 '" + std::string("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa") + "'" << std::endl;
+
+    if (
+        ModConfig::FileExists("/storage/emulated/0/cleo/sa/giroflex.csa") ||
+        ModConfig::FileExists("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa")
+        )
+    {
+        //Log::file << "Found" << std::endl;
+        Menu::ShowPopup(92, 0, 0, 1000);
+    }
+    
+
     Input::Update(dt);
 
     if (Menu::m_DrawCursor)

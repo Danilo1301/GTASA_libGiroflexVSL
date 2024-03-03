@@ -6,6 +6,7 @@ class ModConfig {
 public:
 	static void MakePaths();
 	static bool DirExists(std::string path);
+	static bool FileExists(std::string path);
 
 	static std::string GetConfigFolder();
 	static void CreateFolder(std::string path);

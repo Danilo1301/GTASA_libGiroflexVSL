@@ -101,6 +101,8 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     option_giroflex->optionsValue = (int)lightGroup->type;
     option_giroflex->AddOption(33, 0, 0); //1
     option_giroflex->AddOption(34, 0, 0); //2
+    option_giroflex->AddOption(93, 0, 0); //3
+    option_giroflex->AddOption(94, 0, 0); //4
     option_giroflex->AddOption(35, 0, 0); //5
     option_giroflex->AddOption(76, 0, 0); //6
     option_giroflex->AddOption(85, 0, 0); //8
@@ -287,6 +289,12 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     {
         Menu::AddConfirmWindow(window, 47, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->RemoveLightGroup(lightGroup);
+
+            //idk if this works
+            if (ModelInfos::GetModelInfo(WindowMain::m_ModelId)->lightGroups.size() == 0)
+            {
+                ModelInfos::RemoveModelInfo(WindowMain::m_ModelId);
+            }
 
             //enable lights again
             auto vehicle = Mod::GetPlayerVehicle();

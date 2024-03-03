@@ -2,6 +2,9 @@
 #include "WindowPanel.h"
 #include "WindowSoundPanel.h"
 
+#include "../Mod.h"
+#include "../ModelInfos.h"
+
 Window* WindowSelectPanel::m_Window = NULL;
 
 void WindowSelectPanel::Create()
@@ -15,6 +18,16 @@ void WindowSelectPanel::Create()
 	button_lights_panel->onClick = [window]()
 	{
 		Remove();
+
+		auto veh = Mod::GetPlayerVehicle();
+
+		//not really necessary..
+		if (!ModelInfos::HasModelInfo(veh->modelId))
+		{
+			Menu::ShowPopup(91, 0, 0, 2000);
+			return;
+		}
+
 		WindowPanel::Toggle(true);
 	};
 

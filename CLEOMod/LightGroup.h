@@ -86,6 +86,22 @@ public:
 			if (point->pointPosition == ePointPosition::RIGHT) return color2;
 		}
 
+		if (type == eLightGroupType::THREE_LIGHTS)
+		{
+			if (index == 1) return color3;
+			if (index > 1) return color2;
+
+			return color1;
+		}
+
+		if (type == eLightGroupType::FOUR_LIGHTS)
+		{
+			if (index >= 2) {
+				return color2;
+			}
+			return color1;
+		}
+
 		if (type == eLightGroupType::FIVE_LIGHTS)
 		{
 			if (index == 2) return color3;
@@ -131,6 +147,8 @@ public:
 
 		if (type == eLightGroupType::SINGLE_LIGHT) amountOfLights = 1;
 		if (type == eLightGroupType::TWO_LIGHTS) amountOfLights = 2;
+		if (type == eLightGroupType::THREE_LIGHTS) amountOfLights = 3;
+		if (type == eLightGroupType::FOUR_LIGHTS) amountOfLights = 4;
 		if (type == eLightGroupType::FIVE_LIGHTS) amountOfLights = 5;
 		if (type == eLightGroupType::SIX_LIGHTS) amountOfLights = 6;
 		if (type == eLightGroupType::EIGHT_LIGHTS) amountOfLights = 8;
@@ -147,6 +165,17 @@ public:
 			{
 				if (i == 0) pos = ePointPosition::LEFT;
 				if (i == 1) pos = ePointPosition::RIGHT;
+			}
+
+			if (type == eLightGroupType::THREE_LIGHTS)
+			{
+				if (i == 1) pos = ePointPosition::CENTER;
+				if (i > 1) pos = ePointPosition::RIGHT;
+			}
+
+			if (type == eLightGroupType::FOUR_LIGHTS)
+			{
+				if (i >= 2) pos = ePointPosition::RIGHT;
 			}
 
 			if (type == eLightGroupType::FIVE_LIGHTS)

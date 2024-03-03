@@ -23,3 +23,12 @@ ModelInfo* ModelInfos::GetModelInfo(int modelId)
 	if (!HasModelInfo(modelId)) return NULL;
 	return m_ModelInfos.at(modelId);
 }
+
+void ModelInfos::RemoveModelInfo(int modelId)
+{
+	if (!HasModelInfo(modelId)) return;
+
+	delete m_ModelInfos[modelId];
+
+	m_ModelInfos.erase(modelId);
+}

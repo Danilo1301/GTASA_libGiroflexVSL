@@ -10,4 +10,5 @@ public:
 	static ModelInfo* CreateModelInfo(int modelId);
 	static bool HasModelInfo(int modelId);
 	static ModelInfo* GetModelInfo(int modelId);
+	static void RemoveModelInfo(int modelId);
 };

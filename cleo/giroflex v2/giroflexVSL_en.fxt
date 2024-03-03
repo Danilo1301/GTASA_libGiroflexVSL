@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Edit position
 DGFX27 Distance
 DGFX28 A
-DGFX29 Giroflex VSL v2.11.1 (Danilo1301)
+DGFX29 Giroflex VSL v2.12.0 (Danilo1301)
 DGFX30 Vehicle ID ~1~
 DGFX31 Close
 DGFX32 Info
@@ -88,4 +88,8 @@ DGFX87 Color
 DGFX88 Color (active)
 DGFX89 Color (outline)
 DGFX90 Style
+DGFX91 You need at~n~least 1 light
+DGFX92 Remove the old~n~giroflex.csa and .fxt
+DGFX93 3 lights
+DGFX94 4 lights
 DGFX0 #OUTDATED .FXT#

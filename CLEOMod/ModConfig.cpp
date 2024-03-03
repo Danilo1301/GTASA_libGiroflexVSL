@@ -24,6 +24,11 @@ bool isDirExist(const std::string& path)
     return (info.st_mode & S_IFDIR) != 0;
 }
 
+bool file_exists(const std::string& name) {
+    std::ifstream f(name.c_str());
+    return f.good();
+}
+
 void ModConfig::MakePaths()
 {
     Log::file << "ModConfig: MakePaths" << std::endl;
@@ -36,6 +41,11 @@ void ModConfig::MakePaths()
 bool ModConfig::DirExists(std::string path)
 {
     return isDirExist(path);
+}
+
+bool ModConfig::FileExists(std::string path)
+{
+    return file_exists(path);
 }
 
 std::string ModConfig::GetConfigFolder()
@@ -339,12 +349,12 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
 
     if (prevVersion == "unknown")
     {
-        prevVersion = "2.7.0";
-
         auto patternsPath = GetConfigFolder() + "/patterns/";
         remove((patternsPath + "10lights_1.ini").c_str());
         remove((patternsPath + "10lights_2.ini").c_str());
         remove((patternsPath + "10lights_3.ini").c_str());
+
+        prevVersion = "2.7.0";
     }
 
     /*
@@ -409,9 +419,32 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
             }
         }
 
-        prevVersion = "2.10.0";
+        prevVersion = "2.11.0";
     }
  
+    if (prevVersion == "2.11.0")
+    {
+        Patterns::CreateDefaultPatterns();
+
+        /*
+        * adding THREE_LIGHTS and FOUR_LIGHTS in between the enum
+        */
+        for (auto pairModelInfo : ModelInfos::m_ModelInfos)
+        {
+            auto modelInfo = pairModelInfo.second;
+
+            for (auto lightGroup : modelInfo->lightGroups)
+            {
+                if (lightGroup->type >= 2)
+                {
+                    lightGroup->type = (eLightGroupType)(lightGroup->type + 2); //because added THREE_LIGHTS and FOUR_LIGHTS
+                    lightGroup->MakeLightGroup();
+                }
+            }
+        }
+
+        prevVersion = "2.12.0";
+    }
     //--------------
 
 

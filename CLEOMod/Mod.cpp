@@ -27,7 +27,7 @@
 
 #include "opcodes.h"
 
-char Mod::Version[256] = "2.11.1";
+char Mod::Version[256] = "2.12.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
@@ -106,18 +106,12 @@ void Mod::ProcessTouch()
             {
                 auto veh = Mod::GetPlayerVehicle();
 
-                if (ModelInfos::HasModelInfo(veh->modelId))
+                if (canTurnPanelOn)
                 {
-                    if (canTurnPanelOn)
-                    {
-                        canTurnPanelOn = false;
+                    canTurnPanelOn = false;
 
-                        WindowSelectPanel::Create();
-                        //WindowPanel::Toggle(!WindowPanel::Visible);
-                    }
-                }
-                else {
-                    Menu::ShowPopup(16, 0, 0, 1000);
+                    WindowSelectPanel::Create();
+                    //WindowPanel::Toggle(!WindowPanel::Visible);
                 }
             }
             else {

@@ -1,6 +1,7 @@
 ---------------------------
 To release
 
+Test first on SAMP, then test on offline
 Check logs
 Check Mod::Version
 Check EN and PT .fxt
@@ -107,11 +108,11 @@ Todo
 [X] ADD: three different sound panel styles
 [X] ADD: documentation about how to add textures, and libBASS.so
 
-[2.11.1]
+[2.12.0]
 [X] Update SAUtils interface
-[X] Change cleo file to giroflexVSL.csa
-
-
+[X] Change .csa and .fxt files from giroflex.csa to giroflexVSL.csa
+[X] FIX: Change error message when opening sound panel / lights panel (You need at~n~least 1 light)
+[X] ADD: 3 lights and 4 lights
 
 
 Sugestões:

@@ -133,6 +133,9 @@ void Vehicles::TryFindNewVehicles()
 
     m_NewVehiclesRef.clear();
 
+    //GET_RANDOM_CAR_IN_SPHERE_NO_SAVE_RECURSIVE
+    //https://github.com/AndroidModLoader/GTA_CLEOMod/blob/RUSJJ_CLEO_MOD/cleo4opcodes.cpp
+
     auto objects = *(GTAVehicleSA**)(*Mod::pVehiclePool + 0);
     tByteFlag* flags = *(tByteFlag**)(*Mod::pVehiclePool + 4);
     int size = *(int*)(*Mod::pVehiclePool + 8);
@@ -142,6 +145,9 @@ void Vehicles::TryFindNewVehicles()
         if (flags[i].bEmpty) continue;
         auto& ent = objects[i];
         
+        //IS_CAR_SIREN_ON
+        //https://github.com/AndroidModLoader/GTA_CLEOMod/blob/RUSJJ_CLEO_MOD/cleo4opcodes.cpp
+        // 
         //bool sirenOn = *(uint8_t*)((uintptr_t)vehicle + 0x42D + 4) >> 7;
         bool sirenOn = ent.UInt8At(0x42D + 4) >> 7;
 
