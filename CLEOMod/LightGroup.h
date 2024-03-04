@@ -118,6 +118,15 @@ public:
 			return color1;
 		}
 
+		if (type == eLightGroupType::SEVEN_LIGHTS)
+		{
+			//0 1 2 [3] 4 5 6
+			if (index == 3) return color3;
+			if (index > 3) return color2;
+
+			return color1;
+		}
+
 		if (type == eLightGroupType::EIGHT_LIGHTS)
 		{
 			if (index >= 4) {
@@ -151,6 +160,7 @@ public:
 		if (type == eLightGroupType::FOUR_LIGHTS) amountOfLights = 4;
 		if (type == eLightGroupType::FIVE_LIGHTS) amountOfLights = 5;
 		if (type == eLightGroupType::SIX_LIGHTS) amountOfLights = 6;
+		if (type == eLightGroupType::SEVEN_LIGHTS) amountOfLights = 7;
 		if (type == eLightGroupType::EIGHT_LIGHTS) amountOfLights = 8;
 		if (type == eLightGroupType::TEN_LIGHTS) amountOfLights = 10;
 
@@ -187,6 +197,13 @@ public:
 			if (type == eLightGroupType::SIX_LIGHTS)
 			{
 				if (i >= 3) pos = ePointPosition::RIGHT;
+			}
+
+			if (type == eLightGroupType::SEVEN_LIGHTS)
+			{
+				//0 1 2 [3] 4 5 6
+				if (i == 3) pos = ePointPosition::CENTER;
+				if (i > 3) pos = ePointPosition::RIGHT;
 			}
 
 			if (type == eLightGroupType::EIGHT_LIGHTS)

@@ -17,6 +17,8 @@ README
 
 Change readme EN and PT if necessary
 
+version 2.12.1
+
 ---------------------------
 Todo
 
@@ -114,6 +116,8 @@ Todo
 [X] FIX: Change error message when opening sound panel / lights panel (You need at~n~least 1 light)
 [X] ADD: 3 lights and 4 lights
 
+[2.12.1]
+[X] ADD: 7 lights
 
 Sugestões:
 

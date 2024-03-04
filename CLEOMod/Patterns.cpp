@@ -322,6 +322,46 @@ void Patterns::CreateDefaultPatterns()
         */
     }
 
+    if (!Patterns::HasPattern("7_lights-1"))
+    {
+        auto PATTERN_7_lights_1 = Patterns::CreatePattern("7_lights-1");
+        PATTERN_7_lights_1->AddStep({ 1, 1, 1, 0, 0, 0, 0 }, 200);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0 }, 20);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 1, 0, 0, 0 }, 200);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0 }, 20);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 0, 1, 1, 1 }, 200);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 0, 0, 0, 0 }, 20);
+        PATTERN_7_lights_1->AddStep({ 0, 0, 0, 1, 0, 0, 0 }, 200);
+
+        /*
+        Pattern.setAmountOfLights(7);
+        Pattern.addStep(200, [1, 1, 1, 0, 0, 0, 0]);
+        Pattern.addStep(20, [0, 0, 0, 0, 0, 0, 0]);
+        Pattern.addStep(200, [0, 0, 0, 1, 0, 0, 0]);
+        Pattern.addStep(20, [0, 0, 0, 0, 0, 0, 0]);
+        Pattern.addStep(200, [0, 0, 0, 0, 1, 1, 1]);
+        Pattern.addStep(20, [0, 0, 0, 0, 0, 0, 0]);
+        Pattern.addStep(200, [0, 0, 0, 1, 0, 0, 0]);
+        */
+    }
+
+    if (!Patterns::HasPattern("7_lights-2"))
+    {
+        auto PATTERN_7_lights_2 = Patterns::CreatePattern("7_lights-2");
+        PATTERN_7_lights_2->AddStep({ 1, 1, 0, 0, 0, 1, 1 }, 200);
+        PATTERN_7_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0 }, 20);
+        PATTERN_7_lights_2->AddStep({ 0, 0, 1, 1, 1, 0, 0 }, 200);
+        PATTERN_7_lights_2->AddStep({ 0, 0, 0, 0, 0, 0, 0 }, 20);
+
+        /*
+        Pattern.setAmountOfLights(7);
+        Pattern.addStep(200, [1, 1, 0, 0, 0, 1, 1]);
+        Pattern.addStep(20, [0, 0, 0, 0, 0, 0, 0]);
+        Pattern.addStep(200, [0, 0, 1, 1, 1, 0, 0]);
+        Pattern.addStep(20, [0, 0, 0, 0, 0, 0, 0]);
+        */
+    }
+
     if (!Patterns::HasPattern("8_lights-1"))
     {
         auto pattern_8_lights_1 = Patterns::CreatePattern("8_lights-1");

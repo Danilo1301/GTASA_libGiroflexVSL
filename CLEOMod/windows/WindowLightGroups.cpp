@@ -105,6 +105,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     option_giroflex->AddOption(94, 0, 0); //4
     option_giroflex->AddOption(35, 0, 0); //5
     option_giroflex->AddOption(76, 0, 0); //6
+    option_giroflex->AddOption(95, 0, 0); //7
     option_giroflex->AddOption(85, 0, 0); //8
     option_giroflex->AddOption(65, 0, 0); //10
     option_giroflex->onValueChange = [option_giroflex, lightGroup]() {

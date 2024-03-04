@@ -9,6 +9,9 @@ enum eLightGroupType {
 
 	FIVE_LIGHTS,
 	SIX_LIGHTS,
+
+	SEVEN_LIGHTS,
+
 	EIGHT_LIGHTS,
 	TEN_LIGHTS
 };

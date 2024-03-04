@@ -445,6 +445,31 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
 
         prevVersion = "2.12.0";
     }
+
+    if (prevVersion == "2.12.0")
+    {
+        Patterns::CreateDefaultPatterns();
+
+        /*
+            Adding SEVEN_LIGHTS
+        */
+        for (auto pairModelInfo : ModelInfos::m_ModelInfos)
+        {
+            auto modelInfo = pairModelInfo.second;
+
+            for (auto lightGroup : modelInfo->lightGroups)
+            {
+                if (lightGroup->type >= 6)
+                {
+                    lightGroup->type = (eLightGroupType)(lightGroup->type + 1);
+                    lightGroup->MakeLightGroup();
+                }
+            }
+        }
+
+        prevVersion = "2.12.1";
+    }
+
     //--------------
 
 
