@@ -27,6 +27,13 @@
 * Pressione os números imaginários 5 e 6 ([exemplo](https://imgur.com/gA8Lfvt)) por 1s para abrir o menu e 0.5s para ligar a sirene
 * Painel: Pressione os números imaginários 5 e 9 ([exemplo](https://imgur.com/LLddMfg)) por 0.5s
 
+<h1>Tutoriais</h1>
+
+* Instalando GTA SA 2.00 com data original: https://youtu.be/wT4N_NAYFOI
+* Instalando o mod giroflex: https://youtu.be/7Hqv3ZqYmv8
+* Instalando as texturas do painel de áudio: https://youtu.be/ghzIKrxtvx4
+* Instalando as texturas retangulares do giroflex: https://youtu.be/A9JWQilIvYI
+
 <h1>Config</h1>
 
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>

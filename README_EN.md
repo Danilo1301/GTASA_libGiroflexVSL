@@ -23,6 +23,13 @@
 * Press the 'imaginary buttons' 5 and 6 ([example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off, and for 1s to open menu
 * Panel: press the 'imaginary buttons' 5 and 9 ([example](https://imgur.com/LLddMfg)) for 0.5s
 
+<h1>Tutorials</h1>
+
+* Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
+* Installing the giroflex mod: https://youtu.be/7Hqv3ZqYmv8
+* Installing the textures of the audio panel: https://youtu.be/ghzIKrxtvx4
+* Installing the retangular textures of the giroflex: https://youtu.be/A9JWQilIvYI
+
 <h1>Config</h1>
 
 Each vehicle has a .ini file where it stores its config<br>
