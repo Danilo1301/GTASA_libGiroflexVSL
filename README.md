@@ -4,6 +4,12 @@
 
 <br>
 
+<h1>APKs testados</h1>
+
+* GTASA 2.00 AML 1.2.1 FLA 7.2
+* SAMP Mobile Alyn v2
+* SAMP Mobile Alyn v11.6
+
 <h1>Instalação</h1>
 
 * Apk necessário: GTA SA 2.00 com FLA 6.5 ou superior (com suporte a AML)

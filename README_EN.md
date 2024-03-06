@@ -1,8 +1,13 @@
 # Giroflex VSL (VehicleSirenLights)
 
+<h1>Tested APKs</h1>
+
+* GTASA 2.00 AML 1.2.1 FLA 7.2
+* SAMP Mobile Alyn v2
+* SAMP Mobile Alyn v11.6
+
 <h1>Install</h1>
 
-* Required Apk: GTA SA 2.00 with FLA 6.5 or superior (with AML support)
 * Required Libs:
   * AML (https://github.com/RusJJ/AndroidModLoader)
   * SAUtils (https://github.com/AndroidModLoader/SAUtils)
