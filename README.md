@@ -12,7 +12,6 @@
 
 <h1>Instalação</h1>
 
-* Apk necessário: GTA SA 2.00 com FLA 6.5 ou superior (com suporte a AML)
 * Libs necessárias:
   * AML (https://github.com/RusJJ/AndroidModLoader)
   * SAUtils (https://github.com/AndroidModLoader/SAUtils)
