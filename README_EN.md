@@ -31,7 +31,7 @@
 <h1>Tutorials</h1>
 
 * Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
-* Installing the giroflex mod: https://youtu.be/7Hqv3ZqYmv8
+* Installing the giroflex mod: https://youtu.be/4mq7lfXUUfY
 * Installing the textures of the audio panel: https://youtu.be/ghzIKrxtvx4
 * Installing the retangular textures of the giroflex: https://youtu.be/A9JWQilIvYI
 
