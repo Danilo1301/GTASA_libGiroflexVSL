@@ -516,10 +516,12 @@ extern "C" void OnModLoad()
 
         std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
       
+        /*
         auto audioStream = SoundSystem::LoadStream(audiosPath + "/siren1.wav", false);
         audioStream->SetVolume(0.5f);
         audioStream->Loop(false);
         audioStream->Play();
+        */
 
         /*
         auto audioStream = new AudioStream(audiosPath + "/loli_dancando.mp3");
