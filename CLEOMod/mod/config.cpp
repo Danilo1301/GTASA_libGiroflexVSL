@@ -1,10 +1,10 @@
 #ifndef DONT_USE_STB
-    #include <mod/thirdparty/stb_sprintf.h>
+    #include "thirdparty/stb_sprintf.h"
     #define sprintf stbsp_sprintf
     #define snprintf stbsp_snprintf
 #endif
 #include "config.h"
-#include <mod/logger.h>
+#include "logger.h"
 
 #include "amlmod.h"
 #include "iaml.h"
