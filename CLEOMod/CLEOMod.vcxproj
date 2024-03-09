@@ -35,7 +35,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioStream3D.cpp" />
     <ClCompile Include="AudioStream.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="iniconfig\INIFile.cpp" />
     <ClCompile Include="iniconfig\INISection.cpp" />
     <ClCompile Include="menu\Window.cpp" />
@@ -70,7 +72,9 @@
     <ClCompile Include="windows\WindowWhiteCorona.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioStream3D.h" />
     <ClInclude Include="AudioStream.h" />
+    <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="eDrawInfoType.h" />
     <ClInclude Include="eLightGroupType.h" />
     <ClInclude Include="ibass.h" />

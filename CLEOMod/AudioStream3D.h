@@ -4,24 +4,17 @@
 
 #include "pch.h"
 
-class AudioStream {
+#include "AudioStream.h"
+
+class AudioStream3D : public AudioStream {
 public:
-	uint64_t streamInternal;
-
-	AudioStream(std::string src);
-
-	void Play();
-	void Pause();
-	void Stop();
-	void Resume();
-	void Loop(bool enable);
-	void SetVolume(float val);
-	void Destroy();
-	int GetState();
+	AudioStream3D(std::string src);
+protected:
+	CPlaceable* link;
+	BASS_3DVECTOR  position;
 
 	virtual void Set3DPosition(const CVector& pos);
 	virtual void Set3DPosition(float x, float y, float z);
 	virtual void Link(CPlaceable* placeable = NULL);
 	virtual void Process();
-
 };

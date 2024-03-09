@@ -16,7 +16,7 @@
 #include "Input.h"
 #include "Patterns.h"
 #include "ModelInfos.h"
-#include "AudioStream.h"
+#include "SoundSystem.h"
 
 #include "menu/Draw.h"
 #include "menu/Menu.h"
@@ -26,6 +26,13 @@
 #include "windows/WindowSelectPanel.h"
 
 #include "opcodes.h"
+
+//
+
+// BASS
+IBASS* BASS = NULL;
+
+//
 
 char Mod::Version[256] = "2.12.1";
 int Mod::m_PrevDeltaTime = 0;
@@ -38,7 +45,9 @@ bool Mod::HasShownCredits = false;
 CVector Mod::m_PlayerPos = CVector(0, 0, 0);
 int Mod::hPlayerVehicle = -1;
 
-
+CCamera* camera;
+bool* userPaused;
+bool* codePaused;
 
 MYMODCFG(net.danilo1301.giroflex, Giroflex, Mod::Version, Danilo1301)
 BEGIN_DEPLIST()
@@ -60,6 +69,14 @@ ConfigEntry* cfgTimeBetweenPatterns = NULL;
 ConfigEntry* cfgCoronaFpsFix = NULL;
 
 //float menuOffsets[3] = { -195.0f, 0.0f, 195.0f };
+
+bool testLinked = false;
+
+DECL_HOOK(void*, UpdateGameLogic, uintptr_t a1)
+{
+    SoundSystem::Update();
+    return UpdateGameLogic(a1);
+}
 
 bool Mod::IsPlayerInAnyVehicle()
 {
@@ -91,6 +108,32 @@ void Mod::TestUpdate()
         CRGBA color = { 255, 0, 0, 255 };
 
         DrawRect(rect, color);
+    }
+    */
+
+    /*
+    * about the test:
+    * the audio works, but the 3d is not beeing applied for some reason :(
+    * 
+    if (IsPlayerInAnyVehicle())
+    {
+        auto veh = GetPlayerVehicle();
+
+        if (veh->pVehicle)
+        {
+            if (!testLinked)
+            {
+                testLinked = true;
+
+                std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+
+                auto audioStream = SoundSystem::LoadStream(audiosPath + "/siren3.wav", true);
+                audioStream->SetVolume(0.3f);
+                audioStream->Loop(true);
+                audioStream->Link((CVehicle*)veh->pVehicle);
+                audioStream->Play();
+            }
+        }
     }
     */
 }
@@ -346,6 +389,10 @@ extern "C" void OnModLoad()
         __reg_op_func2012(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
         __reg_op_func2012(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
         __reg_op_func2012(CREATE_NEW_VEHICLE, CREATE_NEW_VEHICLE);
+
+        SET_TO(camera, cleo2012->GetMainLibrarySymbol("TheCamera"));
+        SET_TO(userPaused, cleo2012->GetMainLibrarySymbol("_ZN6CTimer11m_UserPauseE"));
+        SET_TO(codePaused, cleo2012->GetMainLibrarySymbol("_ZN6CTimer11m_CodePauseE"));
     }
     else {
         __reg_op_func2013(SEND_PLAYER_POSITION, SEND_PLAYER_POSITION);
@@ -361,6 +408,9 @@ extern "C" void OnModLoad()
         __reg_op_func2013(SEND_CAR_VELOCITY, SEND_CAR_VELOCITY);
         __reg_op_func2013(CREATE_NEW_VEHICLE, CREATE_NEW_VEHICLE);
 
+        SET_TO(camera, cleo2013->GetMainLibrarySymbol("TheCamera"));
+        SET_TO(userPaused, cleo2013->GetMainLibrarySymbol("_ZN6CTimer11m_UserPauseE"));
+        SET_TO(codePaused, cleo2013->GetMainLibrarySymbol("_ZN6CTimer11m_CodePauseE"));
     }
 
     //libGTASA
@@ -368,6 +418,7 @@ extern "C" void OnModLoad()
     void* hGTASA = Mod::hGTASA = dlopen("libGTASA.so", RTLD_LAZY);
     pGTASA = aml->GetLib("libGTASA.so");
 
+    uintptr_t gameAddr = (uintptr_t)(cleo2012 ? cleo2012->GetMainLibraryLoadAddress() : cleo2013->GetMainLibraryLoadAddress());
     //
 
     Log::file << "Finding pointers..." << std::endl;
@@ -381,6 +432,7 @@ extern "C" void OnModLoad()
     Log::file << "pScreenGetHeight = " << Input::pScreenGetHeight << std::endl;
     Log::file << "pPrintString = " << Draw::pPrintString << std::endl;
     Log::file << "pTouchPos = " << Input::pTouchPos << std::endl;
+    Log::file << "gameAddr = " << gameAddr << std::endl;
 
     //SET_TO(ScreenGetInches, aml->GetSym(hGTASA, "_Z18OS_ScreenGetInchesv"));
     SET_TO(RegisterCorona, aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb"));
@@ -395,6 +447,13 @@ extern "C" void OnModLoad()
     Log::file << "pVehiclePool = " << Mod::pVehiclePool << std::endl;
     Log::file << "DrawRect = " << (void*)DrawRect << std::endl;
 
+    //
+    
+    HOOKPLT(UpdateGameLogic, gameAddr + 0x66FE58);
+
+
+    //
+    
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
 
     Log::file << "Load" << std::endl;
@@ -453,12 +512,16 @@ extern "C" void OnModLoad()
     } else {
         Log::file << "BASS loaded: " << BASS << std::endl;
 
-        AudioStream::_BASS = BASS; //what am I doing
+        SoundSystem::Init();
 
-      
-        /*
         std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+      
+        auto audioStream = SoundSystem::LoadStream(audiosPath + "/siren1.wav", false);
+        audioStream->SetVolume(0.5f);
+        audioStream->Loop(false);
+        audioStream->Play();
 
+        /*
         auto audioStream = new AudioStream(audiosPath + "/loli_dancando.mp3");
         audioStream->Loop(false);
         audioStream->Play();

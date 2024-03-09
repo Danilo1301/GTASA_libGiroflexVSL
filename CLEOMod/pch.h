@@ -28,9 +28,123 @@ static cleo_ifs_t* cleo2013 = NULL;
 #include "isautils.h"
 static ISAUtils* sautils = NULL;
 
-// BASS
 #include "ibass.h"
-static IBASS* BASS = NULL;
+
+#define RwV2d CVector2D
+#define RwV3d CVector
+
+struct IntVector2D // not original
+{
+    int32_t x, y;
+};
+
+
+class CVector {
+public:
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+
+    CVector(float x, float y, float z)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+
+    CVector operator+(const CVector right)
+    {
+        CVector result(this->x, this->y, this->z);
+        result.x += right.x;
+        result.y += right.y;
+        result.z += right.z;
+        return result;
+    }
+};
+
+class CMatrix
+{
+public:
+    union
+    {
+        float f[4][4];
+        struct
+        {
+            float rx, ry, rz, rw;
+            float fx, fy, fz, fw;
+            float ux, uy, uz, uw;
+            float px, py, pz, pw;
+        };
+        struct
+        {
+            CVector      right;
+            unsigned int flags;
+            CVector      up;
+            unsigned int pad1;
+            CVector      at;
+            unsigned int pad2;
+            CVector      pos;
+            unsigned int pad3;
+        };
+        struct // RwV3d style
+        {
+            CVector      m_right;
+            unsigned int m_flags;
+            CVector      m_forward;
+            unsigned int m_pad1;
+            CVector      m_up;
+            unsigned int m_pad2;
+            CVector      m_pos;
+            unsigned int m_pad3;
+        };
+    };
+
+    void* m_pAttachedMatrix;
+    bool         m_bOwnsAttachedMatrix;
+    char         matrixpad[3];
+};
+
+// Simple entities
+class CSimpleTransform
+{
+public:
+    CVector pos;
+    float   heading;
+};
+class CPlaceable
+{
+public:
+    CVector* GetPosSA()
+    {
+        auto mat = *(CMatrix**)((uintptr_t)this + 20);
+        if (mat)
+        {
+            return &mat->pos;
+        }
+        return &((CSimpleTransform*)((uintptr_t)this + 4))->pos;
+    }
+    CVector* GetPosVC()
+    {
+        return (CVector*)((uintptr_t)this + 52);
+    }
+    CMatrix* GetMatSA()
+    {
+        return *(CMatrix**)((uintptr_t)this + 20);
+    }
+    CMatrix* GetMatVC()
+    {
+        return (CMatrix*)((uintptr_t)this + 4);
+    }
+    CMatrix* GetCamMatVC()
+    {
+        return (CMatrix*)this;
+    }
+};
+
+class CCamera : public CPlaceable {};
+class CPed : public CPlaceable {};
+class CVehicle : public CPlaceable {};
+class CObject : public CPlaceable {};
 
 static std::string to_upper(std::string data) {
     std::for_each(data.begin(), data.end(), [](char& c) {
@@ -60,29 +174,6 @@ struct posStruct
     float x;
     float y;
     float z;
-};
-
-class CVector {
-public:
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-
-    CVector(float x, float y, float z)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-
-    CVector operator+(const CVector right)
-    {
-        CVector result(this->x, this->y, this->z);
-        result.x += right.x;
-        result.y += right.y;
-        result.z += right.z;
-        return result;
-    }
 };
 
 class CRGBA {
@@ -145,10 +236,7 @@ public:
     }
 };
 
-class CVehicle {
-public:
 
-};
 
 struct GTAVector3D
 {
