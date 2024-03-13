@@ -23,6 +23,9 @@ public:
 
 	bool canBeActivated = true;
 	bool isActive = false;
+	bool prevIsActive = false;
+
+	bool activeOnHold = false;
 
 	bool blinkOnActive = false;
 
@@ -32,6 +35,7 @@ public:
 	std::function<void()> onClick;
 	std::function<void()> onPressBegin;
 	std::function<void()> onPressEnd;
+	std::function<void(bool isActive)> onIsActiveChange;
 
 	SoundPanelButton();
 

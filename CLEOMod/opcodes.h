@@ -5,6 +5,7 @@
 #include "Vehicles.h"
 #include "Mod.h"
 #include "Input.h"
+#include "SoundPanelSystem.h"
 #include "windows/WindowPanel.h"
 #include "windows/WindowSoundPanel.h"
 
@@ -626,6 +627,8 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
     Vehicles::TryFindNewVehicles();
 
     Vehicles::Update(dt);
+
+    SoundPanelSystem::Update(dt);
 
     Menu::Update(dt);
 

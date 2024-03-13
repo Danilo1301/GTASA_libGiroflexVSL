@@ -17,6 +17,7 @@ public:
 	static std::vector<AudioStreamData> m_audioStreamData;
 	static int m_prevActiveIndex;
 	static bool m_allowMultipleSounds;
+	static bool m_showOnEnterVehicle;
 	static CRGBA m_buttonDefaultColor;
 	static CRGBA m_buttonActiveColor;
 	static CRGBA m_buttonOutlineColor;
@@ -26,12 +27,15 @@ public:
 
 	static bool m_visible;
 
+	static SoundPanelButton* m_buttonSirenTone;
+
 
 	static void Toggle(bool state);
 	static void Create();
 	static void CreateStyle1();
 	static void CreateStyle2();
 	static void CreateStyle3();
+	static void CreateStyle4();
 	static void Update(int dt);
 	static void Draw();
 	static void DestroyButtons();

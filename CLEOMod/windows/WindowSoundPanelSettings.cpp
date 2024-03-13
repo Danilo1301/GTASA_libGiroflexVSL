@@ -12,11 +12,13 @@ void WindowSoundPanelSettings::Create()
 	window->position = CVector2D(350, 100);
 	window->showPageControls = true;
 
-	auto style = window->AddIntRange(90, &WindowSoundPanel::m_style, 1, 3, 1);
+	auto style = window->AddIntRange(90, &WindowSoundPanel::m_style, 1, 4, 1);
 	style->holdToChange = false;
 	style->onValueChange = []() {
 		WindowSoundPanel::RecreateButtons();
 	};
+
+	auto show_on_enter_vehicle = window->AddCheckbox(97, &WindowSoundPanel::m_showOnEnterVehicle);
 
 	auto button_position = window->AddButton(26);
 	button_position->onClick = [window]() {

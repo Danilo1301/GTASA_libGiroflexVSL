@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Mod.h"
 #include "LightGroupDatas.h"
+#include "SoundPanelSystem.h"
 
 #include "mod/amlmod.h"
 #include "mod/logger.h"
@@ -29,6 +30,15 @@ bool file_exists(const std::string& name) {
     return f.good();
 }
 
+std::vector<std::string> get_directories_name(const std::string& s)
+{
+    std::vector<std::string> r;
+    for (auto& p : std::filesystem::recursive_directory_iterator(s))
+        if (p.is_directory())
+            r.push_back(p.path().filename().string());
+    return r;
+}
+
 void ModConfig::MakePaths()
 {
     Log::file << "ModConfig: MakePaths" << std::endl;
@@ -36,6 +46,7 @@ void ModConfig::MakePaths()
     CreateFolder(GetConfigFolder());
     CreateFolder(GetConfigFolder() + "/vehicles");
     CreateFolder(GetConfigFolder() + "/patterns");
+    CreateFolder(GetConfigFolder() + "/audios");
 }
 
 bool ModConfig::DirExists(std::string path)
@@ -46,6 +57,11 @@ bool ModConfig::DirExists(std::string path)
 bool ModConfig::FileExists(std::string path)
 {
     return file_exists(path);
+}
+
+std::vector<std::string> ModConfig::GetDirectoriesName(std::string path)
+{
+    return get_directories_name(path);
 }
 
 std::string ModConfig::GetConfigFolder()
@@ -148,6 +164,7 @@ void ModConfig::SaveSettings()
     auto soundPanelSection = file.AddSection("SoundPanel");
     
     soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
+    soundPanelSection->AddBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
     soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
     soundPanelSection->AddCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
     soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
@@ -166,6 +183,8 @@ void ModConfig::Load()
     LoadPatterns();
     LoadVehicles();
     LoadSettings();
+
+    SoundPanelSystem::Load();
 }
 
 void ModConfig::LoadPatterns()

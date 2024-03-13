@@ -17,7 +17,7 @@ README
 
 Change readme EN and PT if necessary
 
-version 2.12.1
+version 2.13.0
 
 ---------------------------
 Todo
@@ -118,6 +118,11 @@ Todo
 
 [2.12.1]
 [X] ADD: 7 lights
+
+[2.13.0]
+[X] ADD: option to turn lights on when vehicle spawns
+[X] ADD: new sound panel style - and new sound panel system (divided by cars)
+[X] ADD: option m_showOnEnterVehicle to soundPanelSettings
 
 Sugestões:
 

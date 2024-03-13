@@ -16,7 +16,7 @@ void SoundPanelButton::Update(int dt)
 	{
 		if (Input::hasTouchBeenReleasedThisFrame)
 		{
-			if (canBeActivated)
+			if (canBeActivated && !activeOnHold)
 			{
 				isActive = !isActive;
 			}
@@ -32,6 +32,13 @@ void SoundPanelButton::Update(int dt)
 				if (onPressBegin) onPressBegin();
 			}
 		}
+
+		if (activeOnHold) isActive = Input::isTouchPressed;
+	}
+
+	if (!isPointerOver && activeOnHold)
+	{
+		isActive = false;
 	}
 
 	if (!isPointerOver || !Input::isTouchPressed)
@@ -44,11 +51,20 @@ void SoundPanelButton::Update(int dt)
 	}
 
 	//
+
+
+	//
 	if (blinkOnActive) blink = isActive;
 
 	//blink
 	blinkState += 0.004f * dt;
 	if (blinkState >= 1.0f) blinkState = 0.0f;
+
+	if (prevIsActive != isActive)
+	{
+		if (onIsActiveChange) onIsActiveChange(isActive);
+	}
+	prevIsActive = isActive;
 }
 
 void SoundPanelButton::Draw()

@@ -34,7 +34,7 @@ IBASS* BASS = NULL;
 
 //
 
-char Mod::Version[256] = "2.12.1";
+char Mod::Version[256] = "2.13.0";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later
@@ -87,6 +87,7 @@ bool Mod::IsPlayerInAnyVehicle()
 
 Vehicle* Mod::GetPlayerVehicle()
 {
+    if (!IsPlayerInAnyVehicle()) return NULL;
     return Vehicles::m_Vehicles.at(hPlayerVehicle);
 }
 
@@ -456,66 +457,20 @@ extern "C" void OnModLoad()
     
     //Log::file << "ScreenGetInches() = " << ScreenGetInches() << std::endl;
 
-    Log::file << "Load" << std::endl;
-
-    ModConfig::ProcessVersionChanges_PreConfigLoad();
-
-    ModConfig::Load();
-
-    if (Patterns::m_Patterns.size() == 0)
-    {
-        Patterns::CreateDefaultPatterns();
-    }
-
-    ModConfig::ProcessVersionChanges_PostConfigLoad();
-
-    ModConfig::Save();
-
-    //WindowMain::Create(523);
-
-    //SAUtils
-    Log::file << "Loading SAUtils..." << std::endl;
-    if (!(sautils = (ISAUtils*)GetInterface("SAUtils")))
-    {
-        Log::file << "SAUtils was not loaded" << std::endl;
-    } else {
-        Log::file << "SAUtils loaded" << std::endl;
-
-        sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
-    
-        
-        if (aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.4.0"))
-        {
-            sautils->AddOnRWInitListener([]() {
-                Log::file << "RwInit" << std::endl;
-
-                std::string imageFile = std::string(aml->GetConfigPath()) + "/giroflex/textures/1.png";
-
-                Log::file << "Loading texture: " << imageFile << std::endl;
-
-                //its returning 0x0 for some reason
-                auto texture = sautils->LoadRwTextureFromPNG(imageFile.c_str());
-
-                Log::file << "Texture: " << texture << std::endl;
-            });
-        }
-        else {
-            Log::file << "SAUtils 1.4 or superior not found" << std::endl;
-        }
-    }
-
     //BASS
     //https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams
+    Log::file << "Loading BASS..." << std::endl;
     if (!(BASS = (IBASS*)GetInterface("BASS")))
     {
         Log::file << "BASS was not loaded" << std::endl;
-    } else {
+    }
+    else {
         Log::file << "BASS loaded: " << BASS << std::endl;
 
         SoundSystem::Init();
 
         std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
-      
+
         /*
         auto audioStream = SoundSystem::LoadStream(audiosPath + "/siren1.wav", false);
         audioStream->SetVolume(0.5f);
@@ -533,6 +488,58 @@ extern "C" void OnModLoad()
         audioStream2->Play();
         */
     }
+
+    //SAUtils
+    Log::file << "Loading SAUtils..." << std::endl;
+    if (!(sautils = (ISAUtils*)GetInterface("SAUtils")))
+    {
+        Log::file << "SAUtils was not loaded" << std::endl;
+    }
+    else {
+        Log::file << "SAUtils loaded" << std::endl;
+
+        sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
+
+
+        if (aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.4.0"))
+        {
+            sautils->AddOnRWInitListener([]() {
+                Log::file << "RwInit" << std::endl;
+
+                std::string imageFile = std::string(aml->GetConfigPath()) + "/giroflex/textures/1.png";
+
+                Log::file << "Loading texture: " << imageFile << std::endl;
+
+                //its returning 0x0 for some reason
+                auto texture = sautils->LoadRwTextureFromPNG(imageFile.c_str());
+
+                Log::file << "Texture: " << texture << std::endl;
+                });
+        }
+        else {
+            Log::file << "SAUtils 1.4 or superior not found" << std::endl;
+        }
+    }
+
+    //
+
+    Log::file << "Load" << std::endl;
+
+    ModConfig::ProcessVersionChanges_PreConfigLoad();
+
+    ModConfig::Load();
+
+    if (Patterns::m_Patterns.size() == 0)
+    {
+        Patterns::CreateDefaultPatterns();
+    }
+
+    ModConfig::ProcessVersionChanges_PostConfigLoad();
+
+    ModConfig::Save();
+
+    //WindowMain::Create(523);
+
 
 
     //test

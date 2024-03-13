@@ -26,7 +26,7 @@ DGFX25 Z
 DGFX26 Edit position
 DGFX27 Distance
 DGFX28 A
-DGFX29 Giroflex VSL v2.12.1 (Danilo1301)
+DGFX29 Giroflex VSL v2.13.0 (Danilo1301)
 DGFX30 Vehicle ID ~1~
 DGFX31 Close
 DGFX32 Info
@@ -93,4 +93,6 @@ DGFX92 Remove the old~n~giroflex.csa and .fxt
 DGFX93 3 lights
 DGFX94 4 lights
 DGFX95 7 lights
+DGFX96 Enable lights on spawn
+DGFX97 Always active
 DGFX0 #OUTDATED .FXT#

@@ -13,6 +13,15 @@ Vehicle::Vehicle(int hVehicle, int modelId)
 {
 	this->hVehicle = hVehicle;
 	this->modelId = modelId;
+
+    Update(0);
+
+    auto lightGroupDataList = GetLightGroupsData();
+    for (auto lightGroupData : lightGroupDataList)
+    {
+        if(lightGroupData->lightGroup->enableOnSpawn)
+            lightGroupData->lightsOn = true;
+    }
 }
 
 void Vehicle::Destroy()

@@ -251,6 +251,9 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     lightSlotId->holdToChange = false;
 
     //2
+    window->AddCheckbox(96, &lightGroup->enableOnSpawn);
+
+    //3
     auto button_duplicate = window->AddButton(59);
     button_duplicate->onClick = [window, lightGroup, modelId]()
     {
@@ -284,7 +287,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         });
     };
 
-    //3
+    //4
     auto button_delete = window->AddButton(42, CRGBA(170, 70, 70));
     button_delete->onClick = [window, lightGroup, modelId]()
     {

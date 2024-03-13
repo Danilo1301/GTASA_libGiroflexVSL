@@ -65,6 +65,8 @@ public:
 
 	int lightSlotId = 0;
 
+	bool enableOnSpawn = false;
+
 	void ChangeDistance(float distance)
 	{
 		this->distance = distance;
@@ -300,6 +302,8 @@ public:
 
 		section->AddInt("lightSlotId", lightSlotId);
 
+		section->AddBool("enableOnSpawn", enableOnSpawn);
+
 		return section;
 	}
 
@@ -349,5 +353,7 @@ public:
 		coronaTexture = section->GetInt("coronaTexture", coronaTexture);
 
 		lightSlotId = section->GetInt("lightSlotId", lightSlotId);
+
+		enableOnSpawn = section->GetBool("enableOnSpawn", enableOnSpawn);
 	}
 };

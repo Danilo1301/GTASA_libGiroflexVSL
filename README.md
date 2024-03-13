@@ -92,3 +92,13 @@ Para mudar a posição do menu você precisa ativar o modo edição em: "Opçõe
 * AML: 1.0.3.1
 * CLEO Mod: 2.0.1.3
 * BASS Mod: 1.0.0.0
+
+<h1>Credits</h1>
+
+* Mod made using AML (https://github.com/RusJJ/AndroidModLoader)
+
+* Project base used from CLEOMod (https://github.com/AndroidModLoader/GTA_CLEOMod)
+  
+* Siren icon from: https://www.vecteezy.com/vector-art/5728560-alarm-light-siren-solid-icon-vector-illustration-logo-template-suitable-for-many-purposes
+
+* Config icon from: https://www.flaticon.com/free-icon/config_8053573
