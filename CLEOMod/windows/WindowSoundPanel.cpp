@@ -426,7 +426,7 @@ void WindowSoundPanel::Update(int dt)
 	//enable if testing
 	//if (!m_visible) Toggle(true);
 
-	if (m_showOnEnterVehicle)
+	if (m_showOnEnterVehicle && SoundPanelSystem::soundGroups.size() > 0)
 	{
 		if (!m_visible)
 		{

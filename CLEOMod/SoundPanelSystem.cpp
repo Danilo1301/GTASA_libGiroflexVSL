@@ -15,8 +15,18 @@ bool SoundPanelSystem::hornState = false;
 
 int SoundPanelSystem::currentSirenIndex = 0;
 
+extern IBASS* BASS;
+
 void SoundPanelSystem::Load()
 {
+	Log::file << "SoundPanelSystem: Load" << std::endl;
+
+	if (!BASS)
+	{
+		Log::file << "SoundPanelSystem: not loading (BASS was not loaded)" << std::endl;
+		return;
+	}
+
 	std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
 	std::string vehiclesFolder = audiosFolder + "/vehicles";
 
@@ -216,27 +226,30 @@ void SoundPanelSystem::Update(int dt)
 {
 	//Log::file << "SoundPanelSystem: Update" << std::endl;
 
-	if (prevSoundGroup && !Mod::IsPlayerInAnyVehicle())
+	if (soundGroups.size() > 0)
 	{
-		currentSirenIndex = 0;
-
-		if (prevSiren)
+		if (prevSoundGroup && !Mod::IsPlayerInAnyVehicle())
 		{
-			prevSiren->Pause();
-			prevSiren = NULL;
-			sirenState = false;
+			currentSirenIndex = 0;
+
+			if (prevSiren)
+			{
+				prevSiren->Pause();
+				prevSiren = NULL;
+				sirenState = false;
+			}
+
+			if (hornState)
+			{
+				prevSoundGroup->horn->Stop();
+				hornState = false;
+			}
 		}
 
-		if (hornState)
-		{
-			prevSoundGroup->horn->Stop();
-			hornState = false;
-		}
+		auto soundGroup = GetCurrentVehicleSoundGroup();
+
+		prevSoundGroup = soundGroup;
 	}
-
-	auto soundGroup = GetCurrentVehicleSoundGroup();
-
-	prevSoundGroup = soundGroup;
 
 	//Log::file << "SoundPanelSystem: end Update" << std::endl;
 }

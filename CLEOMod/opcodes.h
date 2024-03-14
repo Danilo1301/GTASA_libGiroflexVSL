@@ -711,6 +711,8 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
     }
 
     Mod::m_PrevDeltaTime = dt;
+
+    //Log::file << "end PROCESS_GIROFLEX_LIB" << std::endl;
 }
 
 static void RUN_TEST(__handler_params)

@@ -74,7 +74,10 @@ bool testLinked = false;
 
 DECL_HOOK(void*, UpdateGameLogic, uintptr_t a1)
 {
-    SoundSystem::Update();
+    if (BASS) {
+        SoundSystem::Update();
+    }
+
     return UpdateGameLogic(a1);
 }
 
@@ -488,6 +491,7 @@ extern "C" void OnModLoad()
         audioStream2->Play();
         */
     }
+    Log::file << "BASS: " << BASS << std::endl;
 
     //SAUtils
     Log::file << "Loading SAUtils..." << std::endl;
@@ -546,4 +550,6 @@ extern "C" void OnModLoad()
     //WindowSelectPanel::Create();
 
     //WindowSoundPanel::Toggle(true);
+
+    Log::file << "end Load" << std::endl;
 }

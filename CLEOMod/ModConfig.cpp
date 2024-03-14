@@ -89,6 +89,8 @@ void ModConfig::Save()
     SavePatterns();
     SaveVehicles();
     SaveSettings();
+
+    Log::file << "ModConfig: end Save" << std::endl;
 }
 
 void ModConfig::SavePatterns()

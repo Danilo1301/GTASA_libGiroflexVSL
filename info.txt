@@ -124,6 +124,9 @@ Todo
 [X] ADD: new sound panel style - and new sound panel system (divided by cars)
 [X] ADD: option m_showOnEnterVehicle to soundPanelSettings
 
+[2.13.0 update 1]
+[X] FIX: crash without libBASS
+
 Sugestões:
 
 [ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
@@ -132,6 +135,7 @@ Sugestões:
 [ DONE ] Teria como vc adicionar PATTERN de 8 luzes 
 [ DONE? ] Mudar o painel de sirene, deixar igual da PMESP, se for possível .-.
 
+[] Salvar os padrões de piscar do painel de luzes
 
 [ ] Colocar de 11 luzes tmb pq os Giroflex (não todos) mais a maioria são 11 luzes 
 
