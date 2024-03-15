@@ -18,10 +18,10 @@
 ( example: inside /Android/data/ro.samp_mobile.game/mods )<br>
 
 1. Download the .zip file in [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
-2. Move the 'libGiroflex.so' from "/inside game folder" to your '/mods' folder
-3. Move the 'giroflex.csa' and 'giroflex.fxt' files from "/inside CLEO" to where you load your cleo mods
+2. Open the folder "/inside CLEO", copy the 'giroflex.csa' and 'giroflex.fxt' files and paste it where you load your cleo mods (csa, csi, fxt)
+3. Open the folder "inside game folder", copy the folders "configs" and "mods" and paste it on the game folder (ex: /Android/data/ro.samp_mobile.game)
 4. If you haven't done yet, move the libs from "/required libs" inside your '/mods' folder
-5. Optional: Coloque as texturas do giroflex no seu 'txd.txt' usando o 'TXD Tool'. [Tutorial](#how-to-add-textures)
+5. Optional: Install the giroflex mod textures inside the 'txd.txt' using 'TXD Tool'. Tutorials below.
 
 <h1>How to use</h1>
 
@@ -30,8 +30,8 @@
 
 <h1>Tutorials</h1>
 
-* Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
 * Installing the giroflex mod: https://youtu.be/4mq7lfXUUfY
+* Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
 * Installing the textures of the audio panel: https://youtu.be/ghzIKrxtvx4
 * Installing the retangular textures of the giroflex: https://youtu.be/A9JWQilIvYI
 
@@ -64,22 +64,6 @@ To change the menu's position, you need to enable the edit mode in: "Options" > 
 <h3>Discord</h3>
 
 * https://discord.gg/mkCDRf4zJA
-
-<h1 id="how-to-add-textures">How to add the textures</h1>
-
-1. Open TXD Tool
-2. Click on the folder button (in rose)
-3. Click OK
-4. Search for your "txd.txt". It's located in "Android/data/com.rockstargames.gtasa/files/textdb/txd"
-* If you get an error when trying to open the folder /data/, temporarily move the folder '/txd' from out of the '/data' using the ZArchive (or another file explorer app)
-5. Click on + (in rose)
-6. Click "From images"
-7. Select "Uncompressed 32bpp"
-8. Select the mod textures
-9. Click on the "ok" symbol in the upper right corner
-10. Select "Overwrite" > Click "OK"
-11. IMPORTANT: Don't forget to close the CACHE: click on ":" then "Close cache"
-* Vídeo (tutorial by: NEYgamer): https://youtu.be/85NgNUoSkEY?t=629
 
 <h1>Lib versions</h1>
 
