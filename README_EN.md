@@ -25,7 +25,8 @@
 
 <h1>How to use</h1>
 
-* Press the 'imaginary buttons' 5 and 6 ([example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off, and for 1s to open menu
+* Press the 'imaginary buttons' 5 and 6 ([example](https://imgur.com/gA8Lfvt)) for 0.5s to turn lights on/off
+* Press the 'imaginary buttons' 5 and 6 ([example](https://imgur.com/gA8Lfvt)) for 1s to open the editing menu
 * Panel: press the 'imaginary buttons' 5 and 9 ([example](https://imgur.com/LLddMfg)) for 0.5s
 
 <h1>Tutorials</h1>
@@ -33,7 +34,7 @@
 * Installing the giroflex mod: https://youtu.be/4mq7lfXUUfY
 * Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
 * Installing the textures of the audio panel: https://youtu.be/ghzIKrxtvx4
-* Installing the retangular textures of the giroflex: https://youtu.be/A9JWQilIvYI
+* Installing the retangular lights textures: https://youtu.be/A9JWQilIvYI
 
 <h1>Config</h1>
 
@@ -50,10 +51,10 @@ Some users have reported crashes with the new libBASSMod (which is for playing a
 
 You just need to go in the game, then "Options" > "Game" and change the "CLEO LOCATION"<br>
 
-* OLD CLEO - com.rockstargames.gtasa / mod.csi
-* OLD CLEO (+CLEO) - com.rockstargames.gtasa / cleo / mod.csi
-* ../FILES/CLEO - com.rockstargames.gtasa / files  / cleo / mod.csi
-* CLEO 2.0.1 - storage/emulated/0/cleo / mod.csi
+* OLD CLEO - com.rockstargames.gtasa/ mod.csi
+* OLD CLEO (+CLEO) - com.rockstargames.gtasa/cleo/ mod.csi
+* ../FILES/CLEO - com.rockstargames.gtasa/files/cleo/ mod.csi
+* CLEO 2.0.1 - storage/emulated/0/cleo/sa/ mod.csi
 
 (Don't forget to restart the game to apply the changes)
 
