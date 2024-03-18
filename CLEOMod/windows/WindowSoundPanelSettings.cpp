@@ -18,13 +18,18 @@ void WindowSoundPanelSettings::Create()
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto show_on_enter_vehicle = window->AddCheckbox(97, &WindowSoundPanel::m_showOnEnterVehicle);
+	auto showOnEnterVehicle = window->AddCheckbox(97, &WindowSoundPanel::m_showOnEnterVehicle);
+	showOnEnterVehicle->onValueChange = []() {
+		WindowSoundPanel::Toggle(WindowSoundPanel::m_showOnEnterVehicle);
+	};
+
+	window->AddCheckbox(98, &WindowSoundPanel::m_showButtonToggleLights);
 
 	auto button_position = window->AddButton(26);
 	button_position->onClick = [window]() {
 		Menu::AddPosition2DWindow(window, &WindowSoundPanel::m_position, -10000.0f, 10000.0f, 0.5f, []() {
 			WindowSoundPanel::RecreateButtons();
-			});
+		});
 	};
 	
 	/*

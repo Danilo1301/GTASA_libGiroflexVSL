@@ -34,7 +34,7 @@ IBASS* BASS = NULL;
 
 //
 
-char Mod::Version[256] = "2.13.0";
+char Mod::Version[256] = "2.13.1";
 int Mod::m_PrevDeltaTime = 0;
 int Mod::m_DeltaTime = 0;
 eCoronaFixFPS Mod::CoronaFixFPS = eCoronaFixFPS::FPS_AUTO; //remove later

@@ -167,6 +167,7 @@ void ModConfig::SaveSettings()
     
     soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
     soundPanelSection->AddBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
+    soundPanelSection->AddBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
     soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
     soundPanelSection->AddCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
     soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
@@ -332,6 +333,8 @@ void ModConfig::LoadSettings()
         auto soundPanelSection = soundPanelSections[0];
 
         WindowSoundPanel::m_allowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
+        WindowSoundPanel::m_showOnEnterVehicle = soundPanelSection->GetBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
+        WindowSoundPanel::m_showButtonToggleLights = soundPanelSection->GetBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
         WindowSoundPanel::m_buttonDefaultColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
         WindowSoundPanel::m_buttonActiveColor = soundPanelSection->GetCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
         WindowSoundPanel::m_buttonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);

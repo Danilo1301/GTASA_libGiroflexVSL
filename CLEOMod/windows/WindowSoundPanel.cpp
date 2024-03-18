@@ -7,12 +7,14 @@
 #include "../Log.h"
 #include "../Mod.h"
 #include "../SoundPanelSystem.h"
+#include "../ModelInfos.h"
 
 std::vector<SoundPanelButton*> WindowSoundPanel::m_buttons;
 std::vector<AudioStreamData> WindowSoundPanel::m_audioStreamData;
 int WindowSoundPanel::m_prevActiveIndex = -1;
 bool WindowSoundPanel::m_allowMultipleSounds = false;
 bool WindowSoundPanel::m_showOnEnterVehicle = true;
+bool WindowSoundPanel::m_showButtonToggleLights = true;
 CRGBA WindowSoundPanel::m_buttonDefaultColor = { 109, 167, 100, 255 };
 CRGBA WindowSoundPanel::m_buttonActiveColor = { 255, 131, 131, 255 };
 CRGBA WindowSoundPanel::m_buttonOutlineColor = { 46, 77, 51, 255 };
@@ -23,6 +25,8 @@ float WindowSoundPanel::m_buttonSize = 30.0f;
 bool WindowSoundPanel::m_visible = false;
 
 SoundPanelButton* WindowSoundPanel::m_buttonSirenTone = NULL;
+
+SoundPanelButton* WindowSoundPanel::m_buttonToggleLights = NULL;
 
 void WindowSoundPanel::Toggle(bool state)
 {
@@ -91,7 +95,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenToggle = AddButton();
 	buttonSirenToggle->position = m_position + CVector2D(5.0f + buttonSize, 0);
 	buttonSirenToggle->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenToggle->sprite.spriteId = 6;
+	buttonSirenToggle->sprite.spriteId = 8;
 	//buttonSirenToggle->text.gxtId = 1;
 	//buttonSirenToggle->text.num1 = 1;
 	buttonSirenToggle->text.color = CRGBA(0, 0, 0, 0);
@@ -426,6 +430,68 @@ void WindowSoundPanel::Update(int dt)
 	//enable if testing
 	//if (!m_visible) Toggle(true);
 
+	if (!m_buttonToggleLights)
+	{
+		if (Mod::IsPlayerInAnyVehicle() && m_showButtonToggleLights)
+		{
+			auto vehicle = Mod::GetPlayerVehicle();
+
+			if (ModelInfos::HasModelInfo(vehicle->modelId))
+			{
+				float buttonSize = m_buttonSize * 1.8f;
+
+				CRGBA buttonActiveColor = m_buttonActiveColor;
+				CRGBA white = CRGBA(255, 255, 255);
+
+				auto buttonToggleLights = m_buttonToggleLights = new SoundPanelButton();
+				buttonToggleLights->position = m_position + CVector2D(4 * (5.0f + buttonSize), 0);
+				buttonToggleLights->size = CVector2D(buttonSize, buttonSize);
+				buttonToggleLights->sprite.spriteId = 6;
+				//buttonToggleLights->text.gxtId = 1;
+				//buttonToggleLights->text.num1 = 1;
+				buttonToggleLights->text.color = CRGBA(0, 0, 0, 0);
+				buttonToggleLights->color = white;
+				buttonToggleLights->activeColor = buttonActiveColor;
+				buttonToggleLights->onIsActiveChange = [vehicle](bool isActive) {
+					vehicle->SetGiroflexEnabled(!vehicle->prevLightsState);
+					//Menu::ShowPopup(1, vehicle->prevLightsState ? 1 : 0, 0, 1000.0f);
+				};
+			}
+		}
+	}
+
+	if (m_buttonToggleLights)
+	{
+		bool canDestroy = false;
+
+		m_buttonToggleLights->Update(dt);
+		if (Mod::IsPlayerInAnyVehicle() && m_showButtonToggleLights)
+		{
+			auto vehicle = Mod::GetPlayerVehicle();
+			if (vehicle->prevLightsState != m_buttonToggleLights->isActive)
+			{
+				m_buttonToggleLights->isActive = vehicle->prevLightsState;
+				m_buttonToggleLights->prevIsActive = vehicle->prevLightsState;
+				//Menu::ShowPopup(1, m_buttonToggleLights->isActive ? 1 : 0, 0, 1000.0f);
+			}
+
+			if (!ModelInfos::HasModelInfo(vehicle->modelId))
+			{
+				canDestroy = true;
+			}
+		}
+		else {
+			canDestroy = true;
+		}
+
+		if (canDestroy)
+		{
+			m_buttonToggleLights->Destroy();
+			delete m_buttonToggleLights;
+			m_buttonToggleLights = NULL;
+		}
+	}
+
 	if (m_showOnEnterVehicle && SoundPanelSystem::soundGroups.size() > 0)
 	{
 		if (!m_visible)
@@ -443,6 +509,8 @@ void WindowSoundPanel::Update(int dt)
 		}
 	}
 
+
+
 	if (!m_visible) return;
 
 	std::for_each(m_buttons.begin(), m_buttons.end(), [dt](SoundPanelButton* button) { button->Update(dt); });
@@ -458,6 +526,11 @@ void WindowSoundPanel::Update(int dt)
 
 void WindowSoundPanel::Draw()
 {
+	if (m_buttonToggleLights)
+	{
+		m_buttonToggleLights->Draw();
+	}
+
 	if (!m_visible) return;
 
 	if (m_style == 3)
@@ -476,6 +549,13 @@ void WindowSoundPanel::DestroyButtons()
 	if (m_buttonSirenTone)
 	{
 		m_buttonSirenTone = NULL;
+	}
+
+	if (m_buttonToggleLights)
+	{
+		m_buttonToggleLights->Destroy();
+		delete m_buttonToggleLights;
+		m_buttonToggleLights = NULL;
 	}
 
 	while (m_buttons.size() > 0)

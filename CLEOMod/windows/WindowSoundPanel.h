@@ -18,6 +18,7 @@ public:
 	static int m_prevActiveIndex;
 	static bool m_allowMultipleSounds;
 	static bool m_showOnEnterVehicle;
+	static bool m_showButtonToggleLights;
 	static CRGBA m_buttonDefaultColor;
 	static CRGBA m_buttonActiveColor;
 	static CRGBA m_buttonOutlineColor;
@@ -28,6 +29,8 @@ public:
 	static bool m_visible;
 
 	static SoundPanelButton* m_buttonSirenTone;
+
+	static SoundPanelButton* m_buttonToggleLights;
 
 
 	static void Toggle(bool state);

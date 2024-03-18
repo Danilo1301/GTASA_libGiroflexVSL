@@ -17,7 +17,7 @@ README
 
 Change readme EN and PT if necessary
 
-version 2.13.0
+version 2.13.1
 
 ---------------------------
 Todo
@@ -126,6 +126,11 @@ Todo
 
 [2.13.0 update 1]
 [X] FIX: crash without libBASS
+
+[2.13.1]
+[X] ADD: new soundPanelButton to toggle lights on/off
+[X] CHANGE: texture of the soundPanelButton that plays the siren
+[X] FIX: some WindowSoundPanel settings not saving
 
 Sugestões:
 

@@ -167,6 +167,7 @@ end
 038F: load_texture "gtxd5" as 5
 038F: load_texture "gtxd6" as 6
 038F: load_texture "gtxd7" as 7
+038F: load_texture "gtxd8" as 8
 
 /*
 03CF: load_wav 2000 as 1
@@ -1028,5 +1029,9 @@ end
 if VAR_GxtId == 97
 then
      VAR_STR_1 = "DGFX97"
+end
+if VAR_GxtId == 98
+then
+     VAR_STR_1 = "DGFX98"
 end
 return
