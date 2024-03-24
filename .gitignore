@@ -1,4 +1,2 @@
-.vs/
-.obj/
-ARM
-x64
+obj/
+libs/
