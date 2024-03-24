@@ -9,6 +9,8 @@ Check .fxt mod version
 Check game more than once to make sure
 Check if config is saving
 
+Change version file in the .zip
+
 TODO
 
 Check Todo to see if all changes are correcly documented
@@ -134,6 +136,8 @@ Todo
 
 Sugestões:
 
+[] add option to make lights always visible
+
 [ DONE ] se possível tras pra gente a opção de ativar duas, ou três sirenes simultâneas
 [ DONE ] poderia botar mais opções de sons? Tipo 10
 [ DONE ] podermos configurar algumas coisas como Tamanho, opacidade e cor do painel
@@ -201,3 +205,22 @@ To update AML
 go to https://github.com/RusJJ/AndroidModLoader
 download project
 copy files from 'mod' to 'GTASA_libGiroflexVSL\CLEOMod\mod'
+
+-----
+
+-------------------------------------------------
+Corona IDs (Mobile)
+-------------------------------------------------
+
+ID - Texture name
+
+0 - coronastar.png
+1 - coronastar.png
+2 - coronamoon.png
+3 - coronareflect.png
+4 - coronaheadlightline.png
+5 -
+6 -
+7 -
+8 -
+9 - coronaringb.png

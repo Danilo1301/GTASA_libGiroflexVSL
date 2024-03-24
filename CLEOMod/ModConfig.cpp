@@ -371,6 +371,7 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
 
     if (prevVersion == currentVersion) return;
 
+    /*
     if (prevVersion == "unknown")
     {
         auto patternsPath = GetConfigFolder() + "/patterns/";
@@ -380,6 +381,7 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
 
         prevVersion = "2.7.0";
     }
+    */
 
     /*
     if (prevVersion == "2.7.0")
@@ -398,13 +400,14 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
     
     if (prevVersion == currentVersion) return;
 
+    /*
     if (prevVersion == "unknown")
     {
         Patterns::CreateDefaultPatterns();
 
-        /*
-        * changing 10 lights type from 3 (old) to 4
-        */
+        
+        // changing 10 lights type from 3 (old) to 4
+        
         for (auto pairModelInfo : ModelInfos::m_ModelInfos)
         {
             auto modelInfo = pairModelInfo.second;
@@ -421,6 +424,7 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
 
         prevVersion = "2.9.0";
     }
+    */
 
     if (prevVersion == "2.9.0")
     {
