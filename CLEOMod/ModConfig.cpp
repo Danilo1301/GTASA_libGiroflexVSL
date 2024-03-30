@@ -164,7 +164,6 @@ void ModConfig::SaveSettings()
     INIFile file;
 
     auto soundPanelSection = file.AddSection("SoundPanel");
-    
     soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
     soundPanelSection->AddBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
     soundPanelSection->AddBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
@@ -175,6 +174,9 @@ void ModConfig::SaveSettings()
     soundPanelSection->AddFloat("button_size", WindowSoundPanel::m_buttonSize);
     soundPanelSection->AddInt("style", WindowSoundPanel::m_style);
     
+    auto generalSection = file.AddSection("General");
+    generalSection->AddBool("ignore_message_old_version", Mod::IgnoreOldModMessage);
+
     file.Save(settingsFileDir);
     file.Destroy();
 }
@@ -341,6 +343,14 @@ void ModConfig::LoadSettings()
         WindowSoundPanel::m_position = soundPanelSection->GetCVector2D("position", WindowSoundPanel::m_position);
         WindowSoundPanel::m_buttonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::m_buttonSize);
         WindowSoundPanel::m_style = soundPanelSection->GetFloat("style", WindowSoundPanel::m_style);
+    }
+
+    auto generalSections = file.GetSections("General");
+    if (generalSections.size() > 0)
+    {
+        auto generalSection = generalSections[0];
+
+        Mod::IgnoreOldModMessage = generalSection->GetBool("ignore_message_old_version", Mod::IgnoreOldModMessage);
     }
 
     Log::file << "ModConfig: Success reading settings.ini" << std::endl;

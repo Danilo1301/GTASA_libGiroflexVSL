@@ -44,6 +44,7 @@ bool Mod::HasShownCredits = false;
 
 CVector Mod::m_PlayerPos = CVector(0, 0, 0);
 int Mod::hPlayerVehicle = -1;
+bool Mod::IgnoreOldModMessage = false;
 
 CCamera* camera;
 bool* userPaused;

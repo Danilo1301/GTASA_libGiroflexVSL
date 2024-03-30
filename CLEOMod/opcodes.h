@@ -652,15 +652,17 @@ static void PROCESS_GIROFLEX_LIB(__handler_params)
     //Log::file << "Check 1 '" + std::string("/storage/emulated/0/cleo/sa/giroflex.csa") + "'" << std::endl;
     //Log::file << "Check 2 '" + std::string("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa") + "'" << std::endl;
 
-    if (
-        ModConfig::FileExists("/storage/emulated/0/cleo/sa/giroflex.csa") ||
-        ModConfig::FileExists("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa")
-        )
+    if (!Mod::IgnoreOldModMessage)
     {
-        //Log::file << "Found" << std::endl;
-        Menu::ShowPopup(92, 0, 0, 1000);
+        if (
+            ModConfig::FileExists("/storage/emulated/0/cleo/sa/giroflex.csa") ||
+            ModConfig::FileExists("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa")
+            )
+        {
+            //Log::file << "Found" << std::endl;
+            Menu::ShowPopup(92, 0, 0, 1000);
+        }
     }
-    
 
     Input::Update(dt);
 

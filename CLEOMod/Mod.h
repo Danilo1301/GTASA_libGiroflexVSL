@@ -24,6 +24,7 @@ public:
     static bool HasShownCredits;
     static CVector m_PlayerPos;
     static int hPlayerVehicle;
+    static bool IgnoreOldModMessage;
     static bool IsPlayerInAnyVehicle();
     static Vehicle* GetPlayerVehicle();
     static void SaveCfg();
