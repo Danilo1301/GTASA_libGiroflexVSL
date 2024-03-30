@@ -1,0 +1,88 @@
+DGFX1 ~1~
+DGFX2 ~1~, ~1~
+DGFX3 Short description of something
+DGFX4 <
+DGFX5 >
+DGFX6 ~1~.~1~
+DGFX7 Back
+DGFX8 Giroflex VSL v3.0.0 (Danilo1301)
+DGFX9 Vehicle ID ~1~
+DGFX10 Close
+DGFX11 Type
+DGFX12 ~1~ lights
+DGFX13 Options
+DGFX14 ShowDebug
+DGFX15 Test ~1~
+DGFX16 Giroflex
+DGFX17 -
+DGFX18 Amount: ~1~
+DGFX19 Add
+DGFX20 Edit ~1~
+DGFX21 You need to be~n~in a vehicle
+DGFX22 Info
+DGFX23 Edit points
+DGFX24 Editing options
+DGFX25 Freeze lights
+DGFX26 Show only these lights
+DGFX27 Move lights speed
+DGFX28 Edit position
+DGFX29 Use custom color
+DGFX30 Color
+DGFX31 Color 1
+DGFX32 Color 2
+DGFX33 Color 3
+DGFX34 R
+DGFX35 G
+DGFX36 B
+DGFX37 A
+DGFX38 X
+DGFX39 Y
+DGFX40 Z
+DGFX41 Size
+DGFX42 Show small white light
+DGFX43 Distance
+DGFX44 Curve
+DGFX45 Corona texture
+DGFX46 Shadow
+DGFX47 Shadow - intensity
+DGFX48 Shadow - size
+DGFX49 Reflex
+DGFX50 Reflex - distance
+DGFX51 Reflex - intensity
+DGFX52 Freeze lights
+DGFX53 Flare
+DGFX54 Flare - distance
+DGFX55 Flare - intensity
+DGFX56 Panel slot ID
+DGFX57 Lights always on
+DGFX58 Clone
+DGFX59 Clone lights?
+DGFX60 Delete
+DGFX61 Remove?
+DGFX62 Texture
+DGFX63 Rotation
+DGFX64 Flip shadows
+DGFX65 Yes
+DGFX66 No
+DGFX67 Edit color
+DGFX68 Pattern offset
+DGFX69 Near clip
+DGFX70 You need at~n~least 1 light
+DGFX71 Lights panel
+DGFX72 Audio panel
+DGFX73 Manual
+DGFX74 Auto
+DGFX75 ON
+DGFX76 OFF
+DGFX77 +
+DGFX78 X
+DGFX79 Style
+DGFX80 Always active
+DGFX81 Enable show-lights button
+DGFX82 Color (active)
+DGFX83 Color (outline)
+DGFX84 Multiple audios at once
+DGFX85 Change pattern time
+DGFX86 Remove the old~n~giroflex.csa and .fxt
+DGFX87 <  ( Place it on CENTER )  >
+DGFX0 #OUTDATED .FXT#

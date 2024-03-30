@@ -1,6 +1,88 @@
 DGFX1 ~1~
 DGFX2 ~1~, ~1~
 DGFX3 Short description of something
-DGFX4 Giroflex VSL v2.13.1 (Danilo1301)
-DGFX5 Veiculo ID ~1~
-DGFX6 Fechar
+DGFX4 <
+DGFX5 >
+DGFX6 ~1~.~1~
+DGFX7 Voltar
+DGFX8 Giroflex VSL v3.0.0 (Danilo1301)
+DGFX9 Veiculo ID ~1~
+DGFX10 Fechar
+DGFX11 Tipo giroflex
+DGFX12 ~1~ luzes
+DGFX13 Opcoes
+DGFX14 ShowDebug
+DGFX15 Test ~1~
+DGFX16 Giroflex
+DGFX17 -
+DGFX18 Quantidade: ~1~
+DGFX19 Adicionar
+DGFX20 Editar ~1~
+DGFX21 Voce precisa estar~n~em um veiculo
+DGFX22 Info
+DGFX23 Editar pontos
+DGFX24 Opcoes de edicao
+DGFX25 Congelar luzes
+DGFX26 Mostrar apenas esta luz
+DGFX27 Velocidade mover luzes
+DGFX28 Editar posicao
+DGFX29 Usar cor customizada
+DGFX30 Cor
+DGFX31 Cor 1
+DGFX32 Cor 2
+DGFX33 Cor 3
+DGFX34 R
+DGFX35 G
+DGFX36 B
+DGFX37 A
+DGFX38 X
+DGFX39 Y
+DGFX40 Z
+DGFX41 Tamanho
+DGFX42 Luz branca por dentro
+DGFX43 Distancia
+DGFX44 Curva
+DGFX45 Corona texture
+DGFX46 Shadow
+DGFX47 Shadow - intensidade
+DGFX48 Shadow - tamanho
+DGFX49 Reflexo
+DGFX50 Reflexo - distancia
+DGFX51 Reflexo - intensidade
+DGFX52 Congelar luzes
+DGFX53 Flare
+DGFX54 Flare - distancia
+DGFX55 Flare - intensidade
+DGFX56 Painel slot ID
+DGFX57 Luzes sempre acesas
+DGFX58 Duplicar
+DGFX59 Duplicar luzes?
+DGFX60 Deletar
+DGFX61 Remover?
+DGFX62 Textura
+DGFX63 Rotacao
+DGFX64 Inverter shadows
+DGFX65 Sim
+DGFX66 Nao
+DGFX67 Editar cor
+DGFX68 Pattern offset
+DGFX69 Near clip
+DGFX70 Voce precisa ter~n~pelo menos 1 luz
+DGFX71 Painel de luzes
+DGFX72 Painel de audio
+DGFX73 Manual
+DGFX74 Auto
+DGFX75 ON
+DGFX76 OFF
+DGFX77 +
+DGFX78 X
+DGFX79 Estilo
+DGFX80 Sempre ativo
+DGFX81 Mostrar botao das luzes
+DGFX82 Cor (active)
+DGFX83 Cor (outline)
+DGFX84 Multiple audios at once
+DGFX85 Tempo trocar padroes
+DGFX86 Remova o antigo~n~giroflex.csa e .fxt
+DGFX87 <  ( Coloque no CENTRO )  >
+DGFX0 #.FXT DESATUALIZADO#
