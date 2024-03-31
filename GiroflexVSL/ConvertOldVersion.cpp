@@ -253,4 +253,6 @@ void ConvertOldVersion::LightGroupFromINISection(LightGroup* lightGroup, INISect
     lightGroup->coronaTexture = section->GetInt("coronaTexture", lightGroup->coronaTexture);
 
     lightGroup->lightSlotId = section->GetInt("lightSlotId", lightGroup->lightSlotId);
+
+    //lightGroup->enableOnSpawn = section->GetBool("enableOnSpawn", lightGroup->enableOnSpawn);
 }

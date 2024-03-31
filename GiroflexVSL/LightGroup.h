@@ -54,6 +54,7 @@ public:
 	int lightSlotId = 0;
 
 	bool alwaysEnabled = false;
+	//bool enableOnSpawn = false;
 
     LightGroup() {}
 
@@ -157,6 +158,7 @@ public:
 		value["lightSlotId"] = lightSlotId;
 
 		value["alwaysEnabled"] = alwaysEnabled;
+		//value["enableOnSpawn"] = enableOnSpawn;
 
 		return value;
 	}
@@ -216,5 +218,6 @@ public:
 		lightSlotId = ValidateValue(value["lightSlotId"], lightSlotId).asInt();
 
 		alwaysEnabled = ValidateValue(value["alwaysEnabled"], alwaysEnabled).asBool();
+		//enableOnSpawn = ValidateValue(value["enableOnSpawn"], enableOnSpawn).asBool();
 	}
 };

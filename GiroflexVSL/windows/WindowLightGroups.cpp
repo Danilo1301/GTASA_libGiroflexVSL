@@ -182,7 +182,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         WindowWhiteCorona::Create(window, lightGroup);
     };
 
-    auto patternOffset = window->AddIntRange(43, &lightGroup->patternOffset, 0, 10, 1);
+    auto patternOffset = window->AddIntRange(68, &lightGroup->patternOffset, 0, 10, 1);
     patternOffset->holdToChange = false;
     patternOffset->onValueChange = [lightGroup]() {
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
@@ -195,7 +195,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         }
     };
 
-    window->AddFloatRange(44, &lightGroup->nearClip, -2.0f, 5.0f, 0.01f);
+    window->AddFloatRange(69, &lightGroup->nearClip, -2.0f, 5.0f, 0.01f);
 
     auto coronaTexture = window->AddIntRange(45, &lightGroup->coronaTexture, 0, 9, 1);
     coronaTexture->holdToChange = false;
@@ -239,6 +239,8 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
     window->AddCheckbox(57, &lightGroup->alwaysEnabled);
 
     window->AddCheckbox(52, &lightGroup->freezeLights);
+
+    //window->AddCheckbox(88, &lightGroup->enableOnSpawn);
 
     auto button_duplicate = window->AddButton(58);
     button_duplicate->onClick = [window, lightGroup, modelId]()

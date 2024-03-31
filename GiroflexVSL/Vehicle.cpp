@@ -7,6 +7,7 @@
 #include "ModelInfos.h"
 #include "LightGroupDatas.h"
 #include "Patterns.h"
+#include "Globals.h"
 
 #include "windows/WindowEditing.h"
 
@@ -23,6 +24,15 @@ Vehicle::Vehicle(int hVehicle, int modelId)
     Log::file << vehicleIdString << "Created" << std::endl;
 
     Update(0);
+
+    /*
+    auto lightGroupDataList = GetLightGroupsData();
+    for (auto lightGroupData : lightGroupDataList)
+    {
+        if(lightGroupData->lightGroup->enableOnSpawn)
+            lightGroupData->lightsOn = true;
+    }
+    */
 }
 
 Vehicle::~Vehicle()
@@ -198,11 +208,9 @@ void Vehicle::Update(int dt)
             
             if (lightGroup->freezeLights) enabled = true;
 
-            if (!lightGroupData->lightsOn) enabled = false;
+            if (!lightGroupData->lightsOn && !lightGroup->alwaysEnabled) enabled = false;
 
             if (WindowEditing::FreezeLights) enabled = true;
-
-            if(lightGroup->alwaysEnabled) enabled = true;
 
             if (WindowEditing::ShowCurrentEditingLightGroup)
             {
@@ -255,7 +263,24 @@ void Vehicle::Update(int dt)
             }
         }
     }
-    
+
+    //-----------
+
+    //Log::file << vehicleIdString << "Getting siren state: " << std::endl;
+
+    //void* vehicleEntity = Mod::ModGetVehicleFromRef(hVehicle);
+    //bool sirenOn = *(uint8_t*)((uintptr_t)vehicleEntity + 0x42D + 4) >> 7;
+
+    //Log::file << vehicleIdString << "siren state: " << sirenOn << std::endl;
+
+    if (Globals::hPlayerVehicle != hVehicle && pDriver)
+    {
+        if (prevLightsState != gameSirenState)
+        {
+            SetGiroflexEnabled(gameSirenState);
+        }
+    }
+
     //Log::file << vehicleIdString << "Update end" << std::endl;
 }
 
