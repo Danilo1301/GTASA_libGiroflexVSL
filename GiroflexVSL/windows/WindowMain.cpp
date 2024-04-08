@@ -5,12 +5,16 @@
 
 #include "ModConfig.h"
 
+#include "Log.h"
+
 Window* WindowMain::m_Window = NULL;
 int WindowMain::m_ModelId = 0;
 
 void WindowMain::Create(int modelId)
 {
     if (m_Window) return;
+
+    Log::file << "WindowMain: Create for modelId " << modelId << std::endl;
 
     m_ModelId = modelId;
 

@@ -76,6 +76,8 @@ public:
 
 			int duration = step["duration"].asInt();
 
+			if (duration <= 0) continue;
+			
 			std::vector<int> data;
 			for (int val_i = 0; val_i < (int)step["data"].size(); val_i++)
 			{

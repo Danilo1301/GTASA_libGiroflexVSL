@@ -31,10 +31,6 @@
       {
          "data" : [ 0, 0, 0 ],
          "duration" : 650
-      },
-      {
-         "data" : [ 0 ],
-         "duration" : 0
       }
    ]
 }

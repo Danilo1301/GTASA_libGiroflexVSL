@@ -23,6 +23,8 @@ std::vector<PanelButton*> WindowPanel::PanelButtons;
 
 void WindowPanel::Toggle(bool state)
 {
+	Log::file << "WindowPanel: Toggle " << (state ? "true" : "false") << std::endl;
+
 	Visible = state;
 
 	if (Visible)
@@ -34,6 +36,8 @@ void WindowPanel::Toggle(bool state)
 void WindowPanel::Create()
 {
 	if (PanelButtons.size() > 0) return;
+	
+	Log::file << "WindowPanel: Create" << std::endl;
 
 	for (int i = 0; i <= 3; i++)
 	{
@@ -60,7 +64,6 @@ void WindowPanel::Draw()
 	auto modelInfo = ModelInfos::GetModelInfo(veh->modelId);
 
 	//
-
 
 	CRGBA COLOR_PANEL_BACKGROUND = CRGBA(45, 45, 45);
 	CRGBA COLOR_PANEL_BTN_OFF = CRGBA(70, 70, 70);
@@ -120,13 +123,17 @@ void WindowPanel::Draw()
 			demoLightGroupData ? (lightsOn ? COLOR_PANEL_BTN_LIGHT : COLOR_PANEL_BTN_OFF) : COLOR_PANEL_BTN_OFF
 		))
 		{
-			bool newState = !demoLightGroupData->lightsOn;
-			for (auto lightGroup : lightGroups)
-			{
-				auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
-				lightGroupData->lightsOn = newState;
-			}
+			Log::file << "Changing lights on/off for " << lightGroups.size() << " lightgroups" << std::endl;
 
+			if(demoLightGroupData)
+			{
+				bool newState = !demoLightGroupData->lightsOn;
+				for (auto lightGroup : lightGroups)
+				{
+					auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
+					lightGroupData->lightsOn = newState;
+				}
+			}
 		}
 
 
@@ -143,6 +150,8 @@ void WindowPanel::Draw()
 			COLOR_PANEL_BTN_LIGHT
 		))
 		{
+			Log::file << "Changing pattern for " << lightGroups.size() << " lightgroups" << std::endl;
+
 			for (auto lightGroup : lightGroups)
 			{
 				auto newStep = demoLightGroupData->patternLoop->StepIndex + 1;
@@ -150,7 +159,6 @@ void WindowPanel::Draw()
 				auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
 				lightGroupData->patternLoop->SetStep(newStep);
 				lightGroupData->stepLoop->Clear();
-
 			}
 		}
 
@@ -168,12 +176,17 @@ void WindowPanel::Draw()
 			COLOR_PANEL_BTN_LIGHT
 		))
 		{
-			bool newState = !demoLightGroupData->stepLoop->DontChangeSteps;
-			for (auto lightGroup : lightGroups)
+			Log::file << "Pausing pattern loop and step loop for " << lightGroups.size() << " lightgroups" << std::endl;
+
+			if(demoLightGroupData)
 			{
-				auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
-				lightGroupData->stepLoop->DontChangeSteps = newState;
-				lightGroupData->patternLoop->DontChangeSteps = newState;
+				bool newState = !demoLightGroupData->stepLoop->DontChangeSteps;
+				for (auto lightGroup : lightGroups)
+				{
+					auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
+					lightGroupData->stepLoop->DontChangeSteps = newState;
+					lightGroupData->patternLoop->DontChangeSteps = newState;
+				}
 			}
 		}
 
@@ -190,11 +203,14 @@ void WindowPanel::Draw()
 			COLOR_PANEL_BTN_DARK
 		))
 		{
-			bool newState = !demoLightGroupData->patternLoop->DontChangeSteps;
-			for (auto lightGroup : lightGroups)
+			if(demoLightGroupData)
 			{
-				auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
-				lightGroupData->patternLoop->DontChangeSteps = newState;
+				bool newState = !demoLightGroupData->patternLoop->DontChangeSteps;
+				for (auto lightGroup : lightGroups)
+				{
+					auto lightGroupData = LightGroupDatas::GetLightGroupData(lightGroup, veh->hVehicle);
+					lightGroupData->patternLoop->DontChangeSteps = newState;
+				}
 			}
 		}
 

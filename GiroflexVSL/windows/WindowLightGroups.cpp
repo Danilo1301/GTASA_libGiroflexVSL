@@ -11,9 +11,12 @@
 #include "LightGroupDatas.h"
 #include "Globals.h"
 #include "Vehicles.h"
+#include "Log.h"
 
 void WindowLightGroups::Create(Window* parent)
 {
+    Log::file << "WindowLightGroups: Create" << std::endl;
+
     auto modelId = WindowMain::m_ModelId;
 
     auto window = Menu::AddWindow(8, parent);

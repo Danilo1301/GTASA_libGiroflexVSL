@@ -2,87 +2,35 @@
    "steps" : [
       {
          "data" : [ 1, 0 ],
-         "duration" : 125
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 125
-      },
-      {
-         "data" : [ 0, 1 ],
-         "duration" : 125
+         "duration" : 200
       },
       {
          "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0, 1 ],
-         "duration" : 125
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 125
+         "duration" : 200
       },
       {
          "data" : [ 1, 0 ],
-         "duration" : 125
+         "duration" : 200
       },
       {
          "data" : [ 0, 0 ],
-         "duration" : 85
+         "duration" : 200
       },
       {
-         "data" : [ 1, 1 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 1, 1 ],
-         "duration" : 85
+         "data" : [ 0, 1 ],
+         "duration" : 200
       },
       {
          "data" : [ 0, 0 ],
-         "duration" : 85
+         "duration" : 200
       },
       {
-         "data" : [ 1, 1 ],
-         "duration" : 85
+         "data" : [ 0, 1 ],
+         "duration" : 200
       },
       {
          "data" : [ 0, 0 ],
-         "duration" : 85
-      },
-      {
-         "data" : [ 0 ],
-         "duration" : 0
+         "duration" : 200
       }
    ]
 }

@@ -143,6 +143,18 @@ Todo
 [X] ADD: system to convert files from v2 to v3
 [X] ADD: option to ignore old version message
 
+[3.0.0 Update 1]
+[X] FIX: NPCs lights not working
+[X] FIX: some texts in the menu are wrong
+
+[3.0.0 Update 2]
+[X] CHANGE: make lights 'alwaysEnabled' blink following its pattern
+
+[3.0.0 Update 3]
+[X] FIX: crash when clicking on the top button in the lights panel
+OBS: I also found a bug that detects a lightpanel button press before the panel is open (while still opening when clicking 'Open panel')
+[X] ADD: a few new patterns (for 11 lights)
+
 Sugest�es:
 
 
@@ -154,7 +166,7 @@ Sugest�es:
 
 [] Salvar os padr�es de piscar do painel de luzes
 
-[ ] Colocar de 11 luzes tmb pq os Giroflex (n�o todos) mais a maioria s�o 11 luzes 
+[ DONE ] Colocar de 11 luzes tmb pq os Giroflex (n�o todos) mais a maioria s�o 11 luzes 
 
 [] Ativa��o do painel por c�digos virtuais para facilitar (3+9 por exemplo)
 

@@ -5,11 +5,16 @@
 #include "../ModelInfos.h"
 #include "../Globals.h"
 
+#include "../Log.h"
+
+
 Window* WindowSelectPanel::m_Window = NULL;
 
 void WindowSelectPanel::Create()
 {
 	if (m_Window) return;
+
+	Log::file << "WindowSelectPanel: Create" << std::endl;
 
 	auto window = m_Window = Menu::AddWindow(8);
 	window->position = CVector2D(80, 200);
@@ -17,6 +22,8 @@ void WindowSelectPanel::Create()
 	auto button_lights_panel = window->AddButton(71);
 	button_lights_panel->onClick = [window]()
 	{
+		Log::file << "'Lights panel' clicked" << std::endl;
+
 		Remove();
 
 		auto veh = Globals::GetPlayerVehicle();

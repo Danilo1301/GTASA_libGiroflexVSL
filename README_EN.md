@@ -73,6 +73,10 @@ You just need to go in the game, then "Options" > "Game" and change the "CLEO LO
 
 To change the menu's position, you need to enable the edit mode in: "Options" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
+<h3>Bent lights / Lights rotated to the side by a little</h3>
+
+This happens when you use libJPatch.so with 'PS2CoronaRotation' enabled. To disable you have to go to your configs, in the .ini file, go the where this option is located and change it to 0 (PS2CoronaRotation=0)
+
 <h3>Discord</h3>
 
 * https://discord.gg/mkCDRf4zJA

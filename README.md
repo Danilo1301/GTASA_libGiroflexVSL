@@ -77,6 +77,10 @@ Bastar ir no jogo, em "Opções" > "Game" e mudar a opção do "CLEO LOCATION"<b
 
 Para mudar a posição do menu você precisa ativar o modo edição em: "Opções" > "Mods Settings" > "Giroflex VSL - Edit mode"
 
+<h3>Luzes tortas / Luzes giradas um pouco pro lado</h3>
+
+Isso acontece quando você usa o libJPatch.so com o 'PS2CoronaRotation' ativado. Para desativar basta ir nas configs, no .ini, ir onde tem essa opção e mudar ela pro 0 (PS2CoronaRotation=0)
+
 <h3>Discord</h3>
 
 * https://discord.gg/mkCDRf4zJA

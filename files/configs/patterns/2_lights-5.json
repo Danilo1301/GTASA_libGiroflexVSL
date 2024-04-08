@@ -7,10 +7,6 @@
       {
          "data" : [ 0, 1 ],
          "duration" : 500
-      },
-      {
-         "data" : [ 0 ],
-         "duration" : 0
       }
    ]
 }
