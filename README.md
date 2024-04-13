@@ -1,6 +1,6 @@
 # Giroflex VSL (VehicleSirenLights)
 
-[English version](https://github.com/Danilo1301/GTASA_libGiroflexVSL/blob/main/README_EN.md)
+[English version](https://github.com/Danilo1301/GTASA_libGiroflexVSL/blob/v3/README_EN.md)
 
 <br>
 
