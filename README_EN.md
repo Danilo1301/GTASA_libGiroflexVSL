@@ -4,7 +4,11 @@
 
 * GTASA 2.00 AML 1.2.1 FLA 7.2
 * SAMP Mobile Alyn v2
+  * NOTE: you must use SAUtils 1.3.1
 * SAMP Mobile Alyn v11.6
+  * NOTE: you must use SAUtils 1.3.1
+* SAMP Mobile Alyn v13.1
+  * NOTE: it's not compatible with SAUtils (only version 1.1)
 
 <h1>Install</h1>
 
