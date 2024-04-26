@@ -8,6 +8,7 @@
 #include "LightGroupDatas.h"
 #include "Patterns.h"
 #include "Globals.h"
+#include "ModConfig.h"
 
 #include "windows/WindowEditing.h"
 
@@ -273,11 +274,24 @@ void Vehicle::Update(int dt)
 
     //Log::file << vehicleIdString << "siren state: " << sirenOn << std::endl;
 
-    if (Globals::hPlayerVehicle != hVehicle && pDriver)
+    //if (prevLightsState != gameSirenState)
+    if (prevSirenState != gameSirenState)
     {
-        if (prevLightsState != gameSirenState)
+        prevSirenState = gameSirenState;
+
+        if (pDriver)
         {
-            SetGiroflexEnabled(gameSirenState);
+            if(Globals::hPlayerVehicle == hVehicle)
+            {
+                //player vehicle
+                if(ModConfig::TurnOnLightsWithSiren)
+                {
+                    SetGiroflexEnabled(gameSirenState);
+                }
+            } else {
+                //npc vehicle
+                SetGiroflexEnabled(gameSirenState);
+            }
         }
     }
 

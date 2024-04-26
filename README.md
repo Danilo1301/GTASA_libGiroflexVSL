@@ -85,17 +85,26 @@ Para mudar a posição do menu você precisa ativar o modo edição em: "Opçõe
 
 Isso acontece quando você usa o libJPatch.so com o 'PS2CoronaRotation' ativado. Para desativar basta ir nas configs, no .ini, ir onde tem essa opção e mudar ela pro 0 (PS2CoronaRotation=0)
 
-<h3>Discord</h3>
+<h1>Discord</h1>
 
 * https://discord.gg/mkCDRf4zJA
 
 <h1>Lib versions</h1>
 
-* SAUtils: 1.6
-* SAUtils for SAMP: 1.3.1
-* AML: 1.0.3.1
-* CLEO Mod: 2.0.1.3
+For all versions:
 * BASS Mod: 1.0.0.0
+* CLEO Mod: 2.0.1.3
+* AML: 1.2.1
+* AML Headers: 1.1
+
+For SAMP:
+* SAUtils: 1.3.1
+
+For GTA SA 2.00
+* SAUtils: 1.6
+
+For GTA SA 2.10
+* Not tested yet
 
 <h1>Credits</h1>
 

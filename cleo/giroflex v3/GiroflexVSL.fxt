@@ -5,7 +5,7 @@ DGFX4 <
 DGFX5 >
 DGFX6 ~1~.~1~
 DGFX7 Voltar
-DGFX8 Giroflex VSL v3.0.0 (Danilo1301)
+DGFX8 Giroflex VSL v3.1.0 (Danilo1301)
 DGFX9 Veiculo ID ~1~
 DGFX10 Fechar
 DGFX11 Tipo giroflex
@@ -85,4 +85,5 @@ DGFX84 Multiple audios at once
 DGFX85 Tempo trocar padroes
 DGFX86 Remova o antigo~n~giroflex.csa e .fxt
 DGFX87 <  ( Coloque no CENTRO )  >
+DGFX88 Ligar luzes com a sirene
 DGFX0 #.FXT DESATUALIZADO#

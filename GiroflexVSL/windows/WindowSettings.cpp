@@ -43,6 +43,8 @@ void WindowSettings::Create(Window* parent)
 		SaveCfg();
 	};
 
+	window->AddCheckbox(88, &ModConfig::TurnOnLightsWithSiren);
+
 	auto test_button = window->AddButton(15);
 	test_button->text->num1 = 1;
 	test_button->onClick = [window]() {

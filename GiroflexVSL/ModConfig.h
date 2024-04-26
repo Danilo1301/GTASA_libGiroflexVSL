@@ -5,6 +5,7 @@
 class ModConfig {
 public:
 	static bool IgnoreOldModVersionMessage;
+	static bool TurnOnLightsWithSiren;
 
 	static void MakePaths();
 	static bool DirExists(std::string path);

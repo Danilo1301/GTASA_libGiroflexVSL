@@ -1,10 +1,10 @@
 #ifndef DONT_USE_STB
-    #include "thirdparty/stb_sprintf.h"
+    #include <mod/thirdparty/stb_sprintf.h>
     #define sprintf stbsp_sprintf
     #define snprintf stbsp_snprintf
 #endif
 #include "config.h"
-#include "logger.h"
+#include <mod/logger.h>
 
 #include "amlmod.h"
 #include "iaml.h"
@@ -19,10 +19,9 @@
 	extern char g_szCfgPath[0xFF];
 #endif
 
-inline bool str_equal(const char* str1, const char* str2)
-{ 
-    for( ; *str1 == *str2 && *str1 != 0; ++str1, ++str2 ) {}
-    return *str2 == *str1; 
+inline bool str_equal(const char* str1, const char* str2) { 
+    for ( ; *str1 == *str2 && *str1 != 0; ++str1, ++str2 ); 
+        return *str2 == *str1; 
 }
 
 extern ModInfo* modinfo;

@@ -18,6 +18,7 @@ public:
 	bool canBeRemoved = false;
 
 	bool prevLightsState = false;
+	bool prevSirenState = false;
 	//bool lightsOn = false;
 	//bool lightsPaused = false;
 

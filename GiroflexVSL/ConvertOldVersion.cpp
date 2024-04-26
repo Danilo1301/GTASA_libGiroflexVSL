@@ -10,8 +10,6 @@
 
 void ConvertOldVersion::MakePaths()
 {
-    Log::file << "ConvertOldVersion: MakePaths" << std::endl;
-
     //ModConfig::CreateFolder(ModConfig::GetConfigFolder() + "/convertFiles");
     //ModConfig::CreateFolder(ModConfig::GetConfigFolder() + "/convertFiles/vehicles");
     //ModConfig::CreateFolder(ModConfig::GetConfigFolder() + "/convertFiles/patterns");

@@ -45,11 +45,10 @@ std::vector<std::string> get_directories_name(const std::string& s)
 //
 
 bool ModConfig::IgnoreOldModVersionMessage = false;
+bool ModConfig::TurnOnLightsWithSiren = true;
 
 void ModConfig::MakePaths()
 {
-    Log::file << "ModConfig: MakePaths" << std::endl;
-
     CreateFolder(GetConfigFolder());
     CreateFolder(GetConfigFolder() + "/vehicles");
     CreateFolder(GetConfigFolder() + "/patterns");
@@ -204,6 +203,7 @@ void ModConfig::SaveSettings()
     
     auto generalSection = file.AddSection("General");
     generalSection->AddBool("ignore_message_old_version", ModConfig::IgnoreOldModVersionMessage);
+    generalSection->AddBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
 
     file.Save(settingsFileDir);
     file.Destroy();
@@ -337,6 +337,7 @@ void ModConfig::LoadSettings()
         auto generalSection = generalSections[0];
 
         ModConfig::IgnoreOldModVersionMessage = generalSection->GetBool("ignore_message_old_version", ModConfig::IgnoreOldModVersionMessage);
+        ModConfig::TurnOnLightsWithSiren = generalSection->GetBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
     }
 
     Log::file << "ModConfig: Success reading settings.ini" << std::endl;

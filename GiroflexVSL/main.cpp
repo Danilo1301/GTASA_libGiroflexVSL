@@ -115,16 +115,17 @@ void OnGiroflexEditModeChanged(int oldVal, int newVal, void* data)
 
 extern "C" void OnModPreLoad()
 {
-    logger->SetTag("GiroflexVSL");
-
-    logger->Info("Preloading");
-
     ModConfig::MakePaths();
 
     char logPath[512];
 	sprintf(logPath, "%s/giroflexVSL/giroflexVSL.log", aml->GetConfigPath());
     Log::Open(logPath);
     Log::file << "Preload()" << std::endl;
+    Log::file << "AML headers: 1.1" << std::endl;
+
+    logger->SetTag("GiroflexVSL");
+
+    logger->Info("Preloading");
 }
 
 extern "C" void OnModLoad()
