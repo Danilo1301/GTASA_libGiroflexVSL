@@ -3,7 +3,7 @@ To release
 
 Test first on SAMP, then test on offline
 Check logs
-Check Mod::Version
+Check GiroflexVSL::m_Version
 Check EN and PT .fxt
 Check .fxt mod version
 Check game more than once to make sure

@@ -22,7 +22,7 @@
 
 extern CVector2D *m_vecCachedPos;
 
-const char* GiroflexVSL::m_Version = "3.0.0";
+const char* GiroflexVSL::m_Version = "3.1.0";
 
 bool canTurnSirenOn = true;
 bool canTurnPanelOn = true;
