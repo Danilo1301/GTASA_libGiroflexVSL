@@ -46,6 +46,10 @@
 * Como criar um padrão de piscar: https://youtu.be/KZkaiiXhtLU
 * Como converter arquivos .INI para .JSON: https://youtu.be/p_R810KUDb4
 
+<h1>Tutoriais (Adaptação)</h1>
+
+* Adaptando uma viatura: https://youtu.be/UXQQKfLok-o
+
 <h1>Config</h1>
 
 Cada veículo tem um arquivo .ini separado para salvar as configurações<br>

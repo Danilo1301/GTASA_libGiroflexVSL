@@ -42,6 +42,10 @@
 * How to create a flash pattern: https://youtu.be/KZkaiiXhtLU
 * How to convert .INI files to .JSON: https://youtu.be/p_R810KUDb4
 
+<h1>Tutorials (Adapting)</h1>
+
+* Adapting a vehicle: https://youtu.be/UXQQKfLok-o
+
 <h1>Config</h1>
 
 Each vehicle has a .ini file where it stores its config<br>
