@@ -222,7 +222,7 @@ extern "C" void OnModLoad()
 
     std::string cleoVersion = CheckModVersion(
         { "net.rusjj.cleolib", "net.rusjj.cleomod" },
-        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3" }
+        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3", "2.0.1.4", "2.0.1.5" }
     );
 
     std::string sautilsVersion = CheckModVersion(
@@ -232,15 +232,15 @@ extern "C" void OnModLoad()
     
     std::string amlVersion = CheckModVersion(
         { "net.rusjj.aml" },
-        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6", "1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1"}
+        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6", "1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2"}
     );
 
     Log::file << "----------------------------" << std::endl;
     Log::file << "Game: " << aml->GetCurrentGame() << std::endl;
     Log::file << "GiroflexVSL: " << GiroflexVSL::m_Version << std::endl;
-    Log::file << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
+    Log::file << "CLEO version: " << cleoVersion << " (recommended 2.0.1.5)" << std::endl;
     Log::file << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
-    Log::file << "AML version: " << amlVersion << " (recommended 1.0.3.1)" << std::endl;
+    Log::file << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;
     Log::file << "----------------------------" << std::endl;
     Log::file << "Config: " << aml->GetConfigPath() << std::endl;
 
