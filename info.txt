@@ -3,6 +3,7 @@ To release
 
 Test first on SAMP, then test on offline
 Check logs
+Change main.cpp version
 Check GiroflexVSL::m_Version
 Check EN and PT .fxt
 Check .fxt mod version
