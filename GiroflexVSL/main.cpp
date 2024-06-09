@@ -238,7 +238,7 @@ extern "C" void OnModLoad()
     Log::file << "----------------------------" << std::endl;
     Log::file << "Game: " << aml->GetCurrentGame() << std::endl;
     Log::file << "GiroflexVSL: " << GiroflexVSL::m_Version << std::endl;
-    Log::file << "CLEO version: " << cleoVersion << " (recommended 2.0.1.5)" << std::endl;
+    Log::file << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
     Log::file << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
     Log::file << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;
     Log::file << "----------------------------" << std::endl;
