@@ -13,7 +13,7 @@ bool LightGroupDatas::HasLightGroupData(LightGroup* lightGroup, int hVehicle)
 
 void LightGroupDatas::AddLightGroupData(LightGroupData* lightGroupData)
 {
-	Log::file << "LightGroupDatas: AddLightGroupData" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "LightGroupDatas: AddLightGroupData" << std::endl;
 
 	m_LightGroupDatas.push_back(lightGroupData);
 }
@@ -29,7 +29,7 @@ LightGroupData* LightGroupDatas::GetLightGroupData(LightGroup* lightGroup, int h
 
 void LightGroupDatas::RemoveLightGroupDataFromVehicle(int hVehicle)
 {
-	Log::file << "LightGroupDatas: RemoveLightGroupDataFromVehicle " << hVehicle << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "LightGroupDatas: RemoveLightGroupDataFromVehicle " << hVehicle << std::endl;
 
 	std::vector<LightGroupData*> toRemove;
 	for (auto lightGroupData : m_LightGroupDatas)
@@ -45,7 +45,7 @@ void LightGroupDatas::RemoveLightGroupDataFromVehicle(int hVehicle)
 }
 void LightGroupDatas::RemoveLightGroupData(LightGroupData* lightGroupData)
 {
-	Log::file << "LightGroupDatas: RemoveLightGroupData" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "LightGroupDatas: RemoveLightGroupData" << std::endl;
 
 	auto it = std::find(m_LightGroupDatas.begin(), m_LightGroupDatas.end(), lightGroupData);
 	if (it == m_LightGroupDatas.end()) return;
@@ -55,7 +55,7 @@ void LightGroupDatas::RemoveLightGroupData(LightGroupData* lightGroupData)
 
 void LightGroupDatas::DeleteLightGroupRerefences(LightGroup* lightGroup)
 {
-	Log::file << "LightGroupDatas: Deleting LightGroup references..." << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "LightGroupDatas: Deleting LightGroup references..." << std::endl;
 
 	std::vector<int> vehicles;
 

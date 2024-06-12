@@ -14,7 +14,7 @@ void WindowMain::Create(int modelId)
 {
     if (m_Window) return;
 
-    Log::file << "WindowMain: Create for modelId " << modelId << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowMain: Create for modelId " << modelId << std::endl;
 
     m_ModelId = modelId;
 

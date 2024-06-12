@@ -5,18 +5,18 @@ extern IBASS* BASS;
 
 AudioStream::AudioStream(std::string src)
 {
-    Log::file << "Loading audiostream '" << src << "'" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream '" << src << "'" << std::endl;
 
     unsigned flags = BASS_SAMPLE_SOFTWARE;
     //if (soundsys->bUseFPAudio) flags |= BASS_SAMPLE_FLOAT;
 
     if (!(streamInternal = BASS->StreamCreateFile(false, src.c_str(), 0, 0, flags)))
     {
-        Log::file << "Loading audiostream '" << src << "' failed. Error code: " << BASS->ErrorGetCode() << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream '" << src << "' failed. Error code: " << BASS->ErrorGetCode() << std::endl;
     }
     else
     {
-        Log::file << "Loading audiostream OK" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream OK" << std::endl;
     }
 }
 
@@ -75,17 +75,17 @@ int AudioStream::GetState()
 
 void AudioStream::Set3DPosition(const CVector&)
 {
-    Log::file << "Unimplemented CAudioStream::Set3DPosition(const CVector&)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Unimplemented CAudioStream::Set3DPosition(const CVector&)" << std::endl;
 }
 
 void AudioStream::Set3DPosition(float, float, float)
 {
-    Log::file << "Unimplemented CAudioStream::Set3DPosition(float,float,float)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Unimplemented CAudioStream::Set3DPosition(float,float,float)" << std::endl;
 }
 
 void AudioStream::Link(CPlaceable*)
 {
-    Log::file << "Unimplemented CAudioStream::Link(CPlaceable*)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Unimplemented CAudioStream::Link(CPlaceable*)" << std::endl;
 }
 
 void AudioStream::Process()

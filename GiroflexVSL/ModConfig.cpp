@@ -76,12 +76,12 @@ void ModConfig::ConfigDeleteFile(std::string path)
 {
     try {
         if (std::filesystem::remove(path))
-        Log::file << "ModConfig: file " << path << " deleted" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: file " << path << " deleted" << std::endl;
         else
-        Log::file << "ModConfig: file " << path << " not found" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: file " << path << " not found" << std::endl;
     }
     catch(const std::filesystem::filesystem_error& err) {
-        Log::file << "ModConfig: delete file: filesystem error: " << err.what() << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: delete file: filesystem error: " << err.what() << std::endl;
     }
 }
 
@@ -96,13 +96,13 @@ void ModConfig::CreateFolder(std::string path)
 {
     if (DirExists(path)) return;
 
-    Log::file << "ModConfig: CreateFolder " << path << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: CreateFolder " << path << std::endl;
 
     mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 }
 
 void ModConfig::WriteToFile(std::string path, Json::Value value) {
-	Log::file << "ModConfig: WriteToFile " << path << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: WriteToFile " << path << std::endl;
 
 	Json::StyledWriter writer;
 	std::string strJson = writer.write(value);
@@ -113,7 +113,7 @@ void ModConfig::WriteToFile(std::string path, Json::Value value) {
 }
 
 Json::Value ModConfig::ReadFile(std::string path) {
-	Log::file << "ModConfig: ReadFile " << path << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: ReadFile " << path << std::endl;
 
 	std::ifstream file(path);
 
@@ -129,7 +129,7 @@ Json::Value ModConfig::ReadFile(std::string path) {
 
 void ModConfig::Save()
 {
-    Log::file << "ModConfig: Save" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Save" << std::endl;
 
     MakePaths();
 
@@ -140,13 +140,13 @@ void ModConfig::Save()
 
 void ModConfig::SavePatterns()
 {
-    Log::file << "ModConfig: SavePatterns " << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: SavePatterns " << std::endl;
 
     for (auto pattern : Patterns::m_Patterns)
     {
         auto path = GetConfigFolder() + "/patterns/" + pattern->id + ".json";
 
-        Log::file << "ModConfig: Saving pattern ID " << pattern->id + ".json" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Saving pattern ID " << pattern->id + ".json" << std::endl;
         
         Json::Value value = pattern->ToJSON();
         
@@ -156,7 +156,7 @@ void ModConfig::SavePatterns()
 
 void ModConfig::SaveVehicles()
 {
-    Log::file << "ModConfig: SaveVehicles " << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: SaveVehicles " << std::endl;
 
     for (auto pair : ModelInfos::m_ModelInfos)
     {
@@ -164,8 +164,8 @@ void ModConfig::SaveVehicles()
 
         auto path = GetConfigFolder() + "/vehicles/" + std::to_string(modelInfo->modelId) + ".json";
 
-        Log::file << "ModConfig: Saving model ID " << modelInfo->modelId << std::endl;
-        Log::file << "Saving " << modelInfo->lightGroups.size() << " lightgroups" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Saving model ID " << modelInfo->modelId << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Saving " << modelInfo->lightGroups.size() << " lightgroups" << std::endl;
 
         Json::Value value = Json::objectValue;
 
@@ -184,7 +184,7 @@ void ModConfig::SaveVehicles()
 
 void ModConfig::SaveSettings()
 {
-    Log::file << "ModConfig: SaveSettings  (settings.ini)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: SaveSettings  (settings.ini)" << std::endl;
 
     auto settingsFileDir = GetConfigFolder() + "/settings.ini";
 
@@ -224,7 +224,7 @@ void ModConfig::Load()
 
 void ModConfig::LoadPatterns()
 {
-    Log::file << "ModConfig: Load patterns..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Load patterns..." << std::endl;
 
     auto patternsPath = GetConfigFolder() + "/patterns/";
 
@@ -246,7 +246,7 @@ void ModConfig::LoadPatterns()
 
         std::string path = patternsPath + name;
 
-        Log::file << "Loading pattern '" << name << "' (id: " << id << ") (" << name << ")" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading pattern '" << name << "' (id: " << id << ") (" << name << ")" << std::endl;
 
         Json::Value value = ReadFile(path);
 
@@ -258,7 +258,7 @@ void ModConfig::LoadPatterns()
 
 void ModConfig::LoadVehicles()
 {
-    Log::file << "ModConfig: Load vehicles..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Load vehicles..." << std::endl;
 
     auto vehiclesPath = GetConfigFolder() + "/vehicles/";
 
@@ -276,12 +276,12 @@ void ModConfig::LoadVehicles()
 
         if (name.find(".json") == std::string::npos) continue;
 
-        //Log::file << name << std::endl;
+        //Log::Level(LOG_LEVEL::LOG_BOTH) << name << std::endl;
 
         int modelId;
         if (sscanf(name.c_str(), "%d.json", &modelId) == 1)
         {
-            Log::file << "ModConfig: Load model ID " << modelId << " (" << name << ")" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Load model ID " << modelId << " (" << name << ")" << std::endl;
 
             std::string path = vehiclesPath + name;
 
@@ -306,12 +306,12 @@ void ModConfig::LoadSettings()
 {
     auto settingsFileDir = GetConfigFolder() + "/settings.ini";
 
-    Log::file << "ModConfig: LoadSettings  (settings.ini)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: LoadSettings  (settings.ini)" << std::endl;
 
     INIFile file;
     if (!file.Read(settingsFileDir))
     {
-        Log::file << "ModConfig: Error reading settings.ini (Not found)" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Error reading settings.ini (Not found)" << std::endl;
         return;
     }
 
@@ -340,7 +340,7 @@ void ModConfig::LoadSettings()
         ModConfig::TurnOnLightsWithSiren = generalSection->GetBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
     }
 
-    Log::file << "ModConfig: Success reading settings.ini" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Success reading settings.ini" << std::endl;
 }
 
 std::string ModConfig::ReadVersionFile()
@@ -364,7 +364,7 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
     std::string prevVersion = ReadVersionFile();
     std::string currentVersion = GiroflexVSL::m_Version;
 
-    Log::file << "ModConfig: [PRE] Updating from " << prevVersion << " to " << currentVersion << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: [PRE] Updating from " << prevVersion << " to " << currentVersion << std::endl;
 
     if (prevVersion == currentVersion) return;
 
@@ -385,7 +385,7 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
     std::string prevVersion = ReadVersionFile();
     std::string currentVersion = GiroflexVSL::m_Version;
 
-    Log::file << "ModConfig: [POST] Updating from " << prevVersion << " to " << currentVersion << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: [POST] Updating from " << prevVersion << " to " << currentVersion << std::endl;
     
     if (prevVersion == currentVersion) return;
 
@@ -400,7 +400,7 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
 
     //-------------
 
-    Log::file << "ModConfig: Saving version file" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Saving version file" << std::endl;
 
     std::string path = GetConfigFolder() + "/version";
 

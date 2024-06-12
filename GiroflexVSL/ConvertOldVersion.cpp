@@ -17,7 +17,7 @@ void ConvertOldVersion::MakePaths()
 
 void ConvertOldVersion::Load()
 {
-    Log::file << "ConvertOldVersion: Load" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ConvertOldVersion: Load" << std::endl;
 
     LoadPatterns();
     LoadVehicles();
@@ -25,7 +25,7 @@ void ConvertOldVersion::Load()
 
 void ConvertOldVersion::LoadPatterns()
 {
-    Log::file << "ConvertOldVersion: LoadPatterns" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ConvertOldVersion: LoadPatterns" << std::endl;
 
     auto patternsPath = ModConfig::GetConfigFolder() + "/patterns/";
 
@@ -47,14 +47,14 @@ void ConvertOldVersion::LoadPatterns()
 
         std::string path = patternsPath + name;
 
-        Log::file << "ConvertOldVersion: Loading pattern '" << name << "' (" << id << ") (" << name << ")" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ConvertOldVersion: Loading pattern '" << name << "' (" << id << ") (" << name << ")" << std::endl;
 
         //
 
         Pattern* pattern = NULL;
         if(Patterns::HasPattern(id))
         {
-            Log::file << "Pattern already exists. Removing steps..." << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Pattern already exists. Removing steps..." << std::endl;
 
             pattern = Patterns::GetPatternById(id);
             pattern->RemoveAllSteps();
@@ -77,15 +77,15 @@ void ConvertOldVersion::LoadPatterns()
         {
             auto line = value.second;
 
-            //Log::file << line << std::endl;
+            //Log::Level(LOG_LEVEL::LOG_BOTH) << line << std::endl;
 
             auto patternStr = line.substr(0, line.find("|"));
             auto timeStr = line.substr(line.find("|") + 1);
 
             auto time = std::atoi(timeStr.c_str());
 
-            //Log::file << "pattern=" << patternStr << std::endl;
-            //Log::file << "time=" << time << std::endl;
+            //Log::Level(LOG_LEVEL::LOG_BOTH) << "pattern=" << patternStr << std::endl;
+            //Log::Level(LOG_LEVEL::LOG_BOTH) << "time=" << time << std::endl;
 
             std::vector<int> data;
             for (char& c : patternStr)
@@ -93,7 +93,7 @@ void ConvertOldVersion::LoadPatterns()
                 auto value = c == '1' ? 1 : 0;
                 data.push_back(value);
 
-                //Log::file << "value: " << value << std::endl;
+                //Log::Level(LOG_LEVEL::LOG_BOTH) << "value: " << value << std::endl;
             }
 
             pattern->AddStep(data, time);
@@ -109,7 +109,7 @@ void ConvertOldVersion::LoadPatterns()
 
 void ConvertOldVersion::LoadVehicles()
 {
-    Log::file << "ConvertOldVersion: LoadVehicles" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ConvertOldVersion: LoadVehicles" << std::endl;
 
     auto vehiclesPath = ModConfig::GetConfigFolder() + "/vehicles/";
 
@@ -125,14 +125,14 @@ void ConvertOldVersion::LoadVehicles()
     {
         std::string name = dp->d_name;
 
-        //Log::file << name << std::endl;
+        //Log::Level(LOG_LEVEL::LOG_BOTH) << name << std::endl;
 
         if (name.find(".ini") == std::string::npos) continue;
 
         int modelId;
         if (sscanf(name.c_str(), "%d.ini", &modelId) == 1)
         {
-            Log::file << "ConvertOldVersion: Load model ID " << modelId << " (" << name << ")" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "ConvertOldVersion: Load model ID " << modelId << " (" << name << ")" << std::endl;
 
             std::string path = vehiclesPath + name;
 
@@ -142,7 +142,7 @@ void ConvertOldVersion::LoadVehicles()
             ModelInfo* modelInfo = NULL;
             if(ModelInfos::HasModelInfo(modelId))
             {
-                Log::file << "ModelInfo already exists. Removing lightGroups..." << std::endl;
+                Log::Level(LOG_LEVEL::LOG_BOTH) << "ModelInfo already exists. Removing lightGroups..." << std::endl;
 
                 modelInfo = ModelInfos::GetModelInfo(modelId);
                 modelInfo->RemoveAllLightGroups();
@@ -150,7 +150,7 @@ void ConvertOldVersion::LoadVehicles()
                 modelInfo = ModelInfos::CreateModelInfo(modelId);
             }
 
-            Log::file << "Loading " << file.GetSections("LightGroup").size() << " lightgroups" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading " << file.GetSections("LightGroup").size() << " lightgroups" << std::endl;
 
             auto sections = file.GetSections("LightGroup");
             for (auto section : sections)

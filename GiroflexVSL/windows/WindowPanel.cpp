@@ -23,7 +23,7 @@ std::vector<PanelButton*> WindowPanel::PanelButtons;
 
 void WindowPanel::Toggle(bool state)
 {
-	Log::file << "WindowPanel: Toggle " << (state ? "true" : "false") << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowPanel: Toggle " << (state ? "true" : "false") << std::endl;
 
 	Visible = state;
 
@@ -37,7 +37,7 @@ void WindowPanel::Create()
 {
 	if (PanelButtons.size() > 0) return;
 	
-	Log::file << "WindowPanel: Create" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowPanel: Create" << std::endl;
 
 	for (int i = 0; i <= 3; i++)
 	{
@@ -123,7 +123,7 @@ void WindowPanel::Draw()
 			demoLightGroupData ? (lightsOn ? COLOR_PANEL_BTN_LIGHT : COLOR_PANEL_BTN_OFF) : COLOR_PANEL_BTN_OFF
 		))
 		{
-			Log::file << "Changing lights on/off for " << lightGroups.size() << " lightgroups" << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "Changing lights on/off for " << lightGroups.size() << " lightgroups" << std::endl;
 
 			if(demoLightGroupData)
 			{
@@ -150,7 +150,7 @@ void WindowPanel::Draw()
 			COLOR_PANEL_BTN_LIGHT
 		))
 		{
-			Log::file << "Changing pattern for " << lightGroups.size() << " lightgroups" << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "Changing pattern for " << lightGroups.size() << " lightgroups" << std::endl;
 
 			for (auto lightGroup : lightGroups)
 			{
@@ -176,7 +176,7 @@ void WindowPanel::Draw()
 			COLOR_PANEL_BTN_LIGHT
 		))
 		{
-			Log::file << "Pausing pattern loop and step loop for " << lightGroups.size() << " lightgroups" << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "Pausing pattern loop and step loop for " << lightGroups.size() << " lightgroups" << std::endl;
 
 			if(demoLightGroupData)
 			{

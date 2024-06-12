@@ -9,7 +9,7 @@ ModelInfo* ModelInfos::CreateModelInfo(int modelId)
 	ModelInfo* modelInfo = new ModelInfo(modelId);
 	m_ModelInfos[modelId] = modelInfo;
 
-	Log::file << "ModelInfos: Create model info (id: " << modelId << ")" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "ModelInfos: Create model info (id: " << modelId << ")" << std::endl;
 
 	return modelInfo;
 }

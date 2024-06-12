@@ -15,8 +15,8 @@ void Vehicles::TryCreateVehicle(int hVehicle, int modelId)
 
 	if (HasVehicleHandle(hVehicle)) return;
 
-	//Log::file << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total). Modelinfo? " << (ModelInfos::HasModelInfo(modelId) ? "yes" : "no") << std::endl;
-	Log::file << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total)" << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total). Modelinfo? " << (ModelInfos::HasModelInfo(modelId) ? "yes" : "no") << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total)" << std::endl;
 
 	m_Vehicles[hVehicle] = new Vehicle(hVehicle, modelId);
 }
@@ -49,7 +49,7 @@ void Vehicles::RemoveVehicle(int hVehicle) {
 
 	Vehicle* vehicle = m_Vehicles[hVehicle];
 
-	Log::file << "Vehicles: Remove vehicle " << hVehicle << " (id: " << vehicle->modelId << ") (" << std::to_string(m_Vehicles.size() - 1) << " total)" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Remove vehicle " << hVehicle << " (id: " << vehicle->modelId << ") (" << std::to_string(m_Vehicles.size() - 1) << " total)" << std::endl;
 
 	m_Vehicles.erase(hVehicle);
 	//vehicle->Destroy();
@@ -107,10 +107,10 @@ void Vehicles::Update(int dt)
 {
     CheckStreamedOutVehicles();
 
-    //Log::file << "Vehicles: " << m_CoronasToRender.size() << " coronas were rendered" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: " << m_CoronasToRender.size() << " coronas were rendered" << std::endl;
     m_CoronasToRender.clear();
 
-    //Log::file << "Vehicles: Update" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Update" << std::endl;
 
     for (auto pair : Vehicles::m_Vehicles)
     {
@@ -118,7 +118,7 @@ void Vehicles::Update(int dt)
         vehicle->Update(dt);
     }
 
-    //Log::file << "Vehicles: Update end" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Update end" << std::endl;
 }
 
 void Vehicles::AddCoronaToRender(RenderCorona corona)
@@ -131,7 +131,7 @@ void Vehicles::AddCoronaToRender(RenderCorona corona)
 
 void Vehicles::TryFindNewVehicles()
 {
-    //Log::file << "TryFindNewVehicles" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "TryFindNewVehicles" << std::endl;
 
     m_NewVehiclesRef.clear();
 
@@ -157,8 +157,8 @@ void Vehicles::TryFindNewVehicles()
 
         int ref = GetVehicleRef(ent.AsInt());
 
-        //Log::file << "Found " << ent.AsInt() << " ref " << ref << " siren " << (sirenOn ? "ON" : "OFF") << std::endl;
-        //Log::file << "driver " << driver << std::endl;
+        //Log::Level(LOG_LEVEL::LOG_BOTH) << "Found " << ent.AsInt() << " ref " << ref << " siren " << (sirenOn ? "ON" : "OFF") << std::endl;
+        //Log::Level(LOG_LEVEL::LOG_BOTH) << "driver " << driver << std::endl;
 
         for (auto vpair : Vehicles::m_Vehicles)
         {
@@ -174,5 +174,5 @@ void Vehicles::TryFindNewVehicles()
 
     }
 
-    //Log::file << "Found: " << m_NewVehiclesRef.size() << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Found: " << m_NewVehiclesRef.size() << std::endl;
 }

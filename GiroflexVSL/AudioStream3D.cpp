@@ -5,18 +5,18 @@ extern IBASS* BASS;
 
 AudioStream3D::AudioStream3D(std::string src) : AudioStream(src)
 {
-    Log::file << "Loading audiostream 3d '" << src << "'" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream 3d '" << src << "'" << std::endl;
 
     unsigned flags = BASS_SAMPLE_SOFTWARE;
     //if (soundsys->bUseFPAudio) flags |= BASS_SAMPLE_FLOAT;
 
     if (!(streamInternal = BASS->StreamCreateFile(false, src.c_str(), 0, 0, flags)))
     {
-        Log::file << "Loading audiostream 3d '" << src << "' failed. Error code: " << BASS->ErrorGetCode() << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream 3d '" << src << "' failed. Error code: " << BASS->ErrorGetCode() << std::endl;
     }
     else
     {
-        Log::file << "Loading audiostream 3d OK" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading audiostream 3d OK" << std::endl;
     }
 }
 
@@ -54,5 +54,5 @@ void AudioStream3D::Process()
         position.z = pVec->x;
     }
     BASS->ChannelSet3DPosition(streamInternal, &position, NULL, NULL);
-    //Log::file << "AudioStream3D pos: " << position.x << ", " << position.y << ", " << position.z << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "AudioStream3D pos: " << position.x << ", " << position.y << ", " << position.z << std::endl;
 }

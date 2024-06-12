@@ -19,7 +19,7 @@ Window* Menu::AddWindow(int gxtId)
 
     m_Windows.push_back(window);
 
-    Log::file << "Menu: AddWindow" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Menu: AddWindow" << std::endl;
 
     return window;
 }
@@ -223,7 +223,7 @@ void Menu::RemoveWindow(Window* window)
 {
     if (window == m_MainWindow) return;
 
-    Log::file << "Menu: RemoveWindow" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Menu: RemoveWindow" << std::endl;
 
     auto it = std::find(m_Windows.begin(), m_Windows.end(), window);
     if (it == m_Windows.end()) return;

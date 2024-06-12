@@ -46,17 +46,18 @@ __decl_op(SEND_CAR_VELOCITY, 0x0EF6); // 0EF6=4,send_car_velocity %1d% vel %2f% 
 __decl_op(CREATE_NEW_VEHICLE, 0x0EF7); // 0EF7=2,create_new_vehicle %1d% modelid %2d%
 __decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF8); // 0EF8=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
 __decl_op(SEND_CAR_POSITION, 0x0EF9); // 0EF9=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
+__decl_op(ADD_LOG_MESSAGE, 0x0EFA); //0EFA=1,add_log_message %1d%
 
 static void PROCESS_GIROFLEX_VSL_LIB(__handler_params)
 {
     int dt = __readParam(handle)->i;
     
-    //Log::file << "PROCESS_MENU_VSL_LIB dt=" << dt << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB dt=" << dt << std::endl;
     //logger->Info("PROCESS_MENU_VSL_LIB dt=%d", dt);
 
     GiroflexVSL::Update(dt);
 
-    //Log::file << "PROCESS_MENU_VSL_LIB end" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB end" << std::endl;
 }
 
 static void GET_DRAW_ITEM_INFO(__handler_params)
@@ -67,7 +68,7 @@ static void GET_DRAW_ITEM_INFO(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "GET_DRAW_ITEM_INFO type=%d, id=%d", type, id);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (type == eDrawInfoType::AMOUNT_OF_DRAWITEMS)
     {
@@ -174,7 +175,7 @@ static void SEND_TOUCH_STATE(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_TOUCH_STATE touchId=%d state=%d", touchId, state);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     Input::SetTouchState(touchId, state == 1);
 }
@@ -196,7 +197,7 @@ static void SEND_CURRENT_VEHICLE(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CURRENT_VEHICLE car=%d modelId=%d", car, modelId);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (car > 0)
     {
@@ -215,7 +216,7 @@ static void GET_MOD_INFO(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "GET_MOD_INFO type=%d, id=%d", type, id);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (type == eModInfoType::CAR_GET_AMOUNT)
     {
@@ -232,7 +233,7 @@ static void GET_MOD_INFO(__handler_params)
 
         if (!vehicle)
         {
-            Log::file << "Vehicle index " << id << " not found" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicle index " << id << " not found" << std::endl;
             return;
         }
 
@@ -249,12 +250,12 @@ static void GET_MOD_INFO(__handler_params)
 
         if (!vehicle)
         {
-            Log::file << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " not found" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " not found" << std::endl;
             return;
         }
 
         vehicle->canBeRemoved = true;
-        Log::file << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " set to remove" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "(CAR_SET_TO_REMOVE) Vehicle id " << id << " set to remove" << std::endl;
 
         result->i = id;
 
@@ -507,7 +508,7 @@ static void SEND_CAR_VELOCITY(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_VELOCITY car=%d, x=%.2f, y=%.2f, z=%.2f", car, x, y, z);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (!Vehicles::HasVehicleHandle(car)) return;
 
@@ -522,7 +523,7 @@ static void CREATE_NEW_VEHICLE(__handler_params)
 
     //char szTemp[256];
     //sprintf(szTemp, "CREATE_NEW_VEHICLE car=%d modelId=%d", car, modelId);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (car > 0)
     {
@@ -539,7 +540,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "REGISTER_GIROFLEX_CORONA id=%d at_pos %.2f %.2f %.2f", id, x, y, z);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     if (id > Vehicles::m_CoronasToRender.size() - 1)
     {
@@ -548,7 +549,7 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
         issue here too
         */
 
-        //Log::file << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
+        //Log::Level(LOG_LEVEL::LOG_BOTH) << "REGISTER_GIROFLEX_CORONA id exceeds" << std::endl;
         return;
     }
 
@@ -656,7 +657,7 @@ static void SEND_CAR_POSITION(__handler_params)
 
     char szTemp[256];
     sprintf(szTemp, "SEND_CAR_POSITION car=%d, modelId=%d, x=%.2f, y=%.2f, z=%.2f", car, modelId, x, y, z);
-    //Log::file << szTemp << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
     //Vehicles::TryCreateVehicle(car, modelId);
 
@@ -664,4 +665,11 @@ static void SEND_CAR_POSITION(__handler_params)
 
     auto vehicle = Vehicles::m_Vehicles[car];
     vehicle->position = CVector(x, y, z);
+}
+
+static void ADD_LOG_MESSAGE(__handler_params)
+{
+    int num = __readParam(handle)->i;
+    
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Log: CLEO " << num << std::endl;
 }

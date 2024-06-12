@@ -195,15 +195,21 @@ jump @LOOP
 :LOOP
 0001: wait 0 ms 
 
+0EFA: add_log_message 1
+
 gosub @SEND_TOUCH
 
 //gosub @FIND_CARS   //crash
 
 gosub @SEND_PLAYER_POS
 
+0EFA: add_log_message 2
+
 gosub @SEND_CURRENT_CAR
 
 gosub @UPDATE_CARS
+
+0EFA: add_log_message 3
 
 gosub @GET_DELTA_TIME
 
@@ -212,6 +218,8 @@ gosub @GET_DELTA_TIME
 gosub @CHECK_NEW_VEHICLES
 
 gosub @RENDER_CORONAS
+
+0EFA: add_log_message 4
 
 /*
 03F0: enable_text_draw 1
@@ -224,6 +232,8 @@ gosub @RENDER_CORONAS
 0EF1: MenuOffsetX = get_draw_item_info eDrawInfoType_MENU_OFFSET_X id 0
 
 0050: gosub @DRAW_ITEMS
+
+0EFA: add_log_message 5
 
 0002: jump @LOOP 
 

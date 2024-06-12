@@ -81,7 +81,7 @@ std::string CheckModVersion(std::vector<std::string> GUIDs, std::vector<std::str
         {
             std::string version = versions[i];
 
-            Log::file << "Checking " << GUID << " " << version << "..." << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Checking " << GUID << " " << version << "..." << std::endl;
 
             if (aml->HasModOfVersion(GUID.c_str(), version.c_str()))
                 return version;
@@ -99,7 +99,7 @@ const char* optionsGiroflexEditMode[] = {
 };
 void OnGiroflexEditModeChanged(int oldVal, int newVal, void* data)
 {
-    Log::file << "OnGiroflexEditModeChanged - changed to " << newVal << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "OnGiroflexEditModeChanged - changed to " << newVal << std::endl;
 
     if (newVal == 1)
     {
@@ -119,10 +119,11 @@ extern "C" void OnModPreLoad()
     ModConfig::MakePaths();
 
     char logPath[512];
-	sprintf(logPath, "%s/giroflexVSL/giroflexVSL.log", aml->GetConfigPath());
-    Log::Open(logPath);
-    Log::file << "Preload()" << std::endl;
-    Log::file << "AML headers: 1.1" << std::endl;
+	sprintf(logPath, "%s/giroflexVSL/", aml->GetConfigPath());
+    Log::Open(logPath, "giroflexVSL");
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Preload()" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "AML headers: 1.1" << std::endl;
 
     logger->SetTag("GiroflexVSL");
 
@@ -131,7 +132,7 @@ extern "C" void OnModPreLoad()
 
 extern "C" void OnModLoad()
 {
-    Log::file << "Load()" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Load()" << std::endl;
 
     cfgMenuOffsetX = cfg->Bind("menu_offset_x", -195, "General");
     cfgTimeBetweenPatterns = cfg->Bind("time_between_patterns", Patterns::m_TimeBetweenPatterns, "General");
@@ -147,22 +148,22 @@ extern "C" void OnModLoad()
     SaveCfg();
 
     //CLEO
-    Log::file << "Loading CLEO..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading CLEO..." << std::endl;
     cleo = (cleo_ifs_t*)GetInterface("CLEO");
     if (cleo)
     {
-        Log::file << "CLEO loaded" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO loaded" << std::endl;
     }
 
     //BASS
     //https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams
-    Log::file << "Loading BASS..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading BASS..." << std::endl;
     if (!(BASS = (IBASS*)GetInterface("BASS")))
     {
-        Log::file << "BASS was not loaded" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "BASS was not loaded" << std::endl;
     }
     else {
-        Log::file << "BASS loaded: " << BASS << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "BASS loaded: " << BASS << std::endl;
 
         SoundSystem::Init();
 
@@ -189,33 +190,33 @@ extern "C" void OnModLoad()
     }
 
     //SAUtils
-    Log::file << "Loading SAUtils..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading SAUtils..." << std::endl;
     if (!(sautils = (ISAUtils*)GetInterface("SAUtils")))
     {
-        Log::file << "SAUtils was not loaded" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils was not loaded" << std::endl;
     }
     else {
-        Log::file << "SAUtils loaded" << std::endl;
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils loaded" << std::endl;
 
         sautils->AddClickableItem(eTypeOfSettings::SetType_Mods, "Giroflex VSL - Edit mode", 0, 0, sizeofA(optionsGiroflexEditMode) - 1, optionsGiroflexEditMode, OnGiroflexEditModeChanged);
 
         if (aml->HasModOfVersion("net.rusjj.gtasa.utils", "1.4.0"))
         {
             sautils->AddOnRWInitListener([]() {
-                Log::file << "RWInit" << std::endl;
+                Log::Level(LOG_LEVEL::LOG_BOTH) << "RWInit" << std::endl;
 
                 std::string imageFile = std::string(aml->GetConfigPath()) + "/giroflex/textures/1.png";
 
-                Log::file << "Loading texture: " << imageFile << std::endl;
+                Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading texture: " << imageFile << std::endl;
 
                 //its returning 0x0 for some reason
                 auto texture = sautils->LoadRwTextureFromPNG(imageFile.c_str());
 
-                Log::file << "Texture: " << texture << std::endl;
+                Log::Level(LOG_LEVEL::LOG_BOTH) << "Texture: " << texture << std::endl;
             });
         }
         else {
-            Log::file << "SAUtils 1.4 or superior not found" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils 1.4 or superior not found" << std::endl;
         }
     }
 
@@ -236,14 +237,14 @@ extern "C" void OnModLoad()
         { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6", "1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2"}
     );
 
-    Log::file << "----------------------------" << std::endl;
-    Log::file << "Game: " << aml->GetCurrentGame() << std::endl;
-    Log::file << "GiroflexVSL: " << GiroflexVSL::m_Version << std::endl;
-    Log::file << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
-    Log::file << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
-    Log::file << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;
-    Log::file << "----------------------------" << std::endl;
-    Log::file << "Config: " << aml->GetConfigPath() << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Game: " << aml->GetCurrentGame() << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "GiroflexVSL: " << GiroflexVSL::m_Version << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Config: " << aml->GetConfigPath() << std::endl;
 
     //
     
@@ -251,9 +252,9 @@ extern "C" void OnModLoad()
     void* hGTASA = dlopen("libGTASA.so", RTLD_LAZY);
     uintptr_t gameAddr = (uintptr_t)(cleo->GetMainLibraryLoadAddress());
    
-    Log::file << "hGTASA: " << hGTASA << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "hGTASA: " << hGTASA << std::endl;
 
-    Log::file << "Getting Syms..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Getting Syms..." << std::endl;
 
     SET_TO(m_vecCachedPos, aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE"));
     SET_TO(pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
@@ -271,16 +272,16 @@ extern "C" void OnModLoad()
     HOOKPLT(UpdateGameLogic, gameAddr + 0x66FE58);
     //
     
-    Log::file << "vecCachedPos: x " << m_vecCachedPos->x << ", y " << m_vecCachedPos->y << std::endl;
-    Log::file << "pVehiclePool: " << pVehiclePool << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "vecCachedPos: x " << m_vecCachedPos->x << ", y " << m_vecCachedPos->y << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "pVehiclePool: " << pVehiclePool << std::endl;
 
-    Log::file << "ScreenGetWidth: " << ScreenGetWidth() << std::endl;
-    Log::file << "ScreenGetHeight: " << ScreenGetHeight() << std::endl;
-    Log::file << "RegisterCorona: " << (void*)RegisterCorona << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ScreenGetWidth: " << ScreenGetWidth() << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "ScreenGetHeight: " << ScreenGetHeight() << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "RegisterCorona: " << (void*)RegisterCorona << std::endl;
 
     //
     
-    Log::file << "Registering opcodes..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Registering opcodes..." << std::endl;
 
     __reg_op_func(PROCESS_GIROFLEX_VSL_LIB, PROCESS_GIROFLEX_VSL_LIB);
     __reg_op_func(GET_DRAW_ITEM_INFO, GET_DRAW_ITEM_INFO);
@@ -292,6 +293,7 @@ extern "C" void OnModLoad()
     __reg_op_func(CREATE_NEW_VEHICLE, CREATE_NEW_VEHICLE);
     __reg_op_func(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
     __reg_op_func(SEND_CAR_POSITION, SEND_CAR_POSITION);
+    __reg_op_func(ADD_LOG_MESSAGE, ADD_LOG_MESSAGE);
 
     //
 

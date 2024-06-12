@@ -120,7 +120,7 @@ void Item::Update()
 			{
 				if (type == eItemType::ITEM_OPTIONS)
 				{
-					Log::file << "Option changed from " << prevVal << " to " << *intValueRange.value << " - " << intValueRange.min << " / " << intValueRange.max << std::endl;
+					Log::Level(LOG_LEVEL::LOG_BOTH) << "Option changed from " << prevVal << " to " << *intValueRange.value << " - " << intValueRange.min << " / " << intValueRange.max << std::endl;
 				}
 
 				onValueChange();

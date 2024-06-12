@@ -41,7 +41,7 @@ Item* Window::AddButton(int gxtId, CRGBA color)
 
 	items.push_back(item);
 
-	Log::file << "Window: AddButton" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddButton" << std::endl;
 
 	return item;
 }
@@ -67,7 +67,7 @@ Item* Window::AddCheckbox(int gxtId, bool* value)
 
 	items.push_back(item);
 
-	Log::file << "Window: AddCheckbox" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddCheckbox" << std::endl;
 
 	return item;
 }
@@ -84,7 +84,7 @@ Item* Window::AddOptions(int gxtId)
 
 	items.push_back(item);
 
-	Log::file << "Window: AddOptions" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddOptions" << std::endl;
 
 	return item;
 }
@@ -104,7 +104,7 @@ Item* Window::AddFloatRange(int gxtId, float* value, float min, float max, float
 
 	items.push_back(item);
 
-	Log::file << "Window: AddFloatRange" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddFloatRange" << std::endl;
 
 	return item;
 }
@@ -125,7 +125,7 @@ Item* Window::AddIntRange(int gxtId, int* value, int min, int max, int addBy)
 
 	items.push_back(item);
 
-	Log::file << "Window: AddIntRange" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddIntRange" << std::endl;
 
 	return item;
 }
@@ -143,7 +143,7 @@ Item* Window::AddText(int gxtId, CRGBA color)
 
 	items.push_back(item);
 
-	Log::file << "Window: AddText" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Window: AddText" << std::endl;
 
 	return item;
 }

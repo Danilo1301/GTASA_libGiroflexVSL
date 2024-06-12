@@ -8,6 +8,7 @@
 #include "Globals.h"
 #include "SoundPanelSystem.h"
 #include "ModConfig.h"
+#include "Log.h"
 
 #include "windows/WindowTest.h"
 #include "windows/WindowMain.h"
@@ -38,26 +39,42 @@ void GiroflexVSL::Update(int dt)
 
     //
 
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Vehicles --------------" << std::endl;
+
     Vehicles::TryFindNewVehicles();
 
     Vehicles::Update(dt);
     
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "SoundPanelSystem" << std::endl;
+
     SoundPanelSystem::Update(dt);
 
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Menu" << std::endl;
+
     Menu::Update(dt);
+
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "WindowSettings" << std::endl;
 
     WindowSettings::Update(dt);
     WindowSettings::Draw();
 
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "WindowSoundPanel" << std::endl;
+    
     WindowSoundPanel::Draw();
     WindowSoundPanel::Update(dt);
 
     WindowPanel::Update();
     WindowPanel::Draw();
     
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Menu" << std::endl;
+
     Menu::Draw();
 
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Input" << std::endl;
+
     Input::Update(dt);
+
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "ProcessMenuButtons" << std::endl;
 
     GiroflexVSL::ProcessMenuButtons(dt);
 
@@ -66,8 +83,8 @@ void GiroflexVSL::Update(int dt)
     //check old giroflex.csa
     //theres a bug when displaying two popups at same time (when theres two .csa files)
     
-    //Log::file << "Check 1 '" + std::string("/storage/emulated/0/cleo/sa/giroflex.csa") + "'" << std::endl;
-    //Log::file << "Check 2 '" + std::string("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa") + "'" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Check 1 '" + std::string("/storage/emulated/0/cleo/sa/giroflex.csa") + "'" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "Check 2 '" + std::string("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa") + "'" << std::endl;
     if (!ModConfig::IgnoreOldModVersionMessage)
     {
         if (
@@ -75,7 +92,7 @@ void GiroflexVSL::Update(int dt)
             ModConfig::FileExists("/storage/emulated/0/Android/data/" + std::string(aml->GetCurrentGame()) + "/giroflex.csa")
             )
         {
-            //Log::file << "Found" << std::endl;
+            //Log::Level(LOG_LEVEL::LOG_BOTH) << "Found" << std::endl;
             Menu::ShowPopup(86, 0, 0, 1000);
         }
     }
@@ -96,6 +113,8 @@ void GiroflexVSL::Update(int dt)
 
         //Draw::DrawText(2, (int)Menu::m_MenuOffset.x, (int)Menu::m_MenuOffset.y, CVector2D(20, 320), CRGBA(255, 255, 0));
     }
+
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "end" << std::endl;
 }
 
 void GiroflexVSL::ProcessMenuButtons(int dt)

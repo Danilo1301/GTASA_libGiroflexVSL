@@ -160,6 +160,9 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [] ADD: option to turn lights with the car siren
 [] UPDATE: AML headers and new libAML.so
 
+[]
+[ ] ADD: better log system
+
 Sugest�es:
 
 

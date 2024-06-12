@@ -15,7 +15,7 @@
 
 void WindowLightGroups::Create(Window* parent)
 {
-    Log::file << "WindowLightGroups: Create" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowLightGroups: Create" << std::endl;
 
     auto modelId = WindowMain::m_ModelId;
 

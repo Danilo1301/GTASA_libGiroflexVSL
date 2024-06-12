@@ -22,7 +22,7 @@ Vehicle::Vehicle(int hVehicle, int modelId)
 
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
-    Log::file << vehicleIdString << "Created" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Created" << std::endl;
 
     Update(0);
 
@@ -45,14 +45,14 @@ void Vehicle::Destroy()
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
-    Log::file << vehicleIdString << "Destroy" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Destroy" << std::endl;
 }
 
 void Vehicle::Update(int dt)
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
-    //Log::file << vehicleIdString << "Update" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update" << std::endl;
 
     if (!ModelInfos::HasModelInfo(modelId)) return;
 
@@ -64,7 +64,7 @@ void Vehicle::Update(int dt)
     {
         if (lightGroup->points.size() == 0)
         {
-            Log::file << vehicleIdString << "Warning: lightGroup (from id: " << modelInfo->modelId << ") has 0 points" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Warning: lightGroup (from id: " << modelInfo->modelId << ") has 0 points" << std::endl;
             continue;
         }
 
@@ -81,7 +81,7 @@ void Vehicle::Update(int dt)
 
             if(compatiblePatterns.size() == 0)
             {
-                Log::file << vehicleIdString << "Warning: lightGroup (from id: " << modelInfo->modelId << ") has 0 compatible patterns" << std::endl;
+                Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Warning: lightGroup (from id: " << modelInfo->modelId << ") has 0 compatible patterns" << std::endl;
                 continue;
             }
 
@@ -92,7 +92,7 @@ void Vehicle::Update(int dt)
            
             LightGroupDatas::AddLightGroupData(lightGroupData);
 
-            Log::file << vehicleIdString << "Created LightGroupData with " << lightGroupData->patterns.size() << " patterns [global: " << LightGroupDatas::m_LightGroupDatas.size() << "]" << std::endl;
+            Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Created LightGroupData with " << lightGroupData->patterns.size() << " patterns [global: " << LightGroupDatas::m_LightGroupDatas.size() << "]" << std::endl;
         }
 
         //if (!lightsOn) continue;
@@ -267,12 +267,12 @@ void Vehicle::Update(int dt)
 
     //-----------
 
-    //Log::file << vehicleIdString << "Getting siren state: " << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Getting siren state: " << std::endl;
 
     //void* vehicleEntity = Mod::ModGetVehicleFromRef(hVehicle);
     //bool sirenOn = *(uint8_t*)((uintptr_t)vehicleEntity + 0x42D + 4) >> 7;
 
-    //Log::file << vehicleIdString << "siren state: " << sirenOn << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "siren state: " << sirenOn << std::endl;
 
     //if (prevLightsState != gameSirenState)
     if (prevSirenState != gameSirenState)
@@ -295,7 +295,7 @@ void Vehicle::Update(int dt)
         }
     }
 
-    //Log::file << vehicleIdString << "Update end" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update end" << std::endl;
 }
 
 std::vector<LightGroupData*> Vehicle::GetLightGroupsData()

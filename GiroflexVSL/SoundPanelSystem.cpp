@@ -19,11 +19,11 @@ extern IBASS* BASS;
 
 void SoundPanelSystem::Load()
 {
-	Log::file << "SoundPanelSystem: Load" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Load" << std::endl;
 
 	if (!BASS)
 	{
-		Log::file << "SoundPanelSystem: not loading (BASS was not loaded)" << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: not loading (BASS was not loaded)" << std::endl;
 		return;
 	}
 
@@ -38,11 +38,11 @@ void SoundPanelSystem::Load()
 
 	auto defaultSoundGroup = GetDefaultSoundGroup();
 
-	Log::file << "SoundPanelSystem: GetDefaultSoundGroup = " << defaultSoundGroup->id << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: GetDefaultSoundGroup = " << defaultSoundGroup->id << std::endl;
 
 	auto soundGroupFor416 = GetSoundGroupForModelId(416);
 
-	Log::file << "SoundPanelSystem: GetSoundGroupForModelId 416 = " << soundGroupFor416->id << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: GetSoundGroupForModelId 416 = " << soundGroupFor416->id << std::endl;
 }
 
 void SoundPanelSystem::LoadConfig()
@@ -52,12 +52,12 @@ void SoundPanelSystem::LoadConfig()
 
 	auto configFileDir = vehiclesFolder + "/config.ini";
 
-	Log::file << "SoundPanelSystem: LoadConfig (config.ini)" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: LoadConfig (config.ini)" << std::endl;
 
 	INIFile file;
 	if (!file.Read(configFileDir))
 	{
-		Log::file << "SoundPanelSystem: Error reading config.ini (Not found)" << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Error reading config.ini (Not found)" << std::endl;
 		return;
 	}
 
@@ -73,7 +73,7 @@ void SoundPanelSystem::LoadVehicles()
 	std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
 	std::string vehiclesFolder = audiosFolder + "/vehicles";
 
-	Log::file << "SoundPanelSystem: LoadVehicles" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: LoadVehicles" << std::endl;
 
 	auto directories = ModConfig::GetDirectoriesName(vehiclesFolder);
 
@@ -82,8 +82,8 @@ void SoundPanelSystem::LoadVehicles()
 		std::string id = directory;
 		std::string dir = vehiclesFolder + "/" + id;
 
-		Log::file << std::endl;
-		Log::file << "SoundPanelSystem: Loading " << id << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Loading " << id << std::endl;
 
 		SoundGroup* soundGroup = new SoundGroup(id);
 		soundGroups[id] = soundGroup;
@@ -94,12 +94,12 @@ void SoundPanelSystem::LoadVehicles()
 
 		auto vehiclesFileDir = dir + "/vehicles.ini";
 
-		Log::file << "SoundPanelSystem: Loading vehicles.ini" << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Loading vehicles.ini" << std::endl;
 
 		INIFile file;
 		if (!file.Read(vehiclesFileDir))
 		{
-			Log::file << "SoundPanelSystem: Error reading vehicles.ini (Not found)" << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Error reading vehicles.ini (Not found)" << std::endl;
 			return;
 		}
 
@@ -111,7 +111,7 @@ void SoundPanelSystem::LoadVehicles()
 
 		for (auto value : section->values)
 		{
-			Log::file << "Found value (" << value.first << "|" << value.second << ")" << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "Found value (" << value.first << "|" << value.second << ")" << std::endl;
 
 			int vehicleModelId = std::atoi(value.second.c_str());
 			soundGroup->compatibleVehicles.push_back(vehicleModelId);
@@ -119,7 +119,7 @@ void SoundPanelSystem::LoadVehicles()
 
 		//
 
-		Log::file << "SoundPanelSystem: Loading horn.wav" << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Loading horn.wav" << std::endl;
 
 		soundGroup->horn = new AudioStream(dir + "/horn.wav");
 		if (soundGroup->horn->streamInternal)
@@ -135,13 +135,13 @@ void SoundPanelSystem::LoadVehicles()
 		{
 			std::string audioFileName = "siren" + std::to_string(i) + ".wav";
 
-			Log::file << "SoundPanelSystem: Trying to load: " << audioFileName << std::endl;
+			Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Trying to load: " << audioFileName << std::endl;
 
 			if (!ModConfig::FileExists(dir + "/" + audioFileName))
 			{
 				searching = false;
 
-				Log::file << "SoundPanelSystem: Could not find: " << audioFileName << std::endl;
+				Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Could not find: " << audioFileName << std::endl;
 
 				break;
 			}
@@ -184,7 +184,7 @@ SoundGroup* SoundPanelSystem::GetDefaultSoundGroup()
 
 SoundGroup* SoundPanelSystem::GetSoundGroupForModelId(int modelId)
 {
-	//Log::file << "SoundPanelSystem: GetSoundGroupForModelId " << modelId << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: GetSoundGroupForModelId " << modelId << std::endl;
 
 	SoundGroup* retSoundGroup = GetDefaultSoundGroup();
 
@@ -203,7 +203,7 @@ SoundGroup* SoundPanelSystem::GetSoundGroupForModelId(int modelId)
 
 int SoundPanelSystem::GetCurrentVehicleModelId()
 {
-	//Log::file << "SoundPanelSystem: GetCurrentVehicleModelId" << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: GetCurrentVehicleModelId" << std::endl;
 
 	int modelId = -1;
 
@@ -217,14 +217,14 @@ int SoundPanelSystem::GetCurrentVehicleModelId()
 
 SoundGroup* SoundPanelSystem::GetCurrentVehicleSoundGroup()
 {
-	//Log::file << "SoundPanelSystem: GetCurrentVehicleSoundGroup" << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: GetCurrentVehicleSoundGroup" << std::endl;
 
 	return GetSoundGroupForModelId(GetCurrentVehicleModelId());
 }
 
 void SoundPanelSystem::Update(int dt)
 {
-	//Log::file << "SoundPanelSystem: Update" << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: Update" << std::endl;
 
 	if (soundGroups.size() > 0)
 	{
@@ -251,12 +251,12 @@ void SoundPanelSystem::Update(int dt)
 		prevSoundGroup = soundGroup;
 	}
 
-	//Log::file << "SoundPanelSystem: end Update" << std::endl;
+	//Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: end Update" << std::endl;
 }
 
 void SoundPanelSystem::ToggleHorn(bool enabled)
 {
-	Log::file << "SoundPanelSystem: ToggleHorn" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: ToggleHorn" << std::endl;
 
 	hornState = enabled;
 
@@ -273,7 +273,7 @@ void SoundPanelSystem::ToggleHorn(bool enabled)
 
 void SoundPanelSystem::ToggleSiren(bool enabled)
 {
-	Log::file << "SoundPanelSystem: ToggleSiren " << (enabled ? "TRUE" : "FALSE") << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: ToggleSiren " << (enabled ? "TRUE" : "FALSE") << std::endl;
 
 	sirenState = enabled;
 
@@ -293,7 +293,7 @@ void SoundPanelSystem::ToggleSiren(bool enabled)
 
 void SoundPanelSystem::ChangeSirenByOne()
 {
-	Log::file << "SoundPanelSystem: ChangeSirenByOne" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundPanelSystem: ChangeSirenByOne" << std::endl;
 
 	auto soundGroup = GetCurrentVehicleSoundGroup();
 	int max = soundGroup->sirens.size();

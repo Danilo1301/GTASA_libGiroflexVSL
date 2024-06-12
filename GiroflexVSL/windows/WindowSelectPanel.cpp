@@ -14,7 +14,7 @@ void WindowSelectPanel::Create()
 {
 	if (m_Window) return;
 
-	Log::file << "WindowSelectPanel: Create" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowSelectPanel: Create" << std::endl;
 
 	auto window = m_Window = Menu::AddWindow(8);
 	window->position = CVector2D(80, 200);
@@ -22,7 +22,7 @@ void WindowSelectPanel::Create()
 	auto button_lights_panel = window->AddButton(71);
 	button_lights_panel->onClick = [window]()
 	{
-		Log::file << "'Lights panel' clicked" << std::endl;
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "'Lights panel' clicked" << std::endl;
 
 		Remove();
 

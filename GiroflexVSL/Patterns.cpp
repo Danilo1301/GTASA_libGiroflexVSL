@@ -9,7 +9,7 @@ Pattern* Patterns::CreatePattern(std::string id)
 	Pattern* pattern = new Pattern(id);
 	m_Patterns.push_back(pattern);
 
-	Log::file << "Patterns: Create pattern" << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "Patterns: Create pattern" << std::endl;
 
 	return pattern;
 }
