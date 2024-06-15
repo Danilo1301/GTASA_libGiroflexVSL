@@ -161,7 +161,7 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [] UPDATE: AML headers and new libAML.so
 
 []
-[ ] ADD: better log system
+[X] ADD: better log system
 
 Sugest�es:
 

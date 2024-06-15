@@ -21,11 +21,12 @@
 ( those libs are all inside the .zip file, in '/required libs', you just have to copy the .so files inside your /mods folder )<br>
 ( example: inside /Android/data/ro.samp_mobile.game/mods )<br>
 
-1. Download the .zip file in [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
-2. Open the folder "/inside CLEO", copy the 'giroflex.csa' and 'giroflex.fxt' files and paste it where you load your cleo mods (csa, csi, fxt)
-3. Open the folder "inside game folder", copy the folders "configs" and "mods" and paste it on the game folder (ex: /Android/data/ro.samp_mobile.game)
-4. If you haven't done yet, move the libs from "/required libs" inside your '/mods' folder
-5. Optional: Install the giroflex mod textures inside the 'txd.txt' using 'TXD Tool'. Tutorials below.
+1. Download the **GiroflexVSL-0.0.0__en.zip** file in [Releases](https://github.com/Danilo1301/GTASA_libGiroflex/releases)
+2. Open the folder "1. required libs" and copy the "mods" folder to your "mods" folder (in com.rockstargames.gtasa/mods)
+3. Open the folder "2. inside game folder", copy the folders "mods" and "configs" and paste it in your game folder (in com.rockstargames.gtasa)
+4. Open the folder "3. inside CLEO" and copy the files "GiroflexVSL.csa" and "GiroflexVSL.fxt" to your game folder (in com.rockstargames.gtasa)
+5. OPTIONAL: Open the folder "optional lib (for audio playing)" and copy the "mods" folder to your "mods" folder (in com.rockstargames.gtasa/mods)
+6. Install the mod textures inside the 'txd.txt' using 'TXD Tool' (Tutorials below)
 
 <h1>How to use</h1>
 
