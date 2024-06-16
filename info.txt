@@ -20,8 +20,6 @@ README
 
 Change readme EN and PT if necessary
 
-version 3.0.0
-
 ---------------------------
 Todo
 
@@ -160,8 +158,10 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [] ADD: option to turn lights with the car siren
 [] UPDATE: AML headers and new libAML.so
 
-[]
+[3.1.1]
 [X] ADD: better log system
+[X] CHANGE: aml version to support stupid alyn v11
+
 
 Sugest�es:
 
@@ -210,9 +210,9 @@ tested SAUtils
 tested AML (and headers)
 1.2.1		( GTA SA 2.0: OK | SAMP: CRASH )
 1.2			no files
-1.1			( GTA SA 2.0: ?? | SAMP: OK ) using libAML 1.2.1
-1.0.3.1		( GTA SA 2.0: OK | SAMP: OK )
-1.0.3		?
+1.1			( GTA SA 2.0: ?? | SAMP: CRASH )
+1.0.3.1		( GTA SA 2.0: OK | SAMP: CRASH )
+1.0.3		( GTA SA 2.0: ?? | SAMP: ?? )
 1.0.2.2		?
 1.0.2.1		?
 1.0.2		?
@@ -226,6 +226,24 @@ tested CLEO
 2.0.1.2
 2.0.1.1		?
 2.0.1		?
+
+------
+
+abou Alyn SAMP Mobile 11.0
+
+aml
+1.1 CRASH
+1.0.3.1 CRASH
+1.0.3 ??
+1.0.2.2 OK
+
+cleomod
+2.0.1.5 CRASH
+2.0.1.3 OK
+
+sautils
+1.3.1 OK
+1.1 OK
 
 ------
 

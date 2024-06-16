@@ -5,8 +5,12 @@
 * GTASA 2.00 AML 1.2.1 FLA 7.2
 * SAMP Mobile Alyn v2
   * NOTE: you must use SAUtils 1.3.1
+* SAMP Mobile Alyn v11.0
+  * NOTE: you must go to options, and change 'SAMP-Version' to 'Old'
+  * you must use SAUtils 1.3.1
 * SAMP Mobile Alyn v11.6
-  * NOTE: you must use SAUtils 1.3.1
+  * NOTE: you must go to options, and change 'SAMP-Version' to 'Old'
+  * you must use SAUtils 1.3.1
 * SAMP Mobile Alyn v13.1
   * NOTE: it's not compatible with SAUtils (only version 1.1)
 
@@ -94,8 +98,8 @@ This happens when you use libJPatch.so with 'PS2CoronaRotation' enabled. To disa
 
 For all versions:
 * BASS Mod: 1.0.0.0
-* CLEO Mod: 2.0.1.5
-* AML: 1.2.1
+* CLEO Mod: 2.0.1.3
+* AML: 1.0.3
 * AML Headers: 1.1
 
 For SAMP:
