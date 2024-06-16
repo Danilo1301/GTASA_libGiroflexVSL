@@ -99,7 +99,7 @@ This happens when you use libJPatch.so with 'PS2CoronaRotation' enabled. To disa
 For all versions:
 * BASS Mod: 1.0.0.0
 * CLEO Mod: 2.0.1.3
-* AML: 1.0.3
+* AML: 1.0.2.2
 * AML Headers: 1.1
 
 For SAMP:

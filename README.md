@@ -103,7 +103,7 @@ Isso acontece quando você usa o libJPatch.so com o 'PS2CoronaRotation' ativado.
 For all versions:
 * BASS Mod: 1.0.0.0
 * CLEO Mod: 2.0.1.3
-* AML: 1.0.3
+* AML: 1.0.2.2
 * AML Headers: 1.1
 
 For SAMP:
