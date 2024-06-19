@@ -988,4 +988,32 @@ if VAR_GxtId == 88
 then
      VAR_STR_1 = "DGFX88"
 end
+if VAR_GxtId == 89
+then
+     VAR_STR_1 = "DGFX89"
+end
+if VAR_GxtId == 90
+then
+     VAR_STR_1 = "DGFX90"
+end
+if VAR_GxtId == 91
+then
+     VAR_STR_1 = "DGFX91"
+end
+if VAR_GxtId == 92
+then
+     VAR_STR_1 = "DGFX92"
+end
+if VAR_GxtId == 93
+then
+     VAR_STR_1 = "DGFX93"
+end
+if VAR_GxtId == 94
+then
+     VAR_STR_1 = "DGFX94"
+end
+if VAR_GxtId == 95
+then
+     VAR_STR_1 = "DGFX95"
+end
 return

@@ -195,7 +195,7 @@ void WindowSoundPanel::CreateStyle2()
 	auto buttonSettings = AddButton();
 	buttonSettings->position = currentPos;
 	buttonSettings->size = CVector2D(buttonSize, buttonSize);
-	buttonSettings->text.gxtId = 77;
+	buttonSettings->text.gxtId = 20;
 	buttonSettings->text.color = textDefaultColor;
 	buttonSettings->color = CRGBA(110, 110, 110);
 	buttonSettings->drawOutline = true;
@@ -210,7 +210,7 @@ void WindowSoundPanel::CreateStyle2()
 	auto buttonClose = AddButton();
 	buttonClose->position = currentPos;
 	buttonClose->size = CVector2D(buttonSize, buttonSize);
-	buttonClose->text.gxtId = 78;
+	buttonClose->text.gxtId = 10;
 	buttonClose->text.color = textDefaultColor;
 	buttonClose->color = CRGBA(255, 100, 100);
 	buttonClose->drawOutline = true;
@@ -234,7 +234,7 @@ void WindowSoundPanel::CreateStyle3()
 	buttonSettings->position = bgPosition + CVector2D(3, 3);
 	buttonSettings->size = CVector2D(38, 25);
 	buttonSettings->sprite.spriteId = 3;
-	buttonSettings->text.gxtId = 77;
+	buttonSettings->text.gxtId = 20;
 	buttonSettings->text.color = textDefaultColor;
 	buttonSettings->color = CRGBA(128, 128, 128);
 	buttonSettings->canBeActivated = false;
@@ -318,7 +318,7 @@ void WindowSoundPanel::CreateStyle3()
 	buttonClose->position = bgPosition + CVector2D(194, 3);
 	buttonClose->size = CVector2D(38, 25);
 	buttonClose->sprite.spriteId = 3;
-	buttonClose->text.gxtId = 78;
+	buttonClose->text.gxtId = 10;
 	buttonClose->text.color = textDefaultColor;
 	buttonClose->color = CRGBA(220, 145, 145);;
 	buttonClose->canBeActivated = false;
@@ -392,7 +392,7 @@ void WindowSoundPanel::CreateStyle4()
 
 			if (i == 8)
 			{
-				button->text.gxtId = 78;
+				button->text.gxtId = 10;
 				button->canBeActivated = false;
 				button->color = CRGBA(255, 100, 100);
 				button->outlineColor = CRGBA(178, 70, 70);
@@ -401,7 +401,7 @@ void WindowSoundPanel::CreateStyle4()
 				};
 			} else if (i == 9)
 			{
-				button->text.gxtId = 77;
+				button->text.gxtId = 20;
 				button->canBeActivated = false;
 				button->color = CRGBA(110, 110, 110);
 				button->outlineColor = CRGBA(80, 80, 80);

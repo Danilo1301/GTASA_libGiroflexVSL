@@ -4,15 +4,17 @@
 
 class Window {
 public:
-	std::vector<Item*> items;
+	static CVector2D m_DefaultWindowPosition;
+	static float m_DefaultWindowWidth;
 
-	float width = 320.0f;
+	std::vector<Item*> items;
+	std::vector<Item*> floatingItems;
+
+	float width;
 	float titleHeight = 20.0f;
 
 	int titleGtxId = 0;
 	CVector2D position = { 0, 0 };
-	CRGBA titleBoxColor = CRGBA(23, 30, 53);
-	CRGBA backgroundColor = CRGBA(54, 70, 124);
 
 	Window* parentWindow = NULL;
 
@@ -27,12 +29,23 @@ public:
 	bool showPageControls = false;
 	bool showTitle = true;
 
+	bool waitingForTouchRelease = false;
+
+	bool canBeRemoved = false;
+
 	Window();
 
-	Item* AddButton(int gxtId, CRGBA color);
+	void AddItem(Item* item);
+	void AddFloatingItem(Item* item);
+	Item* AddButton(int gxtId, int num1, int num2, CRGBA color);
 	Item* AddButton(int gxtId);
+	Item* AddButton(int gxtId, int num1, int num2);
+	Item* AddButton(int gxtId, CRGBA color);
+	Item* AddFloatingButton(int gxtId, int num1, int num2, CVector2D position, CVector2D size, CRGBA color);
+	Item* AddFloatingButton(int gxtId, int num1, int num2, CVector2D position, CVector2D size);
 	Item* AddCheckbox(int gxtId, bool* value);
-	Item* AddText(int gxtId, CRGBA color);
+	Item* AddText(int gxtId, int num1, int num2, CRGBA color);
+	Item* AddText(int gxtId);
 	Item* AddOptions(int gxtId);
 	Item* AddFloatRange(int gxtId, float* value, float min, float max, float addBy);
 	Item* AddIntRange(int gxtId, int* value, int min, int max, int addBy);
@@ -42,6 +55,7 @@ public:
 	void Destroy();
 
 	std::vector<Item*> GetItemsToDraw();
+	std::vector<Item*> GetTotalItems();
 
 	void GoToPrevWindow();
 	void RemoveThisWindow();

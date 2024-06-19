@@ -162,6 +162,11 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [X] ADD: better log system
 [X] CHANGE: aml version to support stupid alyn v11
 
+[3.2.0]
+[X] ADD: option to customize menu color
+[X] ADD: credits screen
+[ ] ADD: option to rotate coronas (is it saving?)
+[X] CHANGE: limit of white corona size
 
 Sugest�es:
 

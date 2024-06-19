@@ -56,6 +56,12 @@ public:
 	bool alwaysEnabled = false;
 	//bool enableOnSpawn = false;
 
+	bool rotate = false;
+	float rotateDistance = 0.5f;
+	float rotateSpeed = 10.0f;
+
+	float rotateAngle = 0.0f;
+
     LightGroup() {}
 
     ~LightGroup()
@@ -160,6 +166,10 @@ public:
 		value["alwaysEnabled"] = alwaysEnabled;
 		//value["enableOnSpawn"] = enableOnSpawn;
 
+		value["rotate"] = rotate;
+		value["rotateDistance"] = rotateDistance;
+		value["rotateSpeed"] = rotateSpeed;
+
 		return value;
 	}
 
@@ -219,5 +229,9 @@ public:
 
 		alwaysEnabled = ValidateValue(value["alwaysEnabled"], alwaysEnabled).asBool();
 		//enableOnSpawn = ValidateValue(value["enableOnSpawn"], enableOnSpawn).asBool();
+
+		rotate = ValidateValue(value["rotate"], rotate).asBool();
+		rotateDistance = ValidateValue(value["rotateDistance"], rotateDistance).asFloat();
+		rotateSpeed = ValidateValue(value["rotateSpeed"], rotateSpeed).asFloat();
 	}
 };

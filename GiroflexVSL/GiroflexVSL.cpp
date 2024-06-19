@@ -23,7 +23,7 @@
 
 extern CVector2D *m_vecCachedPos;
 
-const char* GiroflexVSL::m_Version = "3.1.1";
+const char* GiroflexVSL::m_Version = "3.2.0";
 
 bool canTurnSirenOn = true;
 bool canTurnPanelOn = true;
@@ -93,7 +93,7 @@ void GiroflexVSL::Update(int dt)
             )
         {
             //Log::Level(LOG_LEVEL::LOG_BOTH) << "Found" << std::endl;
-            Menu::ShowPopup(86, 0, 0, 1000);
+            Menu::ShowPopup(92, 0, 0, 1000);
         }
     }
 
@@ -114,6 +114,11 @@ void GiroflexVSL::Update(int dt)
         //Draw::DrawText(2, (int)Menu::m_MenuOffset.x, (int)Menu::m_MenuOffset.y, CVector2D(20, 320), CRGBA(255, 255, 0));
     }
 
+    if(!Menu::m_Credits->hasShownCredits)
+    {
+        Menu::ShowCredits(6, 5000);
+    }
+
     Log::Level(LOG_LEVEL::LOG_UPDATE) << "end" << std::endl;
 }
 
@@ -128,7 +133,7 @@ void GiroflexVSL::ProcessMenuButtons(int dt)
         {
             if (!Globals::IsPlayerInAnyVehicle())
             {
-                Menu::ShowPopup(21, 0, 0, 1000);
+                Menu::ShowPopup(39, 0, 0, 1000);
                 return;
             }
 
@@ -175,7 +180,7 @@ void GiroflexVSL::ProcessMenuButtons(int dt)
                 }
             }
             else {
-                Menu::ShowPopup(21, 0, 0, 1000);
+                Menu::ShowPopup(39, 0, 0, 1000);
             }
         }
     }

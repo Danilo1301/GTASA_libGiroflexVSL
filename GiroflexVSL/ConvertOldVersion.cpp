@@ -1,5 +1,8 @@
 #include "ConvertOldVersion.h"
 
+#include <dirent.h>
+#include "dlfcn.h"
+
 #include "Log.h"
 #include "ModConfig.h"
 #include "Patterns.h"

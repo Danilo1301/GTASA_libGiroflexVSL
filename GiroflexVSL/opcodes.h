@@ -438,17 +438,7 @@ static void GET_MOD_INFO(__handler_params)
         if (coronaIdExceeds) return;
 
         auto& renderCorona = Vehicles::m_CoronasToRender[id];
-
-        auto dir = (renderCorona.offset.x > 0) ? 1 : -1;
-        float margin = 0.15f;
-        float distance = abs(renderCorona.offset.x);
-
-        result->f = renderCorona.offset.x + (dir * renderCorona.shadowOffsetX);
-
-        if (distance > margin)
-        {
-            result->f += (dir * renderCorona.shadowSize / 2);
-        }
+        result->f = renderCorona.offset.x + renderCorona.shadowOffsetX;
 
         return;
     }
@@ -458,7 +448,6 @@ static void GET_MOD_INFO(__handler_params)
         if (coronaIdExceeds) return;
 
         auto& renderCorona = Vehicles::m_CoronasToRender[id];
-
         result->f = renderCorona.offset.y + renderCorona.shadowOffsetY;
 
         return;

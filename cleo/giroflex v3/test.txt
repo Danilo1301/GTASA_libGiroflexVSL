@@ -1,6 +1,0 @@
-{$CLEO .csa}
-0000:
-
-0EFA: add_log_message 456
-
-004E: terminate_this_script

@@ -24,6 +24,7 @@ struct RenderCorona {
 	float pointLightDistance = 60.0f;
 
 	float nearClip = 0.0f;
+	float farClip = 0.0f;
 
 	bool useFlare = false;
 	float flareIntensity = 1.00f;

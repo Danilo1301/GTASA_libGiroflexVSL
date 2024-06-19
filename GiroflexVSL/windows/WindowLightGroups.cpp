@@ -6,6 +6,7 @@
 #include "WindowShadow.h"
 #include "WindowPointLight.h"
 #include "WindowFlare.h"
+#include "WindowRotate.h"
 
 #include "ModelInfos.h"
 #include "LightGroupDatas.h"
@@ -19,7 +20,7 @@ void WindowLightGroups::Create(Window* parent)
 
     auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(8, parent);
+    auto window = Menu::AddWindow(6, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -32,10 +33,10 @@ void WindowLightGroups::Create(Window* parent)
         numLightgroups = ModelInfos::GetModelInfo(modelId)->lightGroups.size();
     }
 
-    auto text_lightgroups = window->AddText(18, CRGBA(255, 255, 255));
+    auto text_lightgroups = window->AddText(36);
     text_lightgroups->text->num1 = numLightgroups;
 
-    auto button_add = window->AddButton(19, { 0, 0, 50, 255 });
+    auto button_add = window->AddButton(37);
     button_add->onClick = [modelId, window, parent]() {
         if (!ModelInfos::HasModelInfo(modelId))
         {
@@ -68,7 +69,7 @@ void WindowLightGroups::Create(Window* parent)
         int i = 0;
         for (auto lightGroup : ModelInfos::GetModelInfo(modelId)->lightGroups)
         {
-            auto button_edit = window->AddButton(20, CRGBA(96, 125, 219));
+            auto button_edit = window->AddButton(38, Menu::GetStyle()->COLOR_BUTTON_SECONDARY);
             button_edit->text->num1 = i+1;
 
             button_edit->AddColorIndicator(&lightGroup->color3);
@@ -89,18 +90,18 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
 {
     auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(8, parent);
+    auto window = Menu::AddWindow(6, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
         window->GoToPrevWindow();
     };
 
-    auto option_giroflex = window->AddOptions(11);
+    auto option_giroflex = window->AddOptions(31);
     option_giroflex->optionsValue = (int)lightGroup->points.size();
     for(int i = 0; i <= 11; i++)
     {
-        option_giroflex->AddOption(12, i, 0);
+        option_giroflex->AddOption(32, i, 0);
     }
     option_giroflex->onValueChange = [option_giroflex, lightGroup]() {
         //LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
@@ -123,15 +124,15 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         }
     };
 
-    auto edit_poits = window->AddButton(23);
+    auto edit_poits = window->AddButton(40);
     edit_poits->onClick = [window, lightGroup]()
     {
         CreateEditPoints(window, lightGroup);
     };
 
-    window->AddFloatRange(41, &lightGroup->radius, 0.0f, 5.0f, 0.01f);
+    window->AddFloatRange(51, &lightGroup->radius, 0.0f, 5.0f, 0.01f);
 
-    auto button_position = window->AddButton(28);
+    auto button_position = window->AddButton(9);
     button_position->onClick = [lightGroup, window]() {
         /*
         MoveLightsSpeed from 
@@ -142,11 +143,11 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         */
         float moveSpeed = WindowEditing::MoveLightsSpeed * 0.01f;
 
-        auto posWindow = Menu::AddPositionWindow(window, &lightGroup->offset, -1000.0f, 1000.0f, moveSpeed, []() {});
+        auto posWindow = Menu::AddPositionWindow(window, &lightGroup->offset, -1000.0f, 1000.0f, moveSpeed, []() {}, []() {});
 
         posWindow->width += 40.0f;
 
-        auto distance = posWindow->AddFloatRange(43, &lightGroup->distance, -10.0f, 10.0f, moveSpeed);
+        auto distance = posWindow->AddFloatRange(53, &lightGroup->distance, -10.0f, 10.0f, moveSpeed);
         distance->onValueChange = [lightGroup]() {
             /*
             lightGroup->MakeLightGroup();
@@ -160,7 +161,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
             */
         };
 
-        auto curve = posWindow->AddFloatRange(44, &lightGroup->curve, -1.0f, 1.0f, 0.0005f);
+        auto curve = posWindow->AddFloatRange(54, &lightGroup->curve, -1.0f, 1.0f, 0.0005f);
         curve->onValueChange = [lightGroup]() {
             /*
             lightGroup->MakeLightGroup();
@@ -175,17 +176,17 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         };
     };
 
-    auto button_editing_options = window->AddButton(24);
+    auto button_editing_options = window->AddButton(41);
     button_editing_options->onClick = [lightGroup, window]() {
         WindowEditing::Create(window, lightGroup);
     };
 
-    auto button_white_corona = window->AddButton(42);
+    auto button_white_corona = window->AddButton(52);
     button_white_corona->onClick = [lightGroup, window]() {
         WindowWhiteCorona::Create(window, lightGroup);
     };
 
-    auto patternOffset = window->AddIntRange(68, &lightGroup->patternOffset, 0, 10, 1);
+    auto patternOffset = window->AddIntRange(76, &lightGroup->patternOffset, 0, 10, 1);
     patternOffset->holdToChange = false;
     patternOffset->onValueChange = [lightGroup]() {
         LightGroupDatas::DeleteLightGroupRerefences(lightGroup);
@@ -198,57 +199,62 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         }
     };
 
-    window->AddFloatRange(69, &lightGroup->nearClip, -2.0f, 5.0f, 0.01f);
+    window->AddFloatRange(77, &lightGroup->nearClip, -2.0f, 5.0f, 0.01f);
 
-    auto coronaTexture = window->AddIntRange(45, &lightGroup->coronaTexture, 0, 9, 1);
+    auto coronaTexture = window->AddIntRange(55, &lightGroup->coronaTexture, 0, 9, 1);
     coronaTexture->holdToChange = false;
 
-    auto lightSlotId = window->AddIntRange(56, &lightGroup->lightSlotId, 0, 3, 1);
+    auto lightSlotId = window->AddIntRange(66, &lightGroup->lightSlotId, 0, 3, 1);
     lightSlotId->holdToChange = false;
 
-    auto button_shadow = window->AddButton(46);
+    auto button_shadow = window->AddButton(56);
     button_shadow->onClick = [lightGroup, window]() {
         WindowShadow::Create(window, lightGroup);
     };
 
-    auto button_pointLight = window->AddButton(49);
+    auto button_pointLight = window->AddButton(59);
     button_pointLight->onClick = [lightGroup, window]() {
         WindowPointLight::Create(window, lightGroup);
     };
 
-    auto button_color1 = window->AddButton(31);
+    auto button_color1 = window->AddButton(48);
     button_color1->AddColorIndicator(&lightGroup->color1);
     button_color1->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color1);
     };
 
-    auto button_color2 = window->AddButton(32);
+    auto button_color2 = window->AddButton(49);
     button_color2->AddColorIndicator(&lightGroup->color2);
     button_color2->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color2);
     };
 
-    auto button_color3 = window->AddButton(33);
+    auto button_color3 = window->AddButton(50);
     button_color3->AddColorIndicator(&lightGroup->color3);
     button_color3->onClick = [lightGroup, window]() {
         Menu::AddColorMenu(window, &lightGroup->color3);
     };
 
-    auto button_flare = window->AddButton(53);
+    auto button_flare = window->AddButton(63);
     button_flare->onClick = [lightGroup, window]() {
         WindowFlare::Create(window, lightGroup);
     };
 
-    window->AddCheckbox(57, &lightGroup->alwaysEnabled);
+    auto button_rotate = window->AddButton(94);
+    button_rotate->onClick = [lightGroup, window]() {
+        WindowRotate::Create(window, lightGroup);
+    };
 
-    window->AddCheckbox(52, &lightGroup->freezeLights);
+    window->AddCheckbox(67, &lightGroup->alwaysEnabled);
 
-    //window->AddCheckbox(88, &lightGroup->enableOnSpawn);
+    window->AddCheckbox(42, &lightGroup->freezeLights);
 
-    auto button_duplicate = window->AddButton(58);
+    //window->AddCheckbox(93, &lightGroup->enableOnSpawn);
+
+    auto button_duplicate = window->AddButton(68);
     button_duplicate->onClick = [window, lightGroup, modelId]()
     {
-        Menu::AddConfirmWindow(window, 59, [lightGroup, modelId]() {
+        Menu::AddConfirmWindow(window, 69, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->DuplicateLightGroup(lightGroup);
 
             //reset lightGroupData
@@ -276,10 +282,10 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         });
     };
 
-    auto button_delete = window->AddButton(60, CRGBA(170, 70, 70));
+    auto button_delete = window->AddButton(70, CRGBA(170, 70, 70));
     button_delete->onClick = [window, lightGroup, modelId]()
     {
-        Menu::AddConfirmWindow(window, 61, [lightGroup, modelId]() {
+        Menu::AddConfirmWindow(window, 71, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->RemoveLightGroup(lightGroup);
 
             //idk if this works
@@ -308,7 +314,7 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
 
 void WindowLightGroups::CreateEditPoints(Window* parent, LightGroup* lightGroup)
 {
-    auto window = Menu::AddWindow(23, parent);
+    auto window = Menu::AddWindow(40, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
@@ -319,7 +325,7 @@ void WindowLightGroups::CreateEditPoints(Window* parent, LightGroup* lightGroup)
     {
         auto point = lightGroup->points[i];
 
-        auto button_edit = window->AddButton(20, CRGBA(96, 125, 219));
+        auto button_edit = window->AddButton(38, CRGBA(96, 125, 219));
         button_edit->text->num1 = i+1;
 
         if(point->useCustomColor)
@@ -333,25 +339,25 @@ void WindowLightGroups::CreateEditPoints(Window* parent, LightGroup* lightGroup)
 
 void WindowLightGroups::CreateEditPoint(Window* parent, LightGroup* lightGroup, Point* point)
 {
-    auto window = Menu::AddWindow(23, parent);
+    auto window = Menu::AddWindow(40, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
         window->GoToPrevWindow();
     };
 
-    auto button_position = window->AddButton(28);
+    auto button_position = window->AddButton(9);
     button_position->onClick = [point, window]() {
         float moveSpeed = WindowEditing::MoveLightsSpeed * 0.01f;
 
-        auto posWindow = Menu::AddPositionWindow(window, &point->customOffset, -1000.0f, 1000.0f, moveSpeed, []() {});
+        auto posWindow = Menu::AddPositionWindow(window, &point->customOffset, -1000.0f, 1000.0f, moveSpeed, []() {}, []() {});
 
         posWindow->width += 40.0f;
     };
 
-    window->AddCheckbox(29, &point->useCustomColor);
+    window->AddCheckbox(46, &point->useCustomColor);
 
-    auto button_color = window->AddButton(30);
+    auto button_color = window->AddButton(47);
     button_color->AddColorIndicator(&point->customColor);
     button_color->onClick = [point, window]() {
         Menu::AddColorMenu(window, &point->customColor);

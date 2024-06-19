@@ -16,11 +16,18 @@ void WindowSettings::ToggleEditScreenPos(bool enabled)
 
 void WindowSettings::Create(Window* parent)
 {
-	auto window = Menu::AddWindow(13, parent);
+	auto window = Menu::AddWindow(33, parent);
 	window->showPageControls = true;
 	window->btnBack->onClick = [window]()
 	{
 		window->GoToPrevWindow();
+	};
+
+	auto style = window->AddIntRange(85, &Menu::m_StyleId, 0, 1, 1);
+	style->holdToChange = false;
+	style->onValueChange = [window, parent]() {
+		window->RemoveThisWindow();
+		Create(parent);
 	};
 
 	/*
@@ -36,16 +43,16 @@ void WindowSettings::Create(Window* parent)
 	};
 	*/
 
-	window->AddCheckbox(14, &Menu::m_DrawCursor);
+	window->AddCheckbox(28, &Menu::m_DrawCursor);
 	
-    auto time_between_patterns = window->AddIntRange(85, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
+    auto time_between_patterns = window->AddIntRange(91, &Patterns::m_TimeBetweenPatterns, 1, 100000, 10);
 	time_between_patterns->onValueChange = []() {
 		SaveCfg();
 	};
 
-	window->AddCheckbox(88, &ModConfig::TurnOnLightsWithSiren);
+	window->AddCheckbox(93, &ModConfig::TurnOnLightsWithSiren);
 
-	auto test_button = window->AddButton(15);
+	auto test_button = window->AddButton(23);
 	test_button->text->num1 = 1;
 	test_button->onClick = [window]() {
 
@@ -138,10 +145,12 @@ void WindowSettings::Create(Window* parent)
 		*/
 
 		Menu::ShowPopup(0, 0, 0, 400);
+
+		Menu::ShowCredits(6, 3000);
 	};
 
-	
-    auto test_button_2 = window->AddButton(15);
+    /*
+	auto test_button_2 = window->AddButton(23);
 	test_button_2->text->num1 = 2;
     test_button_2->onClick = [window]() {
 		std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
@@ -151,6 +160,7 @@ void WindowSettings::Create(Window* parent)
 		audioStream->Loop(false);
 		audioStream->Play();
 	};
+	*/
 }
 
 void WindowSettings::Update(int dt)
@@ -177,7 +187,7 @@ void WindowSettings::Draw()
 	auto screenSize = Input::GetGTAScreenSize();
 	auto btnSize = CVector2D(150, 150);
 
-	Draw::DrawBoxWithText(87, 0, 0, CVector2D(0, 0), screenSize, CRGBA(0, 0, 20, 230), CRGBA(255, 255, 255));
+	Draw::DrawBoxWithText(26, 0, 0, CVector2D(0, 0), screenSize, CRGBA(0, 0, 20, 230), CRGBA(255, 255, 255));
 
 	Draw::DrawBoxWithText(4, 0, 0, CVector2D(0, screenSize.y - btnSize.y), btnSize, CRGBA(0, 0, 100, 255), CRGBA(255, 255, 255));
 

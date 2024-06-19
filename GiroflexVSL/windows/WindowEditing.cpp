@@ -15,14 +15,14 @@ void WindowEditing::Create(Window* parent, LightGroup* lightGroup)
 
     //auto modelId = WindowMain::m_ModelId;
 
-    auto window = Menu::AddWindow(24, parent);
+    auto window = Menu::AddWindow(41, parent);
     window->showPageControls = true;
     window->btnBack->onClick = [window]()
     {
         window->GoToPrevWindow();
     };
 
-    window->AddCheckbox(25, &FreezeLights);
-    window->AddCheckbox(26, &ShowCurrentEditingLightGroup);
-    window->AddFloatRange(27, &MoveLightsSpeed, 0.0f, 2.0f, 0.01f);
+    window->AddCheckbox(42, &FreezeLights);
+    window->AddCheckbox(43, &ShowCurrentEditingLightGroup);
+    window->AddFloatRange(44, &MoveLightsSpeed, 0.0f, 2.0f, 0.01f);
 }

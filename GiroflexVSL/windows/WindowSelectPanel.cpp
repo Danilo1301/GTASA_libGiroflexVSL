@@ -16,10 +16,10 @@ void WindowSelectPanel::Create()
 
 	Log::Level(LOG_LEVEL::LOG_BOTH) << "WindowSelectPanel: Create" << std::endl;
 
-	auto window = m_Window = Menu::AddWindow(8);
+	auto window = m_Window = Menu::AddWindow(6);
 	window->position = CVector2D(80, 200);
 
-	auto button_lights_panel = window->AddButton(71);
+	auto button_lights_panel = window->AddButton(79);
 	button_lights_panel->onClick = [window]()
 	{
 		Log::Level(LOG_LEVEL::LOG_BOTH) << "'Lights panel' clicked" << std::endl;
@@ -38,14 +38,14 @@ void WindowSelectPanel::Create()
 		WindowPanel::Toggle(true);
 	};
 
-	auto button_audio_panel = window->AddButton(72);
+	auto button_audio_panel = window->AddButton(80);
 	button_audio_panel->onClick = [window]()
 	{
 		Remove();
 		WindowSoundPanel::Toggle(true);
 	};
 
-	auto button_close = window->AddButton(10, CRGBA(170, 70, 70));
+	auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
 	button_close->onClick = []()
 	{
 		Remove();

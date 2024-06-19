@@ -8,8 +8,9 @@
 #include <map>
 //#include <windows.h>
 #include <sys/stat.h>
-#include <dirent.h>
-#include "dlfcn.h"
+
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include <SimpleGTA.h>
 

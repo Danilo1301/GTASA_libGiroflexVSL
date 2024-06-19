@@ -170,6 +170,15 @@ void Vehicle::Update(int dt)
 
         //
 
+        if(lightGroup->rotate)
+        {
+            lightGroup->rotateAngle += 0.001f * dt * lightGroup->rotateSpeed;   
+            if(lightGroup->rotateAngle >= 2 * M_PI) lightGroup->rotateAngle = 0;
+
+            //Log::Level(LOG_LEVEL::LOG_BOTH) << "rotateAngle: " << lightGroup->rotateAngle << std::endl;
+        }
+        //
+
         for (int i = 0; i < (int)lightGroup->points.size(); i++)
         {
             auto point = lightGroup->points[i];
@@ -181,6 +190,15 @@ void Vehicle::Update(int dt)
             //position
             float x = (i * distance) - ((amountOfPoints - 1) * distance / 2);
 			float y = (float)arch_fn_parabola((float)i, curve, (float)(amountOfPoints - 1));
+
+            //rotate position
+            if(lightGroup->rotate)
+            {
+                auto angle = lightGroup->rotateAngle;
+
+                x += std::sin(angle) * lightGroup->rotateDistance;
+                y += std::cos(angle) * lightGroup->rotateDistance;
+            }
 
             //color
             CRGBA color = lightGroup->color1;
@@ -230,10 +248,29 @@ void Vehicle::Update(int dt)
 
             corona.shadowIntensity = lightGroup->shadowIntensity;
             corona.shadowSize = lightGroup->shadowSize;
-            corona.shadowOffsetX = lightGroup->shadowPositionX;
+
+            //shadow offset X
+            //corona.shadowOffsetX = lightGroup->shadowPositionX;
+            auto dir = (corona.offset.x > 0) ? 1 : -1;
+            float margin = 0.15f;
+            float sdistance = abs(corona.offset.x);
+
+            corona.shadowOffsetX = corona.offset.x + (dir * lightGroup->shadowPositionX);
+            if (sdistance > margin)
+            {
+                corona.shadowOffsetX += (dir * lightGroup->shadowSize / 2);
+            }
+
+            if(lightGroup->rotate) corona.shadowOffsetX = lightGroup->shadowPositionX;
+
+            //
+
             corona.shadowOffsetY = lightGroup->shadowPositionY;
             corona.shadowTexture = lightGroup->shadowTexture;
+
             corona.shadowRotation = lightGroup->shadowRotation;
+            if(lightGroup->rotate) corona.shadowRotation = -lightGroup->rotateAngle; 
+
             corona.shadowFlipTextures = lightGroup->shadowFlipTextures;
 
             corona.pointLightDistance = lightGroup->pointLightDistance;

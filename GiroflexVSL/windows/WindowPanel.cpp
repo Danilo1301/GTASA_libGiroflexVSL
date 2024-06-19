@@ -114,7 +114,7 @@ void WindowPanel::Draw()
 		//if (!veh->lightsOn) lightsOn = false;
 
 		if (DrawButton(
-			demoLightGroupData ? (lightsOn ? 75 : 76) : 17,
+			demoLightGroupData ? (lightsOn ? 83 : 84) : 35,
 			0,
 			0,
 			btnToggle_Pos,
@@ -194,7 +194,7 @@ void WindowPanel::Draw()
 		CVector2D btnMode_Pos = btnStep_Pos + CVector2D(0, margin) + CVector2D(0, btnBigSize.y);
 
 		if (DrawButton(
-			demoLightGroupData ? (demoLightGroupData->patternLoop->DontChangeSteps ? 73 : 74) : 17,
+			demoLightGroupData ? (demoLightGroupData->patternLoop->DontChangeSteps ? 81 : 82) : 35,
 			0,
 			0,
 			btnMode_Pos,
@@ -221,7 +221,7 @@ void WindowPanel::Draw()
 	pos.x -= 58;
 
 	if (DrawButton(
-		10,
+		7,
 		0,
 		0,
 		pos - CVector2D(0, 34),

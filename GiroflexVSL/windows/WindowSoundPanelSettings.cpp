@@ -10,24 +10,24 @@ void WindowSoundPanelSettings::Create()
 {
 	if (m_Window) return;
 
-	auto window = m_Window = Menu::AddWindow(8);
+	auto window = m_Window = Menu::AddWindow(6);
 	window->position = CVector2D(350, 100);
 	window->showPageControls = true;
 
-	auto style = window->AddIntRange(79, &WindowSoundPanel::m_style, 1, 4, 1);
+	auto style = window->AddIntRange(85, &WindowSoundPanel::m_style, 1, 4, 1);
 	style->holdToChange = false;
 	style->onValueChange = []() {
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto showOnEnterVehicle = window->AddCheckbox(80, &WindowSoundPanel::m_showOnEnterVehicle);
+	auto showOnEnterVehicle = window->AddCheckbox(86, &WindowSoundPanel::m_showOnEnterVehicle);
 	showOnEnterVehicle->onValueChange = []() {
 		WindowSoundPanel::Toggle(WindowSoundPanel::m_showOnEnterVehicle);
 	};
 
-	window->AddCheckbox(81, &WindowSoundPanel::m_showButtonToggleLights);
+	window->AddCheckbox(87, &WindowSoundPanel::m_showButtonToggleLights);
 
-	auto button_position = window->AddButton(28);
+	auto button_position = window->AddButton(9);
 	button_position->onClick = [window]() {
 		Menu::AddPosition2DWindow(window, &WindowSoundPanel::m_position, -10000.0f, 10000.0f, 0.5f, []() {
 			WindowSoundPanel::RecreateButtons();
@@ -50,7 +50,7 @@ void WindowSoundPanelSettings::Create()
 	};
 	*/
 
-	auto button_color = window->AddButton(30);
+	auto button_color = window->AddButton(47);
 	button_color->AddColorIndicator(&WindowSoundPanel::m_buttonDefaultColor);
 	button_color->onClick = [window]() {
 		Menu::AddColorMenu(window, &WindowSoundPanel::m_buttonDefaultColor, []() {
@@ -58,7 +58,7 @@ void WindowSoundPanelSettings::Create()
 		});
 	};
 
-	auto button_active_color = window->AddButton(82);
+	auto button_active_color = window->AddButton(88);
 	button_active_color->AddColorIndicator(&WindowSoundPanel::m_buttonActiveColor);
 	button_active_color->onClick = [window]() {
 		Menu::AddColorMenu(window, &WindowSoundPanel::m_buttonActiveColor, []() {
@@ -66,7 +66,7 @@ void WindowSoundPanelSettings::Create()
 		});
 	};
 
-	auto button_outline_color = window->AddButton(83);
+	auto button_outline_color = window->AddButton(89);
 	button_outline_color->AddColorIndicator(&WindowSoundPanel::m_buttonOutlineColor);
 	button_outline_color->onClick = [window]() {
 		Menu::AddColorMenu(window, &WindowSoundPanel::m_buttonOutlineColor, []() {
@@ -74,14 +74,14 @@ void WindowSoundPanelSettings::Create()
 		});
 	};
 
-	auto size = window->AddFloatRange(41, &WindowSoundPanel::m_buttonSize, 1.0f, 100.0f, 0.05f);
+	auto size = window->AddFloatRange(51, &WindowSoundPanel::m_buttonSize, 1.0f, 100.0f, 0.05f);
 	size->onValueChange = []() {
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto allow_multiple_sounds = window->AddCheckbox(84, &WindowSoundPanel::m_allowMultipleSounds);
+	auto allow_multiple_sounds = window->AddCheckbox(90, &WindowSoundPanel::m_allowMultipleSounds);
 
-	auto button_close = window->AddButton(10, CRGBA(170, 70, 70));
+	auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
 	button_close->onClick = []()
 	{
 		Remove();

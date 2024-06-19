@@ -56,6 +56,8 @@ public:
 
 	std::vector<ColorIndicator> colorIndicators;
 
+	std::vector<DrawItem*> extraTexts;
+
 	/*
 	int optionCurrent = 0;
 	int optionMin = 0;
@@ -94,9 +96,18 @@ public:
 
 	float btnWidth = 50.0f;
 
+	bool waitingForTouchRelease = false;
+
+	bool hasPressedThisFrame = false;
+
 	Item(eItemType type);
 
 	void AddColorIndicator(CRGBA* color);
+
+	/*
+	Adds a text on the right side of the item
+	*/
+	void AddExtraText(int gxtId, int num1, int num2, CVector2D offsetFromRight);
 
 	void AddOptionBy(int by);
 

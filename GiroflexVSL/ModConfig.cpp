@@ -2,7 +2,10 @@
 
 #include <iostream>
 #include <fstream>
-    
+
+#include <dirent.h>
+#include "dlfcn.h"
+
 #include "mod/amlmod.h"
 #include "mod/logger.h"
 #include "mod/config.h"

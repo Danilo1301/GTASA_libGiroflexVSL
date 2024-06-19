@@ -18,10 +18,10 @@ void WindowMain::Create(int modelId)
 
     m_ModelId = modelId;
 
-    auto window = m_Window = Menu::AddWindow(8);
+    auto window = m_Window = Menu::AddWindow(6);
     window->position = CVector2D(80, 200);
 
-    auto text_id = window->AddText(9, CRGBA(255, 255, 255));
+    auto text_id = window->AddText(30);
     text_id->text->num1 = m_ModelId;
 
     /*
@@ -35,19 +35,19 @@ void WindowMain::Create(int modelId)
     }
     */
 
-    auto button_add = window->AddButton(16);
+    auto button_add = window->AddButton(34);
     button_add->onClick = [window]()
     {
         WindowLightGroups::Create(window);
     };
 
-    auto button_settings = window->AddButton(13);
+    auto button_settings = window->AddButton(33);
     button_settings->onClick = [window]()
     {
         WindowSettings::Create(window);
     };
 
-    auto button_close = window->AddButton(10, CRGBA(170, 70, 70));
+    auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
     button_close->onClick = []()
     {
         WindowMain::Remove();
