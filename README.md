@@ -45,9 +45,16 @@
 <h1>Tutoriais</h1>
 
 * Instalando o mod giroflex: https://youtu.be/4mq7lfXUUfY
-* Instalando GTA SA 2.00 com data original: https://youtu.be/wT4N_NAYFOI
+* Instalando a pasta "Mute original siren": https://www.youtube.com/watch?v=GdR_3ZIc_6Y
+
+<br>
+
 * Instalando as texturas do painel de áudio: https://youtu.be/ghzIKrxtvx4
 * Instalando as texturas das luzes retangulares: https://youtu.be/A9JWQilIvYI
+
+<br>
+
+* Instalando GTA SA 2.00 com data original: https://youtu.be/wT4N_NAYFOI
 * Como criar um padrão de piscar: https://youtu.be/KZkaiiXhtLU
 * Como converter arquivos .INI para .JSON: https://youtu.be/p_R810KUDb4
 
@@ -103,14 +110,15 @@ Isso acontece quando você usa o libJPatch.so com o 'PS2CoronaRotation' ativado.
 For all versions:
 * BASS Mod: 1.0.0.0
 * CLEO Mod: 2.0.1.3
-* AML: 1.0.2.2
 * AML Headers: 1.1
 
 For SAMP:
 * SAUtils: 1.3.1
+* AML: 1.0.2.2
 
 For GTA SA 2.00
 * SAUtils: 1.6
+* AML: 1.2.1
 
 For GTA SA 2.10
 * Not tested yet
