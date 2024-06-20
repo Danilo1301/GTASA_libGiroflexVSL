@@ -2,7 +2,6 @@
 
 #include "../Input.h"
 #include "../ModConfig.h"
-#include "../AudioStream.h"
 #include "../Patterns.h"
 
 bool WindowSettings::EditScreenModeEnabled = false;

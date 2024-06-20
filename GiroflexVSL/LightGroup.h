@@ -59,6 +59,7 @@ public:
 	bool rotate = false;
 	float rotateDistance = 0.5f;
 	float rotateSpeed = 10.0f;
+	bool rotateInverse = false;
 
 	float rotateAngle = 0.0f;
 
@@ -169,6 +170,7 @@ public:
 		value["rotate"] = rotate;
 		value["rotateDistance"] = rotateDistance;
 		value["rotateSpeed"] = rotateSpeed;
+		value["rotateInverse"] = rotateInverse;
 
 		return value;
 	}
@@ -233,5 +235,6 @@ public:
 		rotate = ValidateValue(value["rotate"], rotate).asBool();
 		rotateDistance = ValidateValue(value["rotateDistance"], rotateDistance).asFloat();
 		rotateSpeed = ValidateValue(value["rotateSpeed"], rotateSpeed).asFloat();
+		rotateInverse = ValidateValue(value["rotateInverse"], rotateInverse).asBool();
 	}
 };

@@ -174,9 +174,9 @@ void ConvertOldVersion::LoadVehicles()
 
 void ConvertOldVersion::LightGroupFromINISection(LightGroup* lightGroup, INISection* section)
 {
-    lightGroup->offset = section->GetCVector("offset", lightGroup->offset);
+    section->GetCVector("offset", &lightGroup->offset);
 
-    eLightGroupType_v2 type = (eLightGroupType_v2)section->GetInt("type", (int)eLightGroupType_v2::TWO_LIGHTS);
+    eLightGroupType_v2 type = (eLightGroupType_v2)section->GetIntWithDefaultValue("type", (int)eLightGroupType_v2::TWO_LIGHTS);
     int amountOfLights = 1;
     switch (type)
     {
@@ -211,49 +211,49 @@ void ConvertOldVersion::LightGroupFromINISection(LightGroup* lightGroup, INISect
     }
     lightGroup->SetNumberOfPoints(amountOfLights);
 
-    lightGroup->distance = section->GetFloat("distance", lightGroup->distance);
-    lightGroup->curve = section->GetFloat("curve", lightGroup->curve);
+    section->GetFloat("distance", &lightGroup->distance);
+    section->GetFloat("curve", &lightGroup->curve);
 
-    lightGroup->color1 = section->GetCRGBA("color1", lightGroup->color1);
-    lightGroup->color2 = section->GetCRGBA("color2", lightGroup->color2);
-    lightGroup->color3 = section->GetCRGBA("color3", lightGroup->color3);
+    section->GetCRGBA("color1", &lightGroup->color1);
+    section->GetCRGBA("color2", &lightGroup->color2);
+    section->GetCRGBA("color3", &lightGroup->color3);
 
-    lightGroup->patternOffset = section->GetInt("patternOffset", lightGroup->patternOffset);
+    section->GetInt("patternOffset", &lightGroup->patternOffset);
 
-    lightGroup->radius = section->GetFloat("radius", lightGroup->radius);
+    section->GetFloat("radius", &lightGroup->radius);
 
-    lightGroup->renderShadow = section->GetBool("renderShadow", lightGroup->renderShadow);
-    lightGroup->shadowIntensity = section->GetFloat("shadowIntensity", lightGroup->shadowIntensity);
-    lightGroup->shadowSize = section->GetFloat("shadowSize", lightGroup->shadowSize);
-    lightGroup->shadowPositionX = section->GetFloat("shadowPositionX", lightGroup->shadowPositionX);
-    lightGroup->shadowPositionY = section->GetFloat("shadowPositionY", lightGroup->shadowPositionY);
-    lightGroup->shadowTexture = section->GetInt("shadowTexture", lightGroup->shadowTexture);
-    lightGroup->shadowRotation = section->GetFloat("shadowRotation", lightGroup->shadowRotation);
-    lightGroup->shadowFlipTextures = section->GetBool("shadowFlipTextures", lightGroup->shadowFlipTextures);
+    section->GetBool("renderShadow", &lightGroup->renderShadow);
+    section->GetFloat("shadowIntensity", &lightGroup->shadowIntensity);
+    section->GetFloat("shadowSize", &lightGroup->shadowSize);
+    section->GetFloat("shadowPositionX", &lightGroup->shadowPositionX);
+    section->GetFloat("shadowPositionY", &lightGroup->shadowPositionY);
+    section->GetInt("shadowTexture", &lightGroup->shadowTexture);
+    section->GetFloat("shadowRotation", &lightGroup->shadowRotation);
+    section->GetBool("shadowFlipTextures", &lightGroup->shadowFlipTextures);
 
-    lightGroup->renderPointLight = section->GetBool("renderPointLight", lightGroup->renderPointLight);
-    lightGroup->pointLightIntensity = section->GetFloat("pointLightIntensity", lightGroup->pointLightIntensity);
-    lightGroup->pointLightDistance = section->GetFloat("pointLightDistance", lightGroup->pointLightDistance);
+    section->GetBool("renderPointLight", &lightGroup->renderPointLight);
+    section->GetFloat("pointLightIntensity", &lightGroup->pointLightIntensity);
+    section->GetFloat("pointLightDistance", &lightGroup->pointLightDistance);
 
-    lightGroup->nearClip = section->GetFloat("nearClip", lightGroup->nearClip);
+    section->GetFloat("nearClip", &lightGroup->nearClip);
 
     //lightGroup->usePointPositionInsteadOfIndex = section->GetBool("usePointPositionInsteadOfIndex", lightGroup->usePointPositionInsteadOfIndex);
     
-    lightGroup->useSmallWhiteCorona = section->GetBool("useSmallWhiteCorona", lightGroup->useSmallWhiteCorona);
-    lightGroup->smallWhiteCoronaScale = section->GetFloat("smallWhiteCoronaScale", lightGroup->smallWhiteCoronaScale);
-    lightGroup->smallWhiteCoronaTexture = section->GetInt("smallWhiteCoronaTexture", lightGroup->smallWhiteCoronaTexture);
-    lightGroup->smallWhiteCoronaColor = section->GetCRGBA("smallWhiteCoronaColor", lightGroup->smallWhiteCoronaColor);
+    section->GetBool("useSmallWhiteCorona", &lightGroup->useSmallWhiteCorona);
+    section->GetFloat("smallWhiteCoronaScale", &lightGroup->smallWhiteCoronaScale);
+    section->GetInt("smallWhiteCoronaTexture", &lightGroup->smallWhiteCoronaTexture);
+    section->GetCRGBA("smallWhiteCoronaColor", &lightGroup->smallWhiteCoronaColor);
     
-    lightGroup->freezeLights = section->GetBool("freezeLights", lightGroup->freezeLights);
+    section->GetBool("freezeLights", &lightGroup->freezeLights);
 
-    lightGroup->useFlare = section->GetBool("useFlare", lightGroup->useFlare);
-    lightGroup->flareDistance = section->GetFloat("flareDistance", lightGroup->flareDistance);
-    lightGroup->flareIntensity = section->GetFloat("flareIntensity", lightGroup->flareIntensity);
-    lightGroup->flareTexture = section->GetInt("flareTexture", lightGroup->flareTexture);
+    section->GetBool("useFlare", &lightGroup->useFlare);
+    section->GetFloat("flareDistance", &lightGroup->flareDistance);
+    section->GetFloat("flareIntensity", &lightGroup->flareIntensity);
+    section->GetInt("flareTexture", &lightGroup->flareTexture);
 
-    lightGroup->coronaTexture = section->GetInt("coronaTexture", lightGroup->coronaTexture);
+    section->GetInt("coronaTexture", &lightGroup->coronaTexture);
 
-    lightGroup->lightSlotId = section->GetInt("lightSlotId", lightGroup->lightSlotId);
+    section->GetInt("lightSlotId", &lightGroup->lightSlotId);
 
     //lightGroup->enableOnSpawn = section->GetBool("enableOnSpawn", lightGroup->enableOnSpawn);
 }

@@ -248,6 +248,23 @@ end
 
 :SEND_TOUCH
 
+//wdiget
+if and
+    0256: player $PLAYER_CHAR defined
+    056D: actor $PLAYER_ACTOR defined 
+then
+    if 00DF: actor $PLAYER_ACTOR driving
+    then
+        VAR_Integer2 = 0
+        if 0A51: is_widget_pressed 7
+        then
+            VAR_Integer2 = 1
+        end
+        0EFB: send_widget_state 7 state VAR_Integer2
+    end 
+end
+
+//touch
 for VAR_Integer1 = 1 to 9
     0DE0: VAR_Integer2 = get_touch_point_state VAR_Integer1 mintime 0
     0EF2: send_touch_state VAR_Integer1 state VAR_Integer2
@@ -1015,5 +1032,13 @@ end
 if VAR_GxtId == 95
 then
      VAR_STR_1 = "DGFX95"
+end
+if VAR_GxtId == 96
+then
+     VAR_STR_1 = "DGFX96"
+end
+if VAR_GxtId == 97
+then
+     VAR_STR_1 = "DGFX97"
 end
 return

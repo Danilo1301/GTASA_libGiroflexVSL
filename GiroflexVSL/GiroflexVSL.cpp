@@ -6,9 +6,9 @@
 #include "Input.h"
 #include "Vehicles.h"
 #include "Globals.h"
-#include "SoundPanelSystem.h"
 #include "ModConfig.h"
 #include "Log.h"
+#include "Widgets.h"
 
 #include "windows/WindowTest.h"
 #include "windows/WindowMain.h"
@@ -23,7 +23,7 @@
 
 extern CVector2D *m_vecCachedPos;
 
-const char* GiroflexVSL::m_Version = "3.2.0";
+const char* GiroflexVSL::m_Version = "3.3.0";
 
 bool canTurnSirenOn = true;
 bool canTurnPanelOn = true;
@@ -39,26 +39,26 @@ void GiroflexVSL::Update(int dt)
 
     //
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Vehicles --------------" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> Vehicles --------------" << std::endl;
 
     Vehicles::TryFindNewVehicles();
 
     Vehicles::Update(dt);
     
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "SoundPanelSystem" << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_UPDATE) << "SoundPanelSystem" << std::endl;
 
-    SoundPanelSystem::Update(dt);
+    //SoundPanelSystem::Update(dt);
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Menu" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> Menu" << std::endl;
 
     Menu::Update(dt);
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "WindowSettings" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> WindowSettings" << std::endl;
 
     WindowSettings::Update(dt);
     WindowSettings::Draw();
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "WindowSoundPanel" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> WindowSoundPanel" << std::endl;
     
     WindowSoundPanel::Draw();
     WindowSoundPanel::Update(dt);
@@ -66,15 +66,12 @@ void GiroflexVSL::Update(int dt)
     WindowPanel::Update();
     WindowPanel::Draw();
     
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Menu" << std::endl;
-
     Menu::Draw();
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Input" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> Input" << std::endl;
 
     Input::Update(dt);
-
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "ProcessMenuButtons" << std::endl;
+    Widgets::Update(dt);
 
     GiroflexVSL::ProcessMenuButtons(dt);
 
@@ -119,7 +116,7 @@ void GiroflexVSL::Update(int dt)
         Menu::ShowCredits(6, 5000);
     }
 
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "end" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> end" << std::endl;
 }
 
 void GiroflexVSL::ProcessMenuButtons(int dt)

@@ -14,8 +14,8 @@
 #include "GiroflexVSL.h"
 #include "ModelInfos.h"
 #include "Patterns.h"
-#include "SoundPanelSystem.h"
 #include "ConvertOldVersion.h"
+#include "SirenSystem.h"
 
 #include "windows/WindowSoundPanel.h"
 
@@ -193,10 +193,15 @@ void ModConfig::SaveSettings()
 
     INIFile file;
 
+    auto generalSection = file.AddSection("General");
+    generalSection->AddIntFromBool("ignore_message_old_version", ModConfig::IgnoreOldModVersionMessage);
+    generalSection->AddIntFromBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
+    generalSection->AddIntFromBool("enable_deep_log", Log::deepLogEnabled);
+
     auto soundPanelSection = file.AddSection("SoundPanel");
-    soundPanelSection->AddBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
-    soundPanelSection->AddBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
-    soundPanelSection->AddBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
+    soundPanelSection->AddIntFromBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
+    soundPanelSection->AddIntFromBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
+    soundPanelSection->AddIntFromBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
     soundPanelSection->AddCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
     soundPanelSection->AddCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
     soundPanelSection->AddCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
@@ -204,10 +209,6 @@ void ModConfig::SaveSettings()
     soundPanelSection->AddFloat("button_size", WindowSoundPanel::m_buttonSize);
     soundPanelSection->AddInt("style", WindowSoundPanel::m_style);
     
-    auto generalSection = file.AddSection("General");
-    generalSection->AddBool("ignore_message_old_version", ModConfig::IgnoreOldModVersionMessage);
-    generalSection->AddBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
-
     file.Save(settingsFileDir);
     file.Destroy();
 }
@@ -220,7 +221,7 @@ void ModConfig::Load()
     LoadVehicles();
     LoadSettings();
 
-    SoundPanelSystem::Load();
+    SirenSystem::Load();
 
     ConvertOldVersion::Load();
 }
@@ -318,29 +319,30 @@ void ModConfig::LoadSettings()
         return;
     }
 
+    auto generalSections = file.GetSections("General");
+    if (generalSections.size() > 0)
+    {
+        auto generalSection = generalSections[0];
+
+        generalSection->GetBoolFromInt("ignore_message_old_version", &ModConfig::IgnoreOldModVersionMessage);
+        generalSection->GetBoolFromInt("turn_on_lights_with_siren", &ModConfig::TurnOnLightsWithSiren);
+        generalSection->GetBoolFromInt("enable_deep_log", &Log::deepLogEnabled);
+    }
+
     auto soundPanelSections = file.GetSections("SoundPanel");
     if (soundPanelSections.size() > 0)
     {
         auto soundPanelSection = soundPanelSections[0];
 
-        WindowSoundPanel::m_allowMultipleSounds = soundPanelSection->GetBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
-        WindowSoundPanel::m_showOnEnterVehicle = soundPanelSection->GetBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
-        WindowSoundPanel::m_showButtonToggleLights = soundPanelSection->GetBool("show_button_toggle_lights", WindowSoundPanel::m_showButtonToggleLights);
-        WindowSoundPanel::m_buttonDefaultColor = soundPanelSection->GetCRGBA("button_color", WindowSoundPanel::m_buttonDefaultColor);
-        WindowSoundPanel::m_buttonActiveColor = soundPanelSection->GetCRGBA("button_active_color", WindowSoundPanel::m_buttonActiveColor);
-        WindowSoundPanel::m_buttonOutlineColor = soundPanelSection->GetCRGBA("button_outline_color", WindowSoundPanel::m_buttonOutlineColor);
-        WindowSoundPanel::m_position = soundPanelSection->GetCVector2D("position", WindowSoundPanel::m_position);
-        WindowSoundPanel::m_buttonSize = soundPanelSection->GetFloat("button_size", WindowSoundPanel::m_buttonSize);
-        WindowSoundPanel::m_style = soundPanelSection->GetFloat("style", WindowSoundPanel::m_style);
-    }
-
-     auto generalSections = file.GetSections("General");
-    if (generalSections.size() > 0)
-    {
-        auto generalSection = generalSections[0];
-
-        ModConfig::IgnoreOldModVersionMessage = generalSection->GetBool("ignore_message_old_version", ModConfig::IgnoreOldModVersionMessage);
-        ModConfig::TurnOnLightsWithSiren = generalSection->GetBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
+        soundPanelSection->GetBoolFromInt("allow_multiple_sound", &WindowSoundPanel::m_allowMultipleSounds);
+        soundPanelSection->GetBoolFromInt("show_on_enter_vehicle", &WindowSoundPanel::m_showOnEnterVehicle);
+        soundPanelSection->GetBoolFromInt("show_button_toggle_lights", &WindowSoundPanel::m_showButtonToggleLights);
+        soundPanelSection->GetCRGBA("button_color", &WindowSoundPanel::m_buttonDefaultColor);
+        soundPanelSection->GetCRGBA("button_active_color", &WindowSoundPanel::m_buttonActiveColor);
+        soundPanelSection->GetCRGBA("button_outline_color", &WindowSoundPanel::m_buttonOutlineColor);
+        soundPanelSection->GetCVector2D("position", &WindowSoundPanel::m_position);
+        soundPanelSection->GetFloat("button_size", &WindowSoundPanel::m_buttonSize);
+        soundPanelSection->GetInt("style", &WindowSoundPanel::m_style);
     }
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: Success reading settings.ini" << std::endl;

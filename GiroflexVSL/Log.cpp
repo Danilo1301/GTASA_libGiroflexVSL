@@ -2,6 +2,7 @@
 
 std::fstream Log::logfile;
 std::fstream Log::updateFile;
+bool Log::deepLogEnabled = false;
 
 LogFile logFile;
 
@@ -16,7 +17,10 @@ LogFile Log::Level(LOG_LEVEL level)
         logfile << date << " ";
     }
 
-     if(level == LOG_LEVEL::LOG_BOTH || level == LOG_LEVEL::LOG_UPDATE)
+    bool logToUpdate = level == LOG_LEVEL::LOG_BOTH || level == LOG_LEVEL::LOG_UPDATE;
+    if(level == LOG_LEVEL::LOG_DEEP_UPDATE && deepLogEnabled) logToUpdate = true;
+
+    if(logToUpdate)
     {
         updateFile << date << " ";
     }

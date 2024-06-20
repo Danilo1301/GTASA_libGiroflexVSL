@@ -7,7 +7,7 @@
 #include "ModelInfos.h"
 #include "Patterns.h"
 #include "ModConfig.h"
-#include "SoundSystem.h"
+#include "audiosystem.h"
 
 #include "windows/WindowSettings.h"
 
@@ -16,7 +16,7 @@
 // ---------------------------------------
 
 //MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, GiroflexVSL::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.2.0, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.3.0, Danilo1301)
 
 // ---------------------------------------
 
@@ -30,6 +30,10 @@ IBASS* BASS = NULL;
 // SAUtils 1.6 (but it says 1.5.2)
 #include "isautils.h"
 ISAUtils* sautils = NULL;
+
+#include "audiosystem.h"
+static CSoundSystem soundsysLocal;
+CSoundSystem* soundsys = &soundsysLocal;
 
 // ---------------------------------------
 
@@ -45,6 +49,7 @@ void (*RegisterCorona)(unsigned int id, void* attachTo, unsigned char red, unsig
 CCamera* camera;
 bool* userPaused;
 bool* codePaused;
+int nGameLoaded = -1;
 // ---------------------------------------
 
 ConfigEntry* cfgMenuOffsetX = NULL;
@@ -62,8 +67,8 @@ void SaveCfg()
 
 DECL_HOOK(void*, UpdateGameLogic, uintptr_t a1)
 {
-    if (BASS) {
-        SoundSystem::Update();
+    if(BASS) {
+        soundsys->Update();
     }
 
     return UpdateGameLogic(a1);
@@ -165,11 +170,11 @@ extern "C" void OnModLoad()
     else {
         Log::Level(LOG_LEVEL::LOG_BOTH) << "BASS loaded: " << BASS << std::endl;
 
-        SoundSystem::Init();
-
-        std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+        soundsys->Init();
 
         /*
+        std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+
         auto audioStream = new AudioStream(audiosPath + "/funk_raca_negra.mp3");
         audioStream->Loop(true);
         audioStream->Play();
@@ -254,7 +259,21 @@ extern "C" void OnModLoad()
    
     Log::Level(LOG_LEVEL::LOG_BOTH) << "hGTASA: " << hGTASA << std::endl;
 
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Getting Syms..." << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Getting Syms 1..." << std::endl;
+
+    SET_TO(camera, cleo->GetMainLibrarySymbol("TheCamera"));
+    SET_TO(userPaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_UserPauseE"));
+    SET_TO(codePaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_CodePauseE"));
+
+    if((uintptr_t)camera == gameAddr + 0x951FA8) nGameLoaded = 0; // SA 2.00
+    else if((uintptr_t)camera == gameAddr + 0x595420) nGameLoaded = 1; // VC 1.09
+    else
+    {
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "The loaded game is not GTA:SA v2.00 or GTA:VC v1.09. Aborting..." << std::endl;
+        return;
+    }
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Getting Syms 2..." << std::endl;
 
     SET_TO(m_vecCachedPos, aml->GetSym(hGTASA, "_ZN15CTouchInterface14m_vecCachedPosE"));
     SET_TO(pVehiclePool, aml->GetSym(hGTASA, "_ZN6CPools15ms_pVehiclePoolE"));
@@ -264,10 +283,6 @@ extern "C" void OnModLoad()
     SET_TO(GetVehicleRef, aml->GetSym(hGTASA, "_ZN6CPools13GetVehicleRefEP8CVehicle"));
     SET_TO(GetVehicleFromRef, aml->GetSym(hGTASA, "_ZN6CPools10GetVehicleEi"));
     SET_TO(RegisterCorona, aml->GetSym(hGTASA, "_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffhhhhhfbfbfbb"));
-
-    SET_TO(camera, cleo->GetMainLibrarySymbol("TheCamera"));
-    SET_TO(userPaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_UserPauseE"));
-    SET_TO(codePaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_CodePauseE"));
     
     HOOKPLT(UpdateGameLogic, gameAddr + 0x66FE58);
     //
@@ -294,6 +309,7 @@ extern "C" void OnModLoad()
     __reg_op_func(REGISTER_GIROFLEX_CORONA, REGISTER_GIROFLEX_CORONA);
     __reg_op_func(SEND_CAR_POSITION, SEND_CAR_POSITION);
     __reg_op_func(ADD_LOG_MESSAGE, ADD_LOG_MESSAGE);
+    __reg_op_func(SEND_WIDGET_STATE, SEND_WIDGET_STATE);
 
     //
 

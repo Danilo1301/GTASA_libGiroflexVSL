@@ -3,7 +3,7 @@ DGFX2 ~1~, ~1~
 DGFX3 ~1~, ~1~, ~1~
 DGFX4 <
 DGFX5 >
-DGFX6 Giroflex VSL v3.2.0 (by ~y~Danilo1301~w~)
+DGFX6 Giroflex VSL v3.3.0 (by ~y~Danilo1301~w~)
 DGFX7 Close
 DGFX8 Back
 DGFX9 Edit position
@@ -93,3 +93,5 @@ DGFX92 Remove the old~n~giroflex.csa and .fxt
 DGFX93 Turn lights with siren
 DGFX94 Rotate
 DGFX95 Speed
+DGFX96 Radio
+DGFX97 Invert rotation

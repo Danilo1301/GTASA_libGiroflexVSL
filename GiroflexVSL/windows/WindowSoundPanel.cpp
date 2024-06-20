@@ -2,13 +2,14 @@
 
 #include "WindowSoundPanelSettings.h"
 
-#include "../menu/Menu.h"
-#include "../Input.h"
-#include "../ModConfig.h"
-#include "../Log.h"
-#include "../SoundPanelSystem.h"
-#include "../ModelInfos.h"
-#include "../Globals.h"
+#include "menu/Menu.h"
+#include "Input.h"
+#include "ModConfig.h"
+#include "Log.h"
+#include "ModelInfos.h"
+#include "Globals.h"
+#include "SoundSystem.h"
+#include "SirenSystem.h"
 
 std::vector<SoundPanelButton*> WindowSoundPanel::m_buttons;
 std::vector<AudioStreamData> WindowSoundPanel::m_audioStreamData;
@@ -26,6 +27,7 @@ float WindowSoundPanel::m_buttonSize = 30.0f;
 bool WindowSoundPanel::m_visible = false;
 
 SoundPanelButton* WindowSoundPanel::m_buttonSirenTone = NULL;
+SoundPanelButton* WindowSoundPanel::m_buttonSirenToggle = NULL;
 
 SoundPanelButton* WindowSoundPanel::m_buttonToggleLights = NULL;
 
@@ -89,7 +91,10 @@ void WindowSoundPanel::CreateStyle1()
 	buttonSirenHorn->onIsActiveChange = [](bool isActive) {
 		//Menu::ShowPopup(1, isActive ? 1 : 0, 0, 1000.0f);
 
-		SoundPanelSystem::ToggleHorn(isActive);
+		auto vehicle = Globals::GetPlayerVehicle();
+		vehicle->sirenSystem->ToggleHorn(isActive);
+
+		//SoundPanelSystem::ToggleHorn(isActive);
 	};
 	//AddButtonToAudioList(buttonSirenToggle, 1, true);
 
@@ -105,9 +110,12 @@ void WindowSoundPanel::CreateStyle1()
 	buttonSirenToggle->onIsActiveChange = [](bool isActive) {
 		//Menu::ShowPopup(1, isActive ? 1 : 0, 0, 1000.0f);
 
-		SoundPanelSystem::ToggleSiren(isActive);
-	};
+		auto vehicle = Globals::GetPlayerVehicle();
+		vehicle->sirenSystem->ToggleSiren(isActive);
 
+		//SoundPanelSystem::ToggleSiren(isActive);
+	};
+	m_buttonSirenToggle = buttonSirenToggle;
 	//buttonSirenToggle->canBeActivated = false;
 	//AddButtonToAudioList(buttonSirenToggle, 1, true);
 
@@ -122,7 +130,10 @@ void WindowSoundPanel::CreateStyle1()
 	//buttonSirenTone->activeColor = m_buttonActiveColor;
 	buttonSirenTone->canBeActivated = false;
 	buttonSirenTone->onClick = []() {
-		SoundPanelSystem::ChangeSirenByOne();
+		auto vehicle = Globals::GetPlayerVehicle();
+		vehicle->sirenSystem->ChangeSirenByOne();
+
+		//SoundPanelSystem::ChangeSirenByOne();
 	};
 	m_buttonSirenTone = buttonSirenTone;
 	//AddButtonToAudioList(buttonSirenToggle, 1, true);
@@ -493,15 +504,16 @@ void WindowSoundPanel::Update(int dt)
 		}
 	}
 
-	if (m_showOnEnterVehicle && SoundPanelSystem::soundGroups.size() > 0)
+	//show pannel if its enabled
+	if (m_showOnEnterVehicle && SirenSystem::m_SirenGroups.size() > 0)
 	{
 		if (!m_visible)
 		{
 			if (Globals::IsPlayerInAnyVehicle())
 			{
-				auto modelId = SoundPanelSystem::GetCurrentVehicleModelId();
+				auto modelId = SirenSystem::GetCurrentVehicleModelId();
 
-				auto soundGroup = SoundPanelSystem::GetCurrentVehicleSoundGroup();
+				auto soundGroup = SirenSystem::GetCurrentVehicleSoundGroup();
 				if (soundGroup->IsVehicleModelCopatible(modelId))
 				{
 					Toggle(true);
@@ -516,7 +528,26 @@ void WindowSoundPanel::Update(int dt)
 
 	std::for_each(m_buttons.begin(), m_buttons.end(), [dt](SoundPanelButton* button) { button->Update(dt); });
 
-	if(m_buttonSirenTone) m_buttonSirenTone->text.num1 = SoundPanelSystem::currentSirenIndex + 1;
+	if(m_buttonSirenTone)
+	{
+		auto vehicle = Globals::GetPlayerVehicle();
+		if(vehicle) m_buttonSirenTone->text.num1 = vehicle->sirenSystem->currentSirenIndex + 1;
+	}
+
+	/*
+	if(m_buttonSirenToggle)
+	{
+		auto vehicle = Globals::GetPlayerVehicle();
+		if(vehicle)
+		{
+			if(vehicle->gameSirenState && !m_buttonSirenToggle->isActive)
+			{
+				m_buttonSirenToggle->isActive = vehicle->prevSirenState;
+				m_buttonSirenToggle->prevIsActive = vehicle->prevSirenState;
+			}
+		}
+	}
+	*/
 
 	//disable if testing
 	if (!Globals::IsPlayerInAnyVehicle())
@@ -590,7 +621,7 @@ void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioI
 
 	AudioStreamData audioStreamData;
 	audioStreamData.button = button;
-	audioStreamData.audioStream = new AudioStream(audiosPath + "/siren" + std::to_string(audioId) + ".wav");
+	audioStreamData.audioStream = SoundSystem::LoadStream(audiosPath + "/siren" + std::to_string(audioId) + ".wav", false);
 	audioStreamData.audioStream->Loop(true);
 	audioStreamData.audioStream->SetVolume(0.5f);
 
@@ -613,10 +644,7 @@ void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioI
 			ToggleAudioButton(audioId - 1);
 		};
 	}
-
-	
 }
-
 
 void WindowSoundPanel::ToggleAudioButton(int index)
 {
@@ -624,7 +652,7 @@ void WindowSoundPanel::ToggleAudioButton(int index)
 
 	AudioStreamData* audioStreamData = &m_audioStreamData[index];
 
-	if (!audioStreamData->audioStream->streamInternal) return;
+	if (!audioStreamData->audioStream->OK) return;
 
 	if (audioStreamData->audioStream->GetState() == 1) //if playing
 	{

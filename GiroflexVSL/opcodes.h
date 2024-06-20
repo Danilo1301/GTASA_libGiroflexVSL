@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "Vehicles.h"
 #include "Globals.h"
+#include "Widgets.h"
 
 #include "eModInfoType.h"
 
@@ -47,6 +48,7 @@ __decl_op(CREATE_NEW_VEHICLE, 0x0EF7); // 0EF7=2,create_new_vehicle %1d% modelid
 __decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF8); // 0EF8=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
 __decl_op(SEND_CAR_POSITION, 0x0EF9); // 0EF9=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
 __decl_op(ADD_LOG_MESSAGE, 0x0EFA); //0EFA=1,add_log_message %1d%
+__decl_op(SEND_WIDGET_STATE, 0x0EFB); //0EFB=2,send_widget_state %1d% state %2d%
 
 static void PROCESS_GIROFLEX_VSL_LIB(__handler_params)
 {
@@ -635,7 +637,6 @@ static void REGISTER_GIROFLEX_CORONA(__handler_params)
     );
 }
 
-
 static void SEND_CAR_POSITION(__handler_params)
 {
     int car = __readParam(handle)->i;
@@ -661,4 +662,18 @@ static void ADD_LOG_MESSAGE(__handler_params)
     int num = __readParam(handle)->i;
     
     Log::Level(LOG_LEVEL::LOG_UPDATE) << "Log: CLEO " << num << std::endl;
+}
+
+static void SEND_WIDGET_STATE(__handler_params)
+{
+    int widgetId = __readParam(handle)->i;
+    int state = __readParam(handle)->i;
+
+    /*/
+    char szTemp[256];
+    sprintf(szTemp, "SEND_WIDGET_STATE widgetId=%d state=%d", widgetId, state);
+    Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
+    */
+
+    Widgets::SetWidgetState(widgetId, state == 1);
 }

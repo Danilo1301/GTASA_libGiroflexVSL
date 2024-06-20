@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../pch.h"
-#include "../AudioStream.h"
+
+#include "audiosystem.h"
 
 #include "SoundPanelButton.h"
 
 struct AudioStreamData
 {
-	AudioStream* audioStream = NULL;
+	CAudioStream* audioStream = NULL;
 	SoundPanelButton* button = NULL;
 };
 
@@ -29,6 +30,7 @@ public:
 	static bool m_visible;
 
 	static SoundPanelButton* m_buttonSirenTone;
+	static SoundPanelButton* m_buttonSirenToggle;
 
 	static SoundPanelButton* m_buttonToggleLights;
 

@@ -277,7 +277,7 @@ void Menu::Draw()
         float hoxH = 50;
 
         float x = screenSize.x/2 - boxW/2;
-        float y = 50;
+        float y = 80;
 
         unsigned char alpha = 255;
 

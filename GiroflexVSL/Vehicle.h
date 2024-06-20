@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "LightGroupData.h"
+#include "SirenSystem.h"
 
 class Vehicle {
 public:
@@ -22,9 +23,12 @@ public:
 	//bool lightsOn = false;
 	//bool lightsPaused = false;
 
+	SirenSystem* sirenSystem;
+
 	Vehicle(int hVehicle, int modelId);
 	~Vehicle();
 
+	void Init();
 	void Destroy();
 	void Update(int dt);
 

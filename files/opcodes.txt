@@ -18,3 +18,8 @@ Sanny Builder 3/data/sa_mobile/SASCM.ini
 0EF8=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
 0EF9=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
 0EFA=1,add_log_message %1d%
+0EFB=2,send_widget_state %1d% state %2d%
+
+
+Hex Dec table
+https://www.practical-go-lessons.com/img/hex_dec_corresponding.a2b9a7ab.png

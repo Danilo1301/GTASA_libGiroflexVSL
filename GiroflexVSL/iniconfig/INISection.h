@@ -20,21 +20,31 @@ public:
 
     void AddLine(std::string value);
 
-    int GetInt(std::string key, int defaultValue);
+    int GetIntWithDefaultValue(std::string key, int defaultValue);
+    void GetInt(std::string key, int* pValue);
 	void AddInt(std::string key, int value);
+    void AddIntFromBool(std::string key, bool value);
 
-    float GetFloat(std::string key, float defaultValue);
+    float GetFloatWithDefaultValue(std::string key, float defaultValue);
+    void GetFloat(std::string key, float* pValue);
 	void AddFloat(std::string key, float value);
 
-    bool GetBool(std::string key, bool defaultValue);
+    bool GetBoolWithDefaultValue(std::string key, bool defaultValue);
+    void GetBool(std::string key, bool* pValue);
+    void GetBoolFromInt(std::string key, bool* pValue);
 	void AddBool(std::string key, bool value);
 
-    CVector GetCVector(std::string key, CVector defaultValue);
+    CVector GetCVectorWithDefaultValue(std::string key, CVector defaultValue);
+    void GetCVector(std::string key, CVector* pValue);
 	void AddCVector(std::string key, CVector value);
 
-    CVector2D GetCVector2D(std::string key, CVector2D defaultValue);
+    CVector2D GetCVector2DWithDefaultValue(std::string key, CVector2D defaultValue);
+    void GetCVector2D(std::string key, CVector2D* pValue);
     void AddCVector2D(std::string key, CVector2D value);
 
-    CRGBA GetCRGBA(std::string key, CRGBA defaultValue);
+    CRGBA GetCRGBAWithDefaultValue(std::string key, CRGBA defaultValue);
+	void GetCRGBA(std::string key, CRGBA* pValue);
 	void AddCRGBA(std::string key, CRGBA value);
+
+    std::vector<int> GetIntVectorList(std::string key);
 };

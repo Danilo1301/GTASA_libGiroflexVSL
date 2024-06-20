@@ -165,8 +165,14 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [3.2.0]
 [X] ADD: option to customize menu color
 [X] ADD: credits screen
-[ ] ADD: option to rotate coronas (is it saving?)
+[X] ADD: option to rotate coronas (is it saving?)
 [X] CHANGE: limit of white corona size
+
+[3.3.0]
+[X] ADD: 3d siren sounds to vehicles
+[X] ADD: radio ambient sound
+[X] ADD: deep log
+[X] ADD: rotate inverse
 
 Sugest�es:
 

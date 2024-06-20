@@ -2,9 +2,11 @@
 
 #include "WindowSoundPanel.h"
 
-#include "../ModConfig.h"
+#include "ModConfig.h"
+#include "Globals.h"
 
 Window* WindowSoundPanelSettings::m_Window = NULL;
+bool WindowSoundPanelSettings::m_RadioEnabled = false;
 
 void WindowSoundPanelSettings::Create()
 {
@@ -18,6 +20,16 @@ void WindowSoundPanelSettings::Create()
 	style->holdToChange = false;
 	style->onValueChange = []() {
 		WindowSoundPanel::RecreateButtons();
+	};
+
+	auto radio = window->AddCheckbox(96, &m_RadioEnabled);
+	radio->onValueChange = [radio]() {
+		auto vehicle = Globals::GetPlayerVehicle();
+
+		if(vehicle)
+		{
+			vehicle->sirenSystem->ToggleRadio(m_RadioEnabled);
+		}
 	};
 
 	auto showOnEnterVehicle = window->AddCheckbox(86, &WindowSoundPanel::m_showOnEnterVehicle);

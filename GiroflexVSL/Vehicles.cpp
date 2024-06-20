@@ -18,7 +18,9 @@ void Vehicles::TryCreateVehicle(int hVehicle, int modelId)
 	//Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total). Modelinfo? " << (ModelInfos::HasModelInfo(modelId) ? "yes" : "no") << std::endl;
 	Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Add vehicle " << hVehicle << " (id: " << modelId << ") (" << std::to_string(m_Vehicles.size() + 1) << " total)" << std::endl;
 
-	m_Vehicles[hVehicle] = new Vehicle(hVehicle, modelId);
+	auto vehicle = m_Vehicles[hVehicle] = new Vehicle(hVehicle, modelId);
+
+    vehicle->Init();
 }
 
 bool Vehicles::HasVehicleHandle(int hVehicle)
@@ -118,6 +120,20 @@ void Vehicles::Update(int dt)
         vehicle->Update(dt);
     }
 
+    std::vector<Vehicle*> vehiclesToRemove;
+    for (auto pair : Vehicles::m_Vehicles)
+    {
+        auto vehicle = pair.second;
+
+        if(vehicle->canBeRemoved) vehiclesToRemove.push_back(vehicle);
+    }
+
+    for(auto vehicle : vehiclesToRemove)
+    {
+        m_Vehicles.erase(vehicle->hVehicle);
+        delete vehicle;
+    }
+
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "Vehicles: Update end" << std::endl;
 }
 
@@ -172,6 +188,26 @@ void Vehicles::TryFindNewVehicles()
 
         m_NewVehiclesRef.push_back(ref); //important
 
+    }
+
+    for(auto pair : m_Vehicles)
+    {
+        auto vehicle = pair.second;
+
+        bool stillExists = false;
+        for(auto ref : m_NewVehiclesRef)
+        {
+            if(ref == vehicle->hVehicle)
+            {
+                stillExists = true;
+                break;
+            }
+        }
+
+        if(!stillExists)
+        {
+            vehicle->canBeRemoved = true;
+        }
     }
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "Found: " << m_NewVehiclesRef.size() << std::endl;

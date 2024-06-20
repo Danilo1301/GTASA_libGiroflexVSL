@@ -20,11 +20,15 @@ Vehicle::Vehicle(int hVehicle, int modelId)
 	this->modelId = modelId;
     pVehicle = (CVehicle*)GetVehicleFromRef(hVehicle);
 
+    this->sirenSystem = new SirenSystem(hVehicle);
+
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Created" << std::endl;
 
-    Update(0);
+    //removing this update will case another issue SOME FUCKING WHERE ELSE I DON'T REMEMBER
+    //Update(0);
+    
 
     /*
     auto lightGroupDataList = GetLightGroupsData();
@@ -41,18 +45,27 @@ Vehicle::~Vehicle()
     Destroy();
 }
 
+void Vehicle::Init()
+{
+    this->sirenSystem->Init();
+}
+
 void Vehicle::Destroy()
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Destroy" << std::endl;
+
+    this->sirenSystem->Destroy();
 }
 
 void Vehicle::Update(int dt)
 {
     std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
 
-    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << vehicleIdString << "Update" << std::endl;
+
+    this->sirenSystem->Update(dt);
 
     if (!ModelInfos::HasModelInfo(modelId)) return;
 
@@ -196,7 +209,7 @@ void Vehicle::Update(int dt)
             {
                 auto angle = lightGroup->rotateAngle;
 
-                x += std::sin(angle) * lightGroup->rotateDistance;
+                x += std::sin(angle) * lightGroup->rotateDistance * (lightGroup->rotateInverse ? -1 : 1);
                 y += std::cos(angle) * lightGroup->rotateDistance;
             }
 
@@ -269,7 +282,7 @@ void Vehicle::Update(int dt)
             corona.shadowTexture = lightGroup->shadowTexture;
 
             corona.shadowRotation = lightGroup->shadowRotation;
-            if(lightGroup->rotate) corona.shadowRotation = -lightGroup->rotateAngle; 
+            if(lightGroup->rotate) corona.shadowRotation = -lightGroup->rotateAngle *  (lightGroup->rotateInverse ? -1 : 1);
 
             corona.shadowFlipTextures = lightGroup->shadowFlipTextures;
 
@@ -330,6 +343,10 @@ void Vehicle::Update(int dt)
                 SetGiroflexEnabled(gameSirenState);
             }
         }
+
+        //siren audio
+        if(SirenSystem::ModelIdHasSirenGroup(modelId))
+            sirenSystem->ToggleSiren(gameSirenState);
     }
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update end" << std::endl;

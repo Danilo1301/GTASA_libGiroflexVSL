@@ -1,0 +1,20 @@
+{
+   "steps" : [
+      {
+         "data" : [ 1 ],
+         "duration" : 200
+      },
+      {
+         "data" : [ 0 ],
+         "duration" : 200
+      },
+      {
+         "data" : [ 1 ],
+         "duration" : 200
+      },
+      {
+         "data" : [ 0 ],
+         "duration" : 200
+      }
+   ]
+}

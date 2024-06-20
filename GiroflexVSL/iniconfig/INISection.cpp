@@ -1,5 +1,7 @@
 #include "INISection.h"
 
+#include "Log.h"
+
 INISection::INISection(std::string key)
 {
     this->key = key;
@@ -50,11 +52,16 @@ void INISection::AddLine(std::string value)
     //file << value << std::endl;
 }
 
-int INISection::GetInt(std::string key, int defaultValue)
+int INISection::GetIntWithDefaultValue(std::string key, int defaultValue)
 {
     auto valueStr = GetString(key);
     if (valueStr.empty()) return defaultValue;
     return std::atoi(valueStr.c_str());
+}
+
+void INISection::GetInt(std::string key, int* pValue)
+{
+    *pValue = GetIntWithDefaultValue(key, *pValue);
 }
 
 void INISection::AddInt(std::string key, int value)
@@ -63,11 +70,21 @@ void INISection::AddInt(std::string key, int value)
     //file << key << " = " << std::to_string(value) << std::endl;
 }
 
-float INISection::GetFloat(std::string key, float defaultValue)
+void INISection::AddIntFromBool(std::string key, bool value)
+{
+    AddString(key, std::to_string(value ? 1 : 0));
+}
+
+float INISection::GetFloatWithDefaultValue(std::string key, float defaultValue)
 {
     auto valueStr = GetString(key);
     if (valueStr.empty()) return defaultValue;
     return (float)std::atof(valueStr.c_str());
+}
+
+void INISection::GetFloat(std::string key, float* pValue)
+{
+    *pValue = GetFloatWithDefaultValue(key, *pValue);
 }
 
 void INISection::AddFloat(std::string key, float value)
@@ -76,11 +93,37 @@ void INISection::AddFloat(std::string key, float value)
     //file << key << " = " << value << std::endl;
 }
 
-bool INISection::GetBool(std::string key, bool defaultValue)
+bool INISection::GetBoolWithDefaultValue(std::string key, bool defaultValue)
 {
     auto valueStr = to_lower(GetString(key));
     if (valueStr.empty()) return defaultValue;
     return valueStr.compare("true") == 0;
+}
+
+void INISection::GetBool(std::string key, bool* pValue)
+{
+    *pValue = GetBoolWithDefaultValue(key, *pValue);
+}
+
+void INISection::GetBoolFromInt(std::string key, bool* pValue)
+{
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "key: " << key << std::endl;
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "value was: " << *pValue << std::endl;
+
+    auto value = GetIntWithDefaultValue(key, *pValue ? 1 : 0);
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "value from int is: " << value << std::endl;
+
+    auto valueStr = GetString(key);
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "valueStr: " << valueStr << std::endl;
+
+    if (valueStr.compare("true") == 0) value = 1;
+    if (valueStr.compare("false") == 0) value = 0;
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << "value: " << value << std::endl;
+
+    *pValue = value >= 1;
 }
 
 void INISection::AddBool(std::string key, bool value)
@@ -89,13 +132,18 @@ void INISection::AddBool(std::string key, bool value)
     //file << key << " = " << (value ? "true" : "false") << std::endl;
 }
 
-CVector INISection::GetCVector(std::string key, CVector defaultValue)
+CVector INISection::GetCVectorWithDefaultValue(std::string key, CVector defaultValue)
 {
     return CVector(
-        GetFloat(key + ".x", defaultValue.x),
-        GetFloat(key + ".y", defaultValue.y),
-        GetFloat(key + ".z", defaultValue.z)
+        GetFloatWithDefaultValue(key + ".x", defaultValue.x),
+        GetFloatWithDefaultValue(key + ".y", defaultValue.y),
+        GetFloatWithDefaultValue(key + ".z", defaultValue.z)
     );
+}
+
+void INISection::GetCVector(std::string key, CVector* pValue)
+{
+    *pValue = GetCVectorWithDefaultValue(key, *pValue);
 }
 
 void INISection::AddCVector(std::string key, CVector value)
@@ -105,12 +153,17 @@ void INISection::AddCVector(std::string key, CVector value)
     AddFloat(key + ".z", value.z);
 }
 
-CVector2D INISection::GetCVector2D(std::string key, CVector2D defaultValue)
+CVector2D INISection::GetCVector2DWithDefaultValue(std::string key, CVector2D defaultValue)
 {
     return CVector2D(
-        GetFloat(key + ".x", defaultValue.x),
-        GetFloat(key + ".y", defaultValue.y)
+        GetFloatWithDefaultValue(key + ".x", defaultValue.x),
+        GetFloatWithDefaultValue(key + ".y", defaultValue.y)
     );
+}
+
+void INISection::GetCVector2D(std::string key, CVector2D* pValue)
+{
+    *pValue = GetCVector2DWithDefaultValue(key, *pValue);
 }
 
 void INISection::AddCVector2D(std::string key, CVector2D value)
@@ -119,14 +172,19 @@ void INISection::AddCVector2D(std::string key, CVector2D value)
     AddFloat(key + ".y", value.y);
 }
 
-CRGBA INISection::GetCRGBA(std::string key, CRGBA defaultValue)
+CRGBA INISection::GetCRGBAWithDefaultValue(std::string key, CRGBA defaultValue)
 {
     return CRGBA(
-        GetInt(key + ".r", defaultValue.r),
-        GetInt(key + ".g", defaultValue.g),
-        GetInt(key + ".b", defaultValue.b),
-        GetInt(key + ".a", defaultValue.a)
+        GetIntWithDefaultValue(key + ".r", defaultValue.r),
+        GetIntWithDefaultValue(key + ".g", defaultValue.g),
+        GetIntWithDefaultValue(key + ".b", defaultValue.b),
+        GetIntWithDefaultValue(key + ".a", defaultValue.a)
     );
+}
+
+void INISection::GetCRGBA(std::string key, CRGBA* pValue)
+{
+    *pValue = GetCRGBAWithDefaultValue(key, *pValue);
 }
 
 void INISection::AddCRGBA(std::string key, CRGBA value)
@@ -135,4 +193,9 @@ void INISection::AddCRGBA(std::string key, CRGBA value)
     AddInt(key + ".g", value.g);
     AddInt(key + ".b", value.b);
     AddInt(key + ".a", value.a);
+}
+
+std::vector<int> INISection::GetIntVectorList(std::string key)
+{
+    auto valueStr = GetString(key);
 }

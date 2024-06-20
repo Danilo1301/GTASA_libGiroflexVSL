@@ -1,6 +1,6 @@
 #include "INIFile.h"
 
-#include "../Log.h"
+#include "Log.h"
 
 INISection* INIFile::AddSection(std::string key)
 {
@@ -79,6 +79,8 @@ bool INIFile::Read(std::string path)
 			return;
 		}
 
+		//Log::Level(LOG_LEVEL::LOG_BOTH) << "INIFile: PushSection with " << lines.size() << " lines" << std::endl;
+
 		std::cout << secname << ", " << lines.size() << " lines" << std::endl;
 
 		auto section = AddSection(secname);
@@ -87,6 +89,13 @@ bool INIFile::Read(std::string path)
 		{
 			if (line == lines[0]) continue;
 
+			if (line.find("=") == std::string::npos || line.rfind(";", 0) == 0)
+			{
+				//Log::Level(LOG_LEVEL::LOG_BOTH) << "INIFile: AddLine " << line << std::endl;
+				section->AddLine(line);
+				continue;
+			}
+
 			std::string key = line.substr(0, line.find("="));
 			key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
 
@@ -94,17 +103,10 @@ bool INIFile::Read(std::string path)
 			//section->values.push_back(line);
 			//
 
-			if (line.find("=") == std::string::npos)
-			{
-				//Log::file << "INIFile: AddLine " << line << std::endl;
-				section->AddLine(line);
-				continue;
-			}
-
 			std::string value = line.substr(line.find("=") + 1);
 			value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
 			
-			//Log::file << "INIFile: AddString " << key << " | " << value << std::endl;
+			//Log::Level(LOG_LEVEL::LOG_BOTH) << "INIFile: AddString " << key << " | " << value << std::endl;
 			section->AddString(key, value);
 		}
 
@@ -112,7 +114,7 @@ bool INIFile::Read(std::string path)
 		lines.clear();
 	};
 
-	PushSection();
+	//PushSection();
 
 	std::ifstream infile(path);
 
@@ -122,16 +124,12 @@ bool INIFile::Read(std::string path)
 	while (std::getline(infile, line))
 	{
 		std::cout << "Line: " << line << std::endl;
-
-		if (line.size() == 0)
-		{
-			PushSection();
-			continue;
-		}
+		//Log::Level(LOG_LEVEL::LOG_BOTH) << "INIFile: Line: " << line << std::endl;
 
 		char szSection[100];
-		if (sscanf(line.c_str(), "[%99[^]]]", szSection) == 1)
+
 		//if (sscanf_s(line.c_str(), "[%99[^]]]", szSection, sizeof(szSection)) == 1)
+		if (sscanf(line.c_str(), "[%99[^]]]", szSection) == 1)
 		{
 			PushSection();
 
