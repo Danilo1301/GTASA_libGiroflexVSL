@@ -176,7 +176,7 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 
 [3.3.1]
 [X] ADD: integration with modPolicia
-[ ] FIX: horn affecting all cars
+[X] FIX: horn affecting all cars
 
 Sugest�es:
 
