@@ -11,6 +11,9 @@
 #include "SoundSystem.h"
 #include "SirenSystem.h"
 
+#include "IModPolicia.h"
+extern IModPolicia* modPolicia;
+
 std::vector<SoundPanelButton*> WindowSoundPanel::m_buttons;
 std::vector<AudioStreamData> WindowSoundPanel::m_audioStreamData;
 int WindowSoundPanel::m_prevActiveIndex = -1;
@@ -439,6 +442,12 @@ void WindowSoundPanel::CreateStyle4()
 
 void WindowSoundPanel::Update(int dt)
 {
+	if(modPolicia)
+	{
+		if(modPolicia->IsRadioOpen()) return;
+		if(modPolicia->IsMenuOpen()) return;
+	}
+	
 	//enable if testing
 	//if (!m_visible) Toggle(true);
 
@@ -522,8 +531,6 @@ void WindowSoundPanel::Update(int dt)
 		}
 	}
 
-
-
 	if (!m_visible) return;
 
 	std::for_each(m_buttons.begin(), m_buttons.end(), [dt](SoundPanelButton* button) { button->Update(dt); });
@@ -558,6 +565,12 @@ void WindowSoundPanel::Update(int dt)
 
 void WindowSoundPanel::Draw()
 {
+	if(modPolicia)
+	{
+		if(modPolicia->IsRadioOpen()) return;
+		if(modPolicia->IsMenuOpen()) return;
+	}
+	
 	if (m_buttonToggleLights)
 	{
 		m_buttonToggleLights->Draw();

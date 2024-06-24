@@ -35,6 +35,9 @@ ISAUtils* sautils = NULL;
 static CSoundSystem soundsysLocal;
 CSoundSystem* soundsys = &soundsysLocal;
 
+#include "IModPolicia.h"
+IModPolicia* modPolicia = NULL;
+
 // ---------------------------------------
 
 CVector2D *m_vecCachedPos;
@@ -151,6 +154,14 @@ extern "C" void OnModLoad()
     //cfg->Save();
 
     SaveCfg();
+
+    //Mod Policia
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading ModPolicia..." << std::endl;
+    modPolicia = (IModPolicia*)GetInterface("ModPolicia");
+    if (modPolicia)
+    {
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModPolicia loaded" << std::endl;
+    }
 
     //CLEO
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading CLEO..." << std::endl;

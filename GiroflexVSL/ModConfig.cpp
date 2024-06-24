@@ -198,6 +198,11 @@ void ModConfig::SaveSettings()
     generalSection->AddIntFromBool("turn_on_lights_with_siren", ModConfig::TurnOnLightsWithSiren);
     generalSection->AddIntFromBool("enable_deep_log", Log::deepLogEnabled);
 
+    generalSection->AddLine("");
+    generalSection->AddLine("; Fixes the loud siren sound when camera gets closer to vehicle (or when your camera is inside the vehicle)");
+    generalSection->AddLine("; 0 = disabled | 1 = enabled");
+    generalSection->AddIntFromBool("fix_loud_siren_sounds", SirenSystem::FixLoudSounds);
+
     auto soundPanelSection = file.AddSection("SoundPanel");
     soundPanelSection->AddIntFromBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
     soundPanelSection->AddIntFromBool("show_on_enter_vehicle", WindowSoundPanel::m_showOnEnterVehicle);
@@ -327,6 +332,7 @@ void ModConfig::LoadSettings()
         generalSection->GetBoolFromInt("ignore_message_old_version", &ModConfig::IgnoreOldModVersionMessage);
         generalSection->GetBoolFromInt("turn_on_lights_with_siren", &ModConfig::TurnOnLightsWithSiren);
         generalSection->GetBoolFromInt("enable_deep_log", &Log::deepLogEnabled);
+        generalSection->GetBoolFromInt("fix_loud_siren_sounds", &SirenSystem::FixLoudSounds);
     }
 
     auto soundPanelSections = file.GetSections("SoundPanel");

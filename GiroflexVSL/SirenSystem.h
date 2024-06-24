@@ -34,6 +34,7 @@ class SirenSystem {
 public:
 	static std::string m_DefaultGroupId;
 	static std::map<std::string, SirenGroup*> m_SirenGroups;
+	static bool FixLoudSounds;
 
 	static void Load();
 	static void LoadConfig();

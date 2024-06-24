@@ -11,6 +11,7 @@
 
 std::string SirenSystem::m_DefaultGroupId = "";
 std::map<std::string, SirenGroup*> SirenSystem::m_SirenGroups;
+bool SirenSystem::FixLoudSounds = true;
 
 extern IBASS* BASS;
 extern CCamera* camera;
@@ -107,8 +108,6 @@ void SirenSystem::LoadVehicles()
 		auto sections = file.GetSections("Compatible_Vehicles");
 		if (sections.size() == 0) return;
 		auto section = sections[0];
-
-		float volume = 0.2f;
 
 		for (auto value : section->values)
 		{
@@ -279,30 +278,34 @@ void SirenSystem::Update(int dt)
 
 	auto vehicle = Vehicles::GetVehicleByHandle(hVehicle);
 	auto modelId = vehicle->modelId;
+	auto playerVehicle = Globals::GetPlayerVehicle();
 
-	if(horn && sirenState == true)
+	if(vehicle == playerVehicle)
 	{
-		if(Widgets::IsWidgetPressed(7))
+		if(horn && sirenState == true)
 		{
-			auto timePressed = Widgets::m_Widgets[7].timePressed;
-
-			if(timePressed > 100)
+			if(Widgets::IsWidgetPressed(7))
 			{
-				if(!hornState)
+				auto timePressed = Widgets::m_Widgets[7].timePressed;
+
+				if(timePressed > 100)
 				{
-					ToggleHorn(true);
-					ToggleSiren(false);
+					if(!hornState)
+					{
+						ToggleHorn(true);
+						ToggleSiren(false);
+					}
 				}
 			}
 		}
-	}
 
-	if(horn && hornState)
-	{
-		if(Widgets::IsWidgetJustReleased(7))
+		if(horn && hornState)
 		{
-			ToggleHorn(false);
-			ToggleSiren(true);
+			if(Widgets::IsWidgetJustReleased(7))
+			{
+				ToggleHorn(false);
+				ToggleSiren(true);
+			}
 		}
 	}
 
@@ -310,21 +313,24 @@ void SirenSystem::Update(int dt)
     CVector cameraPosition = pMatrix->pos;
 	CVector vehiclePositon = vehicle->position;
 
-	for(auto siren : sirens)
+	if(FixLoudSounds)
 	{
-		auto distanceFromCamera = DistanceBetween(vehiclePositon, cameraPosition);
-		auto maxDistance = 10.0f;
-
-		if(distanceFromCamera < maxDistance)
+		for(auto siren : sirens)
 		{
-			auto mult = distanceFromCamera/maxDistance;
-			if(mult < 0.10f) mult = 0.10f;
+			auto distanceFromCamera = DistanceBetween(vehiclePositon, cameraPosition);
+			auto maxDistance = 10.0f;
+		
+			if(distanceFromCamera < maxDistance)
+			{
+				auto mult = distanceFromCamera/maxDistance;
+				if(mult < 0.10f) mult = 0.10f;
 
-			//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "mult: " << mult << "| d: " << distanceFromCamera << std::endl;
+				//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "mult: " << mult << "| d: " << distanceFromCamera << std::endl;
 
-			siren->SetVolume(mult);
-		} else {
-			siren->SetVolume(1.0f);
+				siren->SetVolume(mult);
+			} else {
+				siren->SetVolume(1.0f);
+			}
 		}
 	}
 

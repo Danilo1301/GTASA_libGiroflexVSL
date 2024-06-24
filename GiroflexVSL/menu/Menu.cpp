@@ -330,8 +330,10 @@ void Menu::RemoveWindow(Window* window)
 
 void Menu::RemoveAllWindows()
 {
-    while (m_Windows.size() > 0) {
-        RemoveWindow(m_Windows[0]);
+    for(auto window : m_Windows)
+    {
+        if(window == m_MainWindow) continue;
+        window->canBeRemoved = true;
     }
 }
 
