@@ -35,6 +35,8 @@ public:
 	static std::string m_DefaultGroupId;
 	static std::map<std::string, SirenGroup*> m_SirenGroups;
 	static bool FixLoudSounds;
+	static float m_VolumeSirens;
+	static float m_VolumeRadio;
 
 	static void Load();
 	static void LoadConfig();
@@ -51,16 +53,20 @@ public:
 
 	int hVehicle = 0;
 
-	bool hornState = false;
-	bool sirenState = false;
+	//bool hornState = false;
+	bool sirenState = false; //if siren is enabled or not (still true if its paused)
+	//bool sirenSoundState = false; //if siren sound is playing or not
 	int currentSirenIndex = 0;
 
 	CAudioStream* horn = NULL;
 	std::vector<CAudioStream*> sirens;
 
 	CAudioStream* radio = NULL;
+	int radioIndex = 0;
 
-	int prevSirenIndex = 0; //to fix
+	unsigned int timeChangeSiren = 0;
+	unsigned int maxTimeChangeSiren = 10000;
+	int npcChangedSirenTo = -2;
 
 	SirenSystem(int hVehicle);
 
@@ -70,9 +76,17 @@ public:
 	void Update(int dt);
 	void Destroy();
 
-	void ToggleHorn(bool enabled);
+	bool IsSirenSoundPlaying(int sirenIndex);
+	bool IsHornSoundPlaying();
+	bool HasSiren(int sirenIndex);
+
+	void ToggleHornSound(bool enabled);
+	void ToggleSirenSound(int sirenIndex, bool enabled);
 	void ToggleSiren(bool enabled);
+	void SetSiren(int sirenIndex);
+	void ToggleHornAndStopSiren(bool enabled);
 	void ChangeSirenByOne();
 
 	void ToggleRadio(bool enabled);
+	void ChangeRadio(int radioId);
 };

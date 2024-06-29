@@ -1,10 +1,12 @@
 #pragma once
 
-class GiroflexVSL {
-public:
-    static const char* m_Version;
+#include "IGiroflexVSL.h"
 
-    static void Update(int dt);
-    static void ProcessMenuButtons(int dt);
-    static void ProcessTestMenuButtons(int dt);
+class GiroflexVSL : public IGiroflexVSL {
+public:
+    bool HasModelInfo(int modelId);
+    void ToggleGiroflex(int hVehicle);
+    bool GetVehiclePrevLightsState(int hVehicle);
 };
+
+extern IGiroflexVSL* giroflexVSL;

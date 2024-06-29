@@ -8,11 +8,14 @@ struct WidgetData {
     bool hasJustReleased = false;
     bool hasJustFastReleased = false;
     unsigned int timePressed = 0;
+    unsigned int timeNotPressed = 0;
+    int quickClicks = 0;
 };
 
 class Widgets {
 public:
     static std::map<int, WidgetData> m_Widgets;
+    static const int DOUBLE_CLICK_TIME;
 
     static void Update(int dt);
 
@@ -22,4 +25,5 @@ public:
     static bool IsWidgetJustPressed(int widgetId);
     static bool IsWidgetJustReleased(int widgetId);
     static bool IsWidgetJustFastReleased(int widgetId);
+    static bool IsWidgetDoubleClicked(int widgetId);
 };

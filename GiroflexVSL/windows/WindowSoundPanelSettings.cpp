@@ -22,15 +22,36 @@ void WindowSoundPanelSettings::Create()
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto radio = window->AddCheckbox(96, &m_RadioEnabled);
-	radio->onValueChange = [radio]() {
+	auto audiosPath = ModConfig::GetConfigFolder() + "/audios/";
+	auto radioPath = audiosPath + "/radio/radio";
+	auto radioSounds = ModConfig::FindRandomFileVariations(radioPath, 1, ".wav");
+
+	auto radio_options = window->AddOptions(96);
+	radio_options->AddOption(84, 0, 0);
+	for(int i = 0; i < radioSounds.size(); i++)
+	{
+		radio_options->AddOption(1, i+1, 0);
+	}
+	radio_options->onValueChange = [radio_options]() {
+		auto index = radio_options->optionsValue;
+
 		auto vehicle = Globals::GetPlayerVehicle();
 
 		if(vehicle)
 		{
-			vehicle->sirenSystem->ToggleRadio(m_RadioEnabled);
+			if(index == 0)
+			{
+				vehicle->sirenSystem->ToggleRadio(false);
+			} else {
+				vehicle->sirenSystem->ChangeRadio(index - 1);
+				vehicle->sirenSystem->ToggleRadio(true);
+			}
 		}
 	};
+
+	auto volume_radio = window->AddFloatRange(99, &SirenSystem::m_VolumeRadio, 0.0f, 5.0f, 0.05f);
+
+	auto volume_sirens = window->AddFloatRange(98, &SirenSystem::m_VolumeSirens, 0.0f, 5.0f, 0.05f);
 
 	auto showOnEnterVehicle = window->AddCheckbox(86, &WindowSoundPanel::m_showOnEnterVehicle);
 	showOnEnterVehicle->onValueChange = []() {
@@ -91,7 +112,7 @@ void WindowSoundPanelSettings::Create()
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto allow_multiple_sounds = window->AddCheckbox(90, &WindowSoundPanel::m_allowMultipleSounds);
+	//auto allow_multiple_sounds = window->AddCheckbox(90, &WindowSoundPanel::m_allowMultipleSounds);
 
 	auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
 	button_close->onClick = []()

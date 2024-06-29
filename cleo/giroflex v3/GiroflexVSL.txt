@@ -152,14 +152,14 @@ end
 
 0000:
 0390: load_txd_dictionary 'TXD'
-038F: load_texture "gtxd1" as 1
-038F: load_texture "gtxd2" as 2
-038F: load_texture "gtxd3" as 3
-038F: load_texture "gtxd4" as 4
-038F: load_texture "gtxd5" as 5
-038F: load_texture "gtxd6" as 6
-038F: load_texture "gtxd7" as 7
-038F: load_texture "gtxd8" as 8
+038F: load_texture "gtxd1" as 201
+038F: load_texture "gtxd2" as 202
+038F: load_texture "gtxd3" as 203
+038F: load_texture "gtxd4" as 204
+038F: load_texture "gtxd5" as 205
+038F: load_texture "gtxd6" as 206
+038F: load_texture "gtxd7" as 207
+038F: load_texture "gtxd8" as 208
 
 /*
 03CF: load_wav 2000 as 1
@@ -1040,5 +1040,13 @@ end
 if VAR_GxtId == 97
 then
      VAR_STR_1 = "DGFX97"
+end
+if VAR_GxtId == 98
+then
+     VAR_STR_1 = "DGFX98"
+end
+if VAR_GxtId == 99
+then
+     VAR_STR_1 = "DGFX99"
 end
 return

@@ -16,7 +16,7 @@ extern IModPolicia* modPolicia;
 
 std::vector<SoundPanelButton*> WindowSoundPanel::m_buttons;
 std::vector<AudioStreamData> WindowSoundPanel::m_audioStreamData;
-int WindowSoundPanel::m_prevActiveIndex = -1;
+//int WindowSoundPanel::m_prevActiveIndex = -1;
 bool WindowSoundPanel::m_allowMultipleSounds = false;
 bool WindowSoundPanel::m_showOnEnterVehicle = true;
 bool WindowSoundPanel::m_showButtonToggleLights = true;
@@ -34,6 +34,9 @@ SoundPanelButton* WindowSoundPanel::m_buttonSirenToggle = NULL;
 
 SoundPanelButton* WindowSoundPanel::m_buttonToggleLights = NULL;
 
+Vehicle* prevVehicle = NULL;
+static int prevAudioStreamDataIndex = -1;
+
 void WindowSoundPanel::Toggle(bool state)
 {
 	if (m_visible == state) return;
@@ -45,7 +48,7 @@ void WindowSoundPanel::Toggle(bool state)
 		Create();
 	}
 	else {
-		StopAllSounds();
+		//StopAllSounds();
 		DestroyButtons();
 	}
 }
@@ -83,7 +86,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenHorn = AddButton();
 	buttonSirenHorn->position = m_position + CVector2D(0, 0);
 	buttonSirenHorn->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenHorn->sprite.spriteId = 4;
+	buttonSirenHorn->sprite.spriteId = 204;
 	buttonSirenHorn->text.gxtId = 1;
 	buttonSirenHorn->text.num1 = 1;
 	buttonSirenHorn->text.color = CRGBA(0, 0, 0, 0);
@@ -95,7 +98,7 @@ void WindowSoundPanel::CreateStyle1()
 		//Menu::ShowPopup(1, isActive ? 1 : 0, 0, 1000.0f);
 
 		auto vehicle = Globals::GetPlayerVehicle();
-		vehicle->sirenSystem->ToggleHorn(isActive);
+		vehicle->sirenSystem->ToggleHornSound(isActive);
 
 		//SoundPanelSystem::ToggleHorn(isActive);
 	};
@@ -104,7 +107,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenToggle = AddButton();
 	buttonSirenToggle->position = m_position + CVector2D(5.0f + buttonSize, 0);
 	buttonSirenToggle->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenToggle->sprite.spriteId = 8;
+	buttonSirenToggle->sprite.spriteId = 208;
 	//buttonSirenToggle->text.gxtId = 1;
 	//buttonSirenToggle->text.num1 = 1;
 	buttonSirenToggle->text.color = CRGBA(0, 0, 0, 0);
@@ -125,7 +128,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenTone = AddButton();
 	buttonSirenTone->position = m_position + CVector2D(2 * (5.0f + buttonSize), 0);
 	buttonSirenTone->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenTone->sprite.spriteId = 5;
+	buttonSirenTone->sprite.spriteId = 205;
 	buttonSirenTone->text.gxtId = 1;
 	//buttonSirenTone->text.num1 = SoundPanelSystem::currentSirenIndex;
 	buttonSirenTone->text.color = CRGBA(255, 255, 255);
@@ -144,7 +147,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSettings = AddButton();
 	buttonSettings->position = m_position + CVector2D(3 * (5.0f + buttonSize), 0);
 	buttonSettings->size = CVector2D(buttonSize, buttonSize);
-	buttonSettings->sprite.spriteId = 7;
+	buttonSettings->sprite.spriteId = 207;
 	//buttonSettings->text.gxtId = 1;
 	buttonSettings->text.color = CRGBA(0, 0, 0, 0);
 	buttonSettings->color = white;
@@ -186,7 +189,7 @@ void WindowSoundPanel::CreateStyle2()
 		button->position = currentPos;
 		button->size = CVector2D(buttonSize, buttonSize);
 		button->text.gxtId = 1;
-		button->text.num1 = i + 1;
+		button->text.num1 = i;
 		button->text.color = textDefaultColor;
 		button->color = buttonDefaultColor;
 		button->drawOutline = true;
@@ -194,12 +197,12 @@ void WindowSoundPanel::CreateStyle2()
 		button->activeColor = buttonActiveColor;
 		button->blinkOnActive = true;
 
-		if (i == 0 || i == 1)
+		if (i == 0) //i know this doesnt make sense but why not do it
 		{
-			AddButtonToAudioList(button, i + 1, true);
+			AddButtonToAudioList(button, 0);
 		}
 		else {
-			AddButtonToAudioList(button, i + 1);
+			AddButtonToAudioList(button, i);
 		}
 
 
@@ -247,7 +250,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSettings = AddButton();
 	buttonSettings->position = bgPosition + CVector2D(3, 3);
 	buttonSettings->size = CVector2D(38, 25);
-	buttonSettings->sprite.spriteId = 3;
+	buttonSettings->sprite.spriteId = 203;
 	buttonSettings->text.gxtId = 20;
 	buttonSettings->text.color = textDefaultColor;
 	buttonSettings->color = CRGBA(128, 128, 128);
@@ -256,34 +259,45 @@ void WindowSoundPanel::CreateStyle3()
 		WindowSoundPanelSettings::Create();
 	};
 
+	auto buttonSirenHorn = AddButton();
+	buttonSirenHorn->position = bgPosition + CVector2D(3, 29);
+	buttonSirenHorn->size = CVector2D(50, 35);
+	buttonSirenHorn->sprite.spriteId = 201;
+	buttonSirenHorn->text.gxtId = 1;
+	buttonSirenHorn->text.num1 = 0;
+	buttonSirenHorn->text.color = textDefaultColor;
+	buttonSirenHorn->color = buttonDefaultColor;
+	buttonSirenHorn->activeColor = buttonActiveColor;
+	AddButtonToAudioList(buttonSirenHorn, 0);
+
 	auto buttonSiren1 = AddButton();
-	buttonSiren1->position = bgPosition + CVector2D(3, 29);
-	buttonSiren1->size = CVector2D(50, 35);
-	buttonSiren1->sprite.spriteId = 1;
+	buttonSiren1->position = bgPosition + CVector2D(3, 65);
+	buttonSiren1->size = CVector2D(63, 35);
+	buttonSiren1->sprite.spriteId = 201;
 	buttonSiren1->text.gxtId = 1;
 	buttonSiren1->text.num1 = 1;
 	buttonSiren1->text.color = textDefaultColor;
 	buttonSiren1->color = buttonDefaultColor;
 	buttonSiren1->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren1, 1, true);
+	AddButtonToAudioList(buttonSiren1, 1);
+
+	//
 
 	auto buttonSiren2 = AddButton();
-	buttonSiren2->position = bgPosition + CVector2D(3, 65);
-	buttonSiren2->size = CVector2D(63, 35);
-	buttonSiren2->sprite.spriteId = 1;
+	buttonSiren2->position = bgPosition + CVector2D(67, 29);
+	buttonSiren2->size = CVector2D(50, 35);
+	buttonSiren2->sprite.spriteId = 203;
 	buttonSiren2->text.gxtId = 1;
 	buttonSiren2->text.num1 = 2;
 	buttonSiren2->text.color = textDefaultColor;
 	buttonSiren2->color = buttonDefaultColor;
 	buttonSiren2->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren2, 2, true);
-
-	//
+	AddButtonToAudioList(buttonSiren2, 2);
 
 	auto buttonSiren3 = AddButton();
-	buttonSiren3->position = bgPosition + CVector2D(67, 29);
+	buttonSiren3->position = bgPosition + CVector2D(67, 65);
 	buttonSiren3->size = CVector2D(50, 35);
-	buttonSiren3->sprite.spriteId = 3;
+	buttonSiren3->sprite.spriteId = 203;
 	buttonSiren3->text.gxtId = 1;
 	buttonSiren3->text.num1 = 3;
 	buttonSiren3->text.color = textDefaultColor;
@@ -291,10 +305,12 @@ void WindowSoundPanel::CreateStyle3()
 	buttonSiren3->activeColor = buttonActiveColor;
 	AddButtonToAudioList(buttonSiren3, 3);
 
+	//
+
 	auto buttonSiren4 = AddButton();
-	buttonSiren4->position = bgPosition + CVector2D(67, 65);
+	buttonSiren4->position = bgPosition + CVector2D(118, 29);
 	buttonSiren4->size = CVector2D(50, 35);
-	buttonSiren4->sprite.spriteId = 3;
+	buttonSiren4->sprite.spriteId = 203;
 	buttonSiren4->text.gxtId = 1;
 	buttonSiren4->text.num1 = 4;
 	buttonSiren4->text.color = textDefaultColor;
@@ -302,12 +318,10 @@ void WindowSoundPanel::CreateStyle3()
 	buttonSiren4->activeColor = buttonActiveColor;
 	AddButtonToAudioList(buttonSiren4, 4);
 
-	//
-
 	auto buttonSiren5 = AddButton();
-	buttonSiren5->position = bgPosition + CVector2D(118, 29);
+	buttonSiren5->position = bgPosition + CVector2D(118, 65);
 	buttonSiren5->size = CVector2D(50, 35);
-	buttonSiren5->sprite.spriteId = 3;
+	buttonSiren5->sprite.spriteId = 203;
 	buttonSiren5->text.gxtId = 1;
 	buttonSiren5->text.num1 = 5;
 	buttonSiren5->text.color = textDefaultColor;
@@ -315,23 +329,12 @@ void WindowSoundPanel::CreateStyle3()
 	buttonSiren5->activeColor = buttonActiveColor;
 	AddButtonToAudioList(buttonSiren5, 5);
 
-	auto buttonSiren6 = AddButton();
-	buttonSiren6->position = bgPosition + CVector2D(118, 65);
-	buttonSiren6->size = CVector2D(50, 35);
-	buttonSiren6->sprite.spriteId = 3;
-	buttonSiren6->text.gxtId = 1;
-	buttonSiren6->text.num1 = 6;
-	buttonSiren6->text.color = textDefaultColor;
-	buttonSiren6->color = buttonDefaultColor;
-	buttonSiren6->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren6, 6);
-
 	//
 
 	auto buttonClose = AddButton();
 	buttonClose->position = bgPosition + CVector2D(194, 3);
 	buttonClose->size = CVector2D(38, 25);
-	buttonClose->sprite.spriteId = 3;
+	buttonClose->sprite.spriteId = 203;
 	buttonClose->text.gxtId = 10;
 	buttonClose->text.color = textDefaultColor;
 	buttonClose->color = CRGBA(220, 145, 145);;
@@ -340,27 +343,27 @@ void WindowSoundPanel::CreateStyle3()
 		WindowSoundPanel::Toggle(false);
 	};
 
+	auto buttonSiren6 = AddButton();
+	buttonSiren6->position = bgPosition + CVector2D(182, 29);
+	buttonSiren6->size = CVector2D(50, 35);
+	buttonSiren6->sprite.spriteId = 202;
+	buttonSiren6->text.gxtId = 1;
+	buttonSiren6->text.num1 = 7;
+	buttonSiren6->text.color = textDefaultColor;
+	buttonSiren6->color = buttonDefaultColor;
+	buttonSiren6->activeColor = buttonActiveColor;
+	AddButtonToAudioList(buttonSiren6, 6);
+
 	auto buttonSiren7 = AddButton();
-	buttonSiren7->position = bgPosition + CVector2D(182, 29);
-	buttonSiren7->size = CVector2D(50, 35);
-	buttonSiren7->sprite.spriteId = 2;
+	buttonSiren7->position = bgPosition + CVector2D(169, 65);
+	buttonSiren7->size = CVector2D(63, 35);
+	buttonSiren7->sprite.spriteId = 202;
 	buttonSiren7->text.gxtId = 1;
-	buttonSiren7->text.num1 = 7;
+	buttonSiren7->text.num1 = 8;
 	buttonSiren7->text.color = textDefaultColor;
 	buttonSiren7->color = buttonDefaultColor;
 	buttonSiren7->activeColor = buttonActiveColor;
 	AddButtonToAudioList(buttonSiren7, 7);
-
-	auto buttonSiren8 = AddButton();
-	buttonSiren8->position = bgPosition + CVector2D(169, 65);
-	buttonSiren8->size = CVector2D(63, 35);
-	buttonSiren8->sprite.spriteId = 2;
-	buttonSiren8->text.gxtId = 1;
-	buttonSiren8->text.num1 = 8;
-	buttonSiren8->text.color = textDefaultColor;
-	buttonSiren8->color = buttonDefaultColor;
-	buttonSiren8->activeColor = buttonActiveColor;
-	AddButtonToAudioList(buttonSiren8, 8);
 }
 
 void WindowSoundPanel::CreateStyle4()
@@ -393,7 +396,7 @@ void WindowSoundPanel::CreateStyle4()
 			button->position = currentPos + offset;
 			button->size = CVector2D(buttonSize, buttonSize);
 			button->text.gxtId = 1;
-			button->text.num1 = i + 1;
+			button->text.num1 = i;
 			button->text.color = textDefaultColor;
 			button->color = buttonDefaultColor;
 			button->drawOutline = true;
@@ -424,13 +427,12 @@ void WindowSoundPanel::CreateStyle4()
 				};
 			}
 			else {
-
-				if (i == 0 || i == 1)
+				if (i == 0) //i know this doesnt make sense but why not do it
 				{
-					AddButtonToAudioList(button, i + 1, true);
+					AddButtonToAudioList(button, 0);
 				}
 				else {
-					AddButtonToAudioList(button, i + 1);
+					AddButtonToAudioList(button, i);
 				}
 			}
 
@@ -438,7 +440,6 @@ void WindowSoundPanel::CreateStyle4()
 		}
 	}
 }
-
 
 void WindowSoundPanel::Update(int dt)
 {
@@ -448,6 +449,11 @@ void WindowSoundPanel::Update(int dt)
 		if(modPolicia->IsMenuOpen()) return;
 	}
 	
+	if(auto vehicle = Globals::GetPlayerVehicle())
+	{
+		prevVehicle = vehicle;
+	}
+
 	//enable if testing
 	//if (!m_visible) Toggle(true);
 
@@ -467,7 +473,7 @@ void WindowSoundPanel::Update(int dt)
 				auto buttonToggleLights = m_buttonToggleLights = new SoundPanelButton();
 				buttonToggleLights->position = m_position + CVector2D(4 * (5.0f + buttonSize), 0);
 				buttonToggleLights->size = CVector2D(buttonSize, buttonSize);
-				buttonToggleLights->sprite.spriteId = 6;
+				buttonToggleLights->sprite.spriteId = 206;
 				//buttonToggleLights->text.gxtId = 1;
 				//buttonToggleLights->text.num1 = 1;
 				buttonToggleLights->text.color = CRGBA(0, 0, 0, 0);
@@ -612,6 +618,8 @@ void WindowSoundPanel::DestroyButtons()
 	}
 
 	m_audioStreamData.clear();
+
+	prevAudioStreamDataIndex = -1;
 }
 
 SoundPanelButton* WindowSoundPanel::AddButton()
@@ -623,38 +631,71 @@ SoundPanelButton* WindowSoundPanel::AddButton()
 
 void WindowSoundPanel::RecreateButtons()
 {
-	StopAllSounds();
+	//StopAllSounds();
 	DestroyButtons();
 	Create();
 }
 
-void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioId, bool horn)
+void WindowSoundPanel::AddButtonToAudioList(SoundPanelButton* button, int audioId)
 {
 	std::string audiosPath = ModConfig::GetConfigFolder() + "/audios/";
 
 	AudioStreamData audioStreamData;
+	audioStreamData.audioId = audioId;
 	audioStreamData.button = button;
-	audioStreamData.audioStream = SoundSystem::LoadStream(audiosPath + "/siren" + std::to_string(audioId) + ".wav", false);
-	audioStreamData.audioStream->Loop(true);
-	audioStreamData.audioStream->SetVolume(0.5f);
+
+	int dataIndex = m_audioStreamData.size();
 
 	m_audioStreamData.push_back(audioStreamData);
 
-	if (horn)
+	if (audioId == 0)
 	{
 		button->onPressBegin = [audioStreamData]() {
-			audioStreamData.audioStream->Play();
+			auto vehicle = Globals::GetPlayerVehicle();
+			vehicle->sirenSystem->ToggleHornAndStopSiren(true);
+
 			audioStreamData.button->isActive = true;
 		};
 
 		button->onPressEnd = [audioStreamData]() {
-			audioStreamData.audioStream->Stop();
+			auto vehicle = Globals::GetPlayerVehicle();
+			vehicle->sirenSystem->ToggleHornAndStopSiren(false);
+
 			audioStreamData.button->isActive = false;
 		};
 	}
 	else {
-		button->onClick = [audioId]() {
-			ToggleAudioButton(audioId - 1);
+		if(auto vehicle = Globals::GetPlayerVehicle())
+		{
+			if(vehicle->sirenSystem->HasSiren(audioId - 1))
+			{
+				if(vehicle->sirenSystem->IsSirenSoundPlaying(audioId - 1))
+				{
+					button->isActive = true;
+
+					prevAudioStreamDataIndex = dataIndex;
+				}
+			}
+		}
+
+		button->onClick = [audioId, audioStreamData, dataIndex]() {
+			auto vehicle = Globals::GetPlayerVehicle();
+
+			if(prevAudioStreamDataIndex > 0 && prevAudioStreamDataIndex != dataIndex) {
+				m_audioStreamData[prevAudioStreamDataIndex].button->isActive = false;
+				//prevAudioStreamData = NULL; //not necessary
+				vehicle->sirenSystem->ToggleSiren(false);
+			}
+
+			if(!vehicle->sirenSystem->sirenState) //&&vehicle->sirenSystem->HasSiren(audioId - 1)
+			{
+				vehicle->sirenSystem->ToggleSiren(true);
+				vehicle->sirenSystem->SetSiren(audioId - 1);
+
+				prevAudioStreamDataIndex = dataIndex;
+			} else {
+				vehicle->sirenSystem->ToggleSiren(false);
+			}
 		};
 	}
 }
@@ -663,6 +704,7 @@ void WindowSoundPanel::ToggleAudioButton(int index)
 {
 	//Menu::ShowPopup(1, index, 0, 1000.0f);
 
+	/*
 	AudioStreamData* audioStreamData = &m_audioStreamData[index];
 
 	if (!audioStreamData->audioStream->OK) return;
@@ -688,14 +730,23 @@ void WindowSoundPanel::ToggleAudioButton(int index)
 	audioStreamData->button->isActive = audioStreamData->audioStream->GetState() == 1;
 
 	m_prevActiveIndex = index;
+	*/
 }
 
 void WindowSoundPanel::StopAllSounds()
 {
-	m_prevActiveIndex = -1;
+	//m_prevActiveIndex = -1;
 
+	if(prevVehicle)
+	{
+		prevVehicle->sirenSystem->ToggleHornSound(false);
+		prevVehicle->sirenSystem->ToggleSiren(false);
+	}
+
+	/*
 	std::for_each(m_audioStreamData.begin(), m_audioStreamData.end(), [](AudioStreamData& audioStreamData) {
 		audioStreamData.audioStream->Stop();
 		audioStreamData.button->isActive = false;
 	});
+	*/
 }

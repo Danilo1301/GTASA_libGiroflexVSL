@@ -10,6 +10,12 @@ class CSoundSystem;
 class CAudioStream;
 class C3DAudioStream;
 
+enum AudioStreamState {
+    STREAM_STOPPED = -1,
+    STREAM_PLAYING_OR_STALLED = 1,
+    STREAM_PAUSED = 2
+};
+
 extern CSoundSystem* soundsys;
 class CSoundSystem
 {
@@ -72,7 +78,7 @@ public:
     void Stop();
     void Resume();
     uint64_t GetLength();
-    int GetState();
+    AudioStreamState GetState();
     float GetVolume();
     void SetVolume(float val);
     void Loop(bool enable);

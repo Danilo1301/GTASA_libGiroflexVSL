@@ -11,7 +11,7 @@
 #include "mod/config.h"
 
 #include "Log.h"
-#include "GiroflexVSL.h"
+#include "Mod.h"
 #include "ModelInfos.h"
 #include "Patterns.h"
 #include "ConvertOldVersion.h"
@@ -179,7 +179,7 @@ void ModConfig::SaveVehicles()
             value["lightGroups"].append( lightGroup->ToJSON() );
         }
 
-        value["version"] = GiroflexVSL::m_Version;
+        value["version"] = Mod::m_Version;
 
 	    WriteToFile(path, value);
     }
@@ -202,6 +202,8 @@ void ModConfig::SaveSettings()
     generalSection->AddLine("; Fixes the loud siren sound when camera gets closer to vehicle (or when your camera is inside the vehicle)");
     generalSection->AddLine("; 0 = disabled | 1 = enabled");
     generalSection->AddIntFromBool("fix_loud_siren_sounds", SirenSystem::FixLoudSounds);
+    generalSection->AddFloat("volume_sirens", SirenSystem::m_VolumeSirens);
+    generalSection->AddFloat("volume_radio", SirenSystem::m_VolumeRadio);
 
     auto soundPanelSection = file.AddSection("SoundPanel");
     soundPanelSection->AddIntFromBool("allow_multiple_sound", WindowSoundPanel::m_allowMultipleSounds);
@@ -333,6 +335,8 @@ void ModConfig::LoadSettings()
         generalSection->GetBoolFromInt("turn_on_lights_with_siren", &ModConfig::TurnOnLightsWithSiren);
         generalSection->GetBoolFromInt("enable_deep_log", &Log::deepLogEnabled);
         generalSection->GetBoolFromInt("fix_loud_siren_sounds", &SirenSystem::FixLoudSounds);
+        generalSection->GetFloat("volume_sirens", &SirenSystem::m_VolumeSirens);
+        generalSection->GetFloat("volume_radio", &SirenSystem::m_VolumeRadio);
     }
 
     auto soundPanelSections = file.GetSections("SoundPanel");
@@ -373,7 +377,7 @@ std::string ModConfig::ReadVersionFile()
 void ModConfig::ProcessVersionChanges_PreConfigLoad()
 {
     std::string prevVersion = ReadVersionFile();
-    std::string currentVersion = GiroflexVSL::m_Version;
+    std::string currentVersion = Mod::m_Version;
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: [PRE] Updating from " << prevVersion << " to " << currentVersion << std::endl;
 
@@ -394,7 +398,7 @@ void ModConfig::ProcessVersionChanges_PreConfigLoad()
 void ModConfig::ProcessVersionChanges_PostConfigLoad()
 {
     std::string prevVersion = ReadVersionFile();
-    std::string currentVersion = GiroflexVSL::m_Version;
+    std::string currentVersion = Mod::m_Version;
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "ModConfig: [POST] Updating from " << prevVersion << " to " << currentVersion << std::endl;
     
@@ -419,4 +423,37 @@ void ModConfig::ProcessVersionChanges_PostConfigLoad()
     file.open(path, std::fstream::out);
     file << currentVersion;
     file.close();
+}
+
+std::vector<std::string> ModConfig::FindRandomFileVariations(std::string src, int startNumber, std::string suffix)
+{
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Trying to find file variations for " << src << ", suffix: " << suffix << std::endl;
+
+    std::vector<std::string> results;
+
+    int i = startNumber;
+    bool canLoop = true;
+    do
+    {
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "Trying to find file variation: " << i << std::endl;
+
+        auto filePath = src + std::to_string(i) + suffix;
+
+        if(FileExists(filePath))
+        {
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Found" << std::endl;
+            results.push_back(filePath);
+
+            i++;
+        } else {
+            Log::Level(LOG_LEVEL::LOG_BOTH) << "Not found" << std::endl;
+            canLoop = false;
+        }
+    } while (canLoop);
+    
+    int numVariations = i - 1;
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Found " << numVariations << " variations" << std::endl;
+
+    return results;
 }

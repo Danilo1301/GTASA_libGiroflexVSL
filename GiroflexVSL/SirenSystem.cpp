@@ -12,9 +12,14 @@
 std::string SirenSystem::m_DefaultGroupId = "";
 std::map<std::string, SirenGroup*> SirenSystem::m_SirenGroups;
 bool SirenSystem::FixLoudSounds = true;
+float SirenSystem::m_VolumeSirens = 1.0f;
+float SirenSystem::m_VolumeRadio = 3.0f;
 
 extern IBASS* BASS;
 extern CCamera* camera;
+
+const int CHANGED_SIREN_TO_NONE = -2;
+const int CHANGED_SIREN_TO_HORN = -1;
 
 void SirenSystem::Load()
 {
@@ -237,26 +242,37 @@ void SirenSystem::LoadAudios()
 
 	auto sirenGroup = SirenSystem::GetSirenGroupForModelId(modelId);
 
-	horn = SoundSystem::LoadStream(sirenGroup->hornDir, true);
-	horn->Loop(true);
-	horn->Link(vehicle->pVehicle);
-
-	for(auto sirenDir : sirenGroup->sirensDir)
+	if(!horn)
 	{
-		auto siren = SoundSystem::LoadStream(sirenDir, true);
-		siren->Loop(true);
-		siren->Link(vehicle->pVehicle);
+		horn = SoundSystem::LoadStream(sirenGroup->hornDir, true);
+		horn->Loop(true);
+		horn->Link(vehicle->pVehicle);
+		horn->SetVolume(m_VolumeRadio);
+	}
 
-		sirens.push_back(siren);
+	if(sirens.size() == 0)
+	{
+		for(auto sirenDir : sirenGroup->sirensDir)
+		{
+			auto siren = SoundSystem::LoadStream(sirenDir, true);
+			siren->Loop(true);
+			siren->Link(vehicle->pVehicle);
+			siren->SetVolume(m_VolumeSirens);
+
+			sirens.push_back(siren);
+		}
 	}
 
 	//radio
 
-	std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
+	if(!radio)
+	{
+		std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
 
-	radio = SoundSystem::LoadStream(audiosFolder + "/radio/radio1.wav", true);
-	radio->Loop(true);
-	radio->Link(vehicle->pVehicle);
+		radio = SoundSystem::LoadStream(audiosFolder + "/radio/radio" + std::to_string(radioIndex + 1) + ".wav", true);
+		radio->Loop(true);
+		radio->Link(vehicle->pVehicle);
+	}
 }
 
 void SirenSystem::Init()
@@ -282,6 +298,11 @@ void SirenSystem::Update(int dt)
 
 	if(vehicle == playerVehicle)
 	{
+		if(Widgets::IsWidgetDoubleClicked(7))
+		{
+			ChangeSirenByOne();
+		}
+
 		if(horn && sirenState == true)
 		{
 			if(Widgets::IsWidgetPressed(7))
@@ -290,49 +311,125 @@ void SirenSystem::Update(int dt)
 
 				if(timePressed > 100)
 				{
-					if(!hornState)
+					if(!IsHornSoundPlaying())
 					{
-						ToggleHorn(true);
-						ToggleSiren(false);
+						ToggleHornAndStopSiren(true);
 					}
 				}
 			}
 		}
 
-		if(horn && hornState)
+		if(horn && IsHornSoundPlaying())
 		{
 			if(Widgets::IsWidgetJustReleased(7))
 			{
-				ToggleHorn(false);
-				ToggleSiren(true);
+				ToggleHornAndStopSiren(false);
 			}
 		}
 	}
+
+	if(vehicle != playerVehicle && vehicle->pDriver && (sirenState || IsHornSoundPlaying()))
+	{
+		timeChangeSiren += dt;
+
+		if(timeChangeSiren >= maxTimeChangeSiren)
+		{
+			timeChangeSiren = 0;
+			
+			if(npcChangedSirenTo == CHANGED_SIREN_TO_NONE)
+			{
+				npcChangedSirenTo = GetRandomNumber(-1, sirens.size() - 1);
+				maxTimeChangeSiren = 4000;
+
+				//Log::Level(LOG_LEVEL::LOG_BOTH) << "Changed siren to " << npcChangedSirenTo << std::endl;
+				
+				if(npcChangedSirenTo == CHANGED_SIREN_TO_HORN)
+				{
+					ToggleHornAndStopSiren(true);
+				} else {
+					if(currentSirenIndex != npcChangedSirenTo)
+						SetSiren(npcChangedSirenTo);
+				}
+			} else {
+				//Log::Level(LOG_LEVEL::LOG_BOTH) << "Siren was " << npcChangedSirenTo << std::endl;
+
+				if(npcChangedSirenTo == CHANGED_SIREN_TO_HORN)
+				{
+					ToggleHornAndStopSiren(false);
+				} else {
+					if(currentSirenIndex != 0)
+						SetSiren(0);
+				}
+
+				npcChangedSirenTo = CHANGED_SIREN_TO_NONE;
+				maxTimeChangeSiren = 10000;
+			}
+		}
+	}
+
+	bool playerUsedThisCar = Globals::hPrevUsedPlayerVehicle == vehicle->hVehicle;
+
+	if(vehicle != playerVehicle && !vehicle->pDriver && currentSirenIndex != 0 && !playerUsedThisCar)
+	{
+		if(npcChangedSirenTo == CHANGED_SIREN_TO_HORN)
+		{
+			ToggleHornAndStopSiren(false);
+		} else {
+			SetSiren(0);
+		}
+
+		npcChangedSirenTo = CHANGED_SIREN_TO_NONE;
+		maxTimeChangeSiren = 10000;
+	}
+
+	if(radio) radio->SetVolume(m_VolumeRadio);
 
 	CMatrix* pMatrix = camera->GetMatSA();
     CVector cameraPosition = pMatrix->pos;
 	CVector vehiclePositon = vehicle->position;
 
+	std::vector<CAudioStream*> streams;
+
+	if(horn) streams.push_back(horn);
+	for(auto siren : sirens) streams.push_back(siren);
+
+	for(auto stream : streams)
+	{
+		stream->SetVolume(m_VolumeSirens);
+	}
+
+	auto distanceFromCamera = DistanceBetween(vehiclePositon, cameraPosition);
+
+	auto maxFarDistance = 100.0f;
+	auto farMult = 1 - (distanceFromCamera / maxFarDistance);
+	if(farMult < 0) farMult = 0;
+	if(farMult > 1) farMult = 1;
+
 	if(FixLoudSounds)
 	{
-		for(auto siren : sirens)
+		auto maxNearDistance = 5.0f;
+
+		auto nearMult = 1.0f;
+		if(distanceFromCamera < maxNearDistance)
 		{
-			auto distanceFromCamera = DistanceBetween(vehiclePositon, cameraPosition);
-			auto maxDistance = 10.0f;
-		
-			if(distanceFromCamera < maxDistance)
-			{
-				auto mult = distanceFromCamera/maxDistance;
-				if(mult < 0.10f) mult = 0.10f;
-
-				//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "mult: " << mult << "| d: " << distanceFromCamera << std::endl;
-
-				siren->SetVolume(mult);
-			} else {
-				siren->SetVolume(1.0f);
-			}
+			nearMult = distanceFromCamera/maxNearDistance;;
 		}
-	}
+		if(distanceFromCamera < 2.0f)
+		{
+			nearMult = 0.05f;
+		}
+
+		auto mult = nearMult * farMult;
+
+		//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "nearMult: " << nearMult << std::endl;
+		//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "farMult: " << farMult << std::endl;
+		//Log::Level(LOG_LEVEL::LOG_DEEP_UPDATE) << "mult: " << mult << "| d: " << distanceFromCamera << std::endl;
+
+		for(auto stream : streams)
+		{
+			stream->SetVolume(m_VolumeSirens * mult);
+		}
+	} 
 
 	if(!SirenSystem::ModelIdHasSirenGroup(modelId)) return;
 
@@ -366,18 +463,33 @@ void SirenSystem::Destroy()
 	}
 }
 
-void SirenSystem::ToggleHorn(bool enabled)
+bool SirenSystem::IsSirenSoundPlaying(int sirenIndex)
 {
-	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleHorn" << std::endl;
+	if(!HasSiren(sirenIndex)) return false;
+	auto siren = sirens[sirenIndex];
+	return siren->GetState() == AudioStreamState::STREAM_PLAYING_OR_STALLED;
+}
 
-	if(!horn)
-	{
-		LoadAudios();
-	}
+bool SirenSystem::IsHornSoundPlaying()
+{
+	if(!horn) return false;
+	return horn->GetState() == AudioStreamState::STREAM_PLAYING_OR_STALLED;
+}
 
-	hornState = enabled;
+bool SirenSystem::HasSiren(int sirenIndex)
+{
+	return sirenIndex >= 0 && sirenIndex < sirens.size();
+}
 
-	auto soundGroup = GetCurrentVehicleSoundGroup();
+void SirenSystem::ToggleHornSound(bool enabled)
+{
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleHornSound " << enabled << std::endl;
+
+	if(!horn) LoadAudios();
+
+	if(!horn) return;
+
+	//hornState = enabled;
 
 	if (enabled)
 	{
@@ -388,28 +500,55 @@ void SirenSystem::ToggleHorn(bool enabled)
 	}
 }
 
-void SirenSystem::ToggleSiren(bool enabled)
+void SirenSystem::ToggleSirenSound(int sirenIndex, bool enabled)
 {
-	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleSiren " << (enabled ? "TRUE" : "FALSE") << std::endl;
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleSirenSound " << sirenIndex << ", " << enabled << std::endl;
 
-	if(sirens.size() == 0)
-	{
-		LoadAudios();
-	}
+	if(sirens.size() == 0) LoadAudios();
 
-	sirenState = enabled;
+	if(!HasSiren(sirenIndex)) return;
 
-	auto siren = sirens[currentSirenIndex];
+	auto siren = sirens[sirenIndex];
+	
+	//sirenSoundState = enabled;
 
 	if (enabled)
 	{
 		siren->Play();
-		prevSirenIndex = currentSirenIndex;
 	}
 	else {
 		siren->Pause();
-		prevSirenIndex = -1;
 	}
+}
+
+void SirenSystem::ToggleSiren(bool enabled)
+{
+	sirenState = enabled;
+
+	ToggleSirenSound(currentSirenIndex, enabled);
+}
+
+void SirenSystem::SetSiren(int sirenIndex)
+{
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: SetSiren " << sirenIndex << std::endl;
+	
+	auto prevSirenIndex = currentSirenIndex;
+
+	ToggleSirenSound(prevSirenIndex, false);
+
+	currentSirenIndex = sirenIndex;
+
+	ToggleSirenSound(sirenIndex, true);
+}
+
+void SirenSystem::ToggleHornAndStopSiren(bool enabled)
+{
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleHornAndStopSiren " << enabled << std::endl;
+
+	ToggleHornSound(enabled);
+
+	if(sirenState)
+		ToggleSirenSound(currentSirenIndex, !enabled);
 }
 
 void SirenSystem::ChangeSirenByOne()
@@ -418,22 +557,10 @@ void SirenSystem::ChangeSirenByOne()
 
 	int max = sirens.size();
 
-	currentSirenIndex++;
-	if (currentSirenIndex > max - 1)
-	{
-		currentSirenIndex = 0;
-	}
+	auto sirenIndex = currentSirenIndex + 1;
+	if (sirenIndex > max - 1) sirenIndex = 0;
 
-	if (prevSirenIndex != -1)
-	{
-		sirens[prevSirenIndex]->Pause();
-		prevSirenIndex = -1;
-	}
-
-	if (sirenState == true)
-	{
-		ToggleSiren(true);
-	}
+	SetSiren(sirenIndex);
 }
 
 void SirenSystem::ToggleRadio(bool enabled)
@@ -452,4 +579,20 @@ void SirenSystem::ToggleRadio(bool enabled)
 	else {
 		radio->Pause();
 	}
+}
+
+void SirenSystem::ChangeRadio(int radioId)
+{
+	ToggleRadio(false);
+
+	if(radio)
+	{
+		radio->Stop();
+		SoundSystem::UnloadStream(radio);
+		radio = NULL;
+	}
+
+	radioIndex = radioId;
+
+	LoadAudios();
 }

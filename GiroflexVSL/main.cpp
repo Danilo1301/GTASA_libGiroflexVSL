@@ -3,7 +3,7 @@
 #include <mod/config.h>
 
 #include "Log.h"
-#include "GiroflexVSL.h"
+#include "Mod.h"
 #include "ModelInfos.h"
 #include "Patterns.h"
 #include "ModConfig.h"
@@ -15,8 +15,8 @@
 
 // ---------------------------------------
 
-//MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, GiroflexVSL::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.3.1, Danilo1301)
+//MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, Mod::m_Version, Danilo1301) //whoops
+MYMODCFG(net.danilo1301.giroflexvsl, GiroflexVSL, 3.4.0, Danilo1301)
 
 // ---------------------------------------
 
@@ -37,6 +37,8 @@ CSoundSystem* soundsys = &soundsysLocal;
 
 #include "IModPolicia.h"
 IModPolicia* modPolicia = NULL;
+
+#include "GiroflexVSL.h"
 
 // ---------------------------------------
 
@@ -136,6 +138,10 @@ extern "C" void OnModPreLoad()
     logger->SetTag("GiroflexVSL");
 
     logger->Info("Preloading");
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Registering interface 'GiroflexVSL'..." << std::endl;
+
+    RegisterInterface("GiroflexVSL", giroflexVSL);
 }
 
 extern "C" void OnModLoad()
@@ -154,6 +160,14 @@ extern "C" void OnModLoad()
     //cfg->Save();
 
     SaveCfg();
+
+    if(aml->HasModOfVersion("net.danilo1301.multisiren", "1.0.0"))
+    {
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "MultiSiren is installed" << std::endl;
+        Globals::m_UsingMultiSiren = true;
+    } else {
+        Log::Level(LOG_LEVEL::LOG_BOTH) << "MultiSiren is not installed" << std::endl;
+    }
 
     //Mod Policia
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading ModPolicia..." << std::endl;
@@ -255,7 +269,7 @@ extern "C" void OnModLoad()
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Game: " << aml->GetCurrentGame() << std::endl;
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "GiroflexVSL: " << GiroflexVSL::m_Version << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "GiroflexVSL: " << Mod::m_Version << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;

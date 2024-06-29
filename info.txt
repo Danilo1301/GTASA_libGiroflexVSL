@@ -4,7 +4,7 @@ To release
 Test first on SAMP, then test on offline
 Check logs
 Change main.cpp version
-Check GiroflexVSL::m_Version
+Check Mod::m_Version
 Check EN and PT .fxt
 Check .fxt mod version
 Check game more than once to make sure
@@ -177,6 +177,14 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [3.3.1]
 [X] ADD: integration with modPolicia
 [X] FIX: horn affecting all cars
+
+[3.4.0]
+[X] ADD: Giroflex interface
+[X] ADD: double click horn changes the siren tone
+[X] Audios inside /audios/ is not beeing used anymore
+[X] ADD: NPCs randomly uses other sirens
+[X] ADD: other panels also work with the new 3d sounds
+[X] ADD: more radios
 
 Sugest�es:
 

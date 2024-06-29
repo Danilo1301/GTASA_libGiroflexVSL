@@ -51,6 +51,9 @@ CAudioStream* SoundSystem::PlayStreamFromAudiosFolder(std::string src, bool loop
     return PlayStream(audiosPath + src, loop);
 }
 
+/*
+TODO: use the ModConfig::FindRandomFileVariations
+*/
 CAudioStream* SoundSystem::PlayStreamFromAudiosFolderWithRandomVariation(std::string src, bool loop)
 {
     Log::Level(LOG_LEVEL::LOG_BOTH) << "SoundSystem: PlayStreamWithRandomVariation '" << src << "'" << std::endl;

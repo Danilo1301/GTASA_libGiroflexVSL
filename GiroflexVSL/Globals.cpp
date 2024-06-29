@@ -4,6 +4,8 @@
 
 CVector Globals::m_PlayerPos = CVector(0, 0, 0);
 int Globals::hPlayerVehicle = -1;
+int Globals::hPrevUsedPlayerVehicle = -1;
+bool Globals::m_UsingMultiSiren = false;
 
 bool Globals::IsPlayerInAnyVehicle()
 {

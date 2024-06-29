@@ -32,4 +32,6 @@ public:
 	static std::string ReadVersionFile();
 	static void ProcessVersionChanges_PreConfigLoad();
 	static void ProcessVersionChanges_PostConfigLoad();
+
+	static std::vector<std::string> FindRandomFileVariations(std::string src, int startNumber, std::string suffix);
 };

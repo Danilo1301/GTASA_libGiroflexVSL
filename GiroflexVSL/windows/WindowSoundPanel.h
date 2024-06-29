@@ -8,7 +8,7 @@
 
 struct AudioStreamData
 {
-	CAudioStream* audioStream = NULL;
+	int audioId = 0;
 	SoundPanelButton* button = NULL;
 };
 
@@ -16,7 +16,7 @@ class WindowSoundPanel {
 public:
 	static std::vector<SoundPanelButton*> m_buttons;
 	static std::vector<AudioStreamData> m_audioStreamData;
-	static int m_prevActiveIndex;
+	//static int m_prevActiveIndex;
 	static bool m_allowMultipleSounds;
 	static bool m_showOnEnterVehicle;
 	static bool m_showButtonToggleLights;
@@ -47,7 +47,7 @@ public:
 	static SoundPanelButton* AddButton();
 	static void RecreateButtons();
 
-	static void AddButtonToAudioList(SoundPanelButton* button, int audioId, bool horn = false);
+	static void AddButtonToAudioList(SoundPanelButton* button, int audioId);
 	static void ToggleAudioButton(int index);
 	static void StopAllSounds();
 };

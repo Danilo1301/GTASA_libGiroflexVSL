@@ -344,9 +344,12 @@ void Vehicle::Update(int dt)
             }
         }
 
-        //siren audio
-        if(SirenSystem::ModelIdHasSirenGroup(modelId))
-            sirenSystem->ToggleSiren(gameSirenState);
+        if(!Globals::m_UsingMultiSiren)
+        {
+            //siren audio
+            if(SirenSystem::ModelIdHasSirenGroup(modelId))
+                sirenSystem->ToggleSiren(gameSirenState);
+        }
     }
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update end" << std::endl;

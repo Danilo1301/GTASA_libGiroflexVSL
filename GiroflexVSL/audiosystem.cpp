@@ -186,21 +186,21 @@ uint64_t CAudioStream::GetLength()
     return (uint64_t)BASS->ChannelBytes2Seconds(streamInternal, BASS->ChannelGetLength(streamInternal, BASS_POS_BYTE));
 }
 
-int CAudioStream::GetState()
+AudioStreamState CAudioStream::GetState()
 {
-    if (state == stopped) return -1;
+    if (state == stopped) return AudioStreamState::STREAM_STOPPED;
     switch (BASS->ChannelIsActive(streamInternal))
     {
         case BASS_ACTIVE_STOPPED:
         default:
-            return -1;
+            return AudioStreamState::STREAM_STOPPED;
             
         case BASS_ACTIVE_PLAYING:
         case BASS_ACTIVE_STALLED:
-            return 1;
+            return AudioStreamState::STREAM_PLAYING_OR_STALLED;
             
         case BASS_ACTIVE_PAUSED:
-            return 2;
+            return AudioStreamState::STREAM_PAUSED;
     };
 }
 

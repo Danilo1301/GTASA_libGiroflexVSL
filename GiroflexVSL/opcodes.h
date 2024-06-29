@@ -57,7 +57,7 @@ static void PROCESS_GIROFLEX_VSL_LIB(__handler_params)
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB dt=" << dt << std::endl;
     //logger->Info("PROCESS_MENU_VSL_LIB dt=%d", dt);
 
-    GiroflexVSL::Update(dt);
+    Mod::Update(dt);
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB end" << std::endl;
 }
@@ -201,12 +201,13 @@ static void SEND_CURRENT_VEHICLE(__handler_params)
     sprintf(szTemp, "SEND_CURRENT_VEHICLE car=%d modelId=%d", car, modelId);
     //Log::Level(LOG_LEVEL::LOG_BOTH) << szTemp << std::endl;
 
+    Globals::hPlayerVehicle = car;
+
     if (car > 0)
     {
+        Globals::hPrevUsedPlayerVehicle = car;
         Vehicles::TryCreateVehicle(car, modelId);
     }
-
-    Globals::hPlayerVehicle = car;
 }
 
 
