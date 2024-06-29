@@ -54,6 +54,7 @@
 
 <br>
 
+* Adicionar/substituir sons de sirene: https://youtu.be/vYm1lYQIGvk
 * Instalando GTA SA 2.00 com data original: https://youtu.be/wT4N_NAYFOI
 * Como criar um padrão de piscar: https://youtu.be/KZkaiiXhtLU
 * Como converter arquivos .INI para .JSON: https://youtu.be/p_R810KUDb4

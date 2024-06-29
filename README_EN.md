@@ -50,6 +50,7 @@
 
 <br>
 
+* Adding/replacing siren sounds: https://youtu.be/vYm1lYQIGvk
 * Installing GTA SA 2.00 with original data: https://youtu.be/wT4N_NAYFOI
 * How to create a flash pattern: https://youtu.be/KZkaiiXhtLU
 * How to convert .INI files to .JSON: https://youtu.be/p_R810KUDb4

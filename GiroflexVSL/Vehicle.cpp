@@ -67,6 +67,8 @@ void Vehicle::Update(int dt)
 
     this->sirenSystem->Update(dt);
 
+    UpdateLightGroups(dt);
+
     //-----------
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Getting siren state: " << std::endl;
