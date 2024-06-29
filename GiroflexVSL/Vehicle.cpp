@@ -16,8 +16,8 @@ extern void* (*GetVehicleFromRef)(int);
 
 Vehicle::Vehicle(int hVehicle, int modelId)
 {
-	this->hVehicle = hVehicle;
-	this->modelId = modelId;
+    this->hVehicle = hVehicle;
+    this->modelId = modelId;
     pVehicle = (CVehicle*)GetVehicleFromRef(hVehicle);
 
     this->sirenSystem = new SirenSystem(hVehicle);
@@ -67,6 +67,50 @@ void Vehicle::Update(int dt)
 
     this->sirenSystem->Update(dt);
 
+    //-----------
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Getting siren state: " << std::endl;
+
+    //void* vehicleEntity = Mod::ModGetVehicleFromRef(hVehicle);
+    //bool sirenOn = *(uint8_t*)((uintptr_t)vehicleEntity + 0x42D + 4) >> 7;
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "siren state: " << sirenOn << std::endl;
+
+    //if (prevLightsState != gameSirenState)
+    if (prevSirenState != gameSirenState)
+    {
+        prevSirenState = gameSirenState;
+
+        if (pDriver)
+        {
+            if(Globals::hPlayerVehicle == hVehicle)
+            {
+                //player vehicle
+                if(ModConfig::TurnOnLightsWithSiren)
+                {
+                    SetGiroflexEnabled(gameSirenState);
+                }
+            } else {
+                //npc vehicle
+                SetGiroflexEnabled(gameSirenState);
+            }
+        }
+
+        if(!Globals::m_UsingMultiSiren)
+        {
+            //siren audio
+            if(SirenSystem::ModelIdHasSirenGroup(modelId))
+                sirenSystem->ToggleSiren(gameSirenState);
+        }
+    }
+
+    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update end" << std::endl;
+}
+
+void Vehicle::UpdateLightGroups(int dt)
+{
+    std::string vehicleIdString = "Vehicle " + std::to_string(hVehicle) + ": ";
+    
     if (!ModelInfos::HasModelInfo(modelId)) return;
 
     auto modelInfo = ModelInfos::GetModelInfo(modelId);
@@ -314,45 +358,6 @@ void Vehicle::Update(int dt)
             }
         }
     }
-
-    //-----------
-
-    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Getting siren state: " << std::endl;
-
-    //void* vehicleEntity = Mod::ModGetVehicleFromRef(hVehicle);
-    //bool sirenOn = *(uint8_t*)((uintptr_t)vehicleEntity + 0x42D + 4) >> 7;
-
-    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "siren state: " << sirenOn << std::endl;
-
-    //if (prevLightsState != gameSirenState)
-    if (prevSirenState != gameSirenState)
-    {
-        prevSirenState = gameSirenState;
-
-        if (pDriver)
-        {
-            if(Globals::hPlayerVehicle == hVehicle)
-            {
-                //player vehicle
-                if(ModConfig::TurnOnLightsWithSiren)
-                {
-                    SetGiroflexEnabled(gameSirenState);
-                }
-            } else {
-                //npc vehicle
-                SetGiroflexEnabled(gameSirenState);
-            }
-        }
-
-        if(!Globals::m_UsingMultiSiren)
-        {
-            //siren audio
-            if(SirenSystem::ModelIdHasSirenGroup(modelId))
-                sirenSystem->ToggleSiren(gameSirenState);
-        }
-    }
-
-    //Log::Level(LOG_LEVEL::LOG_BOTH) << vehicleIdString << "Update end" << std::endl;
 }
 
 std::vector<LightGroupData*> Vehicle::GetLightGroupsData()
@@ -378,16 +383,15 @@ void Vehicle::SetGiroflexEnabled(bool enabled)
 {
     prevLightsState = enabled;
     //lightsPaused = !enabled;
-	//lightsOn = enabled;
+    //lightsOn = enabled;
 
-	auto lightGroupDataList = GetLightGroupsData();
+    auto lightGroupDataList = GetLightGroupsData();
     for (auto lightGroupData : lightGroupDataList)
     {
         lightGroupData->lightsOn = enabled;
     }
 
 	/*
-
 	std::cout << "lightGroupDataList " << lightGroupDataList.size() << std::endl;
 
 	for (auto lightGroupData : lightGroupDataList)

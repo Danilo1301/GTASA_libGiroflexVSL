@@ -10,7 +10,7 @@ public:
     static int hPlayerVehicle;
     static int hPrevUsedPlayerVehicle;
     static bool m_UsingMultiSiren;
-
+    
     static bool IsPlayerInAnyVehicle();
     static Vehicle* GetPlayerVehicle();
 };

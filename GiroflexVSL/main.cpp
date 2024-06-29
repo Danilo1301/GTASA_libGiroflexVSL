@@ -16,7 +16,7 @@
 // ---------------------------------------
 
 //MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, Mod::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexvsl, GiroflexVSL, 3.4.0, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.4.0, Danilo1301)
 
 // ---------------------------------------
 
@@ -142,6 +142,8 @@ extern "C" void OnModPreLoad()
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Registering interface 'GiroflexVSL'..." << std::endl;
 
     RegisterInterface("GiroflexVSL", giroflexVSL);
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Preload() END" << std::endl;
 }
 
 extern "C" void OnModLoad()
@@ -172,18 +174,15 @@ extern "C" void OnModLoad()
     //Mod Policia
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading ModPolicia..." << std::endl;
     modPolicia = (IModPolicia*)GetInterface("ModPolicia");
-    if (modPolicia)
-    {
-        Log::Level(LOG_LEVEL::LOG_BOTH) << "ModPolicia loaded" << std::endl;
-    }
+    if (modPolicia) Log::Level(LOG_LEVEL::LOG_BOTH) << "ModPolicia loaded" << std::endl;
+    else Log::Level(LOG_LEVEL::LOG_BOTH) << "ModPolicia was not loaded" << std::endl;
 
     //CLEO
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Loading CLEO..." << std::endl;
     cleo = (cleo_ifs_t*)GetInterface("CLEO");
-    if (cleo)
-    {
-        Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO loaded" << std::endl;
-    }
+    if (cleo) Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO loaded" << std::endl;
+    else Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO was not loaded" << std::endl;
+    
 
     //BASS
     //https://github.com/AndroidModLoader/GTASA_CLEO_AudioStreams
@@ -259,12 +258,12 @@ extern "C" void OnModLoad()
 
     std::string sautilsVersion = CheckModVersion(
         { "net.rusjj.gtasa.utils" },
-        { "1.1", "1.2", "1.2.1", "1.3.0", "1.3.1", "1.4", "1.4.1", "1.5.1", "1.6"}
+        { "1.1", "1.2", "1.2.1", "1.3.0", "1.3.1", "1.4", "1.4.1", "1.5.1", "1.6 "}
     );
     
     std::string amlVersion = CheckModVersion(
         { "net.rusjj.aml" },
-        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6", "1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2"}
+        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6","1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2" }
     );
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
@@ -369,6 +368,6 @@ extern "C" void OnModLoad()
 
     //
 
-    
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Load() END" << std::endl;
 }
 

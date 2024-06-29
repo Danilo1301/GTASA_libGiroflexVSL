@@ -17,7 +17,6 @@ Updated GetCVectorWithDefaultValue and GetCVector
 Added GetCVector2D and GetCRGBA
 */
 
-
 class INIFile {
 public:
 	std::vector<INISection*> sections;

@@ -58,13 +58,10 @@ void Mod::Update(int dt)
     WindowSettings::Update(dt);
     WindowSettings::Draw();
 
-    if(!Globals::m_UsingMultiSiren)
-    {
-        Log::Level(LOG_LEVEL::LOG_UPDATE) << "> WindowSoundPanel" << std::endl;
-        
-        WindowSoundPanel::Draw();
-        WindowSoundPanel::Update(dt);
-    }
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "> WindowSoundPanel" << std::endl;
+    
+    WindowSoundPanel::Draw();
+    WindowSoundPanel::Update(dt);
 
     WindowPanel::Update();
     WindowPanel::Draw();
@@ -76,7 +73,7 @@ void Mod::Update(int dt)
     Input::Update(dt);
     Widgets::Update(dt);
 
-    ProcessMenuButtons(dt);
+    Mod::ProcessMenuButtons(dt);
 
     //
 

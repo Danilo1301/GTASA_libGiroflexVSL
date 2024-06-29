@@ -152,14 +152,19 @@ end
 
 0000:
 0390: load_txd_dictionary 'TXD'
-038F: load_texture "gtxd1" as 201
-038F: load_texture "gtxd2" as 202
-038F: load_texture "gtxd3" as 203
-038F: load_texture "gtxd4" as 204
-038F: load_texture "gtxd5" as 205
-038F: load_texture "gtxd6" as 206
-038F: load_texture "gtxd7" as 207
-038F: load_texture "gtxd8" as 208
+
+0EFA: add_log_message 100
+
+038F: load_texture "gtxd1" as 21
+038F: load_texture "gtxd2" as 22
+038F: load_texture "gtxd3" as 23
+038F: load_texture "gtxd4" as 24
+038F: load_texture "gtxd5" as 25
+038F: load_texture "gtxd6" as 26
+038F: load_texture "gtxd7" as 27
+038F: load_texture "gtxd8" as 28
+
+0EFA: add_log_message 101
 
 /*
 03CF: load_wav 2000 as 1

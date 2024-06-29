@@ -38,15 +38,12 @@ void WindowSelectPanel::Create()
 		WindowPanel::Toggle(true);
 	};
 
-	if(!Globals::m_UsingMultiSiren)
+	auto button_audio_panel = window->AddButton(80);
+	button_audio_panel->onClick = [window]()
 	{
-		auto button_audio_panel = window->AddButton(80);
-		button_audio_panel->onClick = [window]()
-		{
-			Remove();
-			WindowSoundPanel::Toggle(true);
-		};
-	}
+		Remove();
+		WindowSoundPanel::Toggle(true);
+	};
 
 	auto button_close = window->AddButton(7, CRGBA(170, 70, 70));
 	button_close->onClick = []()

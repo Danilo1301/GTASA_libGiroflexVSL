@@ -31,6 +31,7 @@ public:
 	void Init();
 	void Destroy();
 	void Update(int dt);
+	void UpdateLightGroups(int dt);
 
 	std::vector<LightGroupData*> GetLightGroupsData();
 

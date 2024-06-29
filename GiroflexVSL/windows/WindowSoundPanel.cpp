@@ -86,7 +86,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenHorn = AddButton();
 	buttonSirenHorn->position = m_position + CVector2D(0, 0);
 	buttonSirenHorn->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenHorn->sprite.spriteId = 204;
+	buttonSirenHorn->sprite.spriteId = 24;
 	buttonSirenHorn->text.gxtId = 1;
 	buttonSirenHorn->text.num1 = 1;
 	buttonSirenHorn->text.color = CRGBA(0, 0, 0, 0);
@@ -107,7 +107,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenToggle = AddButton();
 	buttonSirenToggle->position = m_position + CVector2D(5.0f + buttonSize, 0);
 	buttonSirenToggle->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenToggle->sprite.spriteId = 208;
+	buttonSirenToggle->sprite.spriteId = 28;
 	//buttonSirenToggle->text.gxtId = 1;
 	//buttonSirenToggle->text.num1 = 1;
 	buttonSirenToggle->text.color = CRGBA(0, 0, 0, 0);
@@ -128,7 +128,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSirenTone = AddButton();
 	buttonSirenTone->position = m_position + CVector2D(2 * (5.0f + buttonSize), 0);
 	buttonSirenTone->size = CVector2D(buttonSize, buttonSize);
-	buttonSirenTone->sprite.spriteId = 205;
+	buttonSirenTone->sprite.spriteId = 25;
 	buttonSirenTone->text.gxtId = 1;
 	//buttonSirenTone->text.num1 = SoundPanelSystem::currentSirenIndex;
 	buttonSirenTone->text.color = CRGBA(255, 255, 255);
@@ -147,7 +147,7 @@ void WindowSoundPanel::CreateStyle1()
 	auto buttonSettings = AddButton();
 	buttonSettings->position = m_position + CVector2D(3 * (5.0f + buttonSize), 0);
 	buttonSettings->size = CVector2D(buttonSize, buttonSize);
-	buttonSettings->sprite.spriteId = 207;
+	buttonSettings->sprite.spriteId = 27;
 	//buttonSettings->text.gxtId = 1;
 	buttonSettings->text.color = CRGBA(0, 0, 0, 0);
 	buttonSettings->color = white;
@@ -250,7 +250,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSettings = AddButton();
 	buttonSettings->position = bgPosition + CVector2D(3, 3);
 	buttonSettings->size = CVector2D(38, 25);
-	buttonSettings->sprite.spriteId = 203;
+	buttonSettings->sprite.spriteId = 23;
 	buttonSettings->text.gxtId = 20;
 	buttonSettings->text.color = textDefaultColor;
 	buttonSettings->color = CRGBA(128, 128, 128);
@@ -262,7 +262,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSirenHorn = AddButton();
 	buttonSirenHorn->position = bgPosition + CVector2D(3, 29);
 	buttonSirenHorn->size = CVector2D(50, 35);
-	buttonSirenHorn->sprite.spriteId = 201;
+	buttonSirenHorn->sprite.spriteId = 21;
 	buttonSirenHorn->text.gxtId = 1;
 	buttonSirenHorn->text.num1 = 0;
 	buttonSirenHorn->text.color = textDefaultColor;
@@ -273,7 +273,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren1 = AddButton();
 	buttonSiren1->position = bgPosition + CVector2D(3, 65);
 	buttonSiren1->size = CVector2D(63, 35);
-	buttonSiren1->sprite.spriteId = 201;
+	buttonSiren1->sprite.spriteId = 21;
 	buttonSiren1->text.gxtId = 1;
 	buttonSiren1->text.num1 = 1;
 	buttonSiren1->text.color = textDefaultColor;
@@ -286,7 +286,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren2 = AddButton();
 	buttonSiren2->position = bgPosition + CVector2D(67, 29);
 	buttonSiren2->size = CVector2D(50, 35);
-	buttonSiren2->sprite.spriteId = 203;
+	buttonSiren2->sprite.spriteId = 23;
 	buttonSiren2->text.gxtId = 1;
 	buttonSiren2->text.num1 = 2;
 	buttonSiren2->text.color = textDefaultColor;
@@ -297,7 +297,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren3 = AddButton();
 	buttonSiren3->position = bgPosition + CVector2D(67, 65);
 	buttonSiren3->size = CVector2D(50, 35);
-	buttonSiren3->sprite.spriteId = 203;
+	buttonSiren3->sprite.spriteId = 23;
 	buttonSiren3->text.gxtId = 1;
 	buttonSiren3->text.num1 = 3;
 	buttonSiren3->text.color = textDefaultColor;
@@ -310,7 +310,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren4 = AddButton();
 	buttonSiren4->position = bgPosition + CVector2D(118, 29);
 	buttonSiren4->size = CVector2D(50, 35);
-	buttonSiren4->sprite.spriteId = 203;
+	buttonSiren4->sprite.spriteId = 23;
 	buttonSiren4->text.gxtId = 1;
 	buttonSiren4->text.num1 = 4;
 	buttonSiren4->text.color = textDefaultColor;
@@ -321,7 +321,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren5 = AddButton();
 	buttonSiren5->position = bgPosition + CVector2D(118, 65);
 	buttonSiren5->size = CVector2D(50, 35);
-	buttonSiren5->sprite.spriteId = 203;
+	buttonSiren5->sprite.spriteId = 23;
 	buttonSiren5->text.gxtId = 1;
 	buttonSiren5->text.num1 = 5;
 	buttonSiren5->text.color = textDefaultColor;
@@ -334,7 +334,7 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonClose = AddButton();
 	buttonClose->position = bgPosition + CVector2D(194, 3);
 	buttonClose->size = CVector2D(38, 25);
-	buttonClose->sprite.spriteId = 203;
+	buttonClose->sprite.spriteId = 23;
 	buttonClose->text.gxtId = 10;
 	buttonClose->text.color = textDefaultColor;
 	buttonClose->color = CRGBA(220, 145, 145);;
@@ -346,9 +346,9 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren6 = AddButton();
 	buttonSiren6->position = bgPosition + CVector2D(182, 29);
 	buttonSiren6->size = CVector2D(50, 35);
-	buttonSiren6->sprite.spriteId = 202;
+	buttonSiren6->sprite.spriteId = 22;
 	buttonSiren6->text.gxtId = 1;
-	buttonSiren6->text.num1 = 7;
+	buttonSiren6->text.num1 = 6;
 	buttonSiren6->text.color = textDefaultColor;
 	buttonSiren6->color = buttonDefaultColor;
 	buttonSiren6->activeColor = buttonActiveColor;
@@ -357,9 +357,9 @@ void WindowSoundPanel::CreateStyle3()
 	auto buttonSiren7 = AddButton();
 	buttonSiren7->position = bgPosition + CVector2D(169, 65);
 	buttonSiren7->size = CVector2D(63, 35);
-	buttonSiren7->sprite.spriteId = 202;
+	buttonSiren7->sprite.spriteId = 22;
 	buttonSiren7->text.gxtId = 1;
-	buttonSiren7->text.num1 = 8;
+	buttonSiren7->text.num1 = 7;
 	buttonSiren7->text.color = textDefaultColor;
 	buttonSiren7->color = buttonDefaultColor;
 	buttonSiren7->activeColor = buttonActiveColor;
@@ -473,7 +473,7 @@ void WindowSoundPanel::Update(int dt)
 				auto buttonToggleLights = m_buttonToggleLights = new SoundPanelButton();
 				buttonToggleLights->position = m_position + CVector2D(4 * (5.0f + buttonSize), 0);
 				buttonToggleLights->size = CVector2D(buttonSize, buttonSize);
-				buttonToggleLights->sprite.spriteId = 206;
+				buttonToggleLights->sprite.spriteId = 26;
 				//buttonToggleLights->text.gxtId = 1;
 				//buttonToggleLights->text.num1 = 1;
 				buttonToggleLights->text.color = CRGBA(0, 0, 0, 0);
