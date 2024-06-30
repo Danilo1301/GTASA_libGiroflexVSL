@@ -296,9 +296,15 @@ void SirenSystem::Update(int dt)
 	auto modelId = vehicle->modelId;
 	auto playerVehicle = Globals::GetPlayerVehicle();
 
+	if(sirenState) timeWithSirenOff = 0;
+	if(timeWithSirenOff != -1 && timeWithSirenOff < 10000)
+	{
+		timeWithSirenOff += dt;
+	}
+
 	if(vehicle == playerVehicle)
 	{
-		if(Widgets::IsWidgetDoubleClicked(7))
+		if(Widgets::IsWidgetDoubleClicked(7) && timeWithSirenOff >= 0 && timeWithSirenOff < 300)
 		{
 			ChangeSirenByOne();
 		}

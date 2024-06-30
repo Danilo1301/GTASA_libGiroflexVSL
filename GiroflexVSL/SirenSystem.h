@@ -58,6 +58,8 @@ public:
 	//bool sirenSoundState = false; //if siren sound is playing or not
 	int currentSirenIndex = 0;
 
+	unsigned int timeWithSirenOff = -1;
+
 	CAudioStream* horn = NULL;
 	std::vector<CAudioStream*> sirens;
 
