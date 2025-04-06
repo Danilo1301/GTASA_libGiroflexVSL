@@ -50,14 +50,27 @@ __decl_op(SEND_CAR_POSITION, 0x0EF9); // 0EF9=5,send_car_position %1d% model_id 
 __decl_op(ADD_LOG_MESSAGE, 0x0EFA); //0EFA=1,add_log_message %1d%
 __decl_op(SEND_WIDGET_STATE, 0x0EFB); //0EFB=2,send_widget_state %1d% state %2d%
 
+
+extern uint32_t *m_snTimeInMilliseconds;
+
+uint32_t prevTime = 0;
+
+
 static void PROCESS_GIROFLEX_VSL_LIB(__handler_params)
 {
-    int dt = __readParam(handle)->i;
-    
+    int dtFromCleo = __readParam(handle)->i;
+
+    uint32_t currentTime = *m_snTimeInMilliseconds;
+
+    uint32_t dt = currentTime - prevTime;
+    prevTime = currentTime;
+
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB dt=" << dt << std::endl;
     //logger->Info("PROCESS_MENU_VSL_LIB dt=%d", dt);
 
-    Mod::Update(dt);
+    Mod::m_DeltaTime = dt;
+
+    Mod::Update((int)dt);
 
     //Log::Level(LOG_LEVEL::LOG_BOTH) << "PROCESS_MENU_VSL_LIB end" << std::endl;
 }

@@ -230,7 +230,13 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [3.9.1]
 [X] ADD: option to disable siren when leaving car
 
+[3.9.2]
+[X] FIX: objects(?) rotating faster with 2 or more vehicles
+[X] FIX: object rotation beeing affected by FPS
+[X] ADD: custom LED color for individual points
+
 [ ] BUG: delay nas luzes q giram, acho q to pegando posição errada do objectWorldPosition
+
 
 -----------------------
 NOTES:

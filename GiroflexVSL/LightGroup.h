@@ -64,8 +64,6 @@ public:
 	float rotateSpeed = 10.0f;
 	bool rotateInverse = false;
 
-	float rotateAngle = 0.0f;
-
 	bool useLightbarLEDs = false;
 	int lightbarLEDStartIndex = 1;
 	bool useNormalLEDs = false;

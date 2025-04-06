@@ -21,6 +21,7 @@ public:
 
     bool useCustomColor = false;
 	CRGBA customColor = { 255, 255, 0 };
+	CRGBA customLedColor = { 255, 255, 255 };
 
 	LightGroupRotateObject rotateObject;
 
@@ -31,6 +32,7 @@ public:
 		value["customOffset"] = CVectorToJSON(customOffset);
 		value["useCustomColor"] = useCustomColor;
 		value["customColor"] = ColorToJSON(customColor);
+		value["customLedColor"] = ColorToJSON(customLedColor);
 
 		//rotate object
 		Json::Value rotateObjectValue = Json::objectValue;
@@ -50,6 +52,7 @@ public:
 		customOffset = ValidateCVector(value["customOffset"], customOffset);
 		useCustomColor = ValidateValue(value["useCustomColor"], useCustomColor).asBool();
 		customColor = ValidateColor(value["customColor"], customColor);
+		customLedColor = ValidateColor(value["customLedColor"], customLedColor);
 
 		//rotate object
 		Json::Value rotateObjectValue = value["rotateObject"];

@@ -28,6 +28,8 @@ public:
 
 	int ledsTime = 0;
 
+	float rotateAngle = 0;
+
 	SirenSystem* sirenSystem;
 
 	Vehicle(int hVehicle, int modelId);

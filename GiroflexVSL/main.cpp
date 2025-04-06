@@ -16,7 +16,7 @@
 // ---------------------------------------
 
 //MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, Mod::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.1, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.2, Danilo1301)
 
 // ---------------------------------------
 
@@ -84,6 +84,9 @@ CCamera* camera;
 bool* userPaused;
 bool* codePaused;
 int nGameLoaded = -1;
+
+uint32_t *m_snTimeInMilliseconds;
+
 // ---------------------------------------
 
 ConfigEntry* cfgMenuOffsetX = NULL;
@@ -306,6 +309,8 @@ void LoadSymbols()
     SET_TO(camera, cleo->GetMainLibrarySymbol("TheCamera"));
     SET_TO(userPaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_UserPauseE"));
     SET_TO(codePaused, cleo->GetMainLibrarySymbol("_ZN6CTimer11m_CodePauseE"));
+
+    SET_TO(m_snTimeInMilliseconds, aml->GetSym(hGTASA, "_ZN6CTimer22m_snTimeInMillisecondsE"));
 
     if((uintptr_t)camera == gameAddr + 0x951FA8) nGameLoaded = 0; // SA 2.00
     else if((uintptr_t)camera == gameAddr + 0x595420) nGameLoaded = 1; // VC 1.09

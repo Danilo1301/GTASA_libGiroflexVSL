@@ -10,6 +10,7 @@
 #include "Globals.h"
 #include "ModConfig.h"
 #include "VehicleDummy.h"
+#include "Mod.h"
 
 #include "windows/WindowEditing.h"
 
@@ -206,7 +207,7 @@ void Vehicle::UpdateLightGroups(int dt)
             {
                 std::cout << pattern << std::endl;
 
-                lightGroupData->patternLoop->AddStep(&LightGroupDatas::m_ChangePatternTime);
+                lightGroupData->patternLoop->AddStep(&Patterns::m_TimeBetweenPatterns);
             }
 
             int patternOffset = lightGroup->patternOffset;
@@ -266,8 +267,8 @@ void Vehicle::UpdateLightGroups(int dt)
 
         if(lightGroup->rotate)
         {
-            lightGroup->rotateAngle += 0.001f * dt * lightGroup->rotateSpeed;   
-            if(lightGroup->rotateAngle >= 2 * M_PI) lightGroup->rotateAngle = 0;
+            rotateAngle += 0.001f * dt * lightGroup->rotateSpeed;   
+            if(rotateAngle >= 2 * M_PI) rotateAngle = 0;
 
             //Log::Level(LOG_LEVEL::LOG_BOTH) << "rotateAngle: " << lightGroup->rotateAngle << std::endl;
         }
@@ -288,7 +289,7 @@ void Vehicle::UpdateLightGroups(int dt)
             //rotate position
             if(lightGroup->rotate)
             {
-                auto angle = lightGroup->rotateAngle;
+                auto angle = rotateAngle;
 
                 x += std::sin(angle) * lightGroup->rotateDistance * (lightGroup->rotateInverse ? -1 : 1);
                 y += std::cos(angle) * lightGroup->rotateDistance;
@@ -369,9 +370,8 @@ void Vehicle::UpdateLightGroups(int dt)
             
             if(hVehicle == Globals::hPlayerVehicle)
             {
-                //menuVSL->debug->m_Visible = true;
-                //menuVSL->debug->AddLine("angle: " + std::to_string(angle));
-                //menuVSL->debug->AddLine("x: " + std::to_string(coronaOffsetX));
+                //menuVSL->debug->visible = true;
+                //menuVSL->debug->AddLine("dt: " + std::to_string(dt));
             }
 
             eSirenDirection direction = lightGroup->direction;
@@ -446,22 +446,6 @@ void Vehicle::UpdateLightGroups(int dt)
                 float intensity = GetIntensityFromAngle(angle);
 
                 //if vehicle is the player's
-                {
-                    //menuVSL->debug->visible = true;
-                    //menuVSL->debug->AddLine("roll: " + std::to_string(point->rotateObject.roll));
-
-                    //RegisterDebugCorona(lightId++, vec1, CRGBA(255, 0, 0));
-                    //RegisterDebugCorona(lightId++, vec2, CRGBA(0, 255, 0));
-                    //RegisterDebugCorona(lightId++, vec3, CRGBA(0, 0, 255));
-
-                    //menuVSL->debug->AddLine("forward: " + CVectorToString(newDir));
-
-
-                    // menuVSL->debug->AddLine("angle: " + std::to_string(angle));
-                    // menuVSL->debug->AddLine("forward: " + CVectorToString(vec1));
-                    // menuVSL->debug->AddLine("objectPos: " + CVectorToString(objectWorldPosition));
-                    // menuVSL->debug->AddLine("cam: " + CVectorToString(vec3));
-                }
 
                 radius *= intensity;
             }
@@ -503,7 +487,7 @@ void Vehicle::UpdateLightGroups(int dt)
             corona.shadowTexture = lightGroup->shadowTexture;
 
             corona.shadowRotation = lightGroup->shadowRotation;
-            if(lightGroup->rotate) corona.shadowRotation = -lightGroup->rotateAngle *  (lightGroup->rotateInverse ? -1 : 1);
+            if(lightGroup->rotate) corona.shadowRotation = -rotateAngle *  (lightGroup->rotateInverse ? -1 : 1);
 
             corona.shadowFlipTextures = lightGroup->shadowFlipTextures;
 
@@ -590,7 +574,7 @@ void Vehicle::OnUpdateGameLogic()
             //rotate position
             if(lightGroup->rotate)
             {
-                auto angle = lightGroup->rotateAngle;
+                auto angle = rotateAngle;
 
                 x += std::sin(angle) * lightGroup->rotateDistance * (lightGroup->rotateInverse ? -1 : 1);
                 y += std::cos(angle) * lightGroup->rotateDistance;
@@ -599,13 +583,6 @@ void Vehicle::OnUpdateGameLogic()
             auto coronaOffset = CVector(x, y, 0) + lightGroup->offset + point->customOffset;
 
             auto radius = lightGroup->radius;
-
-            if(hVehicle == Globals::hPlayerVehicle)
-            {
-                //menuVSL->debug->m_Visible = true;
-                //menuVSL->debug->AddLine("angle: " + std::to_string(angle));
-                //menuVSL->debug->AddLine("x: " + std::to_string(coronaOffsetX));
-            }
 
             if(point->rotateObject.rotate && point->rotateObject.matrix != NULL)
             {
@@ -642,8 +619,6 @@ void Vehicle::OnUpdateGameLogic()
 
                 if(m_ShowRotatePointDirection)
                 {
-                    //menuVSL->debug->visible = true;
-                    //menuVSL->debug->AddLine("roll: " + std::to_string(point->rotateObject.roll));
 
                     RegisterTestCorona(lightId++, vec1, CRGBA(255, 0, 0), 1.0f);
                     //RegisterTestCorona(lightId++, vec2, CRGBA(0, 255, 0), 1.0f);
@@ -723,12 +698,14 @@ void Vehicle::RenderBefore()
                     (float)(axisVal == eRotateObjectAxis::Y ? 1 : 0),
                     (float)(axisVal == eRotateObjectAxis::Z ? 1 : 0)
                 };
-                RwReal angle = point->rotateObject.speed;
+                RwReal angleToAdd = point->rotateObject.speed;
+                
+                angleToAdd *= Mod::m_DeltaTime;
+                angleToAdd /= 30;
 
+                RwMatrixRotate(&frameAtomic->modelling, &axis, angleToAdd, rwCOMBINEPRECONCAT);
 
-                RwMatrixRotate(&frameAtomic->modelling, &axis, angle, rwCOMBINEPRECONCAT);
-
-                point->rotateObject.totalAngle += angle;
+                point->rotateObject.totalAngle += angleToAdd;
 
                 //by chatGPT
 
@@ -752,13 +729,6 @@ void Vehicle::RenderBefore()
                 point->rotateObject.roll = roll;
 
                 point->rotateObject.matrix = &frameAtomic->modelling;
-
-                if(hVehicle == Globals::hPlayerVehicle)
-                {
-                    //menuVSL->debug->visible = true;
-                    //menuVSL->debug->AddLine("roll: " + std::to_string(roll));
-                    //menuVSL->debug->AddLine("matrix: " + std::to_string((int)point->rotateObject.matrix));
-                }
             }
         }
 
@@ -809,11 +779,17 @@ void Vehicle::RenderBefore()
 
                 //pattern color
                 auto step = lightGroupData->GetCurrenetStep();
-                if(step->useCustomLedColor)
+                if(point->useCustomColor)
                 {
-                    color = step->customLedColor;
+                    color = point->customLedColor;
                 }
                
+                //invividual led color
+                if(point->useCustomColor)
+                {
+                    color = point->customLedColor;
+                }
+
                 //
                 int index = i;
 

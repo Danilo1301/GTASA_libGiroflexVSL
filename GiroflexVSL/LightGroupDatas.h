@@ -8,7 +8,6 @@
 
 class LightGroupDatas {
 public:
-	static int m_ChangePatternTime;
 	static std::vector<LightGroupData*> m_LightGroupDatas;
 
 	static bool HasLightGroupData(LightGroup* lightGroup, int hVehicle);

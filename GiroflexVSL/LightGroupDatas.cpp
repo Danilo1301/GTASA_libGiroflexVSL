@@ -3,7 +3,6 @@
 #include "Log.h"
 #include "Vehicles.h"
 
-int LightGroupDatas::m_ChangePatternTime = 5000;
 std::vector<LightGroupData*> LightGroupDatas::m_LightGroupDatas;
 
 bool LightGroupDatas::HasLightGroupData(LightGroup* lightGroup, int hVehicle)

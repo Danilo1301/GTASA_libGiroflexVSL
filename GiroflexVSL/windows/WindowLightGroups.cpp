@@ -392,6 +392,13 @@ void WindowLightGroups::CreateEditPoint(Window* parent, LightGroup* lightGroup, 
         Menu::AddColorMenu(window, &point->customColor);
     };
 
+    auto button_colorLed = window->AddButton(45);
+    button_colorLed->AddColorIndicator(&point->customLedColor);
+    button_colorLed->onClick = [point, window]() {
+        Menu::AddColorMenu(window, &point->customLedColor);
+    };
+
+
     auto rotateObject = window->AddButton(94);
     rotateObject->onClick = [window, lightGroup, point]() {
         Menu::m_Visible = false;
