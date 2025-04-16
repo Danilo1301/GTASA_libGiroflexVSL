@@ -109,7 +109,9 @@ DGFX108 Patterns
 DGFX109 Ativar com as luzes
 DGFX110 Direcao das luzes
 DGFX111 FRENTE
-DGFX112 AMBOS
+DGFX112 PADRAO
 DGFX113 TRAS
 DGFX114 LADOS
 DGFX115 Desligar sirene ao sair
+DGFX116 Cor do LED (ligado)
+DGFX117 Cor do LED (desligado)

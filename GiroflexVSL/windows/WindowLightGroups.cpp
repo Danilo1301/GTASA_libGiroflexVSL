@@ -392,12 +392,31 @@ void WindowLightGroups::CreateEditPoint(Window* parent, LightGroup* lightGroup, 
         Menu::AddColorMenu(window, &point->customColor);
     };
 
-    auto button_colorLed = window->AddButton(45);
-    button_colorLed->AddColorIndicator(&point->customLedColor);
-    button_colorLed->onClick = [point, window]() {
-        Menu::AddColorMenu(window, &point->customLedColor);
+    auto button_colorLedOn = window->AddButton(116);
+    button_colorLedOn->AddColorIndicator(&point->customLedColor_on);
+    button_colorLedOn->onClick = [point, window]() {
+        Menu::AddColorMenu(window, &point->customLedColor_on);
     };
 
+    auto button_colorLedOff = window->AddButton(117);
+    button_colorLedOff->AddColorIndicator(&point->customLedColor_off);
+    button_colorLedOff->onClick = [point, window]() {
+        Menu::AddColorMenu(window, &point->customLedColor_off);
+    };
+
+    //
+
+    auto lights_direction = window->AddOptions(110);
+    lights_direction->optionsValue = (int)point->customDirection;
+    lights_direction->AddOption(111, 0, 0);
+    lights_direction->AddOption(112, 0, 0);
+    lights_direction->AddOption(113, 0, 0);
+    lights_direction->AddOption(114, 0, 0);
+    lights_direction->onValueChange = [lights_direction, lightGroup, point]() {
+        point->customDirection = (eSirenDirection)lights_direction->optionsValue;
+    };
+
+    //
 
     auto rotateObject = window->AddButton(94);
     rotateObject->onClick = [window, lightGroup, point]() {

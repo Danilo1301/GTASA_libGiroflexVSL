@@ -16,7 +16,7 @@
 // ---------------------------------------
 
 //MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, Mod::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.2, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.3, Danilo1301)
 
 // ---------------------------------------
 

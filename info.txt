@@ -235,6 +235,16 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 [X] FIX: object rotation beeing affected by FPS
 [X] ADD: custom LED color for individual points
 
+[3.9.3]
+[X] Fixes
+[X] Custom LED OFF color for points
+[X] Custom direction
+
+Aleatoriamente deixar a sirene ligada nas viatura dos npc q fazem ptr
+
+
+
+
 [ ] BUG: delay nas luzes q giram, acho q to pegando posição errada do objectWorldPosition
 
 

@@ -109,7 +109,9 @@ DGFX108 Patterns
 DGFX109 Enable with the lights
 DGFX110 Lights direction
 DGFX111 FRONT
-DGFX112 BOTH
+DGFX112 DEFAULT
 DGFX113 BACK
 DGFX114 SIDES
 DGFX115 Turn off siren on exit
+DGFX116 LED color (ON)
+DGFX117 LED color (OFF)

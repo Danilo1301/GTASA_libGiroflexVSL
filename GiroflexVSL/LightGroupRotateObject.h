@@ -15,8 +15,4 @@ struct LightGroupRotateObject {
 	eRotateObjectAxis axis = eRotateObjectAxis::Z;
 	std::string object = "[none]";
 	float directionFix = 0.0f;
-
-	RwMatrix* matrix = NULL;
-	float totalAngle = 0.0f;
-	float roll = 0.0f;
 };

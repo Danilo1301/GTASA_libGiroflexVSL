@@ -21,7 +21,9 @@ public:
 
     bool useCustomColor = false;
 	CRGBA customColor = { 255, 255, 0 };
-	CRGBA customLedColor = { 255, 255, 255 };
+	CRGBA customLedColor_on = { 255, 255, 255 };
+	CRGBA customLedColor_off = { 0, 0, 0 };
+	eSirenDirection customDirection = eSirenDirection::BOTH;
 
 	LightGroupRotateObject rotateObject;
 
@@ -32,7 +34,9 @@ public:
 		value["customOffset"] = CVectorToJSON(customOffset);
 		value["useCustomColor"] = useCustomColor;
 		value["customColor"] = ColorToJSON(customColor);
-		value["customLedColor"] = ColorToJSON(customLedColor);
+		value["customLedColor_on"] = ColorToJSON(customLedColor_on);
+		value["customLedColor_off"] = ColorToJSON(customLedColor_off);
+		value["customDirection"] = (int)customDirection;
 
 		//rotate object
 		Json::Value rotateObjectValue = Json::objectValue;
@@ -52,7 +56,9 @@ public:
 		customOffset = ValidateCVector(value["customOffset"], customOffset);
 		useCustomColor = ValidateValue(value["useCustomColor"], useCustomColor).asBool();
 		customColor = ValidateColor(value["customColor"], customColor);
-		customLedColor = ValidateColor(value["customLedColor"], customLedColor);
+		customLedColor_on = ValidateColor(value["customLedColor_on"], customLedColor_on);
+		customLedColor_off = ValidateColor(value["customLedColor_off"], customLedColor_off);
+		customDirection = (eSirenDirection)ValidateValue(value["customDirection"], (int)customDirection).asInt();
 
 		//rotate object
 		Json::Value rotateObjectValue = value["rotateObject"];

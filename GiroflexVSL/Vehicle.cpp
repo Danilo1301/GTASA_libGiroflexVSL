@@ -12,6 +12,8 @@
 #include "VehicleDummy.h"
 #include "Mod.h"
 
+#include "RotateObjectManager.h"
+
 #include "windows/WindowEditing.h"
 
 #include "menu/IMenuVSL.h"
@@ -160,6 +162,8 @@ void Vehicle::UpdateLightGroups(int dt)
 
     auto lightId = hVehicle + Vehicle::m_LightIdOffset;
 
+    RotateObjectManager::ProcessVehicle(this);
+
     for (auto lightGroup : modelInfo->lightGroups)
     {
         if (lightGroup->points.size() == 0)
@@ -282,6 +286,8 @@ void Vehicle::UpdateLightGroups(int dt)
             auto distance = lightGroup->distance;
             auto curve = lightGroup->curve;
 
+            auto pointRotateData = RotateObjectManager::GetPointRotateData(this, point);
+
             //position
             float x = (i * distance) - ((amountOfPoints - 1) * distance / 2);
 			float y = (float)arch_fn_parabola((float)i, curve, (float)(amountOfPoints - 1));
@@ -376,6 +382,11 @@ void Vehicle::UpdateLightGroups(int dt)
 
             eSirenDirection direction = lightGroup->direction;
 
+            if(point->customDirection != eSirenDirection::BOTH)
+            {
+                direction = point->customDirection;
+            }
+
             float radiusMult = 1.0f;
             bool isCoronaAtLeft = coronaOffsetX < 0;
             bool isCoronaAtRight = !isCoronaAtLeft;
@@ -408,7 +419,7 @@ void Vehicle::UpdateLightGroups(int dt)
 
             //---------------------------------------
 
-            if(point->rotateObject.rotate && point->rotateObject.matrix != NULL)
+            if(point->rotateObject.rotate && pointRotateData->matrix != NULL)
             {
                 //int lightId = 10000;
 
@@ -420,7 +431,7 @@ void Vehicle::UpdateLightGroups(int dt)
 
                 //roll
 
-                auto roll = point->rotateObject.roll + point->rotateObject.directionFix;
+                auto roll = pointRotateData->roll + point->rotateObject.directionFix;
 
                 //
 
@@ -567,6 +578,8 @@ void Vehicle::OnUpdateGameLogic()
             auto distance = lightGroup->distance;
             auto curve = lightGroup->curve;
 
+            auto pointRotateData = RotateObjectManager::GetPointRotateData(this, point);
+
             //position
             float x = (i * distance) - ((amountOfPoints - 1) * distance / 2);
 			float y = (float)arch_fn_parabola((float)i, curve, (float)(amountOfPoints - 1));
@@ -584,7 +597,7 @@ void Vehicle::OnUpdateGameLogic()
 
             auto radius = lightGroup->radius;
 
-            if(point->rotateObject.rotate && point->rotateObject.matrix != NULL)
+            if(point->rotateObject.rotate && pointRotateData->matrix != NULL)
             {
                 auto coronaWorldPosition = TransformFromObjectSpace(pVehicle, coronaOffset);
 
@@ -592,7 +605,7 @@ void Vehicle::OnUpdateGameLogic()
 
                 //roll
 
-                auto roll = point->rotateObject.roll + point->rotateObject.directionFix;
+                auto roll = pointRotateData->roll + point->rotateObject.directionFix;
 
                 //
 
@@ -664,12 +677,12 @@ void Vehicle::RenderBefore()
             {
                 auto point = lightGroup->points[i];
                 auto index = i;
-
+                
                 if(to_lower(point->rotateObject.object) != to_lower(name))
                 {
                     continue;
                 }
-
+                
                 //
                 bool enabled = lightGroupData->GetPointIsEnabled(point, index);
                 
@@ -705,7 +718,9 @@ void Vehicle::RenderBefore()
 
                 RwMatrixRotate(&frameAtomic->modelling, &axis, angleToAdd, rwCOMBINEPRECONCAT);
 
-                point->rotateObject.totalAngle += angleToAdd;
+                auto pointRotateData = RotateObjectManager::GetPointRotateData(this, point);
+
+                pointRotateData->totalAngle += angleToAdd;
 
                 //by chatGPT
 
@@ -726,9 +741,9 @@ void Vehicle::RenderBefore()
                     roll = atan2f(-frameAtomic->modelling.up.y, frameAtomic->modelling.right.y);
                 }
 
-                point->rotateObject.roll = roll;
+                pointRotateData->roll = roll;
 
-                point->rotateObject.matrix = &frameAtomic->modelling;
+                pointRotateData->matrix = &frameAtomic->modelling;
             }
         }
 
@@ -779,15 +794,15 @@ void Vehicle::RenderBefore()
 
                 //pattern color
                 auto step = lightGroupData->GetCurrenetStep();
-                if(point->useCustomColor)
+                if(step->useCustomColor)
                 {
-                    color = point->customLedColor;
+                    color = step->customLedColor;
                 }
                
                 //invividual led color
                 if(point->useCustomColor)
                 {
-                    color = point->customLedColor;
+                    color = point->customLedColor_on;
                 }
 
                 //
@@ -809,6 +824,12 @@ void Vehicle::RenderBefore()
                 if (!enabled)
 				{
 					color = lightGroup->ledColorDisabled;
+
+                    //individual point led color, off
+                    if(point->useCustomColor)
+                    {
+                        color = point->customLedColor_off;
+                    }
 				}
 
                 auto materials = VehicleDummy::RpGeometryGetAllMaterials(atomic->geometry);
