@@ -11,7 +11,8 @@ LogFile Log::Level(eLogLevel level)
 {
     logFile.level = level;
 
-    auto date = FormatDate();
+    auto time = GetFormattedTime();
+    std::string date = "[" + std::string(time) + "]";
 
     if(level == eLogLevel::LOG_BOTH || level == eLogLevel::LOG_NORMAL)
     {
@@ -42,15 +43,28 @@ void Log::Open(std::string folderPath, std::string fileName, bool createUpdateLo
         updateFile.open((folderPath + "/" + fileName + "_update.log"), std::fstream::out | std::fstream::trunc);
 }
 
-const char* Log::FormatDate()
+const char* Log::GetFormattedDay()
 {
     std::time_t currentTime = std::time(nullptr);
 
     std::tm* localTime = std::localtime(&currentTime);
     
-    char buffer[256];
+    static char buffer[256];
     
-    strftime(buffer, sizeof(buffer), "[%d/%m %H:%M:%S]", localTime);
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y", localTime);
+
+    return buffer;
+}
+
+const char* Log::GetFormattedTime()
+{
+    std::time_t currentTime = std::time(nullptr);
+
+    std::tm* localTime = std::localtime(&currentTime);
+    
+    static char buffer[256];
+    
+    strftime(buffer, sizeof(buffer), "%H:%M:%S", localTime);
 
     return buffer;
 }

@@ -24,17 +24,21 @@ void Touches::Update()
     //menuVSL->debug->AddLine("checking touches:");
     for(int i = 1; i <= 9; i++)
     {
-        auto state = GET_TOUCH_POINT_STATE(i, 0);
-        if(state != 0)
-        {
-            menuVSL->debug->AddLine("touch " + std::to_string(i) + " state: " + std::to_string(state));
-        }
+        // doesnt seem to work
 
-        auto isDown = CTouchInterface_IsTouchDown(i);
-        if(isDown)
-        {
-            menuVSL->debug->AddLine("touch " + std::to_string(i) + " is DOWN");
-        }
+        // auto state = GET_TOUCH_POINT_STATE(i, 0);
+        // if(state != 0)
+        // {
+        //     menuVSL->debug->AddLine("touch " + std::to_string(i) + " state: " + std::to_string(state));
+        // }
+
+        // weird behaviour
+
+        // auto isDown = CTouchInterface_IsTouchDown(i);
+        // if(isDown)
+        // {
+        //     menuVSL->debug->AddLine("touch " + std::to_string(i) + " is DOWN");
+        // }
     }
 
     for(int i = 1; i <= 9; i++)
@@ -60,7 +64,7 @@ void Touches::Update()
 
             if(dt > 100)
             {
-                Log::Level(eLogLevel::LOG_BOTH) << "touchData->timePressed += dt; dt=" << dt << std::endl;
+                Log::Level(eLogLevel::LOG_BOTH) << "WARNING: dt was " << dt << std::endl;
             }
         }
     }
@@ -70,7 +74,7 @@ void Touches::Update()
         if (numPresses == 0)
         {
             isTouchPressed = false;
-            Log::Level(eLogLevel::LOG_BOTH) << "Input: Touch released" << std::endl;
+            //Log::Level(eLogLevel::LOG_BOTH) << "Input: Touch released" << std::endl;
             hasTouchBeenReleasedThisFrame = true;
         }
     }
@@ -90,10 +94,10 @@ void Touches::SetTouchState(int touchId, bool pressed)
     {
         if (pressed)
         {
-            Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch " << touchId << " pressed" << std::endl;
+            //Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch " << touchId << " pressed" << std::endl;
         }
         else {
-            Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch " << touchId << " released after " << touchStates[touchId].timePressed << " ms" << std::endl;
+            //Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch " << touchId << " released after " << touchStates[touchId].timePressed << " ms" << std::endl;
         }
 
         touchStates[touchId].isPressed = pressed;
@@ -107,7 +111,7 @@ void Touches::SetTouchState(int touchId, bool pressed)
             isTouchPressed = true;
             hasTouchBeenPressedThisFrame = true;
 
-            Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch pressed" << std::endl;
+            //Log::Level(eLogLevel::LOG_BOTH) << "Touches: Touch pressed" << std::endl;
         }
     }
 }

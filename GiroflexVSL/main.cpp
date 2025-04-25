@@ -24,7 +24,7 @@ IMenuVSL* menuVSL = NULL;
 
 // --------------------------------
 
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 1.0.0, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 4.0.0, Danilo1301)
 
 // --------------------------------
 
@@ -56,21 +56,16 @@ extern "C" void OnModPreLoad()
 
     Log::Open(logPath, "giroflexVSL", true);
 
-    Log::Level(eLogLevel::LOG_BOTH) << "Preload()" << std::endl;
     Log::Level(eLogLevel::LOG_BOTH) << "AML headers: 1.0.3.1" << std::endl;
-    Log::Level(eLogLevel::LOG_BOTH) << "Test #1" << std::endl;
+    Log::Level(eLogLevel::LOG_BOTH) << "Date: " << std::string(Log::GetFormattedDay()) << std::endl;
+    Log::Level(eLogLevel::LOG_BOTH) << "Time: " << std::string(Log::GetFormattedTime()) << std::endl;
 
     logger->SetTag("Giroflex VSL");
-
-    logger->Info("Preload");
-
-    Log::Level(eLogLevel::LOG_BOTH) << "Preload() END" << std::endl;
+    //logger->Info("Preload");
 }
 
 extern "C" void OnModLoad()
 {
-    Log::Level(eLogLevel::LOG_BOTH) << "Load()" << std::endl;
-
     /*
     cfg->Bind("Author", "", "About")->SetString("Danilo1301"); cfg->ClearLast();
     cfg->Bind("Discord", "", "About")->SetString("https://discord.gg/mkCDRf4zJA"); cfg->ClearLast();
@@ -169,6 +164,4 @@ extern "C" void OnModLoad()
         );
     });
     */
-
-    Log::Level(eLogLevel::LOG_BOTH) << "Load() END" << std::endl;
 }

@@ -9,7 +9,7 @@ void Widgets::Update(int dt)
     for(auto& pair : m_Widgets)
     {
         int widgetId = pair.first;
-        WidgetData* data = &m_Widgets[widgetId]; //imporant, using pointer instead
+        WidgetData* data = &m_Widgets[widgetId];
 
         if(data->isPressed)
         {

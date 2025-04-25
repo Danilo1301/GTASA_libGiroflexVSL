@@ -1,3 +1,9 @@
+copbike.dff está em "Jogos\GTA San Andreas\Mods\Blender\Veiculos\Teste copbike"
+
 [X] Detectar touches
 [ ] Criar menu principal do 5 e 6
 [ ] Criar sitema de grupos de lightGroups
+
+Atualizar cleo.h
+Atualizar menuvsl
+Testar opcode do HasAMLMod

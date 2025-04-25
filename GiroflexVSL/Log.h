@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <string>
 
 enum eLogLevel {
     LOG_NORMAL,
@@ -22,7 +23,8 @@ public:
 
     static void Open(std::string folderPath, std::string fileName, bool createUpdateLog = false);
 
-    static const char* FormatDate();
+    static const char* GetFormattedDay();
+    static const char* GetFormattedTime();
 };
 
 class LogFile {
