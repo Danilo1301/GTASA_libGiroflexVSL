@@ -15,8 +15,7 @@
 
 // ---------------------------------------
 
-//MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, Mod::m_Version, Danilo1301) //whoops
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.3, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.4, Danilo1301)
 
 // ---------------------------------------
 
@@ -381,25 +380,22 @@ extern "C" void OnModPreLoad()
 	sprintf(logPath, "%s/giroflexVSL/", aml->GetConfigPath());
     Log::Open(logPath, "giroflexVSL");
 
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Preload()" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "AML headers: 1.1" << std::endl;
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Test #1" << std::endl;
+    
+    auto date = Log::FormatDate("%d/%m/%Y");
+
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "Date: " << date << std::endl;
 
     logger->SetTag("GiroflexVSL");
-
-    logger->Info("Preloading");
+    //logger->Info("Preloading");
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Registering interface 'GiroflexVSL'..." << std::endl;
 
     RegisterInterface("GiroflexVSL", giroflexVSL);
-
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Preload() END" << std::endl;
 }
 
 extern "C" void OnModLoad()
 {
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Load()" << std::endl;
-
     cfgMenuOffsetX = cfg->Bind("menu_offset_x", -195, "General");
     cfgTimeBetweenPatterns = cfg->Bind("time_between_patterns", Patterns::m_TimeBetweenPatterns, "General");
 
@@ -519,7 +515,7 @@ extern "C" void OnModLoad()
 
     std::string cleoVersion = CheckModVersion(
         { "net.rusjj.cleolib", "net.rusjj.cleomod" },
-        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3", "2.0.1.4", "2.0.1.5" }
+        { "2.0.1", "2.0.1.1", "2.0.1.2", "2.0.1.3", "2.0.1.4", "2.0.1.5", "2.0.1.6" }
     );
 
     std::string sautilsVersion = CheckModVersion(
@@ -529,15 +525,15 @@ extern "C" void OnModLoad()
     
     std::string amlVersion = CheckModVersion(
         { "net.rusjj.aml" },
-        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6","1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2" }
+        { "1.0.0.0", "1.0.0.1", "1.0.0.2", "1.0.0.3", "1.0.0.4", "1.0.0.5", "1.0.0.6","1.0.1", "1.0.2", "1.0.2.1", "1.0.2.2", "1.0.3", "1.0.3.1", "1.1", "1.2", "1.2.1", "1.2.2", "1.2.3", "1.2.4" }
     );
 
     Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Game: " << aml->GetCurrentGame() << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "GiroflexVSL: " << Mod::m_Version << std::endl;
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO version: " << cleoVersion << " (recommended 2.0.1.3)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "CLEO version: " << cleoVersion << " (recommended 2.0.1.6+)" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "SAUtils version: " << sautilsVersion << " (recommended 1.3.1)" << std::endl;
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "AML version: " << amlVersion << " (recommended 1.2.2)" << std::endl;
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "AML version: " << amlVersion << " (recommended 1.2.4)" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "----------------------------" << std::endl;
     Log::Level(LOG_LEVEL::LOG_BOTH) << "Config: " << aml->GetConfigPath() << std::endl;
 
@@ -606,8 +602,4 @@ extern "C" void OnModLoad()
             lightGroup->Update();
         }
     }
-
-    //
-
-    Log::Level(LOG_LEVEL::LOG_BOTH) << "Load() END" << std::endl;
 }

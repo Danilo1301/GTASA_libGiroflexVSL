@@ -10,7 +10,8 @@ LogFile Log::Level(LOG_LEVEL level)
 {
     logFile.level = level;
 
-    auto date = FormatDate();
+    auto time = FormatDate("%H:%M:%S");
+    std::string date = "[" + std::string(time) + "]";
 
     if(level == LOG_LEVEL::LOG_BOTH || level == LOG_LEVEL::LOG_NORMAL)
     {
@@ -34,7 +35,12 @@ void Log::Open(std::string folderPath, std::string fileName)
     updateFile.open((folderPath + "/" + fileName + "_update.log"), std::fstream::out | std::fstream::trunc);
 }
 
-const char* Log::FormatDate()
+/*
+%d/%m
+%d/%m/%Y
+%H:%M:%S
+*/
+const char* Log::FormatDate(const char* format)
 {
     std::time_t currentTime = std::time(nullptr);
 
@@ -42,7 +48,7 @@ const char* Log::FormatDate()
     
     char buffer[256];
     
-    strftime(buffer, sizeof(buffer), "[%d/%m %H:%M:%S]", localTime);
+    strftime(buffer, sizeof(buffer), format, localTime);
 
     return buffer;
 }

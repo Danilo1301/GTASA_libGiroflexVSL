@@ -37,18 +37,20 @@ extern cleo_ifs_t* cleo;
 
 extern void (*RegisterCorona)(unsigned int id, void* attachTo, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha, CVector const& posn, float radius, float farClip, int coronaType, int flaretype, bool enableReflection, bool checkObstacles, int _param_not_used, float angle, bool longDistance, float nearClip, unsigned char fadeState, float fadeSpeed, bool onlyFromBelow, bool reflectionDelay);
 
-__decl_op(PROCESS_GIROFLEX_VSL_LIB, 0x0EF0); // 0EF0=1,process_giroflex_vsl_lib deltaMs %1d%
-__decl_op(GET_DRAW_ITEM_INFO, 0x0EF1); // 0EF1=3,%3g% = get_draw_item_info %1d% id %2d%
-__decl_op(SEND_TOUCH_STATE, 0x0EF2); //0EF2=2,send_touch_state %1d% state %2d%
-__decl_op(SEND_PLAYER_POSITION, 0x0EF3); // 0EF3=4,send_player_position %1d% pos %2f% %3f% %4f%
-__decl_op(SEND_CURRENT_VEHICLE, 0x0EF4); //0EF4=2,send_current_vehicle %1d% modelid %2d%
-__decl_op(GET_MOD_INFO, 0x0EF5); // 0EF5=3,%3g% = get_mod_info %1d% id %2d%
-__decl_op(SEND_CAR_VELOCITY, 0x0EF6); // 0EF6=4,send_car_velocity %1d% vel %2f% %3f% %4f%
-__decl_op(CREATE_NEW_VEHICLE, 0x0EF7); // 0EF7=2,create_new_vehicle %1d% modelid %2d%
-__decl_op(REGISTER_GIROFLEX_CORONA, 0x0EF8); // 0EF8=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
-__decl_op(SEND_CAR_POSITION, 0x0EF9); // 0EF9=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
-__decl_op(ADD_LOG_MESSAGE, 0x0EFA); //0EFA=1,add_log_message %1d%
-__decl_op(SEND_WIDGET_STATE, 0x0EFB); //0EFB=2,send_widget_state %1d% state %2d%
+__decl_op(PROCESS_GIROFLEX_VSL_LIB, 0x4D50); // 4D50=1,process_giroflex_vsl_lib deltaMs %1d%
+__decl_op(GET_DRAW_ITEM_INFO, 0x4D51); // 4D51=3,%3g% = get_draw_item_info %1d% id %2d%
+__decl_op(SEND_TOUCH_STATE, 0x4D52); //4D52=2,send_touch_state %1d% state %2d%
+__decl_op(SEND_PLAYER_POSITION, 0x4D53); // 4D53=4,send_player_position %1d% pos %2f% %3f% %4f%
+__decl_op(SEND_CURRENT_VEHICLE, 0x4D54); //4D54=2,send_current_vehicle %1d% modelid %2d%
+__decl_op(GET_MOD_INFO, 0x4D55); // 4D55=3,%3g% = get_mod_info %1d% id %2d%
+__decl_op(SEND_CAR_VELOCITY, 0x4D56); // 4D56=4,send_car_velocity %1d% vel %2f% %3f% %4f%
+__decl_op(CREATE_NEW_VEHICLE, 0x4D57); // 4D57=2,create_new_vehicle %1d% modelid %2d%
+__decl_op(REGISTER_GIROFLEX_CORONA, 0x4D58); // 4D58=4,register_giroflex_corona %1d% at_pos %2f% %3f% %4f%
+__decl_op(SEND_CAR_POSITION, 0x4D59); // 4D59=5,send_car_position %1d% model_id %2d% pos %3f% %4f% %5f%
+__decl_op(ADD_LOG_MESSAGE, 0x4D5A); //4D5A=1,add_log_message %1d%
+__decl_op(SEND_WIDGET_STATE, 0x4D5B); //4D5B=2,send_widget_state %1d% state %2d%
+
+//0x4D5A to 4D5A
 
 
 extern uint32_t *m_snTimeInMilliseconds;
@@ -675,7 +677,7 @@ static void ADD_LOG_MESSAGE(__handler_params)
 {
     int num = __readParam(handle)->i;
     
-    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Log: CLEO " << num << std::endl;
+    Log::Level(LOG_LEVEL::LOG_UPDATE) << "Cleo: " << num << std::endl;
 }
 
 static void SEND_WIDGET_STATE(__handler_params)

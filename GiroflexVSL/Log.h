@@ -21,7 +21,7 @@ public:
 
     static void Open(std::string folderPath, std::string fileName);
 
-    static const char* FormatDate();
+    static const char* FormatDate(const char* format);
 };
 
 class LogFile {

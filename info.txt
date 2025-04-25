@@ -242,7 +242,10 @@ OBS: I also found a bug that detects a lightpanel button press before the panel 
 
 Aleatoriamente deixar a sirene ligada nas viatura dos npc q fazem ptr
 
-
+[3.9.4]
+[X] Fixed crash with CleoPlus Mobile
+[X] .csa wont crash anymore if theres no .so
+[X] It is now required CleoMod 2.0.1.6
 
 
 [ ] BUG: delay nas luzes q giram, acho q to pegando posição errada do objectWorldPosition
