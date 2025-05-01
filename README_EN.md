@@ -57,7 +57,9 @@
 
 <h1>Tutorials (Adapting)</h1>
 
-* Adapting a vehicle: https://youtu.be/UXQQKfLok-o
+* Adapting a police vehicle (light textures): https://youtu.be/UXQQKfLok-o
+* Replacing the lightbar (3D model and lights): https://www.youtube.com/watch?v=j9s96eCaT-A
+* Adapting the LEDs of a lightbar: https://www.youtube.com/watch?v=dmh9EBN-c0o
 
 <h1>Config</h1>
 
