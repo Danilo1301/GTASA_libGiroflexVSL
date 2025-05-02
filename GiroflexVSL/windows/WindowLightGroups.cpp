@@ -16,6 +16,7 @@
 #include "Globals.h"
 #include "Vehicles.h"
 #include "Log.h"
+#include "RotateObjectManager.h"
 
 void WindowLightGroups::Create(Window* parent)
 {
@@ -41,6 +42,9 @@ void WindowLightGroups::Create(Window* parent)
 
     auto button_add = window->AddButton(37);
     button_add->onClick = [modelId, window, parent]() {
+
+
+
         if (!ModelInfos::HasModelInfo(modelId))
         {
             ModelInfos::CreateModelInfo(modelId);
@@ -317,6 +321,8 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
         Menu::AddConfirmWindow(window, 71, [lightGroup, modelId]() {
             ModelInfos::GetModelInfo(WindowMain::m_ModelId)->RemoveLightGroup(lightGroup);
 
+            
+
             //idk if this works
             if (ModelInfos::GetModelInfo(WindowMain::m_ModelId)->lightGroups.size() == 0)
             {
@@ -330,6 +336,9 @@ void WindowLightGroups::CreateEditLightGroup(Window* parent, LightGroup* lightGr
                 vehicle->Update(0);
                 vehicle->SetGiroflexEnabled(true);
             }
+
+            //clear rotate data for all vehicle
+            RotateObjectManager::ClearDataForAllVehicles();
 
             Menu::RemoveAllWindows();
 

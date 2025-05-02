@@ -32,4 +32,6 @@ public:
     static bool CheckIfPointsChanged(Vehicle* vehicle);
 
     static void ClearDataForVehicle(Vehicle* vehicle);
+
+    static void ClearDataForAllVehicles();
 };

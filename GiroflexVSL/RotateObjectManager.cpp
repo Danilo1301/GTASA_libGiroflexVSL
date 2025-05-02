@@ -132,3 +132,21 @@ void RotateObjectManager::ClearDataForVehicle(Vehicle* vehicle)
 
     m_RotateData.erase(vehicle);
 }
+
+void RotateObjectManager::ClearDataForAllVehicles()
+{
+    Log::Level(LOG_LEVEL::LOG_BOTH) << "RotateObjectManager: Clearing data for all vehicles" << std::endl;
+
+    std::vector<Vehicle*> vehiclesToDelete;
+
+    for (auto p : m_RotateData)
+    {
+        auto vehicle = p.first;
+        vehiclesToDelete.push_back(vehicle);
+    }
+
+    for (auto vehicle : vehiclesToDelete)
+    {
+        ClearDataForVehicle(vehicle);
+    }
+}

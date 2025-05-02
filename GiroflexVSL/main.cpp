@@ -15,7 +15,7 @@
 
 // ---------------------------------------
 
-MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.4, Danilo1301)
+MYMODCFG(net.danilo1301.giroflexVSL, GiroflexVSL, 3.9.5, Danilo1301)
 
 // ---------------------------------------
 
