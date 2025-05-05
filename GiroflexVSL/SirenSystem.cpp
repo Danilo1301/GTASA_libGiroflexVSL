@@ -158,6 +158,50 @@ void SirenSystem::LoadVehicles()
 	}
 }
 
+std::vector<std::filesystem::path> GetAudioFiles(const std::string& folder) {
+    std::vector<std::filesystem::path> audioFiles;
+    //std::regex pattern(R"(radio(\d+)_.*\.wav)");
+	std::regex pattern(R"(radio(\d+)(?:_.*)?\.wav)");
+
+    for (const auto& entry : std::filesystem::directory_iterator(folder)) {
+        
+		const auto& path = entry.path();
+		
+		Log::Level(LOG_LEVEL::LOG_BOTH) << "path " << path << std::endl;
+
+		if (std::regex_match(path.filename().string(), pattern)) {
+			audioFiles.push_back(path);
+		}
+        
+    }
+
+    return audioFiles;
+}
+
+
+void SirenSystem::LoadRadioAudios()
+{
+	auto vehicle = Vehicles::GetVehicleByHandle(hVehicle);
+
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: Load radios" << std::endl;
+
+	std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios/radio/";
+
+	auto audiofiles = GetAudioFiles(audiosFolder);
+
+	for(auto file : audiofiles)
+	{
+		auto audio = SoundSystem::LoadStream(file.string(), true);
+
+		radioAudios.push_back(audio);
+
+		audio->Link(vehicle->pVehicle);
+		audio->Loop(true);
+	}
+
+	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: Loaded " << radioAudios.size() << " radio audios" << std::endl;
+}
+
 SirenGroup* SirenSystem::GetSirenGroupById(std::string id)
 {
 	return m_SirenGroups[id];
@@ -286,13 +330,27 @@ void SirenSystem::LoadAudios()
 
 	//radio
 
+	if(radioAudios.size() == 0)
+	{
+		LoadRadioAudios();
+	}
+
 	if(!radio)
 	{
-		std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
+		//std::string audiosFolder = ModConfig::GetConfigFolder() + "/audios";
 
-		radio = SoundSystem::LoadStream(audiosFolder + "/radio/radio" + std::to_string(radioIndex + 1) + ".wav", true);
-		radio->Loop(true);
-		radio->Link(vehicle->pVehicle);
+		// radio = radioAudios[radioIndex];
+
+		// Log::Level(LOG_LEVEL::LOG_BOTH) << "radio " << radio << std::endl;
+		// Log::Level(LOG_LEVEL::LOG_BOTH) << "loop" << std::endl;
+
+		// radio->Loop(true);
+
+		// Log::Level(LOG_LEVEL::LOG_BOTH) << "link" << std::endl;
+
+		// radio->Link(vehicle->pVehicle);
+
+		// Log::Level(LOG_LEVEL::LOG_BOTH) << "its something else" << std::endl;
 	}
 }
 
@@ -603,17 +661,20 @@ void SirenSystem::ToggleRadio(bool enabled)
 {
 	Log::Level(LOG_LEVEL::LOG_BOTH) << "SirenSystem: ToggleRadio " << (enabled ? "TRUE" : "FALSE") << std::endl;
 
-	if(!radio)
+	if(radioAudios.size() == 0)
 	{
 		LoadAudios();
 	}
 
-	if (enabled)
+	if(radio)
 	{
-		radio->Play();
-	}
-	else {
-		radio->Pause();
+		if (enabled)
+		{
+			radio->Play();
+		}
+		else {
+			radio->Stop();
+		}
 	}
 }
 
@@ -621,14 +682,6 @@ void SirenSystem::ChangeRadio(int radioId)
 {
 	ToggleRadio(false);
 
-	if(radio)
-	{
-		radio->Stop();
-		SoundSystem::UnloadStream(radio);
-		radio = NULL;
-	}
-
 	radioIndex = radioId;
-
-	LoadAudios();
+	radio = radioAudios[radioIndex];
 }

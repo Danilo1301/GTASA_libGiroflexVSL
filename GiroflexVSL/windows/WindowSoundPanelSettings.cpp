@@ -22,20 +22,21 @@ void WindowSoundPanelSettings::Create()
 		WindowSoundPanel::RecreateButtons();
 	};
 
-	auto audiosPath = ModConfig::GetConfigFolder() + "/audios/";
-	auto radioPath = audiosPath + "/radio/radio";
-	auto radioSounds = ModConfig::FindRandomFileVariations(radioPath, 1, ".wav");
+
+	auto vehicle = Globals::GetPlayerVehicle();
+
+	int count = 0;
+
+	if(vehicle) count = vehicle->sirenSystem->radioAudios.size();
 
 	auto radio_options = window->AddOptions(96);
 	radio_options->AddOption(84, 0, 0);
-	for(int i = 0; i < radioSounds.size(); i++)
+	for(int i = 0; i < count; i++)
 	{
-		radio_options->AddOption(1, i+1, 0);
+		radio_options->AddOption(1, i, 0);
 	}
-	radio_options->onValueChange = [radio_options]() {
+	radio_options->onValueChange = [radio_options, vehicle]() {
 		auto index = radio_options->optionsValue;
-
-		auto vehicle = Globals::GetPlayerVehicle();
 
 		if(vehicle)
 		{

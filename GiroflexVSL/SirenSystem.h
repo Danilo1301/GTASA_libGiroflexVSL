@@ -67,6 +67,7 @@ public:
 	CAudioStream* horn = NULL;
 	std::vector<CAudioStream*> sirens;
 
+	std::vector<CAudioStream*> radioAudios;
 	CAudioStream* radio = NULL;
 	int radioIndex = 0;
 
@@ -77,7 +78,8 @@ public:
 	SirenSystem(int hVehicle);
 
 	void LoadAudios();
-
+	void LoadRadioAudios();
+	
 	void Init();
 	void Update(int dt);
 	void Destroy();

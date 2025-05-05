@@ -9,6 +9,7 @@
 #include <list>
 //#include <windows.h>
 #include <sys/stat.h>
+#include <regex>
 
 #define _USE_MATH_DEFINES
 #include <cmath>

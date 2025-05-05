@@ -26,7 +26,7 @@ extern RpClump* (*RpClumpForAllAtomics)(RpClump* clump, RpAtomicCallBack callbac
 extern RpGeometry* (*RpGeometryForAllMaterials)(RpGeometry* geometry, RpMaterialCallBack fpCallBack, void* pData);
 extern char* (*GetFrameNodeName)(RwFrame* frame);
 
-const char* Mod::m_Version = "3.9.5";
+const char* Mod::m_Version = "3.9.6";
 float Mod::m_DeltaTime = 0.0f;
 
 bool canTurnSirenOn = true;
@@ -173,7 +173,7 @@ void Mod::Update(int dt)
 
     if(!Menu::m_Credits->hasShownCredits)
     {
-        Menu::ShowCredits(6, 5000);
+        //Menu::ShowCredits(6, 5000);
     }
 
     Log::Level(LOG_LEVEL::LOG_UPDATE) << "* Mod.Update end" << std::endl;
