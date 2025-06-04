@@ -290,11 +290,13 @@ static float calculateAngleVec2D(const CVector2D& A, const CVector2D& B, const C
     // Diferença entre os ângulos
     float angle = angleBC - angleAB;
 
-    // Converte de radianos para graus, se necessário
+    // Converte de radianos para graus
     angle = angle * 180.0f / M_PI;
 
-    // Garantir que o ângulo esteja no intervalo [0, 360)
-    if (angle < 0) {
+    // Normaliza para o intervalo [-180, +180]
+    if (angle > 180.0f) {
+        angle -= 360.0f;
+    } else if (angle < -180.0f) {
         angle += 360.0f;
     }
 

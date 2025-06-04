@@ -247,6 +247,8 @@ Aleatoriamente deixar a sirene ligada nas viatura dos npc q fazem ptr
 [X] .csa wont crash anymore if theres no .so
 [X] It is now required CleoMod 2.0.1.6
 
+[3.9.7]
+[X] Updated corona direction to fade in/out
 
 [ ] BUG: delay nas luzes q giram, acho q to pegando posição errada do objectWorldPosition
 

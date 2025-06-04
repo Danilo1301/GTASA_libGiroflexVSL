@@ -374,12 +374,6 @@ void Vehicle::UpdateLightGroups(int dt)
 
             auto angle = calculateAngleVec2D(vec1_2d, vec2_2d, vec3_2d);
             
-            if(hVehicle == Globals::hPlayerVehicle)
-            {
-                //menuVSL->debug->visible = true;
-                //menuVSL->debug->AddLine("dt: " + std::to_string(dt));
-            }
-
             eSirenDirection direction = lightGroup->direction;
 
             if(point->customDirection != eSirenDirection::BOTH)
@@ -387,33 +381,116 @@ void Vehicle::UpdateLightGroups(int dt)
                 direction = point->customDirection;
             }
 
-            float radiusMult = 1.0f;
+            //
+
+            float radiusMult = 0.0f;
             bool isCoronaAtLeft = coronaOffsetX < 0;
             bool isCoronaAtRight = !isCoronaAtLeft;
 
-            if(direction == eSirenDirection::SIDES)
+            float newAngle = angle;  // já em [-180, 180]
+            
+            // Espelha ângulo para luz direita
+            if (isCoronaAtLeft)
             {
-                //bool isHidden = (angle < 270.0f && angle > 90.0f);
-                bool isHidden = (angle < 280.0f && angle > 80.0f);
-
-                radiusMult = isHidden ? 0.0f : 1.0f;
+                newAngle = -newAngle;
             }
 
-            if(direction == eSirenDirection::FRONT || direction == eSirenDirection::BACK)
+            if(direction == eSirenDirection::BOTH)
             {
-                auto newAngle = angle;
-                if(isCoronaAtRight) newAngle -= 180;
-                if (newAngle < 0) newAngle += 360.0f;
-
-                bool visibleBack = (newAngle >= 0 && newAngle < 180.0f);
-                bool visibleFront = !visibleBack;
-
-                if(direction == eSirenDirection::FRONT)
-                    radiusMult = visibleFront ? 1.0f : 0.0f;
-
-                if(direction == eSirenDirection::BACK)
-                    radiusMult = visibleBack ? 1.0f : 0.0f;
+                radiusMult = 1.0f;
             }
+            else if (direction == eSirenDirection::FRONT)
+            {
+                // FRONT: visível próximo de 0°
+
+                if (newAngle >= 0.0f && newAngle <= 20.0f)
+                {
+                    // Fade out 0 -> 20 (0 = invisível, 20 = visível)
+                    radiusMult = newAngle / 20.0f;
+                }
+                else if (newAngle > 20.0f && newAngle < 160.0f)
+                {
+                    // Totalmente visível
+                    radiusMult = 1.0f;
+                }
+                else if (newAngle >= 160.0f && newAngle <= 180.0f)
+                {
+                    // Fade in 160 -> 180 (160 = visível, 180 = invisível)
+                    radiusMult = (180.0f - newAngle) / 20.0f;
+                }
+                else
+                {
+                    radiusMult = 0.0f;
+                }
+            }
+            else if (direction == eSirenDirection::BACK)
+            {
+                // BACK: visível próximo de -180°
+
+                if (newAngle >= -180.0f && newAngle <= -160.0f)
+                {
+                    // Fade in -180 -> -160 (-180 = invisível, -160 = visível)
+                    radiusMult = (newAngle + 180.0f) / 20.0f;
+                }
+                else if (newAngle > -160.0f && newAngle < -20.0f)
+                {
+                    // Totalmente visível
+                    radiusMult = 1.0f;
+                }
+                else if (newAngle >= -20.0f && newAngle <= 0.0f)
+                {
+                    // Fade out -20 -> 0 (-20 = visível, 0 = invisível)
+                    radiusMult = (-newAngle) / 20.0f;
+                }
+                else
+                {
+                    radiusMult = 0.0f;
+                }
+            }
+            else if (direction == eSirenDirection::SIDES)
+            {
+                // SIDES: visível quando ângulo ≈ 0°, com faixa de -90° a 90°
+                // e fade de 10° nas bordas.
+
+                // Espelha para unificar lógica LEFT/RIGHT
+                if (isCoronaAtRight)
+                {
+                    newAngle = -newAngle;
+                }
+
+                if (newAngle >= -100.0f && newAngle < -90.0f)
+                {
+                    // Fade in (-100 -> -90)
+                    radiusMult = (newAngle + 100.0f) / 10.0f;
+                }
+                else if (newAngle >= -90.0f && newAngle <= 90.0f)
+                {
+                    // Totalmente visível
+                    radiusMult = 1.0f;
+                }
+                else if (newAngle > 90.0f && newAngle <= 100.0f)
+                {
+                    // Fade out (90 -> 100)
+                    radiusMult = (100.0f - newAngle) / 10.0f;
+                }
+                else
+                {
+                    // Fora da faixa → invisível
+                    radiusMult = 0.0f;
+                }
+            }
+
+            radiusMult = std::clamp(radiusMult, 0.0f, 1.0f);
+
+            //
+
+            // if(hVehicle == Globals::hPlayerVehicle)
+            // {
+            //     menuVSL->debug->visible = true;
+            //     menuVSL->debug->AddLine("angle: " + std::to_string(angle));
+            //     menuVSL->debug->AddLine("radiusMult: " + std::to_string(radiusMult));
+            //     menuVSL->debug->AddLine("dir: " + std::string(isCoronaAtLeft ? "LEFT" : "RIGHT"));
+            // }
 
             radius = lightGroup->radius * radiusMult;
 
