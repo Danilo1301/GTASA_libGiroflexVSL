@@ -449,7 +449,7 @@ void Vehicle::UpdateLightGroups(int dt)
             }
             else if (direction == eSirenDirection::SIDES)
             {
-                // SIDES: visível quando ângulo ≈ 0°, com faixa de -90° a 90°
+                // SIDES: visível quando ângulo ≈ 0°, com faixa de -60° a 60°
                 // e fade de 10° nas bordas.
 
                 // Espelha para unificar lógica LEFT/RIGHT
@@ -458,20 +458,20 @@ void Vehicle::UpdateLightGroups(int dt)
                     newAngle = -newAngle;
                 }
 
-                if (newAngle >= -100.0f && newAngle < -90.0f)
+                if (newAngle >= -70.0f && newAngle < -60.0f)
                 {
-                    // Fade in (-100 -> -90)
-                    radiusMult = (newAngle + 100.0f) / 10.0f;
+                    // Fade in (-70 -> -60)
+                    radiusMult = (newAngle + 70.0f) / 10.0f;
                 }
-                else if (newAngle >= -90.0f && newAngle <= 90.0f)
+                else if (newAngle >= -60.0f && newAngle <= 60.0f)
                 {
                     // Totalmente visível
                     radiusMult = 1.0f;
                 }
-                else if (newAngle > 90.0f && newAngle <= 100.0f)
+                else if (newAngle > 60.0f && newAngle <= 70.0f)
                 {
-                    // Fade out (90 -> 100)
-                    radiusMult = (100.0f - newAngle) / 10.0f;
+                    // Fade out (60 -> 70)
+                    radiusMult = (70.0f - newAngle) / 10.0f;
                 }
                 else
                 {
@@ -484,13 +484,13 @@ void Vehicle::UpdateLightGroups(int dt)
 
             //
 
-            // if(hVehicle == Globals::hPlayerVehicle)
-            // {
-            //     menuVSL->debug->visible = true;
-            //     menuVSL->debug->AddLine("angle: " + std::to_string(angle));
-            //     menuVSL->debug->AddLine("radiusMult: " + std::to_string(radiusMult));
-            //     menuVSL->debug->AddLine("dir: " + std::string(isCoronaAtLeft ? "LEFT" : "RIGHT"));
-            // }
+            if(hVehicle == Globals::hPlayerVehicle)
+            {
+                // menuVSL->debug->visible = true;
+                // menuVSL->debug->AddLine("angle: " + std::to_string(angle));
+                // menuVSL->debug->AddLine("radiusMult: " + std::to_string(radiusMult));
+                // menuVSL->debug->AddLine("dir: " + std::string(isCoronaAtLeft ? "LEFT" : "RIGHT"));
+            }
 
             radius = lightGroup->radius * radiusMult;
 
