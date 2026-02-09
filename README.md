@@ -61,6 +61,7 @@
 
 <h1>Tutoriais (Adaptação)</h1>
 
+* COMO "MAPEAR" E "ADAPTAR" GIROFLEX/LEDS no ZM: https://www.youtube.com/watch?v=Fs6cQl2A5T8
 * Adaptando uma viatura (textura das luzes): https://youtu.be/UXQQKfLok-o
 * Trocando o giroflex (modelo 3d e luzes): https://www.youtube.com/watch?v=j9s96eCaT-A
 * Adaptar as leds de um giroflex: https://www.youtube.com/watch?v=dmh9EBN-c0o
